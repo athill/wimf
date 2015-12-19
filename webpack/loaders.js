@@ -23,7 +23,7 @@ var jsonLoader = ['json-loader'];
 
 var sassParams = [
   'outputStyle=expanded',
-  'includePaths[]=' + path.resolve(__dirname, '../app/scss'),
+  'includePaths[]=' + path.resolve(__dirname, '../public/scss'),
   'includePaths[]=' + path.resolve(__dirname, '../node_modules')
 ];
 

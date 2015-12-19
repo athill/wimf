@@ -53,10 +53,13 @@
 		</div>
 	</nav>
 
+	<div id="app"></div>
+
 	@yield('content')
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="/public/css/app.css"></script>
+	<script src="/js/app.js"></script>
+	<script src="/css/app.css"></script>
 </body>
 </html>

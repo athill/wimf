@@ -9,7 +9,7 @@ var plugins = require('./plugins');
 var DEBUG = process.env.NODE_ENV === 'development';
 var TEST = process.env.NODE_ENV === 'test';
 
-var jsBundle = path.join('js', util.format('[name].%s.js', pkg.version));
+var jsBundle = path.join('js', '[name].js');
 
 var entry = {
   app: ['./app.js']
@@ -26,7 +26,7 @@ if (DEBUG) {
   entry.app.push('webpack/hot/dev-server');
 }
 
-var context = path.join(__dirname, '../public')
+var context = path.join(__dirname, '../resources/assets')
 var config = {
   context: context,
   cache: DEBUG,
