@@ -26,7 +26,7 @@ if (DEBUG) {
   entry.app.push('webpack/hot/dev-server');
 }
 
-var context = path.join(__dirname, '../resources/assets')
+var context = path.join(__dirname, '../resources/assets');
 var config = {
   context: context,
   cache: DEBUG,
