@@ -8,6 +8,8 @@ class Wimf extends React.Component {
   render() {
     const {mainStore, dispatch} = this.props;
 
+    console.log(mainStore);
+
     return (
       <div>
         Hello world!

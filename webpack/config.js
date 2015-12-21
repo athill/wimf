@@ -32,7 +32,7 @@ var config = {
   cache: DEBUG,
   debug: DEBUG,
   target: 'web',
-  devtool: DEBUG || TEST ? 'inline-source-map' : false,
+  devtool: DEBUG || TEST ? 'inline-source-map' : 'source-map',
   entry: entry,
   output: {
     path: path.resolve(pkg.config.buildDir),
