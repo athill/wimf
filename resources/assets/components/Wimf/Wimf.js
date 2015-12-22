@@ -1,18 +1,30 @@
 import React from 'react';
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-@connect(({ mainStore }) => ({ mainStore }))
+import { fetchContainersIfNeeded } from '../../actions/containers';
+
+
+@connect(({ containers }) => ({ containers }))
 class Wimf extends React.Component {
+    componentDidMount()  {
+    	const {dispatch} = this.props;
+    	dispatch(fetchContainersIfNeeded());
+    }
+
   render() {
-    const {mainStore, dispatch} = this.props;
-
-    console.log(mainStore);
-
+    const {containers} = this.props;
+    
     return (
       <div>
         Hello world!
+	      <select>
+	      	{
+	      		containers.map(container => {
+	      			return <option>{ container.name }</option>;
+	      		})
+	      	}
+	      </select>        
       </div>
     );
   }
