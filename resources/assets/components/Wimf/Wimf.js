@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 
 import { fetchContainersIfNeeded } from '../../actions/containers';
 
+function mapStateToProps(state) {
+  return { containers: state.containers }
+}
 
-@connect(({ containers }) => ({ containers }))
+
+@connect(mapStateToProps)
 class Wimf extends React.Component {
     componentDidMount()  {
     	const {dispatch} = this.props;
@@ -13,8 +17,14 @@ class Wimf extends React.Component {
     }
 
   render() {
-    const {containers} = this.props;
-    
+    let {containers} = this.props;
+
+    console.log(containers, Array.isArray(containers));
+
+    if (!Array.isArray(containers)) {
+    	containers = containers.containers;
+    }
+
     return (
       <div>
         Hello world!

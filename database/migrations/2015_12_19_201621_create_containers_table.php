@@ -15,6 +15,7 @@ class CreateContainersTable extends Migration {
 		Schema::create('containers', function(Blueprint $table)
 		{
 
+			$table->increments('id');
 			$table->string('user');
 			$table->string('name');
 			$table->longText('description')->nullable();
@@ -22,7 +23,7 @@ class CreateContainersTable extends Migration {
 			$table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
 
-			$table->primary(['user', 'name']);
+			$table->unique(['user', 'name']);
 		});
 	}
 

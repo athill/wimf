@@ -30,20 +30,14 @@ class Authenticate {
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next)
-	{
-		if ($this->auth->guest())
-		{
-			if ($request->ajax())
-			{
+	public function handle($request, Closure $next) {
+		if ($this->auth->guest()) {
+			if ($request->ajax()) {
 				return response('Unauthorized.', 401);
-			}
-			else
-			{
+			} else {
 				return redirect()->guest('auth/login');
 			}
 		}
-
 		return $next($request);
 	}
 

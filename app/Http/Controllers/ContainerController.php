@@ -15,8 +15,7 @@ class ContainerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index() {
 		$containers = Container::all();
 		if (count($containers) === 0) {
 			Container::add('Freezer');

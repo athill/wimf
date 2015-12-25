@@ -1,12 +1,12 @@
-import { FETCH_CONTAINERS } from '../constants/ActionTypes'
+import { RECEIVE_CONTAINERS } from '../constants/ActionTypes'
 
 const initialState = [];
 
 export default function containers(state = initialState, action) {
   switch (action.type) {
-    case FETCH_CONTAINERS:
-
-      return [{ name: 'Freezer', description: ''  }];
+    case RECEIVE_CONTAINERS:
+      let newstate = action.containers;
+      return newstate;
 
     // case DELETE_TODO:
     //   return state.filter(todo =>
