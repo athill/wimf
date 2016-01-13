@@ -14,9 +14,20 @@ function requestContainers() {
 }
 
 function receiveContainers(json) {
+  console.log('receiving containers', json);
+  const items = json.map(child => { 
+    return {
+        name: child.name, 
+        description: child.description,
+        id: child.id
+    };
+  });
   return {
     type: types.RECEIVE_CONTAINERS,
-    containers: json.map(child => { return {name: child.name, description: child.description};})
+    containers: {
+      items,
+      selected: items[0]      
+    }
   }
 }
 

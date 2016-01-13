@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateItemsTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('items', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('user');
+		 	$table->string('name');
+		 	$table->string('quantity');
+		 	$table->string('measurement');
+		 	$table->string('comment');
+		 	$table->integer('category_id');
+		 	// $table->foreign('category_id')->references('id')->on('categories');
+			$table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+			$table->unique(['user', 'name', 'category_id']);
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('items');
+	}
+
+}

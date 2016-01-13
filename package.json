@@ -22,7 +22,8 @@
     "start": "NODE_ENV=development node dev-server ./webpack/config",
     "test": "NODE_ENV=test karma start",
     "test-travis": "NODE_ENV=test karma start --single-run",
-    "webpack": "webpack --colors --progress --config ./webpack/config"
+    "webpack": "webpack --colors --progress --config ./webpack/config",
+    "watch": "webpack --colors --progress --config ./webpack/config --watch"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",
@@ -64,6 +65,7 @@
     "phantomjs": "^1.9.17",
     "postcss-loader": "^0.5.1",
     "react": "^0.14.3",
+    "react-bootstrap": "^0.28.2",
     "react-dom": "^0.14.3",
     "react-hot-loader": "^1.2.8",
     "react-redux": "^4.0.2",
