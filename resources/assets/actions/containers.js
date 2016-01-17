@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 import $ from 'jquery';
 
-import * as types from '../constants/ActionTypes'
+import types from '../constants/ActionTypes'
 
 
 // export const fetchContainersIfNeeded = createAction(types.FETCH_CONTAINERS);

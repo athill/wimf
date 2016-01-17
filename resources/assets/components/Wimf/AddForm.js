@@ -3,8 +3,8 @@ import { Button } from 'react-bootstrap';
 
 import InlineField from '../common/InlineField';
 
-const AddForm = () => (
-	<form>
+const AddForm = ({handleSubmit = e => {} }) => (
+	<form onSubmit={ e => { e.preventDefault(); handleSubmit(); } }>
 		<fieldset>
 			<legend>Add Item</legend>
 			<InlineField id='categeory' label='Categeory' />
