@@ -13,7 +13,7 @@ export default function containers(state = initialState, action) {
             items: action.containers,
             selected: action.selected 
       };
-      return newstate;
+      return action.payload;
 
     // case DELETE_TODO:
     //   return state.filter(todo =>

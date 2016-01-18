@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { fetchContainersIfNeeded } from '../../actions/containers';
+import { fetchContainers } from '../../actions/containers';
 import AddForm from './AddForm'
 import Container from './Container'
 
@@ -15,24 +15,29 @@ function mapStateToProps(state) {
 class Wimf extends React.Component {
     componentDidMount()  {
     	const {dispatch} = this.props;
-    	dispatch(fetchContainersIfNeeded());
+    	dispatch(fetchContainers());
     }
 
   render() {
     let {containers} = this.props;
 
-    console.log(this.props, containers);
+    console.log(this.props, this.props);
 
     return (
       <Container>
         <AddForm />
-	      { /* <select>
+	       <select>
 	      	{
 	      		containers.items.map(container => {
-	      			return <option>{ container.name }</option>;
+              const selected = container.id === containers.selected.id;
+	      			return (
+                <option selected={selected} value={container.id}>
+                  { container.name }
+                </option>
+              );
 	      		})
 	      	}
-	      </select>  */ }
+	      </select>  
       </Container>
     );
   }
