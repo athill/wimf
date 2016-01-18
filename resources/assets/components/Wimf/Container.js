@@ -7,9 +7,9 @@ function mapStateToProps(state) {
 }
 
 const Item = ({name, quantity, measurement}) => (
-	<div class="card-block">
-    	<h4 class="card-title">{ name }</h4>
-    	<p class="card-text">
+	<div className="card-block">
+    	<h4 className="card-title">{ name }</h4>
+    	<p className="card-text">
     		{ quantity } { measurement }
     	</p>
     </div>
