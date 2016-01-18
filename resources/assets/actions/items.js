@@ -22,24 +22,20 @@ export const add = item => {
   return (dispatch, getState) => {
     const state = getState();
     const container = state.containers.selected;
-    console.log('container is 1', container);
     item.container_id = container.id;
-    console.log('adding item', item);
       axios({
         method: 'post',
         url: `/api/items/`,
         data: item
       })    
       .then(response => {
-        console.log('add item then', response);
         dispatch(addItem());
       })
       .then(response => {
-        console.log('container is ', container);
         dispatch(fetchItems(container));
       })
       .catch(response => {
-        console.log(response);
+        
       });  
   }
 };

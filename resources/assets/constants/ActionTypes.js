@@ -4,7 +4,9 @@ const constantStrings = [
 	'RECEIVE_CONTAINERS',
 	'REQUEST_ITEMS',
 	'RECEIVE_ITEMS',
-	'ADD_ITEM'
+	'ADD_ITEM',
+	'REQUEST_USER_INFO',
+	'RECEIVE_USER_INFO'
 ];
 
 const constants = {};

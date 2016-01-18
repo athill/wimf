@@ -10,7 +10,8 @@ const fields = ['category', 'item', 'measurement', 'quantity', 'date', 'containe
 
 const submit = (values, dispatch) => {
   return new Promise((resolve, reject) => {
-  	let valid = true;	
+  	let valid = true;
+  	//// required fields	
 	['category', 'item'].map(field => {
 		console.log(field, values[field]);
 		if (!values[field] || values[field] === '') {
@@ -18,12 +19,15 @@ const submit = (values, dispatch) => {
 			reject({ [field]: `${field} is required` })
 		} 
 	});
+
+
 	if (valid) {
 		console.log('calling add');
 		dispatch(add(values));	
+		resolve();
 	}
 	
-	resolve();
+	
 	  // if (!['john', 'paul', 'george', 'ringo'].includes(values.username)) {
 	  //   reject({username: 'User does not exist', _error: 'Login failed!'});
 	  // } else if (values.password !== 'redux-form') {
@@ -42,16 +46,16 @@ const AddForm = ({ containerId,
       handleSubmit,
       resetForm,
       submitting }) => (
-	<form onSubmit={ e => { e.preventDefault(); console.log('submitting'); handleSubmit(); } }>
+	<form onSubmit={ e => { e.preventDefault(); handleSubmit(); } }>
 		<fieldset>
 			<legend>Add Item</legend>
 			<InlineField id='category' label='Categeory' {...category} />
 			{' '}
 			<InlineField id='item' label='Item' {...item} />
 			{' '}
-			<InlineField id='measurement' label='Measurement' {...measurement} />
-			{' '}
 			<InlineField id='quantity' label='Quantity' {...quantity} />
+			{' '}			
+			<InlineField id='measurement' label='Measurement' {...measurement} />
 			{' '}
 			<InlineField id='date' label='Date' {...date} />
 			{' '}

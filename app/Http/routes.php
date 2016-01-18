@@ -30,14 +30,7 @@ Route::group(['middleware' => ['auth']], function() {
 			array('only' => array('index', 'store', 'destroy', 'update', 'show')));	
 		Route::resource('items', 'ItemController', 
 			array('only' => array('index', 'store', 'destroy', 'update', 'show')));			
-
-		// since we will be using this just for CRUD, we won't need create and edit
-		// Angular will handle both of those forms
-		// this ensures that a user can't access api/create or api/edit when there's nothing there
-	// 	Route::resource('items', 'ItemController', 
-	// 		array('only' => array('index', 'store', 'destroy', 'update')));
-	// 	Route::resource('categories', 'CategoryController', 
-	// 		array('only' => array('index')));
+		Route::resource('currentUser', 'CurrentUserController', ['only' => ['index']]);	
 	});
 	// Route::get('preferences', 'AuthController@showPreferences');
 	// Route::post('preferences', 'AuthController@postPreferences');
