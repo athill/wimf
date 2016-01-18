@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchContainers } from '../../actions/containers';
 import AddForm from './AddForm'
 import Container from './Container'
+import BootstrapContainer from './BootstrapContainer'
 
 function mapStateToProps(state) {
   return { containers: state.containers }
@@ -21,10 +22,9 @@ class Wimf extends React.Component {
   render() {
     let {containers} = this.props;
 
-    console.log(this.props, this.props);
-
+    console.log(containers);
     return (
-      <Container>
+      <BootstrapContainer>
         <AddForm />
 	       <select>
 	      	{
@@ -37,8 +37,9 @@ class Wimf extends React.Component {
               );
 	      		})
 	      	}
-	      </select>  
-      </Container>
+	      </select> 
+        <Container />
+      </BootstrapContainer>
     );
   }
 }

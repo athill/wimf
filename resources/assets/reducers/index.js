@@ -1,10 +1,13 @@
 import { combineReducers } from 'redux';
+import {reducer as formReducer} from 'redux-form';
 
-import todos from './todos';
+import items from './items';
 import containers from './containers';
 
 const rootReducer = combineReducers({
-  containers
+  containers,
+  items,
+  form: formReducer
 })
 
 export default rootReducer

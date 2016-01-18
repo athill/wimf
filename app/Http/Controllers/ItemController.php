@@ -1,30 +1,24 @@
 <?php namespace App\Http\Controllers;
+use Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
-
-use Response;
-
-use App\Category;
-use App\Container;
 use App\Item;
+use App\Category;
 
-class ContainerController extends Controller {
+
+
+class ItemController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index() {
-		$containers = Container::all();
-		if (count($containers) === 0) {
-			Container::add('Freezer');
-			$containers = Container::all();
-		}
-		return Response::json($containers);;
+	public function index()
+	{
+		//
 	}
 
 	/**
@@ -32,9 +26,9 @@ class ContainerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		//
+		
 	}
 
 	/**
@@ -45,6 +39,22 @@ class ContainerController extends Controller {
 	public function store()
 	{
 		//
+		// return Request::all();
+		$item = new Item();
+		$item->name = Request::get('item');
+		$item->quantity = Request::get('quantity');
+		$item->measurement = Request::get('measurement');
+		$item->comment = '';
+
+		//// category object
+		$category = new Category();
+
+		$category->name = Request::get('category');
+		$category->container_id = Request::get('container_id');
+
+		//// save
+		return Item::add($item, $category);
+
 	}
 
 	/**
@@ -55,22 +65,7 @@ class ContainerController extends Controller {
 	 */
 	public function show($id)
 	{
-		$container = Container::findOrFail($id);
-		$data = [
-			'name' => $container->name
-		];
-		
-		$cats = [];
-		$categories = Category::where('container_id', $id)->orderBy('name')->get();
-		foreach ($categories as $category) {		
-			$cats[] = [
-				'name' => $category->name,
-				'items' => Item::where('category_id', $category->id)->orderBy('name')->get()
-			];
-		}
-        $data['categories'] = $cats;
-		return $data;
-
+		//
 	}
 
 	/**

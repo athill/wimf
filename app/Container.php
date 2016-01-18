@@ -42,6 +42,9 @@ class Container extends Model {
 	}
 
 
+
+
+
 	public static function all($user=null) {
 		if ($user == null) {
 			$user = Auth::user()->email;

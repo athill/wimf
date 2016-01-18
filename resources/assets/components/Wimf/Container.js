@@ -1,13 +1,44 @@
 import React from 'react';
 
-const Container = ({ children }) => (
-	<main>
-		<div className="container">
-			<div className="col-md-10">
-				{ children }
-			</div>
-		</div>
-	</main>
+import { connect } from 'react-redux';
+
+function mapStateToProps(state) {
+  return { items: state.items }
+}
+
+const Item = ({name, quantity, measurement}) => (
+	<div class="card-block">
+    	<h4 class="card-title">{ name }</h4>
+    	<p class="card-text">
+    		{ quantity } { measurement }
+    	</p>
+    </div>
 );
 
-export default Container;
+const Containers = ({ items }) => {
+	if (! items || ! items.categories) {
+		return <noscript />;
+	}
+	return (
+		<div>
+		<h3>{items.name}</h3>
+		{
+			items.categories.map(category => (
+				<div>
+					<h4>{category.name}</h4>
+					{
+						category.items.map(item => {
+							return <Item {...item}/>
+						})
+					}
+				</div>
+			))			
+		}
+		</div>
+	);
+
+}
+
+
+
+export default connect(mapStateToProps)(Containers);

@@ -9,10 +9,6 @@ export default function containers(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_CONTAINERS:
         console.log('RECEIVE_CONTAINERS reducer', state, action);
-      let newstate = {
-            items: action.containers,
-            selected: action.selected 
-      };
       return action.payload;
 
     // case DELETE_TODO:
