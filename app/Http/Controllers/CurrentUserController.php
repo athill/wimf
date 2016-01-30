@@ -17,9 +17,12 @@ class CurrentUserController extends Controller {
 	 */
 	public function index()
 	{
-		//
-		$user = Auth::user();
-
+		$user = new User();
+		$user->name = '';
+		$user->email = '';
+		if (Auth::check()) {
+			$user = Auth::user();	
+		}
 		return $user;
 	}
 

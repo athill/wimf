@@ -20,17 +20,17 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-
-Route::group(['middleware' => ['auth']], function() {
-	// =============================================
-	// API ROUTES ==================================
-	// =============================================
-	Route::group(['prefix' => 'api'], function() {
+// =============================================
+// API ROUTES ==================================
+// =============================================
+Route::group(['prefix' => 'api'], function() {
+	Route::resource('currentUser', 'CurrentUserController', ['only' => ['index']]);	
+	Route::group(['middleware' => ['auth']], function() {	
 		Route::resource('containers', 'ContainerController', 
 			array('only' => array('index', 'store', 'destroy', 'update', 'show')));	
 		Route::resource('items', 'ItemController', 
 			array('only' => array('index', 'store', 'destroy', 'update', 'show')));			
-		Route::resource('currentUser', 'CurrentUserController', ['only' => ['index']]);	
+		
 	});
 	// Route::get('preferences', 'AuthController@showPreferences');
 	// Route::post('preferences', 'AuthController@postPreferences');
