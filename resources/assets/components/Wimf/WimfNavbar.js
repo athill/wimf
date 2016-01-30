@@ -24,7 +24,7 @@ const WimfNavbar = ({ user }) => (
       <Nav pullRight>
         <NavItem eventKey={1} href="#">Link Right</NavItem>
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1}>Action</MenuItem>
+          <MenuItem eventKey={3.1}><a href='/auth/logout'>Logout</a></MenuItem>
           <MenuItem eventKey={3.2}>Another action</MenuItem>
           <MenuItem eventKey={3.3}>Something else here</MenuItem>
           <MenuItem divider />
@@ -34,5 +34,6 @@ const WimfNavbar = ({ user }) => (
     </Navbar.Collapse>
   </Navbar>
 );
+
 
 export default connect(mapStateToProps)(WimfNavbar);
