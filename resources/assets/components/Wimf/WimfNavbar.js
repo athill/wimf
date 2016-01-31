@@ -1,6 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import {Icon} from '../common/common';
+
+const AddButton = ({clickHandler}) => {
+  return <Icon icon='plus-square'  />
+};
+AddButton.defaultProps = {
+  clickHandler: e => e
+};
+
 
 const mapStateToProps = ({ user }) => {
   return {
@@ -18,11 +27,13 @@ const WimfNavbar = ({ user }) => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <NavItem eventKey={1} href="#">Link</NavItem>
-        <NavItem eventKey={2} href="#">Link</NavItem>
+        
       </Nav>
       <Nav pullRight>
-        <NavItem eventKey={1} href="#">Link Right</NavItem>
+        <NavItem eventKey={1} href="#">
+          <AddButton />
+        </NavItem>
+        <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem>
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
           <MenuItem eventKey={3.1}><a href='/auth/logout'>Logout</a></MenuItem>
           <MenuItem eventKey={3.2}>Another action</MenuItem>

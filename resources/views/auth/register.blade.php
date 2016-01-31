@@ -1,5 +1,5 @@
 @extends('app')
-
+@include('navbar')
 @section('content')
 <div class="container-fluid">
 	<div class="row">

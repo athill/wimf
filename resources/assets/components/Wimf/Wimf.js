@@ -1,26 +1,31 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+//// actions
 import { fetchContainers } from '../../actions/containers';
 import { fetchUserInfo } from '../../actions/user';
+import { getPage } from '../../actions/page';
+//// components
 import AddForm from './AddForm'
 import Container from './Container'
-import BootstrapContainer from './BootstrapContainer'
-import WimfNavbar from './WimfNavbar';
+
+
 
 function mapStateToProps(state) {
-  return { containers: state.containers }
+  return { 
+    containers: state.containers 
+  }
 }
 
 
 @connect(mapStateToProps)
 class Wimf extends React.Component {
-    componentDidMount()  {
-    	const {dispatch} = this.props;
-    	dispatch(fetchContainers());
-      dispatch(fetchUserInfo());
-    }
+  componentDidMount()  {
+  	const {dispatch} = this.props;
+  	dispatch(getPage());
+    dispatch(fetchContainers());
+    dispatch(fetchUserInfo());
+  }
 
   render() {
     let {containers} = this.props;
@@ -28,8 +33,7 @@ class Wimf extends React.Component {
     console.log(containers);
     return (
       <div>
-        <WimfNavbar />
-        <BootstrapContainer>
+
           <AddForm />
   	       <select>
   	      	{
@@ -44,7 +48,6 @@ class Wimf extends React.Component {
   	      	}
   	      </select> 
           <Container />
-        </BootstrapContainer>
       </div>
     );
   }

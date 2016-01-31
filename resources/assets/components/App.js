@@ -1,16 +1,20 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 
-import Wimf from 'components/Wimf/Wimf';
+import BootstrapContainer from './Wimf/BootstrapContainer'
+import Wimf from './Wimf/Wimf';
+import WimfNavbar from './Wimf/WimfNavbar';
 
 
-class App extends React.Component {
-  render() {
-    return (
-    	<Wimf/>
-    );
-  }
-}
+
+const App = () => (
+	<div>
+		<WimfNavbar />
+        <BootstrapContainer>
+			<Wimf />
+		</BootstrapContainer>
+	</div>
+);
 
 export default App;
