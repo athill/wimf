@@ -3,6 +3,8 @@ import { Button } from 'react-bootstrap';
 import {reduxForm} from 'redux-form';
 
 import InlineField from '../common/InlineField';
+
+import { fetchContainers } from '../../actions/containers';
 import { add } from '../../actions/items';
 import { NoOp } from '../common/common';
 
@@ -20,28 +22,28 @@ const submit = (values, dispatch) => {
 			reject({ [field]: `${field} is required` })
 		} 
 	});
-
-
 	if (valid) {
-		console.log('calling add');
 		dispatch(add(values));	
+		dispatch(fetchContainers());
 		resolve();
 	}
-	
-
   });
 };
 
 
 const AddForm = ({ containerId,
-		fields: { category, item, measurement, quantity, date, container },
-      handleSubmit,
-      resetForm,
-      submitting }) => (
-	<form onSubmit={ e => { e.preventDefault(); handleSubmit(); } }>
+			fields: { category, item, measurement, quantity, date, container },
+	      handleSubmit,
+	      resetForm,
+	      submitting }) => (
+	<form onSubmit={ e => { 
+			e.preventDefault(); 
+			handleSubmit(); 
+			resetForm(); 
+		}}>
 		<fieldset>
 			<legend>Add Item</legend>
-			<InlineField id='category' label='Categeory' {...category} />
+			<InlineField autoFocus id='category' label='Category' {...category} />
 			{' '}
 			<InlineField id='item' label='Item' {...item} />
 			{' '}

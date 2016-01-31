@@ -6,6 +6,7 @@ import { fetchContainers } from '../../actions/containers';
 import { fetchUserInfo } from '../../actions/user';
 //// components
 import AddForm from './AddForm'
+import ContainerSelector from './ContainerSelector';
 import Container from './Container'
 
 
@@ -30,20 +31,8 @@ class Wimf extends React.Component {
     const {containers, showAddForm} = this.props;
     return (
       <div>
-
           { showAddForm && <AddForm /> }
-  	       <select>
-  	      	{
-  	      		containers.items.map(container => {
-                const selected = container.id === containers.selected.id;
-  	      			return (
-                  <option selected={selected} value={container.id}>
-                    { container.name }
-                  </option>
-                );
-  	      		})
-  	      	}
-  	      </select> 
+          <ContainerSelector containers={containers} />
           <Container />
       </div>
     );

@@ -9,11 +9,10 @@ export function fetchItems(container) {
     dispatch(requestItems());
     axios.get(`/api/containers/${container.id}`)
       .then(response => {
-        console.log('receiveItems then', response);
         dispatch(receiveItems(response.data));
       })
       .catch(response => {
-        console.log(response);
+        console.error(response);
       });  
   }
 }
@@ -46,15 +45,9 @@ const receiveItems = createAction(types.RECEIVE_ITEMS, data => processItems(data
 
 const addItem = createAction(types.ADD_ITEM);
 
+const clearForm = createAction(types.CLEAR_ADD_FORM);
+
 
 const processItems = (json) => {
-  console.log('processItems', json)
-  // const items = json.map(child => { 
-  //   return {
-  //         name: child.name, 
-  //         description: child.description,
-  //         id: child.id
-  //     };
-  //   });
   return json;
 }

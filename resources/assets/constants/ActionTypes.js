@@ -10,7 +10,8 @@ const constantStrings = [
 	//// add form
 	'TOGGLE_ADD_FORM',
 	'SHOW_ADD_FORM',
-	'HIDE_ADD_FORM'
+	'HIDE_ADD_FORM',
+	'CLEAR_ADD_FORM'
 ];
 
 const constants = {};
