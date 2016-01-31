@@ -1,8 +1,11 @@
 <?php namespace App\Http\Controllers;
 use Request;
+use Response;
+
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 
 use App\Item;
 use App\Category;
@@ -10,6 +13,33 @@ use App\Category;
 
 
 class ItemController extends Controller {
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store() {
+		// Item object
+		$item = new Item();
+		$item->name = Request::get('item');
+		$item->quantity = Request::get('quantity');
+		$item->measurement = Request::get('measurement');
+		$item->comment = '';
+
+		//// category object
+		$category = new Category();
+		$category->name = Request::get('category');
+		$category->container_id = Request::get('container_id');
+
+		//// save
+		try {
+			return Item::add($item, $category);
+		} catch (\PDOException $e) {
+			$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
+			return Response::json(['error'=>$errorMessage], 500);
+		}
+	}	
 
 	/**
 	 * Display a listing of the resource.
@@ -31,31 +61,7 @@ class ItemController extends Controller {
 		
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-		// return Request::all();
-		$item = new Item();
-		$item->name = Request::get('item');
-		$item->quantity = Request::get('quantity');
-		$item->measurement = Request::get('measurement');
-		$item->comment = '';
 
-		//// category object
-		$category = new Category();
-
-		$category->name = Request::get('category');
-		$category->container_id = Request::get('container_id');
-
-		//// save
-		return Item::add($item, $category);
-
-	}
 
 	/**
 	 * Display the specified resource.
