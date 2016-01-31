@@ -4,6 +4,7 @@ import {reduxForm} from 'redux-form';
 
 import InlineField from '../common/InlineField';
 import { add } from '../../actions/items';
+import { NoOp } from '../common/common';
 
 
 const fields = ['category', 'item', 'measurement', 'quantity', 'date', 'container'];
@@ -27,15 +28,6 @@ const submit = (values, dispatch) => {
 		resolve();
 	}
 	
-	
-	  // if (!['john', 'paul', 'george', 'ringo'].includes(values.username)) {
-	  //   reject({username: 'User does not exist', _error: 'Login failed!'});
-	  // } else if (values.password !== 'redux-form') {
-	  //   reject({password: 'Wrong password', _error: 'Login failed!'});
-	  // } else {
-	  //   dispatch(showResults(values));
-	  //   resolve();
-	  // }
 
   });
 };

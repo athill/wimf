@@ -1,13 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+
+//// actions
+import { toggleAddForm } from '../../actions/addForm';
+
+//// components
 import {Icon} from '../common/common';
 
 const AddButton = ({clickHandler}) => {
-  return <Icon icon='plus-square'  />
+  return <Icon icon='plus-square' onClick={e => {e.preventDefault(); clickHandler();  }} />
 };
 AddButton.defaultProps = {
-  clickHandler: e => e
+  addButtonClickHandler: e => e
 };
 
 
@@ -17,7 +22,15 @@ const mapStateToProps = ({ user }) => {
   };
 }
 
-const WimfNavbar = ({ user }) => (
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addButtonClickHandler: () => {
+      dispatch(toggleAddForm());
+    }
+  };
+};
+
+const WimfNavbar = ({ user, addButtonClickHandler }) => (
   <Navbar inverse>
     <Navbar.Header>
       <Navbar.Brand>
@@ -31,7 +44,7 @@ const WimfNavbar = ({ user }) => (
       </Nav>
       <Nav pullRight>
         <NavItem eventKey={1} href="#">
-          <AddButton />
+          <AddButton clickHandler={addButtonClickHandler} />
         </NavItem>
         <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem>
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
@@ -47,4 +60,4 @@ const WimfNavbar = ({ user }) => (
 );
 
 
-export default connect(mapStateToProps)(WimfNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(WimfNavbar);

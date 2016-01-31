@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 //// actions
 import { fetchContainers } from '../../actions/containers';
 import { fetchUserInfo } from '../../actions/user';
-import { getPage } from '../../actions/page';
 //// components
 import AddForm from './AddForm'
 import Container from './Container'
 
 
 
-function mapStateToProps(state) {
+function mapStateToProps({containers, addForm: { show : showAddForm }}) {
   return { 
-    containers: state.containers 
+    containers,
+    showAddForm
   }
 }
 
@@ -22,19 +22,16 @@ function mapStateToProps(state) {
 class Wimf extends React.Component {
   componentDidMount()  {
   	const {dispatch} = this.props;
-  	dispatch(getPage());
     dispatch(fetchContainers());
     dispatch(fetchUserInfo());
   }
 
   render() {
-    let {containers} = this.props;
-
-    console.log(containers);
+    const {containers, showAddForm} = this.props;
     return (
       <div>
 
-          <AddForm />
+          { showAddForm && <AddForm /> }
   	       <select>
   	      	{
   	      		containers.items.map(container => {
