@@ -4,3 +4,4 @@
 /public/css
 /public/js
 .DS_Store
+composer.lock
