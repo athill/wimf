@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 import types from '../constants/ActionTypes'
+import { setAddForm } from './addForm';
 
 
 export function fetchItems(container) {
@@ -34,7 +35,8 @@ export const add = item => {
         dispatch(fetchItems(container));
       })
       .catch(response => {
-        
+        // dispatch(setAddForm(response.error));
+        console.error(response);
       });  
   }
 };

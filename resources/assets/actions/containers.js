@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 import types from '../constants/ActionTypes'
-import { fetchItems } from './items.js';
+import { fetchItems } from './items';
 
 
 export function fetchContainers() {
@@ -10,12 +10,10 @@ export function fetchContainers() {
     dispatch(requestContainers());
     axios.get('/api/containers')
       .then(response => {
-        console.log('receiveContainers then', response);
         dispatch(receiveContainers(response.data));
         dispatch(fetchItems(response.data[0]));
       })
       .catch(response => {
-        console.log('catching');
         console.log(response);
       });  
   }
@@ -26,8 +24,7 @@ const requestContainers = createAction(types.REQUEST_CONTAINERS);
 const receiveContainers = createAction(types.RECEIVE_CONTAINERS, data => processContainers(data));
 
 
-const processContainers = (json) => {
-  console.log('processContainers', json)
+const processContainers = json => {
   const items = json.map(child => { 
     return {
           name: child.name, 

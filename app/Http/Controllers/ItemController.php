@@ -37,7 +37,7 @@ class ItemController extends Controller {
 			return Item::add($item, $category);
 		} catch (\PDOException $e) {
 			$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
-			return Response::json(['error'=>$errorMessage], 500);
+			return Response::json(['error'=>$errorMessage], 400);
 		}
 	}	
 
