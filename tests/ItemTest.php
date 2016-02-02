@@ -17,8 +17,8 @@ class ItemTest extends TestCase {
      */
     public function testGetContainers() {
         $user = factory(App\User::class)->create();
-        $category = 'foo';
-        $item = 'bar';
+        $category_name = 'foo';
+        $item_name = 'bar';
         
         //// go to containers page to create Freezer container record
         //// TODO: create when user is created???
@@ -34,34 +34,33 @@ class ItemTest extends TestCase {
         //// create new item
         $this->actingAs($user)
         	 ->post('/api/items', [
-                    'category' => $category,
-                    'item'=>$item,
+                    'category' => $category_name,
+                    'item'=>$item_name,
                     'quantity' => '1',
                     'measurement' => 'baz',
                     'container_id' => $container_id
                 ])
-            ->seeJson(['name'=>$item]);
+            ->seeJson(['name'=>$item_name]);
 
         $categoryCriteria = [
             'user' => $user->email,            
             'container_id' => $container_id,
-            'name' => $category            
+            'name' => $category_name            
         ];
         
         //// verify category added to db
         $this->seeInDatabase('categories', $categoryCriteria);
 
-        $category_id = Category::where($categoryCriteria);
+        $category_id = Category::where($categoryCriteria)->value('id');
 
-        //// TODO: fix item test
+        
         $itemCriteria = [
             'user' => $user->email,
             'category_id' => $category_id,
-            'name' => $item
+            'name' => $item_name
         ];
 
-
         //// verify item added to db
-        // $this->seeInDatabase('items', $itemCriteria);
+        $this->seeInDatabase('items', $itemCriteria);
     }
 }
