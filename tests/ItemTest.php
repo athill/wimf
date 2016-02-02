@@ -41,15 +41,12 @@ class ItemTest extends TestCase {
                     'container_id' => $container_id
                 ])
             ->seeJson(['name'=>$item]);
-        
-        $basicCriteria = [
-            'user' => $user->email,
-        ];
 
-        $categoryCriteria = array_merge($basicCriteria, [
+        $categoryCriteria = [
+            'user' => $user->email,            
             'container_id' => $container_id,
             'name' => $category            
-        ]);
+        ];
         
         //// verify category added to db
         $this->seeInDatabase('categories', $categoryCriteria);
