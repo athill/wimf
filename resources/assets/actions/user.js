@@ -9,11 +9,10 @@ export function fetchUserInfo(container) {
     dispatch(requestUserInfo());
     axios.get(`/api/currentUser`)
       .then(response => {
-        console.log('receiveUserInfo then', response);
         dispatch(receiveUserInfo(response.data));
       })
       .catch(response => {
-        console.log(response);
+        console.error(response);
       });  
   }
 }

@@ -14,7 +14,7 @@ export function fetchContainers() {
         dispatch(fetchItems(response.data[0]));
       })
       .catch(response => {
-        console.log(response);
+        console.error(response);
       });  
   }
 }

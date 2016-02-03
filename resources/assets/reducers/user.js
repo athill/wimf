@@ -11,7 +11,6 @@ const initialState = {
 export default function user(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_USER_INFO:
-        console.log('RECEIVE_USER_INFO reducer', state, action);
       return action.payload;
     default:
       return state

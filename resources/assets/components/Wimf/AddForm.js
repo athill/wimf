@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import {reduxForm} from 'redux-form';
 
 import InlineField from '../common/InlineField';
-
 import { fetchContainers } from '../../actions/containers';
 import { add } from '../../actions/items';
 import { NoOp } from '../common/common';
@@ -11,12 +10,21 @@ import { NoOp } from '../common/common';
 
 const fields = ['category', 'item', 'measurement', 'quantity', 'date', 'container'];
 
+const AddFormError = ({ error }) => {  
+	return error === '' ?
+		<NoOp /> :
+		(
+			<Alert bsStyle="danger">
+			{ error }
+			</Alert>
+		);
+}
+
 const submit = (values, dispatch) => {
   return new Promise((resolve, reject) => {
   	let valid = true;
   	//// required fields	
 	['category', 'item'].map(field => {
-		console.log(field, values[field]);
 		if (!values[field] || values[field] === '') {
 			valid = false;
 			reject({ [field]: `${field} is required` })
@@ -31,7 +39,8 @@ const submit = (values, dispatch) => {
 };
 
 
-const AddForm = ({ containerId,
+
+const AddForm = ({ containerId, serverError,
 			fields: { category, item, measurement, quantity, date, container },
 	      handleSubmit,
 	      resetForm,
@@ -43,6 +52,7 @@ const AddForm = ({ containerId,
 		}}>
 		<fieldset>
 			<legend>Add Item</legend>
+			<AddFormError error={serverError} />
 			<InlineField autoFocus id='category' label='Category' {...category} />
 			{' '}
 			<InlineField id='item' label='Item' {...item} />
@@ -54,15 +64,16 @@ const AddForm = ({ containerId,
 			<InlineField id='date' label='Date' {...date} />
 			{' '}
 			<input type='hidden' id='container' value={containerId} {...container} />
-			<Button type='submit' bsStyle="success">Add</Button>
+			<Button type='submit' bsStyle="success" bsSize='small'>Add</Button>
 		</fieldset>
 	</form>
 );
 
-const mapStateToProps = ({ containers: { selected } }) => {
+const mapStateToProps = ({ containers: { selected }, addForm: { error: serverError } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
 	return {
-		containerId
+		containerId,
+		serverError
 	};
 };
 

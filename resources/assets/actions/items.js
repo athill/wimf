@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 import types from '../constants/ActionTypes'
-import { setAddForm } from './addForm';
+import { setAddFormError } from './addForm';
 
 
 export function fetchItems(container) {
@@ -13,7 +13,7 @@ export function fetchItems(container) {
         dispatch(receiveItems(response.data));
       })
       .catch(response => {
-        console.error(response);
+        console.error('fetchItems catch', response);
       });  
   }
 }
@@ -35,11 +35,12 @@ export const add = item => {
         dispatch(fetchItems(container));
       })
       .catch(response => {
-        // dispatch(setAddForm(response.error));
-        console.error(response);
+        dispatch(setAddFormError(response.data));
+        setTimeout(() => dispatch(setAddFormError({error: ''})), 3000);
       });  
   }
 };
+
 
 const requestItems = createAction(types.REQUEST_ITEMS);
 

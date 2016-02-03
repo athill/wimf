@@ -2,8 +2,8 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-function mapStateToProps(state) {
-  return { items: state.items }
+function mapStateToProps({ items }) {
+  return { items };
 }
 
 const Item = ({name, quantity, measurement}) => (

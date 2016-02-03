@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 use Request;
 use Response;
+use Log;
 
 
 use App\Http\Requests;
@@ -37,7 +38,8 @@ class ItemController extends Controller {
 			return Item::add($item, $category);
 		} catch (\PDOException $e) {
 			$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
-			return Response::json(['error'=>$e->getMessage()], 400);
+			return Response::json(['error'=>$errorMessage], 400);
+			Log::info($e->getMessage());
 		}
 	}	
 
