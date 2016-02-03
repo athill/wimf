@@ -22,7 +22,7 @@ class ContainerTest extends TestCase {
              ]);
         //// verify freezer added to db
         $this->seeInDatabase('containers', [
-        	'user' => $user->email,
+        	'user_id' => $user->id,
         	'name' => 'Freezer'
         ]);
     }

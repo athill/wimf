@@ -5,16 +5,16 @@ use Auth;
 
 class Category extends Model {
 
-	protected $fillable = ['name', 'user', 'container_id'];
+	protected $fillable = ['name', 'user_id', 'container_id'];
 
 	//
 	public static function getId($category, $user=null) {
 		if ($user == null) {
-			$user = Auth::user()->email;
+			$user = Auth::user()->id;
 		}		
 		$existing = Category::where('name', $category->name)
 				->where('container_id', $category->container_id)
-				->where('user', $user)
+				->where('user_id', $user)
                 ->get();
         if (count($existing) == 0) {
         	$category->save();

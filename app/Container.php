@@ -18,14 +18,14 @@ class Container extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'user'];
+	protected $fillable = ['name', 'user_id'];
 
 	// /**
 	//  * The attributes excluded from the model's JSON form.
 	//  *
 	//  * @var array
 	//  */
-	protected $hidden = ['user'];	
+	protected $hidden = ['user_id'];	
 
 	function __construct() {
 		// $this->user = Auth::id();
@@ -33,10 +33,10 @@ class Container extends Model {
 
 	public static function add($name, $user=null) {
 		if ($user == null) {
-			$user = Auth::user()->email;
+			$user = Auth::user()->id;
 		}
 		$container = new Container();
-		$container->user = $user;
+		$container->user_id = $user;
 		$container->name = $name;
 		$container->save();
 	}
@@ -47,9 +47,9 @@ class Container extends Model {
 
 	public static function all($user=null) {
 		if ($user == null) {
-			$user = Auth::user()->email;
+			$user = Auth::user()->id;
 		}
-		$result = Container::where('user', $user)->orderBy('name', 'ASC')->get();
+		$result = Container::where('user_id', $user)->orderBy('name', 'ASC')->get();
 		return $result;		
 	}	
 

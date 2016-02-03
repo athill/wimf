@@ -27,7 +27,7 @@ class ItemTest extends TestCase {
 
         //// now get the id
         $container_id = Container::where([
-                ['user', $user->email], 
+                ['user_id', $user->id], 
                 ['name', 'Freezer']
             ])->value('id');
 
@@ -43,7 +43,7 @@ class ItemTest extends TestCase {
             ->seeJson(['name'=>$item_name]);
 
         $categoryCriteria = [
-            'user' => $user->email,            
+            'user_id' => $user->id,      
             'container_id' => $container_id,
             'name' => $category_name            
         ];
@@ -55,7 +55,7 @@ class ItemTest extends TestCase {
 
         
         $itemCriteria = [
-            'user' => $user->email,
+            'user_id' => $user->id,
             'category_id' => $category_id,
             'name' => $item_name
         ];

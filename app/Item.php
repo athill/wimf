@@ -7,15 +7,15 @@ use App\Category;
 
 class Item extends Model {
 
-	protected $fillable = ['name', 'user', 'category', 'quantity', 'measurement', 'category_id'];
+	protected $fillable = ['name', 'user_id', 'category', 'quantity', 'measurement', 'category_id'];
 
 	//
 	public static function add($item, $category, $user=null) {
 		if ($user == null) {
-			$user = Auth::user()->email;
+			$user = Auth::user()->id;
 		}
-		$item->user = $user;
-		$category->user = $user;
+		$item->user_id = $user;
+		$category->user_id = $user;
 		$item->category_id = Category::getId($category);
 		$item->save();
 		return $item;
