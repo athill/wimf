@@ -41,11 +41,11 @@ class ContainerController extends Controller {
 		];
 		
 		$cats = [];
-		$categories = Category::where('container_id', $id)->orderBy('name')->get();
+		$categories = Container::find($id)->categories()->orderBy('name')->get();
 		foreach ($categories as $category) {		
 			$cats[] = [
 				'name' => $category->name,
-				'items' => Item::where('category_id', $category->id)->orderBy('name')->get()
+				'items' => $category->items
 			];
 		}
         $data['categories'] = $cats;
