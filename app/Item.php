@@ -9,7 +9,7 @@ class Item extends ChangelogModelBase {
 
 	protected $fillable = ['name', 'user_id', 'quantity', 'measurement', 'category_id'];
 
-	protected $hidden = ['user_id'];
+	protected $hidden = ['user_id', 'created_at', 'updated_at'];
 
 	public function category() {
 		return $this->belongsTo('App\Category');

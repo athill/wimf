@@ -18,7 +18,7 @@ class Container extends ChangelogModelBase {
 	//  *
 	//  * @var array
 	//  */
-	protected $hidden = ['user_id'];
+	protected $hidden = ['user_id', 'created_at', 'updated_at'];
 
 	public function categories() {
 		return $this->hasMany('App\Category');
