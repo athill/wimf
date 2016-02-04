@@ -18,15 +18,15 @@ class Container extends ChangelogModelBase {
 	//  *
 	//  * @var array
 	//  */
-	protected $hidden = ['user_id'];	
+	protected $hidden = ['user_id'];
 
-
-	public static function getUser() {
-		$result = Container::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
-		return $result;		
+	public function categories() {
+		return $this->hasMany('App\Category');
 	}	
 
 
-
-
+	public static function getUser() {
+		$result = Container::user()->orderBy('name', 'ASC')->get();
+		return $result;		
+	}
 }

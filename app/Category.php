@@ -5,22 +5,29 @@ use Log;
 
 use App\Library\ChangelogModelBase;
 
-
-
 class Category extends ChangelogModelBase {
 
 	protected $fillable = ['name', 'user_id', 'container_id'];
 
-	protected $hidden = ['user_id'];
+	protected $hidden = ['user_id', 'created_at', 'updated_at'];
+
+	public function container() {
+		return $this->belongsTo('App\Container');
+	}
+
+	public function items() {
+		return $this->hasMany('App\Item');
+	}
 
 	//
 	public static function getId($category) {
-		$existing = Category::where('name', $category->name)
-				->where('container_id', $category->container_id)
-				->where('user_id', Auth::user()->id)
+		$existing = Category::user()
+				->where([
+					['name', $category->name],
+					['container_id', $category->container_id]
+				   ])
                 ->get();
         if (count($existing) == 0) {
-        	Log::info('saving category');
         	$category->save();
         } else {
         	$category = $existing[0];

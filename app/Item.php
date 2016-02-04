@@ -7,9 +7,14 @@ use App\Category;
 
 class Item extends ChangelogModelBase {
 
-	protected $fillable = ['name', 'user_id', 'category', 'quantity', 'measurement', 'category_id'];
+	protected $fillable = ['name', 'user_id', 'quantity', 'measurement', 'category_id'];
 
 	protected $hidden = ['user_id'];
+
+	public function category() {
+		return $this->belongsTo('App\Category');
+	}
+
 
 	public static function add($item, $category) {
 		$item->category_id = Category::getId($category);

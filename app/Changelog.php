@@ -9,19 +9,6 @@ class Changelog extends Model {
 
 	protected $table = 'changelog';
 
-	// public function save() {
-	// 	$this->user_id = Auth::user()->id;
-	// 	parent::save();
-	// }
-
-	public static function add(Changelog $log, User $user=null) {
-		if ($user == null) {
-			$user = Auth::user()->id;
-		}
-		$log->user_id = $user;
-		$log->save();
-	}
-
 	public function setUpdatedAtAttribute($value) {
     	// to Disable updated_at
 	}

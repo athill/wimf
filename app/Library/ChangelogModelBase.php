@@ -19,7 +19,11 @@ class ChangelogModelBase extends Model {
 
 	public function __construct(array $attributes=[]) {
 		parent::__construct($attributes);
+		//// set user
 		$this->user = (Auth::check()) ? Auth::user()->id : -1;
+		if ($this->user === -1) {
+			Log::error('Unauthenticated user accessing changelog');
+		}	    		
 		//// callbacks to add user_id to model and changelog record
 		$this->creating(function($model) {
     		$this->changelog([], $model);
@@ -34,13 +38,15 @@ class ChangelogModelBase extends Model {
 		});				
 	}
 
+	//// user scope
+	public function scopeUser($query) {
+		return $query->where('user_id', $this->user);
+	}
+
 	protected function changelog($model, $changes) {
 		$this->user_id = $this->user;
 	    $log = new Changelog();
 	    $log->user_id = $this->user;
-		if ($this->user_id === -1) {
-			Log::error('Unauthenticated user accessing changelog');
-		}	    
 		$log->before = json_encode($model);
 		$log->after = json_encode($changes);
 		$log->table = $this->getTable();
