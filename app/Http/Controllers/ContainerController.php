@@ -1,11 +1,9 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-
+use Log;
 use Response;
+
+use App\Http\Controllers\Controller;
 
 use App\Category;
 use App\Container;
@@ -19,12 +17,14 @@ class ContainerController extends Controller {
 	 * @return Response
 	 */
 	public function index() {
-		$containers = Container::all();
+		$containers = Container::getUser();
 		if (count($containers) === 0) {
-			Container::add('Freezer');
-			$containers = Container::all();
+			$container = new Container();
+			$container->name = 'Freezer';
+			$container->save();
+			$containers = Container::getUser();
 		}
-		return Response::json($containers);;
+		return Response::json($containers);
 	}
 
 	/**
@@ -50,7 +50,6 @@ class ContainerController extends Controller {
 		}
         $data['categories'] = $cats;
 		return $data;
-
 	}
 
 	/**

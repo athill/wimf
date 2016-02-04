@@ -1,15 +1,14 @@
 <?php namespace App\Http\Controllers;
+
+use Log;
 use Request;
 use Response;
-use Log;
 
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-
-use App\Item;
 use App\Category;
+use App\Item;
+use App\Library\Utils;
 
 
 
@@ -37,9 +36,14 @@ class ItemController extends Controller {
 		try {
 			return Item::add($item, $category);
 		} catch (\PDOException $e) {
-			$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
-			return Response::json(['error'=>$errorMessage], 400);
-			Log::info($e->getMessage());
+			//// duplicate item
+			if (Utils::isDbIntegrityException($e)) {
+				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
+				Log::info($e->getMessage());
+				return Response::json(['error'=>$errorMessage], 400);				
+			} else {
+				throw $e;
+			}
 		}
 	}	
 

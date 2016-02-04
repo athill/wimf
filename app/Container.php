@@ -1,17 +1,10 @@
 <?php namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Library\ChangelogModelBase;
 
 use Auth;
 
-class Container extends Model {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'containers';
+class Container extends ChangelogModelBase {
 
 	/**
 	 * The attributes that are mass assignable.
@@ -27,29 +20,9 @@ class Container extends Model {
 	//  */
 	protected $hidden = ['user_id'];	
 
-	function __construct() {
-		// $this->user = Auth::id();
-	}
 
-	public static function add($name, $user=null) {
-		if ($user == null) {
-			$user = Auth::user()->id;
-		}
-		$container = new Container();
-		$container->user_id = $user;
-		$container->name = $name;
-		$container->save();
-	}
-
-
-
-
-
-	public static function all($user=null) {
-		if ($user == null) {
-			$user = Auth::user()->id;
-		}
-		$result = Container::where('user_id', $user)->orderBy('name', 'ASC')->get();
+	public static function getUser() {
+		$result = Container::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
 		return $result;		
 	}	
 

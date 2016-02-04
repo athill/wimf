@@ -1,21 +1,17 @@
 <?php namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Auth;
 
+use App\Library\ChangelogModelBase;
 use App\Category;
 
-class Item extends Model {
+class Item extends ChangelogModelBase {
 
 	protected $fillable = ['name', 'user_id', 'category', 'quantity', 'measurement', 'category_id'];
 
-	//
-	public static function add($item, $category, $user=null) {
-		if ($user == null) {
-			$user = Auth::user()->id;
-		}
-		$item->user_id = $user;
-		$category->user_id = $user;
+	protected $hidden = ['user_id'];
+
+	public static function add($item, $category) {
 		$item->category_id = Category::getId($category);
 		$item->save();
 		return $item;

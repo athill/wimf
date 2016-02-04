@@ -1,22 +1,26 @@
 <?php namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Log;
 
-class Category extends Model {
+use App\Library\ChangelogModelBase;
+
+
+
+class Category extends ChangelogModelBase {
 
 	protected $fillable = ['name', 'user_id', 'container_id'];
 
+	protected $hidden = ['user_id'];
+
 	//
-	public static function getId($category, $user=null) {
-		if ($user == null) {
-			$user = Auth::user()->id;
-		}		
+	public static function getId($category) {
 		$existing = Category::where('name', $category->name)
 				->where('container_id', $category->container_id)
-				->where('user_id', $user)
+				->where('user_id', Auth::user()->id)
                 ->get();
         if (count($existing) == 0) {
+        	Log::info('saving category');
         	$category->save();
         } else {
         	$category = $existing[0];
