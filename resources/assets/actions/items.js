@@ -11,7 +11,10 @@ export function fetchItems(container) {
     dispatch(requestItems());
     fetch(
       `/api/containers/${container.id}`,
-      response => dispatch(receiveItems(response.data))
+      response => {
+        console.log('fetchItems response', response);
+        dispatch(receiveItems(response.data))
+      }
     );
   }
 }
@@ -29,7 +32,7 @@ export const add = item => {
         response => dispatch(addItem()), 
         response => dispatch(fetchItems(container))
       ],
-      reject => {
+      response => {
         dispatch(setAddFormError(response.data));
         setTimeout(() => dispatch(setAddFormError({error: ''})), 3000);
       }

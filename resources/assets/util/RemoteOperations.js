@@ -1,40 +1,34 @@
 import axios from 'axios';
 
-export const fetch = (url, resolves, reject) => {
-    // const promise = axios({
-    //   method: 'get',
-    //   url
-    // });
-    const promise = makePromise('get', url);
+import localPersistedStore from '../store/LocalPersistedStore';
 
+export const fetch = (url, resolves, reject) => {
+    const promise = makePromise('get', url);
     chain(promise, resolves, reject);
+};
+
+export const post = (url, data, resolves, reject)  => {
+  const promise = makePromise('post', url, data);
+  chain(promise, resolves, reject);
 };
 
 
 const makePromise = (method, url, data)  => {
-  if (location.pathname.includes('/api/demo')) {
-    return localStoragePromise(method, url, data);
+  let promise = null;
+  if (!location.pathname.includes('/api/demo')) {
+    promise = localStoragePromise(method, url, data);
   } else {
-    return axios({
+    promise = axios({
       method,
       url,
       data
     });
   }
+  console.log('promise', promise);
+  return promise;
 };
 
-
-export const post = (url, data, resolves, reject)  => {
-  const promise = axios({
-    method: 'post',
-    url,
-    data
-  });
-  chain(promise, resolves, reject);
-};
-
-
-const chain = (promise, resolves, reject = response => console.error(response)) => {
+const chain = (promise, resolves, reject = response => {console.error(response); reject(); }) => {
     //// wrap resolve if not an array
     if (!(resolves.constructor === Array)) {
       resolves = [resolves];
@@ -50,6 +44,15 @@ const localStoragePromise = (method, url, data) => {
   return new Promise(
     (resolve, reject) => {
       console.log('local storage promise');
+      try {
+        const response = localPersistedStore(method, url, data);
+        console.log('response', response);
+        resolve({
+          data: response
+        });
+      } catch (e) {
+        reject(e);
+      }
     }
   );
 };
