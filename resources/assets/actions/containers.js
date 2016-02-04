@@ -3,19 +3,19 @@ import { createAction } from 'redux-actions';
 
 import types from '../constants/ActionTypes'
 import { fetchItems } from './items';
+import { fetch } from '../util/RemoteOperations';
 
 
 export function fetchContainers() {
   return dispatch => {
     dispatch(requestContainers());
-    axios.get('/api/containers')
-      .then(response => {
+    fetch(
+      '/api/containers',
+      response => {
         dispatch(receiveContainers(response.data));
         dispatch(fetchItems(response.data[0]));
-      })
-      .catch(response => {
-        console.error(response);
-      });  
+      }
+    );
   }
 }
 

@@ -1,19 +1,17 @@
 import axios from 'axios';
 import { createAction } from 'redux-actions';
 
-import types from '../constants/ActionTypes'
+import types from '../constants/ActionTypes';
+import { fetch } from '../util/RemoteOperations';
 
 
 export function fetchUserInfo(container) {
   return dispatch => {
     dispatch(requestUserInfo());
-    axios.get(`/api/currentUser`)
-      .then(response => {
-        dispatch(receiveUserInfo(response.data));
-      })
-      .catch(response => {
-        console.error(response);
-      });  
+    fetch(
+      `/api/currentUser`,
+      response => dispatch(receiveUserInfo(response.data))
+    );  
   }
 }
 
