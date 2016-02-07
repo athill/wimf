@@ -48,7 +48,7 @@ const WimfNavbar = ({ user, addButtonClickHandler }) => (
         </NavItem>
         <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem>
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1}><a href='/auth/logout'>Logout</a></MenuItem>
+          <MenuItem eventKey={3.1} href='/auth/logout'>Logout</MenuItem>
           <MenuItem eventKey={3.2}>Another action</MenuItem>
           <MenuItem eventKey={3.3}>Something else here</MenuItem>
           <MenuItem divider />
