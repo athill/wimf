@@ -13,6 +13,10 @@
 
 Route::get('/', 'HomeController@index');
 
+
+//// same page, but react will render the demo based on url
+Route::get('/demo', 'HomeController@index');
+
 Route::get('home', 'HomeController@index');
 
 Route::controllers([

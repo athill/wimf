@@ -22,7 +22,7 @@ class ItemController extends Controller {
 	public function store() {
 		// Item object
 		$item = new Item();
-		$item->name = Request::get('item');
+		$item->name = Request::get('name');
 		$item->quantity = Request::get('quantity');
 		$item->measurement = Request::get('measurement');
 		$item->comment = '';

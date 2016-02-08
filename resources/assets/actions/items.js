@@ -12,7 +12,6 @@ export function fetchItems(container) {
     fetch(
       `/api/containers/${container.id}`,
       response => {
-        console.log('fetchItems response', response);
         dispatch(receiveItems(response.data))
       }
     );
@@ -25,14 +24,23 @@ export const add = item => {
     // const { containers: { selected: { id } }  } = getState();
     const container = state.containers.selected;
     item.container_id = container.id;
-    post(
+
+    item.name = item.item;
+    delete(item.item);
+    console.log('add item pre-post', item);
+    return post(
       `/api/items/`,
       item,
       [
-        response => dispatch(addItem()), 
-        response => dispatch(fetchItems(container))
+        response => {
+          dispatch(addItem());
+        }, 
+        response => {
+          dispatch(fetchItems(container))
+        }
       ],
       response => {
+        console.log('addFormError response', response);
         dispatch(setAddFormError(response.data));
         setTimeout(() => dispatch(setAddFormError({error: ''})), 3000);
       }

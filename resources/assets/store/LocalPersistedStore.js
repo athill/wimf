@@ -1,5 +1,6 @@
+import _ from 'lodash';
 
-const store = {
+let store = {
 	maxid: 0,
 	containers: [{
 		id: 99999999,
@@ -14,9 +15,11 @@ const store = {
 	}
 };
 
+let storeBackup = store;
+
 localStorage.removeItem('wimf');
 
-const localPersistedStore = (method, url, data) => {
+const localPersistedStore = (resolve, reject, method, url, data) => {
 	const parts = url.slice(1).split('/').slice(1),
 		type = parts[0],
 		args = parts.slice(1);
@@ -26,29 +29,31 @@ const localPersistedStore = (method, url, data) => {
 	}		
 	//// update store
 	let retval = {};
+	console.log('deserializeStore', resolve, reject, method, type, store);
 	switch (type) {
 		case 'containers':
-			retval = persistContainers(method, args, data);
+			retval = persistContainers(resolve, reject, method, args, data);
 			break;
 		case 'items':
-			retval = persistItems(method, args, data);
+			retval = persistItems(resolve, reject, method, args, data);
 			break;
 		case 'currentUser':
-			retval = persistCurrentUser(method, args, data);
+			retval = persistCurrentUser(resolve, reject, method, args, data);
 			break;
 		default:
 			console.error('Invalid type', parts);
 	}
 	////serializeStore
-	console.log('serializeStore', store);
 	localStorage.setItem('wimf', JSON.stringify(store));
-	console.log('retval', retval);
-	return retval;
+	storeBackup = Object.assign({}, store);
+	resolve({
+		data: retval
+	});
 };
 
 
 
-const persistContainers = (method, args, data) => {
+const persistContainers = (resolve, reject, method, args, data) => {
 	switch (method) {
 		case 'get':
 			//// container list for dropdown
@@ -60,8 +65,8 @@ const persistContainers = (method, args, data) => {
 				}));
 			//// specific container with categories
 			} else {
-				const container_id = args[0],
-					container = store.containers.find(container => (
+				const container_id = args[0];
+				const container = store.containers.find(container => (
 						parseInt(container.id) === parseInt(container_id)
 					));
 				if (container === undefined) {
@@ -74,7 +79,7 @@ const persistContainers = (method, args, data) => {
 	}
 };
 
-const persistCurrentUser = (method, args, data) => {
+const persistCurrentUser = (resolve, reject, method, args, data) => {
 	switch (method) {
 		case 'get':
 			return store.user;
@@ -83,39 +88,48 @@ const persistCurrentUser = (method, args, data) => {
 	}
 };
 
-const persistItems = (method, args, data) => {
+const persistItems = (resolve, reject, method, args, data) => {
 	switch (method) {
 		case 'post':
-			const { container_id, container: category_name, ...item } = data;
+			const { category: category_name, ...item } = data;
+			//// add id to item
+			item.id = store.maxid++;
+			//// find the container
+			// const 
 			const container = store.containers.find(container => (
-				parseInt(container.id) === parseInt(container_id)
+				parseInt(container.id) === parseInt(item.container_id)
 			));
 			if (container === undefined) {
-				throw new Error(`container_id ${container_id} not found`);
+				throw new Error(`container_id ${item.container_id} not found`);
 			}
-			let category = container.find(category => (category.name === category_name);
+			//// find the category
+			let category = _.find(container.categories, { name: category_name });
+			//// new category
 			if (category === undefined) {
+				const category_id = store.maxid++;
+				item.category_id = category_id;
 				category = {
-					id: store.maxid++,
+					id: category_id,
 					name: data.category,
-					container_id,
+					container_id: item.container_id,
 					items: [item]
 				};
-				store.containers.categories.push(category)
+
+				container.categories.push(category);
+			//// existing category
 			} else {
-				category = categories[0];
-				category.items.push(item);
-				for (let i = 0; i < store.containers.categories.length; i++) {
-					if (store.containers.categories[i].id === category.id) {
-						store.containers.categories[i].items.push(item);
-					}
+				//// check for duplicates
+				if (_.find(category.items, { name: item.name })) {
+					store = Object.assign({}, storeBackup);
+					reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
 				}
+				item.category_id = category.id;
+				category.items.push(item);
 			}
 			return item;
 		default:
 			console.error('bad method');
 	}
 };
-
 
 export default localPersistedStore;
