@@ -6,15 +6,26 @@ import { Icon } from '../common/common';
 
 function mapStateToProps({ items }) {
   return { items };
-}
+};
 
-const Item = ({name, quantity, measurement}) => (
+const mapDispatchToProps = (dispatch) => {
+	return {
+		itemEditClickHandler: () => {
+			alert('edit');
+		},				
+		itemDeleteClickHandler: () => {
+			alert('delete');
+		},
+	};
+};
+
+const Item = ({name, quantity, measurement, editClickHandler, deleteClickHandler}) => (
 	<div className="card-block">
 		<div className='card-header'>
     		<h4 className="card-title">{ name }</h4>
     		<div className='card-navbar'>
-    			<Icon icon='edit' className='card-edit' />
-    			<Icon icon='remove' className='card-delete' />
+    			<Icon icon='edit' title={`Edit ${name}`} onClick={editClickHandler} />
+    			<Icon icon='remove' title={`Delete ${name}`} onClick={deleteClickHandler} />
     		</div>
     	</div>
     	<p className="card-text">
@@ -23,7 +34,7 @@ const Item = ({name, quantity, measurement}) => (
     </div>
 );
 
-const Containers = ({ items }) => {
+const Containers = ({ items, itemDeleteClickHandler, itemEditClickHandler }) => {
 	if (! items || ! items.categories) {
 		return <noscript />;
 	}
@@ -36,7 +47,9 @@ const Containers = ({ items }) => {
 					<h4>{category.name}</h4>
 					{
 						category.items.map(item => {
-							return <Item {...item}/>
+							return <Item {...item} 
+										deleteClickHandler={itemDeleteClickHandler} 
+										editClickHandler={itemEditClickHandler} />;
 						})
 					}
 				</div>
@@ -49,4 +62,4 @@ const Containers = ({ items }) => {
 
 
 
-export default connect(mapStateToProps)(Containers);
+export default connect(mapStateToProps, mapDispatchToProps)(Containers);
