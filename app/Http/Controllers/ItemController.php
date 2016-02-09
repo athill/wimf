@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Log;
-use Request;
-use Response;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 use App\Http\Controllers\Controller;
 
@@ -19,18 +19,18 @@ class ItemController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store() {
+	public function store(Request $request, Response $response) {
 		// Item object
 		$item = new Item();
-		$item->name = Request::get('name');
-		$item->quantity = Request::get('quantity');
-		$item->measurement = Request::get('measurement');
+		$item->name = $request->get('name');
+		$item->quantity = $request->get('quantity');
+		$item->measurement = $request->get('measurement');
 		$item->comment = '';
 
 		//// category object
 		$category = new Category();
-		$category->name = Request::get('category');
-		$category->container_id = Request::get('container_id');
+		$category->name = $request->get('category');
+		$category->container_id = $request->get('container_id');
 
 		//// save
 		try {
@@ -40,7 +40,7 @@ class ItemController extends Controller {
 			if (Utils::isDbIntegrityException($e)) {
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
 				Log::info($e->getMessage());
-				return Response::json(['error'=>$errorMessage], 400);				
+				return $response->json(['error'=>$errorMessage], 400);				
 			} else {
 				throw $e;
 			}

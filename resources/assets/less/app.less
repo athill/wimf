@@ -16,11 +16,30 @@ body, label, .checkbox label {
 	padding: 0.5em;
 	width: 15em;
 	position: relative;
-	.card-title {
+	.card-header {
+		clear: both;
 
+		.card-title {
+			float: left;
+			margin: 0;
+		}		
+		.card-navbar {
+			float: right;
+			i {
+				padding: 0 0.2em;
+			}
+			.fa-edit {
+				color: @brand-primary;
+			}
+			.fa-remove {
+				color: @brand-danger;
+			}
+		}
 	}
-	.card-text {
 
+	.card-text {
+		border-top: 1px black solid;
+		clear: both;
 	}
 }
 

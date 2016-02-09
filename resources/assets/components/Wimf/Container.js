@@ -2,13 +2,21 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
+import { Icon } from '../common/common';
+
 function mapStateToProps({ items }) {
   return { items };
 }
 
 const Item = ({name, quantity, measurement}) => (
 	<div className="card-block">
-    	<h4 className="card-title">{ name }</h4>
+		<div className='card-header'>
+    		<h4 className="card-title">{ name }</h4>
+    		<div className='card-navbar'>
+    			<Icon icon='edit' className='card-edit' />
+    			<Icon icon='remove' className='card-delete' />
+    		</div>
+    	</div>
     	<p className="card-text">
     		{ quantity } { measurement }
     	</p>
