@@ -9,14 +9,14 @@ import { fetch } from '../util/RemoteOperations';
 export function fetchContainers() {
   return dispatch => {
     dispatch(requestContainers());
-    fetch(
+    return fetch(
       '/api/containers',
       response => {
         dispatch(receiveContainers(response.data));
         dispatch(fetchItems(response.data[0]));
       }
     );
-  }
+  };
 }
 
 const requestContainers = createAction(types.REQUEST_CONTAINERS);

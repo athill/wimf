@@ -9,8 +9,9 @@ const initialState = {
 export default function containers(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_ITEMS:
-      return action.payload;
+    	console.log('RECEIVE_ITEMS', action);
+    	return action.payload;
     default:
-      return state
+      return state;
   }
 }

@@ -8,7 +8,7 @@ import { add } from '../../actions/items';
 import { NoOp } from '../common/common';
 
 
-const fields = ['category', 'item', 'measurement', 'quantity', 'date', 'container'];
+const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container'];
 
 const AddFormError = ({ error }) => {  
 	return error === '' ?
@@ -24,7 +24,7 @@ const submit = (values, dispatch) => {
   return new Promise((resolve, reject) => {
   	let valid = true;
   	//// required fields	
-	['category', 'item'].map(field => {
+	['category', 'name'].map(field => {
 		if (!values[field] || values[field] === '') {
 			valid = false;
 			reject({ [field]: `${field} is required` })
@@ -41,7 +41,7 @@ const submit = (values, dispatch) => {
 
 
 const AddForm = ({ containerId, serverError,
-			fields: { category, item, measurement, quantity, date, container },
+			fields: { category, name, measurement, quantity, date, container },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => (
@@ -55,7 +55,7 @@ const AddForm = ({ containerId, serverError,
 			<AddFormError error={serverError} />
 			<InlineField autoFocus id='category' label='Category' {...category} />
 			{' '}
-			<InlineField id='item' label='Item' {...item} />
+			<InlineField id='name' label='Name' {...name} />
 			{' '}
 			<InlineField id='quantity' label='Quantity' {...quantity} />
 			{' '}			

@@ -1,38 +1,40 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 
+//// components
 import { Icon } from '../common/common';
+//// actions
+import { remove } from '../../actions/items';
 
-function mapStateToProps({ items }) {
+const mapStateToProps = ({ items }) => {
   return { items };
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		itemEditClickHandler: () => {
+		itemEditClickHandler: (item) => {
 			alert('edit');
 		},				
-		itemDeleteClickHandler: () => {
-			alert('delete');
+		itemDeleteClickHandler: (item) => {
+			dispatch(remove(item));
 		},
 	};
 };
 
-const Item = ({name, quantity, measurement, editClickHandler, deleteClickHandler}) => (
-	<div className="card-block">
+const Item = ({editClickHandler, deleteClickHandler, ...item}) => {
+	return (<div className="card-block">
 		<div className='card-header'>
-    		<h4 className="card-title">{ name }</h4>
+    		<h4 className="card-title">{ item.name }</h4>
     		<div className='card-navbar'>
-    			<Icon icon='edit' title={`Edit ${name}`} onClick={editClickHandler} />
-    			<Icon icon='remove' title={`Delete ${name}`} onClick={deleteClickHandler} />
+    			<Icon icon='edit' title={`Edit ${item.name}`} onClick={e => editClickHandler(item)} />
+    			<Icon icon='remove' title={`Delete ${item.name}`} onClick={e => deleteClickHandler(item)} />
     		</div>
     	</div>
     	<p className="card-text">
-    		{ quantity } { measurement }
+    		{ item.quantity } { item.measurement }
     	</p>
-    </div>
-);
+    </div>);
+};
 
 const Containers = ({ items, itemDeleteClickHandler, itemEditClickHandler }) => {
 	if (! items || ! items.categories) {

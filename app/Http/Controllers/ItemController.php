@@ -45,7 +45,21 @@ class ItemController extends Controller {
 				throw $e;
 			}
 		}
-	}	
+	}
+
+			/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id) {
+		$item = Item::findOrFail($id);
+		// $category = Category::findOrFail($item->category_id);
+		$item->delete();
+		//// delete item
+		//// delete category is empty?
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -102,15 +116,6 @@ class ItemController extends Controller {
 		//
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+
 
 }
