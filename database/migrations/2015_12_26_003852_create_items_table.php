@@ -21,8 +21,8 @@ class CreateItemsTable extends Migration {
 		 	$table->string('comment');
 		 	$table->integer('category_id');
 		 	// $table->foreign('category_id')->references('id')->on('categories');
-	        $this->timestamp('created_at')->useCurrent();
-	        $this->timestamp('updated_at');
+	        $table->timestamp('created_at')->useCurrent();
+	        $table->timestamp('updated_at');
 			$table->unique(['user', 'name', 'category_id']);
 		});
 	}

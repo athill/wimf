@@ -18,8 +18,8 @@ class CreateCategoriesTable extends Migration {
 		 	$table->string('name');
 		 	$table->integer('container_id');
 		 	// $table->foreign('container_id')->references('id')->on('containers');
-	        $this->timestamp('created_at')->useCurrent();
-	        $this->timestamp('updated_at');
+	        $table->timestamp('created_at')->useCurrent();
+	        $table->timestamp('updated_at');
 			$table->unique(['user', 'name', 'container_id']);
 		});
 	}

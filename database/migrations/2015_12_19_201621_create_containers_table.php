@@ -20,8 +20,8 @@ class CreateContainersTable extends Migration {
 			$table->string('name');
 			$table->longText('description')->nullable();
 
-	        $this->timestamp('created_at')->useCurrent();
-	        $this->timestamp('updated_at');
+	        $table->timestamp('created_at')->useCurrent();
+	        $table->timestamp('updated_at');
 
 			$table->unique(['user', 'name']);
 		});
