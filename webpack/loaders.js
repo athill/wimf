@@ -6,8 +6,8 @@ var DEBUG = process.env.NODE_ENV === 'development';
 var TEST = process.env.NODE_ENV === 'test';
 
 var jsxLoader;
-var sassLoader;
-var cssLoader;
+// var sassLoader;
+// var cssLoader;
 var fileLoader = 'file-loader?name=[path][name].[ext]';
 var htmlLoader = [
   'file-loader?name=[path][name].[ext]',
@@ -21,11 +21,11 @@ var htmlLoader = [
 ].join('!');
 var jsonLoader = ['json-loader'];
 
-var sassParams = [
-  'outputStyle=expanded',
-  'includePaths[]=' + path.resolve(__dirname, '../public/scss'),
-  'includePaths[]=' + path.resolve(__dirname, '../node_modules')
-];
+// var sassParams = [
+//   'outputStyle=expanded',
+//   'includePaths[]=' + path.resolve(__dirname, '../public/scss'),
+//   'includePaths[]=' + path.resolve(__dirname, '../node_modules')
+// ];
 
 if (DEBUG || TEST) {
   jsxLoader = [];
@@ -35,29 +35,29 @@ if (DEBUG || TEST) {
   } else {
     jsxLoader.push('babel-loader?optional[]=runtime&stage=0&plugins=rewire');
   }
-  sassParams.push('sourceMap', 'sourceMapContents=true');
-  sassLoader = [
-    'style-loader',
-    'css-loader?sourceMap',
-    'postcss-loader',
-    'sass-loader?' + sassParams.join('&')
-  ].join('!');
-  cssLoader = [
-    'style-loader',
-    'css-loader?sourceMap',
-    'postcss-loader'
-  ].join('!');
+  // sassParams.push('sourceMap', 'sourceMapContents=true');
+  // sassLoader = [
+  //   'style-loader',
+  //   'css-loader?sourceMap',
+  //   'postcss-loader',
+  //   'sass-loader?' + sassParams.join('&')
+  // ].join('!');
+  // cssLoader = [
+  //   'style-loader',
+  //   'css-loader?sourceMap',
+  //   'postcss-loader'
+  // ].join('!');
 } else {
   jsxLoader = ['babel-loader?optional[]=runtime&stage=0&plugins=rewire'];
-  sassLoader = ExtractTextPlugin.extract('style-loader', [
-    'css-loader',
-    'postcss-loader',
-    'sass-loader?' + sassParams.join('&')
-  ].join('!'));
-  cssLoader = ExtractTextPlugin.extract('style-loader', [
-    'css-loader',
-    'postcss-loader'
-  ].join('!'));
+  // sassLoader = ExtractTextPlugin.extract('style-loader', [
+  //   'css-loader',
+  //   'postcss-loader',
+  //   'sass-loader?' + sassParams.join('&')
+  // ].join('!'));
+  // cssLoader = ExtractTextPlugin.extract('style-loader', [
+  //   'css-loader',
+  //   'postcss-loader'
+  // ].join('!'));
 }
 
 var loaders = [
@@ -66,10 +66,10 @@ var loaders = [
     exclude: /node_modules/,
     loaders: jsxLoader
   },
-  {
-    test: /\.css$/,
-    loader: cssLoader
-  },
+  // {
+  //   test: /\.css$/,
+  //   loader: cssLoader
+  // },
   {
     test: /\.jpe?g$|\.gif$|\.png$|\.ico|\.svg$|\.woff$|\.ttf$/,
     loader: fileLoader
@@ -83,10 +83,10 @@ var loaders = [
     test: /\.html$/,
     loader: htmlLoader
   },
-  {
-    test: /\.scss$/,
-    loader: sassLoader
-  }
+  // {
+  //   test: /\.scss$/,
+  //   loader: sassLoader
+  // }
 ];
 
 module.exports = loaders;

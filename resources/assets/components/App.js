@@ -13,7 +13,7 @@ const App = () => (
 		<WimfNavbar />
         <BootstrapContainer>
 			<Wimf />
-		</BootstrapContainer>
+		</BootstrapContainer> 
 	</div>
 );
 

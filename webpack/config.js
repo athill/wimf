@@ -1,6 +1,6 @@
 var path = require('path');
 var util = require('util');
-var autoprefixer = require('autoprefixer-core');
+// var autoprefixer = require('autoprefixer');
 var pkg = require('../package.json');
 
 var loaders = require('./loaders');
@@ -15,16 +15,16 @@ var entry = {
   app: ['./app.js']
 };
 
-if (DEBUG) {
-  entry.app.push(
-    util.format(
-      'webpack-dev-server/client?http://%s:%d',
-      pkg.config.devHost,
-      pkg.config.devPort
-    )
-  );
-  entry.app.push('webpack/hot/dev-server');
-}
+// if (DEBUG) {
+//   entry.app.push(
+//     util.format(
+//       'webpack-dev-server/client?http://%s:%d',
+//       pkg.config.devHost,
+//       pkg.config.devPort
+//     )
+//   );
+//   entry.app.push('webpack/hot/dev-server');
+// }
 
 var context = path.join(__dirname, '../resources/assets');
 var config = {
@@ -43,9 +43,9 @@ var config = {
   module: {
     loaders: loaders
   },
-  postcss: [
-    autoprefixer
-  ],
+  // postcss: [
+  //   autoprefixer
+  // ],
   plugins: plugins,
   resolve: {
     extensions: ['', '.js', '.json', '.jsx'],
@@ -59,13 +59,13 @@ var config = {
       'lib': path.join(context, 'lib')
     }
   },
-  devServer: {
-    contentBase: path.resolve(pkg.config.buildDir),
-    hot: true,
-    noInfo: false,
-    inline: true,
-    stats: { colors: true }
-  }
+  // devServer: {
+  //   contentBase: path.resolve(pkg.config.buildDir),
+  //   hot: true,
+  //   noInfo: false,
+  //   inline: true,
+  //   stats: { colors: true }
+  // }
 };
 
 module.exports = config;
