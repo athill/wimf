@@ -19,3 +19,31 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
     ];
 });
+
+
+$factory->define(App\Container::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'user_id' => $faker->randomDigitNotNull,
+        'description' => $faker->sentence
+
+    ];
+});
+
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'user_id' => $faker->randomDigitNotNull,
+        'container_id' => $faker->randomDigitNotNull
+
+    ];
+});
+
+
+$factory->define(App\Item::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'user_id' => $faker->randomDigitNotNull,
+        'category_id' => $faker->randomDigitNotNull
+    ];
+});

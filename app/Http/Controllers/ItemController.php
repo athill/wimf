@@ -2,7 +2,7 @@
 
 use Log;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Response;
 
 use App\Http\Controllers\Controller;
 
@@ -19,7 +19,7 @@ class ItemController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request, Response $response) {
+	public function store(Request $request) {
 		// Item object
 		$item = new Item();
 		$item->name = $request->get('name');
@@ -40,7 +40,7 @@ class ItemController extends Controller {
 			if (Utils::isDbIntegrityException($e)) {
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
 				Log::info($e->getMessage());
-				return $response->json(['error'=>$errorMessage], 400);				
+				return response()->json(['error'=>$e->getMessage()], 400);				
 			} else {
 				throw $e;
 			}

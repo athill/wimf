@@ -18,7 +18,7 @@ class ContainerTest extends TestCase {
         $this->actingAs($user)
         	 ->get('/api/containers')
 			 ->seeJsonStructure([
-                '*' => ['id', 'name', 'description', 'created_at', 'updated_at']
+                '*' => ['id', 'name', 'description']
              ]);
         //// verify freezer added to db
         $this->seeInDatabase('containers', [

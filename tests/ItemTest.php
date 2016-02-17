@@ -5,6 +5,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Container;
 use App\Category;
+use App\Item;
+use App\User;
 
 class ItemTest extends TestCase {
 
@@ -15,52 +17,66 @@ class ItemTest extends TestCase {
      *
      * @return void
      */
-    public function testGetContainers() {
-        $user = factory(App\User::class)->create();
+    public function testAddItem() {
+        $user = factory(User::class)->create();
         $category_name = 'foo';
         $item_name = 'bar';
-        
-        //// go to containers page to create Freezer container record
-        //// TODO: create when user is created???
-        $this->actingAs($user)
-             ->get('/api/containers');
 
-        //// now get the id
-        $container_id = Container::where([
-                ['user_id', $user->id], 
-                ['name', 'Freezer']
-            ])->value('id');
+        $container = $this->getFakeContainer($user->id);
 
         //// create new item
         $this->actingAs($user)
-        	 ->post('/api/items', [
+             ->post('/api/items', [
                     'category' => $category_name,
-                    'item'=>$item_name,
+                    'name'=>$item_name,
                     'quantity' => '1',
                     'measurement' => 'baz',
-                    'container_id' => $container_id
+                    'container_id' => $container->id
                 ])
             ->seeJson(['name'=>$item_name]);
 
+        //// verify category added to db
         $categoryCriteria = [
             'user_id' => $user->id,      
-            'container_id' => $container_id,
+            'container_id' => $container->id,
             'name' => $category_name            
         ];
-        
-        //// verify category added to db
         $this->seeInDatabase('categories', $categoryCriteria);
-
+        //// get category id
         $category_id = Category::where($categoryCriteria)->value('id');
 
-        
+        //// verify item added to db
         $itemCriteria = [
             'user_id' => $user->id,
             'category_id' => $category_id,
             'name' => $item_name
         ];
-
-        //// verify item added to db
         $this->seeInDatabase('items', $itemCriteria);
+    }
+
+    public function testDeleteItem() {
+        $user = factory(User::class)->create();       
+
+        $item = $this->getFakeItem($user->id);
+
+        $itemtest = Item::find($item->id);
+
+        //// TODO: why is user_id -1 in created object???
+        print('user_id: '.$user->id.' category_id: '.$item->category_id);
+        print('Itemtest: user_id: '.$itemtest->user_id.' category_id: '.$itemtest->category_id);
+
+        $item_criteria = [
+            'name' => $item->name,
+            // 'user_id' => $user->id,
+            'category_id' => $item->category_id             
+        ];
+
+        $this->seeInDatabase('items', $item_criteria);
+
+        //// create new item
+        $this->actingAs($user)
+             ->delete('/api/items/'.$item->id);     
+
+        $this->notSeeInDatabase('items', $item_criteria);
     }
 }
