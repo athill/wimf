@@ -37,14 +37,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     protected function getFakeItem($user_id, $category_id=null) {
+        print('in getFakeItem'. $user_id."\n");
         if ($category_id === null) {
             $category = $this->getFakeCategory($user_id);
             $category_id = $category->id;
         }
-        return factory(App\Item::class)->create([
-           'user_id' => $user_id,
-           'category_id' => $category_id 
-        ]);                     
+        $overrides = [
+           'category_id' => $category_id,
+           'user_id' => $user_id
+        ];
+        $item = factory(App\Item::class)->create($overrides);
+        return $item;
     }
 
 

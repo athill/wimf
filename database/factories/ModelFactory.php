@@ -43,7 +43,7 @@ $factory->define(App\Category::class, function (Faker\Generator $faker) {
 $factory->define(App\Item::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->word,
-        'user_id' => $faker->randomDigitNotNull,
+        // 'user_id' => $faker->randomDigitNotNull,
         'category_id' => $faker->randomDigitNotNull
     ];
 });

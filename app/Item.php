@@ -15,6 +15,10 @@ class Item extends ChangelogModelBase {
 		return $this->belongsTo('App\Category');
 	}
 
+	public function user() {
+		$this->belongsTo('App\User');
+	}
+
 
 	public static function add($item, $category) {
 		$item->category_id = Category::getId($category);
