@@ -7,11 +7,10 @@ module.exports = function (config) {
 
     singleRun: true,
 
-    frameworks: [ 'chai','mocha' ],
+    frameworks: [ 'mocha' ],
 
     plugins: [
       'karma-chrome-launcher',
-      'karma-chai',
       'karma-mocha',
       'karma-sourcemap-loader',
       'karma-webpack',
