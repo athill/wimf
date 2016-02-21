@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createAction } from 'redux-actions';
 
-import types from '../constants/ActionTypes';
+import * as types from '../constants/ActionTypes';
 import { fetch } from '../util/RemoteOperations';
 
 

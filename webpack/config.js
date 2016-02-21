@@ -41,7 +41,17 @@ var config = {
     pathinfo: false
   },
   module: {
-    loaders: loaders
+    loaders: [
+        {
+            test: /\.js$/,
+            loader: 'babel',
+            query: {
+                // https://github.com/babel/babel-loader#options
+                cacheDirectory: true,
+                presets: ['react','es2015', 'stage-0']
+            }
+        }
+    ],
   },
   // postcss: [
   //   autoprefixer

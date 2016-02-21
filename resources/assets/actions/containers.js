@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { createAction } from 'redux-actions';
 
-import types from '../constants/ActionTypes'
+import * as types from '../constants/ActionTypes'
 import { fetchItems } from './items';
 import { fetch } from '../util/RemoteOperations';
 
 
 export function fetchContainers() {
   return dispatch => {
-    console.log('fetchContainers');
     dispatch(requestContainers());
     return fetch(
       '/api/containers',

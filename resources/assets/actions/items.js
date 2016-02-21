@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createAction } from 'redux-actions';
 
-import types from '../constants/ActionTypes'
+import * as types from '../constants/ActionTypes'
 import { setAddFormError } from './addForm';
 import { fetch, post, deleteRequest } from '../util/RemoteOperations';
 import { addItemToContainer, removeItemFromContainer } from '../util/ContainerOperations';
@@ -34,7 +34,6 @@ export const add = item => {
         dispatch(addItemSuccess());
       },
       error => {
-        console.log('addFormError response', error);
         dispatch(addItemError());
         dispatch(setAddFormError(error.data));
         setTimeout(() => dispatch(setAddFormError({error: ''})), 3000);

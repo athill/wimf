@@ -19,7 +19,7 @@ function mapStateToProps({containers, addForm: { show : showAddForm }}) {
 }
 
 
-@connect(mapStateToProps)
+
 class Wimf extends React.Component {
   componentDidMount()  {
   	const {dispatch} = this.props;
@@ -39,4 +39,4 @@ class Wimf extends React.Component {
   }
 }
 
-export default Wimf;
+export default connect(mapStateToProps)(Wimf);

@@ -9,7 +9,7 @@ describe('BootstrapContainer', () => {
   	const renderer = ReactTestUtils.createRenderer();
   	renderer.render(<BootstrapContainer />);
   	const result = renderer.getRenderOutput();
- 
+ 	console.log(result);
     expect(true).toBe(true);
   });
 });

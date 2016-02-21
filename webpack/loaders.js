@@ -1,4 +1,4 @@
-var path = require('path');
+  var path = require('path');
 var pkg = require('../package.json');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 

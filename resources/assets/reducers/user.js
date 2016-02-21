@@ -11,6 +11,7 @@ const initialState = {
 export default function user(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_USER_INFO:
+    
       return action.payload;
     default:
       return state

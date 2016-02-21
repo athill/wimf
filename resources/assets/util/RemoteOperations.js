@@ -41,14 +41,12 @@ const chain = (promise, resolves, reject = response => {console.error(response);
     resolves.forEach(resolve => promise.then(resolve));
     //// chain catch
     promise.catch(reject);  
-    console.log('full promise', promise);
 };
 
 
 const localStoragePromise = (method, url, data) => {
   return new Promise(
     (resolve, reject) => {
-      console.log('local storage promise');
       localPersistedStore(resolve, reject, method, url, data);
     });
 };
