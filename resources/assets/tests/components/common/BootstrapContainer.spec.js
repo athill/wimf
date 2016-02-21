@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import ReactTestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react/lib/ReactTestUtils';
 
 import BootstrapContainer from '../../../components/common/BootstrapContainer';
 
@@ -9,7 +9,7 @@ describe('BootstrapContainer', () => {
   	const renderer = ReactTestUtils.createRenderer();
   	renderer.render(<BootstrapContainer />);
   	const result = renderer.getRenderOutput();
- 	console.log(result);
+ 	// console.log(result);
     expect(true).toBe(true);
   });
 });

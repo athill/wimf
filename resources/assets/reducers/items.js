@@ -1,12 +1,12 @@
 import { RECEIVE_ITEMS } from '../constants/ActionTypes'
 
-const initialState = {
+export const initialState = {
     items: { 
         categories: [] 
     }
 };
 
-export default function containers(state = initialState, action) {
+export default function items(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_ITEMS:
     	return action.payload;
