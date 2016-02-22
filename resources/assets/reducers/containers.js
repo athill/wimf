@@ -1,6 +1,6 @@
 import { RECEIVE_CONTAINERS } from '../constants/ActionTypes'
 
-const initialState = {
+export const initialState = {
         items: [],
         selected: null
 };

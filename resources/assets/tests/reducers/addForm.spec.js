@@ -3,6 +3,7 @@ import reducer, { initialState } from '../../reducers/addForm';
 import * as types from '../../constants/ActionTypes';
 
 describe('addForm reducer', () => {
+  
   it('should return the initial state', () => {
     expect(
       reducer(undefined, {})
@@ -24,6 +25,7 @@ describe('addForm reducer', () => {
       show: true
     });
   });
+  
   it('should handle TOGGLE_ADD_FORM by setting show: true to false', () => {
     expect(
       reducer({
@@ -39,6 +41,7 @@ describe('addForm reducer', () => {
       show: false
     });
   });
+
   it('should handle SET_ADD_FORM_ERROR by setting error to whatever is passed in', () => {
     expect(
       reducer({
@@ -55,10 +58,5 @@ describe('addForm reducer', () => {
       ...initialState,
       error: 'bar'
     });
-  });  
-
-
-//SET_ADD_FORM_ERROR
-
-
+  }); 
 });
