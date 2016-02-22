@@ -1,11 +1,9 @@
 import { RECEIVE_USER_INFO } from '../constants/ActionTypes'
 
-const initialState = {
+export const initialState = {
   id: null,
   name: null,
-  email: null,
-  created_at: null,
-  updated_at: null
+  email: null
 };
 
 export default function user(state = initialState, action) {
