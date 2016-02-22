@@ -2,7 +2,7 @@ import expect from 'expect';
 import reducer, { initialState } from '../../reducers/items';
 import * as types from '../../constants/ActionTypes';
 
-describe('todos reducer', () => {
+describe('items reducer', () => {
   it('should return the initial state', () => {
     expect(
       reducer(undefined, {})

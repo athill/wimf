@@ -12,67 +12,68 @@ const mockStore = configureMockStore(middlewares);
 const container = {
 	id: 0
 };
+describe('items actions', () => {
+	describe('add', () => {
+	  afterEach(() => {
+	    // nock.cleanAll()
+	  });
 
-describe('add', () => {
-  afterEach(() => {
-    // nock.cleanAll()
-  });
+	  // it('creates ADD_ITEM_SUCCESS when fetching todos has been done', (done) => {
+	  // 	const item = {
+			// name: "2",
+			// quantity: "3"
+	  // 	};
 
-  // it('creates ADD_ITEM_SUCCESS when fetching todos has been done', (done) => {
-  // 	const item = {
-		// name: "2",
-		// quantity: "3"
-  // 	};
+	  // 	const formItem = {
+	  // 		...item,
+	  // 		category: 'foo',
+	  // 		container_id: 1
+	  // 	};
 
-  // 	const formItem = {
-  // 		...item,
-  // 		category: 'foo',
-  // 		container_id: 1
-  // 	};
+	  // 	const returnItem = {
+	  // 		...item,
+			// category_id: 75,
+			// comment: "",
+			// id: 77,
+			// measurement: null
+	  // 	};
 
-  // 	const returnItem = {
-  // 		...item,
-		// category_id: 75,
-		// comment: "",
-		// id: 77,
-		// measurement: null
-  // 	};
+	  	// const mock = sinon.mock(axios);
+	  	// {measurement: null, name: '2', quantity: '3', category: 'foo', container_id: 0}
 
-  	// const mock = sinon.mock(axios);
-  	// {measurement: null, name: '2', quantity: '3', category: 'foo', container_id: 0}
+	    // fetchMock.mock('/api/items', 'POST', { body: returnItem });
+	      // .post('', formItem)
+	      // .reply(200, { body: returnItem })
 
-    // fetchMock.mock('/api/items', 'POST', { body: returnItem });
-      // .post('', formItem)
-      // .reply(200, { body: returnItem })
+	  //   const expectedActions = [
+	  //     { type: types.ADD_ITEM, payload: undefined },
+	  //     { type: types.ADD_ITEM_SUCCESS, payload: returnItem }
+	  //   ]
+	  //   const store = mockStore({containers: {selected: container } }, expectedActions, done)
+	  //   store.dispatch(actions.add(formItem));
+	  // });
 
-  //   const expectedActions = [
-  //     { type: types.ADD_ITEM, payload: undefined },
-  //     { type: types.ADD_ITEM_SUCCESS, payload: returnItem }
-  //   ]
-  //   const store = mockStore({containers: {selected: container } }, expectedActions, done)
-  //   store.dispatch(actions.add(formItem));
-  // });
+	  it('should return a function', () => {
+	    const expectedAction = {
 
-  it('should return a function', () => {
-    const expectedAction = {
+	    };
+	    const item = {};
+	    const result = actions.add(item);
+	    expect(result).toBeA('function');
+	    // console.log(result);
+	    // expect(result).toEqual(expectedAction);
+	  });
 
-    };
-    const item = {};
-    const result = actions.add(item);
-    expect(result).toBeA('function');
-    // console.log(result);
-    // expect(result).toEqual(expectedAction);
-  });
-
-  it('should return something', () => {
-  	const container = {
-  		id: 0
-  	};
-    const getState = () => ({containers: {selected: container } });
-    const dispatch = expect.createSpy();
-    const item = {};
-    actions.add(item)(dispatch, getState);
-    // console.log(dispatch.calls[0].arguments);
-    expect(dispatch).toHaveBeenCalledWith({type: 'ADD_ITEM', payload: undefined});
-  });
-})
+	  it('should return something', () => {
+	  	const container = {
+	  		id: 0
+	  	};
+	    const getState = () => ({containers: {selected: container } });
+	    const dispatch = expect.createSpy();
+	    const item = {};
+	    actions.add(item)(dispatch, getState);
+	    // console.log(dispatch.calls[0].arguments);
+	    expect(dispatch).toHaveBeenCalledWith({type: 'ADD_ITEM', payload: undefined});
+	  });
+	});
+});

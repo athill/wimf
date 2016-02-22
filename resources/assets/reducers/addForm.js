@@ -1,12 +1,12 @@
 import { TOGGLE_ADD_FORM, SHOW_ADD_FORM, HIDE_ADD_FORM,
 	SET_ADD_FORM_ERROR } from '../constants/ActionTypes'
 
-const initialState = {
+export const initialState = {
     show: false,
     error: ''
 };
 
-export default function containers(state = initialState, action) {
+export default function addForm(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_ADD_FORM:
       return {
