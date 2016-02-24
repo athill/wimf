@@ -11,10 +11,9 @@ import Container from './Container'
 
 
 
-function mapStateToProps({containers, addForm: { show : showAddForm }}) {
+function mapStateToProps({containers}) {
   return { 
-    containers,
-    showAddForm
+    containers
   }
 }
 
@@ -28,10 +27,10 @@ class Wimf extends React.Component {
   }
 
   render() {
-    const {containers, showAddForm} = this.props;
+    const {containers} = this.props;
     return (
       <div>
-          { showAddForm && <AddForm /> }
+          <AddForm /> 
           <ContainerSelector containers={containers} />
           <Container />
       </div>

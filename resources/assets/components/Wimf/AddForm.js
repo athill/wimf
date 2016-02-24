@@ -1,12 +1,15 @@
 import React from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import {reduxForm} from 'redux-form';
+import { connect } from 'react-redux';
 
-import InlineField from '../common/InlineField';
+
 import { fetchContainers } from '../../actions/containers';
 import { add } from '../../actions/items';
+import { toggleAddForm } from '../../actions/addForm';
 import { NoOp } from '../common/common';
-
+import FormModal from '../common/FormModal';
+import InlineField from '../common/InlineField';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container'];
 
@@ -38,43 +41,59 @@ const submit = (values, dispatch) => {
   });
 };
 
+const onSubmit = e => { 
+	handleSubmit(); 
+	resetForm(); 
+};
+		// <form onSubmit={ e => { 
+		// 		e.preventDefault(); 
+		// 		handleSubmit(); 
+		// 		resetForm(); 
+		// 	}}>
 
+		// </form>
 
-const AddForm = ({ containerId, serverError,
+		// <Button type='submit' bsStyle="success" bsSize='small'>Add</Button>
+
+const AddForm = ({ containerId, serverError, showModal, onHide,
 			fields: { category, name, measurement, quantity, date, container },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => (
-	<form onSubmit={ e => { 
-			e.preventDefault(); 
-			handleSubmit(); 
-			resetForm(); 
-		}}>
-		<fieldset>
-			<legend>Add Item</legend>
-			<AddFormError error={serverError} />
-			<InlineField autoFocus id='category' label='Category' {...category} />
-			{' '}
-			<InlineField id='name' label='Name' {...name} />
-			{' '}
-			<InlineField id='quantity' label='Quantity' {...quantity} />
-			{' '}			
-			<InlineField id='measurement' label='Measurement' {...measurement} />
-			{' '}
-			<InlineField id='date' label='Date' {...date} />
-			{' '}
-			<input type='hidden' id='container' value={containerId} {...container} />
-			<Button type='submit' bsStyle="success" bsSize='small'>Add</Button>
-		</fieldset>
-	</form>
+	<FormModal title='Add Item' valid={true} show={showModal} errors={serverError} onSubmit={() => {
+			handleSubmit();
+			resetForm();
+		}} onHide={onHide}>
+		<InlineField autoFocus id='category' label='Category' {...category} />
+		{' '}
+		<InlineField id='name' label='Name' {...name} />
+		{' '}
+		<InlineField id='quantity' label='Quantity' {...quantity} />
+		{' '}			
+		<InlineField id='measurement' label='Measurement' {...measurement} />
+		{' '}
+		<InlineField id='date' label='Date' {...date} />
+		{' '}
+		<input type='hidden' id='container' value={containerId} {...container} />
+	</FormModal>
 );
-
-const mapStateToProps = ({ containers: { selected }, addForm: { error: serverError } }) => {
+//, addForm: { show : showAddForm }
+const mapStateToProps = ({ containers: { selected }, 
+		addForm: { error: serverError, show: showModal } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
 	return {
 		containerId,
-		serverError
+		serverError,
+		showModal
 	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onHide: () => {
+      dispatch(toggleAddForm());
+    }
+  };
 };
 
 

@@ -25,9 +25,9 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
     </Modal.Header>
 
     <form onSubmit={e => { e.preventDefault(); onSubmit(); }}>
-      <Modal.Body>
-        { children }
-      </Modal.Body>
+       <Modal.Body>
+        { children } 
+      </Modal.Body>  
       <Modal.Footer>
         <ErrorDisplay errors={errors} />
         {submitting && <Spinner />} {' '}
@@ -37,7 +37,7 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
         <Button id="cancelModal" className='cancel' onClick={ e => { e.preventDefault(); onHide(); }} disabled={submitting}>
           Cancel
         </Button>
-      </Modal.Footer>
+      </Modal.Footer> 
     </form>
   </Modal>
 );
