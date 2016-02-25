@@ -35,22 +35,13 @@ const onSubmit = e => {
 	handleSubmit(); 
 	resetForm(); 
 };
-		// <form onSubmit={ e => { 
-		// 		e.preventDefault(); 
-		// 		handleSubmit(); 
-		// 		resetForm(); 
-		// 	}}>
 
-		// </form>
-
-		// <Button type='submit' bsStyle="success" bsSize='small'>Add</Button>
-
-const AddForm = ({ containerId, errors, showModal, onHide,
+const AddForm = ({ containerId, serverErrors, showModal, onHide,
 			fields: { category, name, measurement, quantity, date, container },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => (
-	<FormModal title='Add Item' valid={true} show={showModal} errors={errors} onSubmit={() => {
+	<FormModal title='Add Item' valid={true} show={showModal} errors={serverErrors} onSubmit={() => {
 			handleSubmit();
 			resetForm();
 		}} onHide={onHide}>
@@ -73,7 +64,7 @@ const mapStateToProps = ({ containers: { selected },
 	const containerId = selected && selected.id ? selected.id : -1;
 	return {
 		containerId,
-		errors,
+		serverErrors: errors,
 		showModal
 	};
 };
@@ -91,4 +82,4 @@ export default reduxForm({ // <----- THIS IS THE IMPORTANT PART!
   form: 'item',                           // a unique name for this form
   fields: fields, // all the fields in your form,
   onSubmit: submit
-}, mapStateToProps)(AddForm);
+}, mapStateToProps, mapDispatchToProps)(AddForm);

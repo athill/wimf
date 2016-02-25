@@ -5,7 +5,7 @@ import { Alert, Button, Modal } from 'react-bootstrap';
 import { NoOp, Spinner } from './common';
 
 const ErrorDisplay = ({ errors }) => {
-  if(errors && _.isArray(errors) && errors.length > 0) {
+  if (errors && _.isArray(errors) && errors.length > 0) {
     return (
       <Alert bsStyle="danger">
         <ul id="modal-errors">
@@ -18,7 +18,8 @@ const ErrorDisplay = ({ errors }) => {
   }
 };
 
-const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, submitting = false, submitButtonText = 'Submit', ...otherProps }) => (
+const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, 
+    submitting = false, submitButtonText = 'Submit', ...otherProps }) => (
   <Modal onHide={() => { if(!submitting) { onHide(); } }} {...otherProps}>
     <Modal.Header>
       <Modal.Title>{ title }</Modal.Title>

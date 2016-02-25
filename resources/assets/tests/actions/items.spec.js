@@ -60,7 +60,6 @@ describe('items actions', () => {
 	    const item = {};
 	    const result = actions.add(item);
 	    expect(result).toBeA('function');
-	    // console.log(result);
 	    // expect(result).toEqual(expectedAction);
 	  });
 
@@ -72,7 +71,6 @@ describe('items actions', () => {
 	    const dispatch = expect.createSpy();
 	    const item = {};
 	    actions.add(item)(dispatch, getState);
-	    // console.log(dispatch.calls[0].arguments);
 	    expect(dispatch).toHaveBeenCalledWith({type: 'ADD_ITEM', payload: undefined});
 	  });
 	});
