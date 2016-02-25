@@ -13,16 +13,6 @@ import InlineField from '../common/InlineField';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container'];
 
-const AddFormError = ({ error }) => {  
-	return error === '' ?
-		<NoOp /> :
-		(
-			<Alert bsStyle="danger">
-			{ error }
-			</Alert>
-		);
-}
-
 const submit = (values, dispatch) => {
   return new Promise((resolve, reject) => {
   	let valid = true;
@@ -55,12 +45,12 @@ const onSubmit = e => {
 
 		// <Button type='submit' bsStyle="success" bsSize='small'>Add</Button>
 
-const AddForm = ({ containerId, serverError, showModal, onHide,
+const AddForm = ({ containerId, errors, showModal, onHide,
 			fields: { category, name, measurement, quantity, date, container },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => (
-	<FormModal title='Add Item' valid={true} show={showModal} errors={serverError} onSubmit={() => {
+	<FormModal title='Add Item' valid={true} show={showModal} errors={errors} onSubmit={() => {
 			handleSubmit();
 			resetForm();
 		}} onHide={onHide}>
@@ -79,11 +69,11 @@ const AddForm = ({ containerId, serverError, showModal, onHide,
 );
 //, addForm: { show : showAddForm }
 const mapStateToProps = ({ containers: { selected }, 
-		addForm: { error: serverError, show: showModal } }) => {
+		addForm: { errors, show: showModal } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
 	return {
 		containerId,
-		serverError,
+		errors,
 		showModal
 	};
 };

@@ -3,7 +3,7 @@ import { TOGGLE_ADD_FORM, SHOW_ADD_FORM, HIDE_ADD_FORM,
 
 export const initialState = {
     show: false,
-    error: ''
+    errors: []
 };
 
 export default function addForm(state = initialState, action) {
@@ -14,9 +14,14 @@ export default function addForm(state = initialState, action) {
       	show: !state.show
       };
     case SET_ADD_FORM_ERROR:
+      console.debug('addForm reducer', action);
+      let errors = action.payload.error;
+      if (!(errors instanceof Array)) {
+        errors = [errors];
+      }
     	return {
     		...state,
-    		error: action.payload.error
+    		errors
     	};
     default:
       return state

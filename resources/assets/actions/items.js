@@ -36,7 +36,7 @@ export const add = item => {
       error => {
         dispatch(addItemError());
         dispatch(setAddFormError(error.data));
-        setTimeout(() => dispatch(setAddFormError({error: ''})), 3000);
+        setTimeout(() => dispatch(setAddFormError({errors: []})), 3000);
       }
     );
   };
