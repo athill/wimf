@@ -25,7 +25,7 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
       <Modal.Title>{ title }</Modal.Title>
     </Modal.Header>
 
-    <form onSubmit={e => { e.preventDefault(); onSubmit(); }}>
+    <form onSubmit={e => { e.preventDefault(); onSubmit(); }} className='form-horizontal'>
        <Modal.Body>
         { children } 
       </Modal.Body>  

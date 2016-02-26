@@ -9,7 +9,8 @@ import { add } from '../../actions/items';
 import { toggleAddForm } from '../../actions/addForm';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
-import InlineField from '../common/InlineField';
+// import InlineField from '../common/InlineField';
+import ValidatedInput from '../common/ValidatedInput';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container'];
 
@@ -45,15 +46,15 @@ const AddForm = ({ containerId, serverErrors, showModal, onHide,
 			handleSubmit();
 			resetForm();
 		}} onHide={onHide}>
-		<InlineField autoFocus id='category' label='Category' {...category} />
+		<ValidatedInput type='text' autoFocus id='category' label='Category' {...category} />
 		{' '}
-		<InlineField id='name' label='Name' {...name} />
+		<ValidatedInput type='text' id='name' label='Name' {...name} />
 		{' '}
-		<InlineField id='quantity' label='Quantity' {...quantity} />
+		<ValidatedInput type='text' id='quantity' label='Quantity' {...quantity} />
 		{' '}			
-		<InlineField id='measurement' label='Measurement' {...measurement} />
+		<ValidatedInput type='text' id='measurement' label='Measurement' {...measurement} />
 		{' '}
-		<InlineField id='date' label='Date' {...date} />
+		<ValidatedInput type='text' id='date' label='Date' {...date} />
 		{' '}
 		<input type='hidden' id='container' value={containerId} {...container} />
 	</FormModal>
