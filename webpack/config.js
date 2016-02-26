@@ -44,6 +44,7 @@ var config = {
     loaders: [
         {
             test: /\.js$/,
+	    exclude: /node_modules/,            
             loader: 'babel',
             query: {
                 // https://github.com/babel/babel-loader#options
