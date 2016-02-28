@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChangelog2Table extends Migration
+class CreateChangelogTable extends Migration
 {
     /**
      * Run the migrations.
