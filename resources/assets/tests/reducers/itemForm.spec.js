@@ -22,7 +22,7 @@ describe('itemForm reducer', () => {
         })
     ).toEqual({
       ...initialState,
-      show: types.modalTypes.CREATE
+      show: types.ModalTypes.CREATE
     });
   });
   
@@ -30,7 +30,7 @@ describe('itemForm reducer', () => {
     expect(
       reducer({
         ...initialState,
-        show: types.modalTypes.CREATE
+        show: types.ModalTypes.CREATE
         },  
         {
           type: types.TOGGLE_ADD_ITEM_FORM,
@@ -38,7 +38,7 @@ describe('itemForm reducer', () => {
         })
     ).toEqual({
       ...initialState,
-      show: types.modalTypes.NONE
+      show: types.ModalTypes.NONE
     });
   });
 
@@ -46,17 +46,17 @@ describe('itemForm reducer', () => {
     expect(
       reducer({
         ...initialState,
-        error: 'foo'
+        errors: ['foo']
         },  
         {
           type: types.SET_ITEM_FORM_ERROR,
           payload: {
-            error: 'bar'
+            error: ['bar']
           }
         })
     ).toEqual({
       ...initialState,
-      error: 'bar'
+      errors: ['bar']
     });
   }); 
 });
