@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { fetchContainers } from '../../actions/containers';
 import { add } from '../../actions/items';
-import { toggleAddForm } from '../../actions/addForm';
+import { toggleAddForm } from '../../actions/itemForm';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
 // import InlineField from '../common/InlineField';
@@ -37,7 +37,7 @@ const onSubmit = e => {
 	resetForm(); 
 };
 
-const AddForm = ({ containerId, serverErrors, showModal, onHide,
+const ItemForm = ({ containerId, serverErrors, showModal, onHide,
 			fields: { category, name, measurement, quantity, date, container },
 	      handleSubmit,
 	      resetForm,
@@ -61,7 +61,7 @@ const AddForm = ({ containerId, serverErrors, showModal, onHide,
 );
 //, addForm: { show : showAddForm }
 const mapStateToProps = ({ containers: { selected }, 
-		addForm: { errors, show: showModal } }) => {
+		itemForm: { errors, show: showModal } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
 	return {
 		containerId,
@@ -83,4 +83,4 @@ export default reduxForm({ // <----- THIS IS THE IMPORTANT PART!
   form: 'item',                           // a unique name for this form
   fields: fields, // all the fields in your form,
   onSubmit: submit
-}, mapStateToProps, mapDispatchToProps)(AddForm);
+}, mapStateToProps, mapDispatchToProps)(ItemForm);

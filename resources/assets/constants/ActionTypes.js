@@ -18,3 +18,11 @@ export const SHOW_ADD_FORM = 'SHOW_ADD_FORM';
 export const HIDE_ADD_FORM = 'HIDE_ADD_FORM';
 export const CLEAR_ADD_FORM = 'CLEAR_ADD_FORM';
 export const SET_ADD_FORM_ERROR = 'SET_ADD_FORM_ERROR';
+
+//// Modal
+export const ModalTypes = {
+  NONE: 'NONE',
+  CREATE: 'CREATE',
+  EDIT: 'EDIT',
+  DELETE: 'DELETE'
+};

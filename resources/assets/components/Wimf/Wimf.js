@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchContainers } from '../../actions/containers';
 import { fetchUserInfo } from '../../actions/user';
 //// components
-import AddForm from './AddForm'
+import ItemForm from './ItemForm'
 import ContainerSelector from './ContainerSelector';
 import Container from './Container'
 
@@ -30,7 +30,7 @@ class Wimf extends React.Component {
     const {containers} = this.props;
     return (
       <div>
-          <AddForm /> 
+          <ItemForm /> 
           <ContainerSelector containers={containers} />
           <Container />
       </div>

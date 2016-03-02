@@ -1,8 +1,8 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../reducers/addForm';
+import reducer, { initialState } from '../../reducers/itemForm';
 import * as types from '../../constants/ActionTypes';
 
-describe('addForm reducer', () => {
+describe('itemForm reducer', () => {
   
   it('should return the initial state', () => {
     expect(

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
 
-import addForm from './addForm';
+import itemForm from './itemForm';
 import items from './items';
 import containers from './containers';
 import user from './user';
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   containers,
   items,
   user,
-  addForm,
+  itemForm,
   form: formReducer
 })
 

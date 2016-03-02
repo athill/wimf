@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import * as actions from '../../actions/addForm';
+import * as actions from '../../actions/itemForm';
 import * as types from '../../constants/ActionTypes';
 
 describe('addFormActions actions', () => {

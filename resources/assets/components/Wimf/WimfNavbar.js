@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 //// actions
-import { toggleAddForm } from '../../actions/addForm';
+import { toggleAddForm } from '../../actions/itemForm';
 
 //// components
 import {Icon} from '../common/common';
