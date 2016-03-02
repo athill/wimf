@@ -10,35 +10,35 @@ describe('itemForm reducer', () => {
     ).toEqual(initialState);
   });
 
-  it('should handle TOGGLE_ADD_FORM by setting show: false to true', () => {
+  it('should handle TOGGLE_ADD_ITEM_FORM by setting show: false to true', () => {
     expect(
       reducer({
         ...initialState,
-        show: false
+        show: types.ModalTypes.NONE
         },  
         {
-          type: types.TOGGLE_ADD_FORM,
+          type: types.TOGGLE_ADD_ITEM_FORM,
           payload: undefined
         })
     ).toEqual({
       ...initialState,
-      show: true
+      show: types.modalTypes.CREATE
     });
   });
   
-  it('should handle TOGGLE_ADD_FORM by setting show: true to false', () => {
+  it('should handle TOGGLE_ADD_ITEM_FORM by setting show: true to false', () => {
     expect(
       reducer({
         ...initialState,
-        show: true
+        show: types.modalTypes.CREATE
         },  
         {
-          type: types.TOGGLE_ADD_FORM,
+          type: types.TOGGLE_ADD_ITEM_FORM,
           payload: undefined
         })
     ).toEqual({
       ...initialState,
-      show: false
+      show: types.modalTypes.NONE
     });
   });
 
@@ -49,7 +49,7 @@ describe('itemForm reducer', () => {
         error: 'foo'
         },  
         {
-          type: types.SET_ADD_FORM_ERROR,
+          type: types.SET_ITEM_FORM_ERROR,
           payload: {
             error: 'bar'
           }

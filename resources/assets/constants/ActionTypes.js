@@ -13,11 +13,11 @@ export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS';
 export const DELETE_ITEM_ERROR = 'DELETE_ITEM_ERROR';
 export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
 export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
-export const TOGGLE_ADD_FORM = 'TOGGLE_ADD_FORM';
-export const SHOW_ADD_FORM = 'SHOW_ADD_FORM';
+export const TOGGLE_ADD_ITEM_FORM = 'TOGGLE_ADD_ITEM_FORM';
+export const SHOW_ADD_ITEM_FORM = 'SHOW_ADD_ITEM_FORM';
 export const HIDE_ADD_FORM = 'HIDE_ADD_FORM';
 export const CLEAR_ADD_FORM = 'CLEAR_ADD_FORM';
-export const SET_ADD_FORM_ERROR = 'SET_ADD_FORM_ERROR';
+export const SET_ITEM_FORM_ERROR = 'SET_ITEM_FORM_ERROR';
 
 //// Modal
 export const ModalTypes = {

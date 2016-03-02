@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 //// actions
-import { toggleAddForm } from '../../actions/itemForm';
+import { toggleAddItemForm } from '../../actions/itemForm';
 
 //// components
 import {Icon} from '../common/common';
@@ -25,7 +25,7 @@ const mapStateToProps = ({ user }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addButtonClickHandler: () => {
-      dispatch(toggleAddForm());
+      dispatch(toggleAddItemForm());
     }
   };
 };

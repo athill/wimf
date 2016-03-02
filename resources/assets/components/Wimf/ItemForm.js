@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 import { fetchContainers } from '../../actions/containers';
 import { add } from '../../actions/items';
-import { toggleAddForm } from '../../actions/itemForm';
+import { toggleAddItemForm } from '../../actions/itemForm';
+import { ModalTypes } from '../../constants/ActionTypes';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
 // import InlineField from '../common/InlineField';
@@ -61,19 +62,19 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide,
 );
 //, addForm: { show : showAddForm }
 const mapStateToProps = ({ containers: { selected }, 
-		itemForm: { errors, show: showModal } }) => {
+		itemForm: { errors, show } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
 	return {
 		containerId,
 		serverErrors: errors,
-		showModal
+		showModal: show === ModalTypes.CREATE
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onHide: () => {
-      dispatch(toggleAddForm());
+      dispatch(toggleAddItemForm());
     }
   };
 };

@@ -1,19 +1,19 @@
-import { TOGGLE_ADD_FORM, SHOW_ADD_FORM, HIDE_ADD_FORM,
-	SET_ADD_FORM_ERROR } from '../constants/ActionTypes'
+import { TOGGLE_ADD_ITEM_FORM, SHOW_ADD_FORM, HIDE_ADD_FORM,
+	SET_ITEM_FORM_ERROR, ModalTypes } from '../constants/ActionTypes'
 
 export const initialState = {
-    show: false,
+    show: ModalTypes.NONE,
     errors: []
 };
 
 export default function addForm(state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_ADD_FORM:
+    case TOGGLE_ADD_ITEM_FORM:
       return {
       	...state,
-      	show: !state.show
+      	show: state.show == ModalTypes.NONE ? ModalTypes.CREATE : ModalTypes.NONE
       };
-    case SET_ADD_FORM_ERROR:
+    case SET_ITEM_FORM_ERROR:
       console.debug('addForm reducer', action);
       let errors = action.payload.error;
       if (!(errors instanceof Array)) {
