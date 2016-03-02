@@ -43,9 +43,16 @@ class ContainerController extends Controller {
 		$cats = [];
 		$categories = Container::find($id)->categories()->orderBy('name')->get();
 		foreach ($categories as $category) {		
+			$items = $category->items;
+			//// add category name to returned item
+			foreach ($items as $i => $item) {
+				$itemArray = $item->toArray();
+				$itemArray['category'] = $item->category->name;
+				$items[$i] = $itemArray;
+			}
 			$cats[] = [
 				'name' => $category->name,
-				'items' => $category->items
+				'items' => $items
 			];
 		}
         $data['categories'] = $cats;
