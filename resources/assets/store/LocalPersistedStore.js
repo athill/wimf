@@ -72,7 +72,13 @@ const persistContainers = (resolve, reject, method, args, data) => {
 				if (container === undefined) {
 					throw new Error(`Undefined container, ${args[0]}`);
 				}
-				return container;
+				const returnContainer = Object.assign({}, container);
+				returnContainer.categories.forEach(category => {
+					category.items.forEach(item => {
+						item.category = category.name;
+					});
+				});
+				return returnContainer;
 			}
 		default:
 			console.error('bad method');
@@ -88,48 +94,67 @@ const persistCurrentUser = (resolve, reject, method, args, data) => {
 	}
 };
 
+
+
+
 const persistItems = (resolve, reject, method, args, data) => {
+	const { category: category_name, ...item } = data;
+	//// find the container
+	const container = getContainerByItem(item);
+	//// find the category
+	const category = getCategoryByName(container, category_name);
+	//// check for duplicates
+	if (_.find(category.items, { name: item.name })) {
+		store = Object.assign({}, storeBackup);
+		reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
+	}	
+	//// set item's category id
+	item.category_id = category.id;	
+	//// update item state	
 	switch (method) {
 		case 'post':
-			const { category: category_name, ...item } = data;
 			//// add id to item
 			item.id = store.maxid++;
-			//// find the container
-			// const 
-			const container = store.containers.find(container => (
-				parseInt(container.id) === parseInt(item.container_id)
-			));
-			if (container === undefined) {
-				throw new Error(`container_id ${item.container_id} not found`);
-			}
-			//// find the category
-			let category = _.find(container.categories, { name: category_name });
-			//// new category
-			if (category === undefined) {
-				const category_id = store.maxid++;
-				item.category_id = category_id;
-				category = {
-					id: category_id,
-					name: data.category,
-					container_id: item.container_id,
-					items: [item]
-				};
-
-				container.categories.push(category);
-			//// existing category
-			} else {
-				//// check for duplicates
-				if (_.find(category.items, { name: item.name })) {
-					store = Object.assign({}, storeBackup);
-					reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
+			category.items.push(item);
+			return item;				
+		case 'put':
+			for (let i = 0; i < category.items.length; i++) {
+				if (category.items[i].id === item.id) {
+					category.items[i] = item;
 				}
-				item.category_id = category.id;
-				category.items.push(item);
-			}
+			}			
 			return item;
 		default:
 			console.error('bad method');
 	}
+};
+
+////// Helpers
+
+const getContainerByItem = (item) => {
+	const container = store.containers.find(container => (
+		parseInt(container.id) === parseInt(item.container_id)
+	));	
+	if (container === undefined) {
+		throw new Error(`container_id ${item.container_id} not found`);
+	}
+	return container;	
+}
+
+const getCategoryByName = (container, name) => {
+	let category = _.find(container.categories, { name: name });	
+	if (category === undefined) {
+		const category_id = store.maxid++;
+		category = {
+			id: category_id,
+			name: name,
+			container_id: container.id,
+			items: []
+		};
+
+		container.categories.push(category);
+	}
+	return category;
 };
 
 export default localPersistedStore;
