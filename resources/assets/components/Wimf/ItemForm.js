@@ -40,14 +40,17 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 			fields: { category, name, measurement, quantity, date, container, id },
 	      handleSubmit,
 	      resetForm,
-	      submitting }) => (
-	<FormModal title={title} valid={true} show={showModal} errors={serverErrors} 
-		onSubmit={() => {
-			console.log('submitting', submitAction);
-			handleSubmit(submit(submitAction));
-			resetForm();
-			onHide();
-		}} onHide={() => {
+	      submitting }) => {
+	const submit  = (submitAction) => (values, dispatch) => {
+	  return new Promise((resolve, reject) => {
+		dispatch(submitAction(values));	
+		resetForm();
+		onHide();
+		resolve();
+	  });		
+	};
+	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} 
+		onSubmit={handleSubmit(submit(submitAction))} onHide={() => {
 			resetForm(); 
 			onHide();
 		}}>
@@ -65,8 +68,8 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 
 		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> }
 
-	</FormModal>
-);
+	</FormModal>)
+};
 //, addForm: { show : showAddForm }
 const mapStateToProps = ({ containers: { selected }, 
 		itemForm: { errors, show, selected: selectedItem } }) => {
