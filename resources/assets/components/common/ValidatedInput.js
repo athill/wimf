@@ -39,13 +39,16 @@ const ValidatedInput = ({ error, id, maxLength, mutatedValue, readOnly, touched,
   }
   //const lengthBadge = (<LengthBadge length={value.length} maxLength={maxLength} />);
   const labelComponent = (<InputLabel title={label} warning={warningMessage} error={errorMessage} />);
-  const errorComponent = error ? <div className='text-danger'>{error}</div> : <NoOp />;
+  const errorComponent = touched && error ? <div className='text-danger'>{error}</div> : <NoOp />;
   //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
+  const labelClassName = "col-xs-"+labelCols;
+  const wrapperClassName = "col-xs-"+(12-labelCols);
   if (readOnly) {
     return (
       <div>
         <input {...otherProps}  type="hidden" />
-        <FormControls.Static label={label} value={value} />
+        <FormControls.Static label={label} value={value} labelClassName={labelClassName}
+          wrapperClassName={wrapperClassName} />
       </div>
     );
   } else {
@@ -60,8 +63,8 @@ const ValidatedInput = ({ error, id, maxLength, mutatedValue, readOnly, touched,
         placeholder={label}
         hasFeedback={showTextLengthFeedback}
         bsStyle={style}
-        labelClassName={"col-xs-"+labelCols} 
-        wrapperClassName={"col-xs-"+(12-labelCols)} />
+        labelClassName={labelClassName} 
+        wrapperClassName={wrapperClassName} />
     );
   }
 };

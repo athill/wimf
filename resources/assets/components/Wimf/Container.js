@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 //// components
 import { Icon } from '../common/common';
 //// actions
-import { remove } from '../../actions/items';
+import { showDeleteItemForm } from '../../actions/itemForm';
 
 const mapStateToProps = ({ items }) => {
   return { items };
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
 			alert('edit');
 		},				
 		itemDeleteClickHandler: (item) => {
-			dispatch(remove(item));
+			dispatch(showDeleteItemForm(item));
 		},
 	};
 };
