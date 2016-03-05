@@ -22,9 +22,7 @@ class ItemController extends Controller {
 	public function store(Request $request) {
 		// Item object
 		$item = new Item();
-		$item->name = $request->get('name');
-		$item->quantity = $request->get('quantity');
-		$item->measurement = $request->get('measurement');
+		$item = $this->getRequestItem($request, $item);
 		$item->comment = '';
 
 		//// category object
@@ -34,13 +32,13 @@ class ItemController extends Controller {
 
 		//// save
 		try {
-			return Item::add($item, $category);
+			return Item::persist($item, $category);
 		} catch (\PDOException $e) {
 			//// duplicate item
 			if (Utils::isDbIntegrityException($e)) {
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
 				Log::info($e->getMessage());
-				return response()->json(['error'=>$e->getMessage()], 400);				
+				return response()->json(['error'=>$errorMessage], 400);				
 			} else {
 				throw $e;
 			}
@@ -62,60 +60,27 @@ class ItemController extends Controller {
 	}
 
 	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create() {
-		//
-		
-	}
-
-
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
 	 * Update the specified resource in storage.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
-		//
+	public function update(Request $request, $id) {
+		$item = Item::findOrFail($id);
+		$item = $this->getRequestItem($request, $item);
+
+		//// category object
+		$category = new Category();
+		$category->name = $request->get('category');
+		$category->container_id = $request->get('container_id');
+
+		return Item::persist($item, $category);
 	}
 
-
-
+	private function getRequestItem($request, $item) {
+		$item->name = $request->get('name');
+		$item->quantity = $request->get('quantity');
+		$item->measurement = $request->get('measurement');
+		return $item;		
+	}	
 }

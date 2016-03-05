@@ -20,10 +20,9 @@ class Item extends ChangelogModelBase {
 	}
 
 
-	public static function add($item, $category) {
+	public static function persist($item, $category) {
 		$item->category_id = Category::getId($category);
 		$item->save();
 		return $item;
-	}	
-
+	}
 }

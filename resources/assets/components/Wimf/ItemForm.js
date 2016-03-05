@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 
 import { fetchContainers } from '../../actions/containers';
-import { add, remove } from '../../actions/items';
+import { add, remove, edit } from '../../actions/items';
 import { hideItemForm } from '../../actions/itemForm';
 import { ModalTypes } from '../../constants/ActionTypes';
 import { NoOp } from '../common/common';
@@ -34,6 +34,7 @@ const submit = (submitAction) => (values, dispatch) => {
 	resolve();
   });
 };
+
 
 const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, 
@@ -80,8 +81,8 @@ const mapStateToProps = ({ containers: { selected },
 			submitAction = remove;
 			title = 'Delete';
 			break;
-		case show === ModalTypes.EDIT:
-			submitAction = editItem;
+		case ModalTypes.EDIT:
+			submitAction = edit;
 			title = 'Edit';
 			break;
 		case ModalTypes.CREATE:

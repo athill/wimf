@@ -1,5 +1,5 @@
 import { TOGGLE_ADD_ITEM_FORM, SHOW_ADD_FORM, HIDE_ITEM_FORM,  SHOW_DELETE_ITEM_FORM,
-	SET_ITEM_FORM_ERROR, ModalTypes } from '../constants/ActionTypes'
+	SHOW_EDIT_ITEM_FORM, SET_ITEM_FORM_ERROR, ModalTypes } from '../constants/ActionTypes'
 
 export const initialState = {
     show: ModalTypes.NONE,
@@ -20,7 +20,13 @@ export default function addForm(state = initialState, action) {
         ...state,
         show: ModalTypes.DELETE,
         selected: action.payload
-      };      
+      }; 
+    case SHOW_EDIT_ITEM_FORM:
+      return {
+        ...state,
+        show: ModalTypes.EDIT,
+        selected: action.payload
+      };            
     case SET_ITEM_FORM_ERROR:
       console.debug('addForm reducer', action);
       let errors = action.payload.error;

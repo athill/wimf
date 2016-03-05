@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 
 import * as types from '../constants/ActionTypes'
 import { setItemFormError } from './itemForm';
-import { fetch, post, deleteRequest } from '../util/RemoteOperations';
+import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
 import { addItemToContainer, removeItemFromContainer } from '../util/ContainerOperations';
 
 
@@ -35,6 +35,29 @@ export const add = item => {
       },
       error => {
         dispatch(addItemError());
+        dispatch(setItemFormError(error.data));
+        setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
+      }
+    );
+  };
+};
+
+export const edit = item => {
+  return (dispatch, getState) => {
+    const state = getState();
+    // const { containers: { selected: { id } }  } = getState();
+    const container = state.containers.selected;
+    item.container_id = container.id;
+    dispatch(editItem());
+    return put(
+      `/api/items/${item.id}`,
+      item,
+      response => {
+        dispatch(fetchItems(container));
+        dispatch(editItemSuccess());
+      },
+      error => {
+        dispatch(editItemError());
         dispatch(setItemFormError(error.data));
         setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
       }
@@ -75,6 +98,10 @@ const addItemError = createAction(types.ADD_ITEM_ERROR);
 const deleteItem = createAction(types.DELETE_ITEM);
 const deleteItemSuccess = createAction(types.DELETE_ITEM_SUCCESS);
 const deleteItemError = createAction(types.DELETE_ITEM_ERROR);
+
+const editItem = createAction(types.EDIT_ITEM);
+const editItemSuccess = createAction(types.EDIT_ITEM_SUCCESS);
+const editItemError = createAction(types.EDIT_ITEM_ERROR);
 
 
 const processItems = (json) => {

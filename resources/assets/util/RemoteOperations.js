@@ -12,6 +12,11 @@ export const post = (url, data, resolves, reject)  => {
   chain(promise, resolves, reject);
 };
 
+export const put = (url, data, resolves, reject)  => {
+  const promise = makePromise('put', url, data);
+  chain(promise, resolves, reject);
+};
+
 export const deleteRequest = (url, resolves, reject) => {
   const promise = makePromise('delete', url);
   chain(promise, resolves, reject);  
