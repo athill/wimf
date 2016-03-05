@@ -13,6 +13,17 @@
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/mailTest', function() {
+	// dd(Config::get('mail'));
+	Mail::raw('Text to e-mail', function ($message) {
+	    $message->from('admin@wimf.space', 'WIMF');
+	    $message->subject('email test');
+	    $message->to('andy@andyhill.us');
+	});
+
+	return 'sent';
+});
+
 
 //// same page, but react will render the demo based on url
 Route::get('/demo', 'HomeController@index');
