@@ -17,7 +17,7 @@ let store = {
 
 let storeBackup = store;
 
-localStorage.removeItem('wimf');
+// localStorage.removeItem('wimf');
 
 const localPersistedStore = (resolve, reject, method, url, data) => {
 	const parts = url.slice(1).split('/').slice(1),
@@ -98,31 +98,62 @@ const persistCurrentUser = (resolve, reject, method, args, data) => {
 
 
 const persistItems = (resolve, reject, method, args, data) => {
-	const { category: category_name, ...item } = data;
-	//// find the container
-	const container = getContainerByItem(item);
-	//// find the category
-	const category = getCategoryByName(container, category_name);
-	//// check for duplicates
-	if (_.find(category.items, { name: item.name })) {
-		store = Object.assign({}, storeBackup);
-		reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
-	}	
-	//// set item's category id
-	item.category_id = category.id;	
+	let category_name, item, container, category;
+	//// put/post
+	if (['put', 'post'].indexOf(method) > -1) {
+		({ category: category_name, ...item } = data);
+		//// find the container
+		container = getContainerByItem(item);
+		//// find the category
+		category = getCategoryByName(container, category_name);
+		//// set item's category id
+		item.category_id = category.id;			
+		
+	}
 	//// update item state	
 	switch (method) {
 		case 'post':
 			//// add id to item
 			item.id = store.maxid++;
+			//// check for duplicates
+			if (_.find(category.items, { name: item.name })) {
+				store = Object.assign({}, storeBackup);
+				reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
+			}				
 			category.items.push(item);
 			return item;				
 		case 'put':
+			const existingItem = _.find(category.items, { id: item.id });
+			//// check for duplicates
+			if (_.find(category.items, item => item.id !== existingItem.id 
+					&& item.name === existingItem.name)) {
+				store = Object.assign({}, storeBackup);
+				reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
+			}	
 			for (let i = 0; i < category.items.length; i++) {
 				if (category.items[i].id === item.id) {
 					category.items[i] = item;
 				}
 			}			
+			return item;
+		case 'delete':
+			const id = args[0];
+			for (let i = 0; i < store.containers.length; i++) {
+				let categories = store.containers[i].categories;
+				for (let j = 0; j < categories.length; j++) {
+					let category = categories[j];
+					for (let k = 0; k < category.items.length; k++) {
+						item = category.items[k];
+						console.debug('item', item, id);
+						if (parseInt(item.id) === parseInt(id)) {
+							console.debug('category', category);
+							const index = _.find(category.items, { id: parseInt(item.id) });
+							category.items.splice(index, 1);			
+							console.debug('category after', category.items);
+						}
+					}
+				}
+			}
 			return item;
 		default:
 			console.error('bad method');
@@ -144,14 +175,12 @@ const getContainerByItem = (item) => {
 const getCategoryByName = (container, name) => {
 	let category = _.find(container.categories, { name: name });	
 	if (category === undefined) {
-		const category_id = store.maxid++;
 		category = {
-			id: category_id,
+			id: store.maxid++,
 			name: name,
 			container_id: container.id,
 			items: []
 		};
-
 		container.categories.push(category);
 	}
 	return category;
