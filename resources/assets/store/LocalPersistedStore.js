@@ -144,12 +144,9 @@ const persistItems = (resolve, reject, method, args, data) => {
 					let category = categories[j];
 					for (let k = 0; k < category.items.length; k++) {
 						item = category.items[k];
-						console.debug('item', item, id);
 						if (parseInt(item.id) === parseInt(id)) {
-							console.debug('category', category);
 							const index = _.find(category.items, { id: parseInt(item.id) });
 							category.items.splice(index, 1);			
-							console.debug('category after', category.items);
 						}
 					}
 				}
