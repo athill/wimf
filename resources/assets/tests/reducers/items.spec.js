@@ -9,26 +9,26 @@ describe('items reducer', () => {
     ).toEqual(initialState);
   });
 
-  it('should handle RECEIVE_ITEMS', () => {
-	const items = {
-		items: {
-			name: 'Freezer',
-    		categories: [{
-    				name: 'Frozen',
-    				items: [{
-    					name: 'peas',
-    					quantity: '2',
-    					measurement: 'oz'
-    				}]
-    			}
-    		]
-    	}
-	};
-    expect(
-      reducer(initialState, {
-        type: types.RECEIVE_ITEMS,
-        payload: items
-      })
-    ).toEqual(items);
-  });
+ //  it('should handle RECEIVE_ITEMS', () => {
+	// const items = {
+	// 	items: {
+	// 		name: 'Freezer',
+ //    		categories: [{
+ //    				name: 'Frozen',
+ //    				items: [{
+ //    					name: 'peas',
+ //    					quantity: '2',
+ //    					measurement: 'oz'
+ //    				}]
+ //    			}
+ //    		]
+ //    	}
+	// };
+ //    expect(
+ //      reducer(initialState, {
+ //        type: types.RECEIVE_ITEMS,
+ //        payload: items
+ //      })
+ //    ).toEqual(items);
+ //  });
 });

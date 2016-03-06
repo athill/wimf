@@ -1,5 +1,19 @@
-export const addItemToContainer = (item, getState) => {
+export const addItemToContainer = (item, state) => {
+	newState = Object.assign({}, state);
+	let added = false;
+	for (let i = 0; i < newState.categories.length; i++) {
+		let category = newState.categories[i];
+		if (category.id === item.container_id) {
+			category.push(item);
+			category.sort(sortByNameKey);
+			added = true;
+			break;
+		}
+	}
+	if (!added) {
 
+	}
+	return newState;
 };
 
 export const removeItemFromContainer = (item, getState) => {

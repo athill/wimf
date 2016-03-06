@@ -32,7 +32,9 @@ class ItemController extends Controller {
 
 		//// save
 		try {
-			return Item::persist($item, $category);
+			$item = Item::persist($item, $category)->toArray();
+			$item['category'] = $category->name;
+			return $item;
 		} catch (\PDOException $e) {
 			//// duplicate item
 			if (Utils::isDbIntegrityException($e)) {
@@ -74,7 +76,10 @@ class ItemController extends Controller {
 		$category->name = $request->get('category');
 		$category->container_id = $request->get('container_id');
 
-		return Item::persist($item, $category);
+		$item = Item::persist($item, $category)->toArray();
+		$item['category'] = $category->name;
+		return $item;
+
 	}
 
 	private function getRequestItem($request, $item) {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-let store = {
+export const getStorePristine = () => ({
 	maxid: 0,
 	containers: [{
 		id: 99999999,
@@ -12,14 +12,25 @@ let store = {
 		id: 88888888,
 		name: 'demo',
 		email: 'demo@demo.com'
-	}
-};
+	}	
+});
 
-let storeBackup = store;
+let store = getStorePristine();
+
+let storeBackup = getStorePristine();
 
 // localStorage.removeItem('wimf');
 
-const localPersistedStore = (resolve, reject, method, url, data) => {
+const setStore = (newStore) => store = {...newStore};
+
+export const resetStore = () => {
+	const storePristine = getStorePristine();
+	store = getStorePristine();
+}
+
+export const getStore = () => ({...store});
+
+export const localPersistedStore = (resolve, reject, method, url, data) => {
 	const parts = url.slice(1).split('/').slice(1),
 		type = parts[0],
 		args = parts.slice(1);
@@ -45,7 +56,7 @@ const localPersistedStore = (resolve, reject, method, url, data) => {
 	}
 	////serializeStore
 	localStorage.setItem('wimf', JSON.stringify(store));
-	storeBackup = Object.assign({}, store);
+	storeBackup = { ...store };
 	resolve({
 		data: retval
 	});
@@ -53,7 +64,7 @@ const localPersistedStore = (resolve, reject, method, url, data) => {
 
 
 
-const persistContainers = (resolve, reject, method, args, data) => {
+export const persistContainers = (resolve, reject, method, args=[], data={}) => {
 	switch (method) {
 		case 'get':
 			//// container list for dropdown
@@ -85,30 +96,31 @@ const persistContainers = (resolve, reject, method, args, data) => {
 	}
 };
 
-const persistCurrentUser = (resolve, reject, method, args, data) => {
+export const persistCurrentUser = (resolve, reject, method, args, data) => {
 	switch (method) {
 		case 'get':
 			return store.user;
 		default:
 			console.error('bad method');
+			reject();
 	}
 };
 
 
 
 
-const persistItems = (resolve, reject, method, args, data) => {
-	let category_name, item, container, category;
+export const persistItems = (resolve, reject, method, args, data) => {
+	let category_name, item, container, category, container_id;
 	//// put/post
 	if (['put', 'post'].indexOf(method) > -1) {
-		({ category: category_name, ...item } = data);
+		({ container_id, category: category_name, ...item } = data);
 		//// find the container
-		container = getContainerByItem(item);
+		container = getContainerById(container_id);
+
 		//// find the category
 		category = getCategoryByName(container, category_name);
 		//// set item's category id
-		item.category_id = category.id;			
-		
+		item.category_id = category.id;	
 	}
 	//// update item state	
 	switch (method) {
@@ -117,25 +129,27 @@ const persistItems = (resolve, reject, method, args, data) => {
 			item.id = store.maxid++;
 			//// check for duplicates
 			if (_.find(category.items, { name: item.name })) {
-				store = Object.assign({}, storeBackup);
-				reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
+				store = {...storeBackup};
+				reject({ data: { error: `Add: Item "${item.name}" exists in "${category.name}"`}});
+				return;
 			}				
 			category.items.push(item);
-			return item;				
+			return getReturnItem(item, category);
 		case 'put':
 			const existingItem = _.find(category.items, { id: item.id });
 			//// check for duplicates
 			if (_.find(category.items, item => item.id !== existingItem.id 
 					&& item.name === existingItem.name)) {
-				store = Object.assign({}, storeBackup);
-				reject({ data: { error: `Item "${item.name}" exists in "${category.name}"`}});
+				store = {...storeBackup};
+				reject({ data: { error: `Update: Item "${item.name}" exists in "${category.name}"`}});
+				return;
 			}	
 			for (let i = 0; i < category.items.length; i++) {
 				if (category.items[i].id === item.id) {
 					category.items[i] = item;
 				}
 			}			
-			return item;
+			return getReturnItem(item, category);
 		case 'delete':
 			const id = args[0];
 			for (let i = 0; i < store.containers.length; i++) {
@@ -159,17 +173,23 @@ const persistItems = (resolve, reject, method, args, data) => {
 
 ////// Helpers
 
-const getContainerByItem = (item) => {
+const getReturnItem = (item, category) => {
+	const returnItem = {...item};
+	returnItem.category = category.name;
+	return returnItem;
+};
+
+export const getContainerById = (id) => {
 	const container = store.containers.find(container => (
-		parseInt(container.id) === parseInt(item.container_id)
+		parseInt(container.id) === parseInt(id)
 	));	
 	if (container === undefined) {
-		throw new Error(`container_id ${item.container_id} not found`);
+		throw new Error(`container_id ${id} not found`);
 	}
 	return container;	
 }
 
-const getCategoryByName = (container, name) => {
+export const getCategoryByName = (container, name) => {
 	let category = _.find(container.categories, { name: name });	
 	if (category === undefined) {
 		category = {

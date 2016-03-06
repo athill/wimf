@@ -30,8 +30,8 @@ export const add = item => {
       `/api/items/`,
       item,
       response => {
-        dispatch(fetchItems(container));
-        dispatch(addItemSuccess());
+        // dispatch(fetchItems(container));
+        dispatch(addItemSuccess(response));
       },
       error => {
         dispatch(addItemError());
@@ -91,7 +91,7 @@ const requestItems = createAction(types.REQUEST_ITEMS);
 const receiveItems = createAction(types.RECEIVE_ITEMS, data => processItems(data));
 
 const addItem = createAction(types.ADD_ITEM);
-const addItemSuccess = createAction(types.ADD_ITEM_ERROR);
+const addItemSuccess = createAction(types.ADD_ITEM_SUCCESS);
 const addItemError = createAction(types.ADD_ITEM_ERROR);
 
 
