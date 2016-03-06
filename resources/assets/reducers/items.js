@@ -1,4 +1,5 @@
-import { RECEIVE_ITEMS } from '../constants/ActionTypes'
+import { RECEIVE_ITEMS } from '../constants/ActionTypes';
+import { sortContainer } from '../util/ContainerOperations';
 
 export const initialState = {
     items: { 
@@ -9,7 +10,7 @@ export const initialState = {
 export default function items(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_ITEMS:
-    	return action.payload;
+    	return sortContainer(action.payload);
     default:
       return state;
   }
