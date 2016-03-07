@@ -1,17 +1,24 @@
-export const addItemToCategories = (item, categories) => {
-	newCategories = [].concat(categories);
+export const addItemToCategories = (categories, item) => {
+	let newCategories = [].concat(categories);
 	let added = false;
+	console.log('addItemToCategories', categories);
 	for (let i = 0; i < newCategories.length; i++) {
 		let category = newCategories[i];
-		if (category.id === item.container_id) {
-			category.push(item);
-			category.sort(sortByNameKey);
+
+		if (category.id === item.category_id) {
+			category.items.push(item);
+			category.items.sort(sortByNameKey);
 			added = true;
 			break;
 		}
 	}
 	if (!added) {
-
+		newCategories.push({
+			name: item.category,
+			id: item.category_id,
+			items: [item]
+		});
+		newCategories = sortCategories(newCategories);
 	}
 	return newCategories;
 };
@@ -65,6 +72,3 @@ const matchesFilterByName = (item, text) => item.name.toUpperCase().indexOf(text
 export const sortCategory = category => {
 
 };
-
-
-

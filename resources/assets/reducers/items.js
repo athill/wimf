@@ -20,9 +20,10 @@ export default function items(state = initialState, action) {
         categories: sortCategories(action.payload.categories)
       };
     case ADD_ITEM_SUCCESS:
+      console.debug('items reducer ADD_ITEM_SUCCESS', state, action);
     	return {
         ...state,
-        categories: addItemToCategories(state.categories, action.data)
+        categories: addItemToCategories(state.categories, action.payload.data)
       };
     case SET_ITEMS_FILTER:
       return {
