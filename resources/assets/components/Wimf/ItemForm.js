@@ -27,7 +27,6 @@ const validate = values => {
 };
 
 const submit = (submitAction) => (values, dispatch) => {
-  console.log('in submit');
   return new Promise((resolve, reject) => {
 	dispatch(submitAction(values));	
 	dispatch(fetchContainers());

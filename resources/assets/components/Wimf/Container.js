@@ -6,15 +6,15 @@ import { Row, Col, Navbar, Nav, NavItem } from 'react-bootstrap';
 import Item from './Item';
 
 
-const Containers = ({ items, itemDeleteClickHandler, itemEditClickHandler }) => {
-	if (! items || ! items.categories) {
+const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler }) => {
+	if (!categories) {
 		return <noscript />;
 	}
 	return (
 		<div>
-		<h3>{items.name}</h3>
+		<h3>{name}</h3>
 		{
-			items.categories.map(category => (
+			categories.map(category => (
 				<div>
 					<h4>{category.name}</h4>
 					{
@@ -42,4 +42,4 @@ const Containers = ({ items, itemDeleteClickHandler, itemEditClickHandler }) => 
 
 
 
-export default Containers;
+export default Container;

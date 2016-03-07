@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //// actions
 import { fetchContainers } from '../../actions/containers';
+import { setItemsFilter } from '../../actions/items';
 import { showDeleteItemForm, showEditItemForm } from '../../actions/itemForm';
 import { fetchUserInfo } from '../../actions/user';
 //// components
@@ -12,16 +13,25 @@ import ContainerSelector from './ContainerSelector';
 import Filter from './Filter';
 import ItemForm from './ItemForm';
 
-const mapStateToProps = ({containers, items}) => {
+//// utils
+import { filterCategories } from '../../util/ContainerOperations';
+
+const mapStateToProps = ({containers, items: { categories, filter, name: containerName }}) => {
+  if (filter != '') {
+    categories = filterCategories(categories, filter);
+  }
   return {
     containers,
-    items
+    categories,
+    containerName
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleFilterChange: value => console.log(value),
+    handleFilterChange: value => {
+      dispatch(setItemsFilter(value));
+    },
     itemEditClickHandler: (item) => {
       dispatch(showEditItemForm(item));
     },        
@@ -40,12 +50,13 @@ class Wimf extends React.Component {
   }
 
   render() {
-    const {containers, items, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange} = this.props;
+    const {containers, containerName, categories, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange} = this.props;
     return (
       <div>
           <ContainerSelector containers={containers} />
           <Filter handleChange={handleFilterChange} />
-          <Container items={items} itemEditClickHandler={itemEditClickHandler}
+          <Container name={containerName} categories={categories} 
+            itemEditClickHandler={itemEditClickHandler}
             itemDeleteClickHandler={itemDeleteClickHandler} />
           <AddItemButton />
           <ItemForm /> 

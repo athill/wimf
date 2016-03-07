@@ -23,6 +23,7 @@ export const SHOW_EDIT_ITEM_FORM = 'SHOW_EDIT_ITEM_FORM';
 export const HIDE_ITEM_FORM = 'HIDE_ITEM_FORM';
 export const CLEAR_ADD_FORM = 'CLEAR_ADD_FORM';
 export const SET_ITEM_FORM_ERROR = 'SET_ITEM_FORM_ERROR';
+export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER';
 
 //// Modal
 export const ModalTypes = {

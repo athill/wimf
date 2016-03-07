@@ -1,8 +1,8 @@
-export const addItemToContainer = (item, state) => {
-	newState = Object.assign({}, state);
+export const addItemToCategories = (item, categories) => {
+	newCategories = [].concat(categories);
 	let added = false;
-	for (let i = 0; i < newState.categories.length; i++) {
-		let category = newState.categories[i];
+	for (let i = 0; i < newCategories.length; i++) {
+		let category = newCategories[i];
 		if (category.id === item.container_id) {
 			category.push(item);
 			category.sort(sortByNameKey);
@@ -13,10 +13,10 @@ export const addItemToContainer = (item, state) => {
 	if (!added) {
 
 	}
-	return newState;
+	return newCategories;
 };
 
-export const removeItemFromContainer = (item, getState) => {
+export const removeItemFromCategories = (item, getState) => {
 
 };
 
@@ -27,17 +27,40 @@ const sortByNameKey = (x, y) => {
 }
 
 
-export const sortContainer = container => {
-	const newContainer = Object.assign({}, container);
-	console.debug(newContainer);
-	newContainer.categories = newContainer.categories.filter(category => category.items.length > 0);
-	newContainer.categories.sort(sortByNameKey);
-
-	newContainer.categories.forEach(category => {
+export const sortCategories = categories => {
+	const newCategories = categories.filter(category => category.items.length > 0);
+	newCategories.sort(sortByNameKey);
+	newCategories.forEach(category => {
 		category.items.sort(sortByNameKey);
 	});
-	return newContainer;
+	return newCategories;
 };
+
+export const filterCategories = (categories, text) => {
+	if (!text) {
+		return categories;
+	}
+	text = text.toUpperCase();
+	
+	const newCategories = [];
+	categories.forEach(category => {
+		if (matchesFilterByName(category, text)) {			
+			newCategories.push(category);
+		} else {
+			const filteredItems = category.items.filter(item => matchesFilterByName(item, text));
+			if (filteredItems.length > 0) {
+				const newCategory = {
+					...category,
+					items: filteredItems
+				}
+				newCategories.push(newCategory);
+			}
+		}
+	});
+	return newCategories;
+};
+
+const matchesFilterByName = (item, text) => item.name.toUpperCase().indexOf(text) > -1;
 
 export const sortCategory = category => {
 

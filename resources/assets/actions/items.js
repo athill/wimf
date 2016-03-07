@@ -103,6 +103,8 @@ const editItem = createAction(types.EDIT_ITEM);
 const editItemSuccess = createAction(types.EDIT_ITEM_SUCCESS);
 const editItemError = createAction(types.EDIT_ITEM_ERROR);
 
+export const setItemsFilter = createAction(types.SET_ITEMS_FILTER);
+
 
 const processItems = (json) => {
   return json;
