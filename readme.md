@@ -3,8 +3,8 @@
 Basic container inventory tracking app
 
 ## Todo
-[ ] Category admin
-[ ] Container admin
-[ ] Date Picker
-[ ] Auto-complete
-[ ] Filter
+- [ ] Category admin
+- [ ] Container admin
+- [ ] Date Picker
+- [ ] Auto-complete
+- [ ] Filter
