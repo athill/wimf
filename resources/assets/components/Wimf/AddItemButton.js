@@ -5,7 +5,7 @@ import {Icon} from '../common/common';
 //// actions
 import { toggleAddItemForm } from '../../actions/itemForm';
 
-const AddItemButton = ({clickHandler}) => {
+const AddItemButton = ({clickHandler = e => e}) => {
   return <Icon id='add-item-button' icon='plus-square' 
   	size='3x' title='Add Item'
   	onClick={e => {e.preventDefault(); clickHandler();  }} />
