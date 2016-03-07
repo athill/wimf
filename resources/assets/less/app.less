@@ -8,16 +8,8 @@ body, label, .checkbox label {
 }
 
 .card-block {
-	border: thin solid #808080;
-	border-radius: 1em;
-	box-shadow: 0.2em 0.2em 0.5em #000;
-	display: inline-block;
-	margin: 0.5em;
-	padding: 0.5em;
-	width: 15em;
-	position: relative;
-	.card-header {
-		clear: both;
+	// .card-header {
+	// 	clear: both;
 
 		.card-title {
 			float: left;
@@ -25,6 +17,7 @@ body, label, .checkbox label {
 		}		
 		.card-navbar {
 			float: right;
+			width: 3em;
 			i {
 				padding: 0 0.2em;
 				cursor: pointer;
@@ -36,12 +29,7 @@ body, label, .checkbox label {
 				color: @brand-danger;
 			}
 		}
-	}
-
-	.card-text {
-		border-top: 1px black solid;
-		clear: both;
-	}
+	// }
 }
 
 .component-selector-label {
@@ -53,4 +41,12 @@ body, label, .checkbox label {
 	font-size: 2em;
 	padding: 0;
 	margin: 0;
+}
+
+#add-item-button {
+	position: fixed;
+	top: 1.5em;
+	right: 0.2em;
+	cursor: pointer;
+	color: @brand-success;
 }

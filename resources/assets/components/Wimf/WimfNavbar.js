@@ -3,30 +3,22 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 //// actions
-import { toggleAddItemForm } from '../../actions/itemForm';
+// import { toggleAddItemForm } from '../../actions/itemForm';
 
 //// components
-import {Icon} from '../common/common';
+// import {Icon} from '../common/common';
 
-const AddButton = ({clickHandler}) => {
-  return <Icon icon='plus-square' onClick={e => {e.preventDefault(); clickHandler();  }} />
-};
-AddButton.defaultProps = {
-  addButtonClickHandler: e => e
-};
+// const AddButton = ({clickHandler}) => {
+//   return <Icon icon='plus-square' onClick={e => {e.preventDefault(); clickHandler();  }} />
+// };
+// AddButton.defaultProps = {
+//   addButtonClickHandler: e => e
+// };
 
 
 const mapStateToProps = ({ user }) => {
   return {
     user
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addButtonClickHandler: () => {
-      dispatch(toggleAddItemForm());
-    }
   };
 };
 
@@ -43,9 +35,10 @@ const WimfNavbar = ({ user, addButtonClickHandler }) => (
         
       </Nav>
       <Nav pullRight>
-        <NavItem eventKey={1} href="#">
+        {/* <NavItem eventKey={1} href="#">
           <AddButton clickHandler={addButtonClickHandler} />
         </NavItem>
+      */}
         <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem>
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
           <MenuItem eventKey={3.1} href='/auth/logout'>Logout</MenuItem>
@@ -60,4 +53,4 @@ const WimfNavbar = ({ user, addButtonClickHandler }) => (
 );
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(WimfNavbar);
+export default connect(mapStateToProps)(WimfNavbar);
