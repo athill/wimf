@@ -8,8 +8,8 @@ body, label, .checkbox label {
 }
 
 .card-block {
-	// .card-header {
-	// 	clear: both;
+	.panel-heading {
+		padding: 5px 10px;
 
 		.card-title {
 			float: left;
@@ -17,9 +17,10 @@ body, label, .checkbox label {
 		}		
 		.card-navbar {
 			float: right;
-			width: 3em;
+			width: 4em;
+			text-align: right;
 			i {
-				padding: 0 0.2em;
+				padding: 0 0.1em;
 				cursor: pointer;
 			}
 			.fa-edit {
@@ -29,7 +30,7 @@ body, label, .checkbox label {
 				color: @brand-danger;
 			}
 		}
-	// }
+	}
 }
 
 .component-selector-label {
