@@ -2,27 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
-//// actions
-// import { toggleAddItemForm } from '../../actions/itemForm';
-
-//// components
-// import {Icon} from '../common/common';
-
-// const AddButton = ({clickHandler}) => {
-//   return <Icon icon='plus-square' onClick={e => {e.preventDefault(); clickHandler();  }} />
-// };
-// AddButton.defaultProps = {
-//   addButtonClickHandler: e => e
-// };
-
 
 const mapStateToProps = ({ user }) => {
   return {
-    user
+    user,
+    isDemo: user.email === 'demo@demo.com'
   };
 };
 
-const WimfNavbar = ({ user, addButtonClickHandler }) => (
+const WimfNavbar = ({ user, isDemo }) => (
   <Navbar inverse>
     <Navbar.Header>
       <Navbar.Brand>
@@ -35,17 +23,15 @@ const WimfNavbar = ({ user, addButtonClickHandler }) => (
         
       </Nav>
       <Nav pullRight>
-        {/* <NavItem eventKey={1} href="#">
-          <AddButton clickHandler={addButtonClickHandler} />
-        </NavItem>
-      */}
-        <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem>
+        { !isDemo && <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem> }
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1} href='/auth/logout'>Logout</MenuItem>
-          <MenuItem eventKey={3.2}>Another action</MenuItem>
-          <MenuItem eventKey={3.3}>Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey={3.3}>Separated link</MenuItem>
+          {(() => (
+            isDemo ?
+              [<MenuItem eventKey={3.1} href='/auth/login'>Login</MenuItem>,
+              <MenuItem eventKey={3.1} href='/auth/register'>Register</MenuItem>] :
+
+              [<MenuItem eventKey={3.1} href='/auth/logout'>Logout</MenuItem>]
+          ))()}
         </NavDropdown>
       </Nav>
     </Navbar.Collapse>
