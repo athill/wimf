@@ -1,10 +1,11 @@
+import _ from 'lodash';
+
 export const addItemToCategories = (categories, item) => {
 	let newCategories = [].concat(categories);
 	let added = false;
-	console.log('addItemToCategories', categories);
+	//// add to existing category
 	for (let i = 0; i < newCategories.length; i++) {
 		let category = newCategories[i];
-
 		if (category.id === item.category_id) {
 			category.items.push(item);
 			category.items.sort(sortByNameKey);
@@ -12,6 +13,7 @@ export const addItemToCategories = (categories, item) => {
 			break;
 		}
 	}
+	//// add to new category
 	if (!added) {
 		newCategories.push({
 			name: item.category,
@@ -23,8 +25,29 @@ export const addItemToCategories = (categories, item) => {
 	return newCategories;
 };
 
-export const removeItemFromCategories = (item, getState) => {
-
+export const removeItemFromCategories = (categories, item) => {
+	let newCategories = [];
+	let removed = false;
+	//// remove from existing category
+	for (let i = 0; i < categories.length; i++) {
+		let category = categories[i];
+		console.debug('removeItemFromCategories cat compare', category.id, 
+			item.category_id, category.id === item.category_id, item)
+		if (!removed && (category.name === item.category)) {
+			const items = _.remove(category.items, catitem => catitem.id === item.id);
+			console.debug('removeItemFromCategories before', category, item);
+			category = {
+				...category,
+				items
+			};
+			console.debug('removeItemFromCategories after', category, item);
+			removed = true;
+		}
+		if (category.items.length > 0) {
+			newCategories.push(category);
+		}
+	}	
+	return newCategories;
 };
 
 const sortByNameKey = (x, y) => {
@@ -59,7 +82,7 @@ export const filterCategories = (categories, text) => {
 				const newCategory = {
 					...category,
 					items: filteredItems
-				}
+				};
 				newCategories.push(newCategory);
 			}
 		}

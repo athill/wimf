@@ -159,8 +159,11 @@ export const persistItems = (resolve, reject, method, args, data) => {
 					for (let k = 0; k < category.items.length; k++) {
 						item = category.items[k];
 						if (parseInt(item.id) === parseInt(id)) {
-							const index = _.find(category.items, { id: parseInt(item.id) });
-							category.items.splice(index, 1);			
+							const items = _.remove(category.items, catitem => catitem.id === item.id);
+							category = {
+								...category,
+								items
+							};
 						}
 					}
 				}

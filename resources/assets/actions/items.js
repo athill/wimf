@@ -75,8 +75,7 @@ export const remove = item => {
     return deleteRequest(
       `/api/items/${item.id}`,
       response => {
-        removeItemFromContainer(item);
-        dispatch(deleteItemSuccess());
+        dispatch(deleteItemSuccess(item));
       },
       error => {
         console.error(error);
