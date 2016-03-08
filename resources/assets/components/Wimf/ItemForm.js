@@ -11,6 +11,7 @@ import { ModalTypes } from '../../constants/ActionTypes';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
 // import InlineField from '../common/InlineField';
+import TypeaheadField from '../common/TypeaheadField';
 import ValidatedInput from '../common/ValidatedInput';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id'];
@@ -54,7 +55,7 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 			resetForm(); 
 			onHide();
 		}}>
-		<ValidatedInput type='text' autoFocus id='category' readOnly={readOnly} label='Category' {...category} />
+		<TypeaheadField type='text' autoFocus id='category' readOnly={readOnly} label='Category' {...category} />
 		{' '}
 		<ValidatedInput type='text' id='name' label='Name' readOnly={readOnly} {...name} />
 		{' '}
