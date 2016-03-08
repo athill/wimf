@@ -4,7 +4,6 @@ import { createAction } from 'redux-actions';
 import * as types from '../constants/ActionTypes'
 import { setItemFormError } from './itemForm';
 import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
-import { addItemToContainer, removeItemFromContainer } from '../util/ContainerOperations';
 
 
 export const fetchItems = container => (
@@ -53,8 +52,8 @@ export const edit = item => {
       `/api/items/${item.id}`,
       item,
       response => {
-        dispatch(fetchItems(container));
-        dispatch(editItemSuccess());
+        // dispatch(fetchItems(container));
+        dispatch(editItemSuccess(item));
       },
       error => {
         dispatch(editItemError());

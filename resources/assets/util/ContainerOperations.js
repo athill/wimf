@@ -46,6 +46,75 @@ export const removeItemFromCategories = (categories, item) => {
 	return newCategories;
 };
 
+export const updateItemInCategories = (categories, item) => {
+	console.debug('updateItemInCategories', categories, item);
+	const newCategories = [];
+	const newCategoryIndex = _.findIndex(categories, category => category.name === item.category);
+	let oldCategoryIndex;
+	for (let i = 0; i < categories.length; i++) {
+		let category = categories[i];
+		let index = _.findIndex(category.items, catitem => catitem.id === item.id);
+		if (index > -1) {
+			oldCategoryIndex = index;
+			break;
+		}
+	}
+	for (let i = 0; i < categories.length; i++) {
+		let category = categories[i];
+		let newCategory = {...category};
+		if (i === oldCategoryIndex) {
+			let itemIndex = _.findIndex(container.items, catitem => catitem.id === item.id);
+			//// category is same, update existing item
+			if (oldCategoryIndex === newCategoryIndex) {
+				const newItem = {
+					...item,
+					category_id: category.id
+				};
+				newCategory.items[itemIndex] + newItem;
+
+			//// category is different, remove old item
+			} else {
+
+			}
+		//// category is different, add new item			
+		} else if (i === newCategoryIndex) {
+
+		}
+
+	}
+	//// add new category
+	if (newCategoryIndex === -1) {
+
+	}
+
+	//// remove item
+	if (newCategoryIndex !== oldCategoryIndex) {
+
+	}
+
+	const currentCategoryId = (categoryIndex > -1) ? 
+		categories[categoryIndex].id:
+		-1;
+	const isCategoryNew = 
+	for (let i = 0; i < categories.length; i++) {
+		let category = categories[i];
+		let index = _.find(category.items, catitem => catitem.id === item.id);
+		if (index > -1) {
+			//// category is same
+			if (category.name === item.category) {
+				const newItem = {
+					...item,
+					category_id: category.id
+				};
+			//// category is different
+			} else {
+
+			}
+		} //// category is new
+	}
+	return categories;
+};
+
 const sortByNameKey = (x, y) => {
 	if (x.name.toUpperCase() < y.name.toUpperCase()) return -1;
 	else if (x.name.toUpperCase() > y.name.toUpperCase()) return 1;

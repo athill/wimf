@@ -1,5 +1,7 @@
-import { RECEIVE_ITEMS, ADD_ITEM_SUCCESS, DELETE_ITEM_SUCCESS, SET_ITEMS_FILTER } from '../constants/ActionTypes';
-import { sortCategories, addItemToCategories, removeItemFromCategories } from '../util/ContainerOperations';
+import { RECEIVE_ITEMS, ADD_ITEM_SUCCESS, DELETE_ITEM_SUCCESS, 
+  EDIT_ITEM_SUCCESS, SET_ITEMS_FILTER } from '../constants/ActionTypes';
+import { sortCategories, addItemToCategories, removeItemFromCategories,
+  updateItemInCategories } from '../util/ContainerOperations';
 
 export const initialState = {
     categories: [],
@@ -30,7 +32,13 @@ export default function items(state = initialState, action) {
       return {
         ...state,
         categories: removeItemFromCategories(state.categories, action.payload)
-      };    
+      };
+    case EDIT_ITEM_SUCCESS:
+      console.debug('items reducer EDIT_ITEM_SUCCESS', state, action);
+      return {
+        ...state,
+        categories: updateItemInCategories(state.categories, action.payload)
+      };          
     case SET_ITEMS_FILTER:
       return {
         ...state,

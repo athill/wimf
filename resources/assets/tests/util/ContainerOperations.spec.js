@@ -21,6 +21,7 @@ describe('ContainerOperations', () => {
 				category: category.name,
 				category_id: category.id
 			};
+			expect(category.items.length).toBe(3);
 			const result = ops.addItemToCategories(categories, item);
 			expect(result[0].items.length).toBe(4);
 		});
