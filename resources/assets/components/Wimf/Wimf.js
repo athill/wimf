@@ -55,7 +55,6 @@ class Wimf extends React.Component {
       <div>
           <ContainerSelector containers={containers} />
           <Filter handleChange={handleFilterChange} />
-          foo
           <Container name={containerName} categories={categories} 
             itemEditClickHandler={itemEditClickHandler}
             itemDeleteClickHandler={itemDeleteClickHandler} />

@@ -31,16 +31,12 @@ export const removeItemFromCategories = (categories, item) => {
 	//// remove from existing category
 	for (let i = 0; i < categories.length; i++) {
 		let category = categories[i];
-		console.debug('removeItemFromCategories cat compare', category.id, 
-			item.category_id, category.id === item.category_id, item)
 		if (!removed && (category.name === item.category)) {
-			const items = _.remove(category.items, catitem => catitem.id === item.id);
-			console.debug('removeItemFromCategories before', category, item);
+			const items = _.filter(category.items, catitem => catitem.id !== item.id);
 			category = {
 				...category,
 				items
 			};
-			console.debug('removeItemFromCategories after', category, item);
 			removed = true;
 		}
 		if (category.items.length > 0) {

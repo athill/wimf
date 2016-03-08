@@ -156,15 +156,9 @@ export const persistItems = (resolve, reject, method, args, data) => {
 				let categories = store.containers[i].categories;
 				for (let j = 0; j < categories.length; j++) {
 					let category = categories[j];
-					for (let k = 0; k < category.items.length; k++) {
-						item = category.items[k];
-						if (parseInt(item.id) === parseInt(id)) {
-							const items = _.remove(category.items, catitem => catitem.id === item.id);
-							category = {
-								...category,
-								items
-							};
-						}
+					if (_.find(category.items, catitem => parseInt(catitem.id) === parseInt(id))) {
+						category.items = _.filter(category.items, catitem => parseInt(catitem.id) !== parseInt(id));
+						break;						
 					}
 				}
 			}
