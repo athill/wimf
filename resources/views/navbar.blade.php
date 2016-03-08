@@ -1,4 +1,10 @@
-
+<?php
+	$path = Request::path();
+	$pages = [
+		[ 'path' =>'auth/login', 'label'=>'Login'], 
+		[ 'path'=>'auth/register', 'label'=>'Register']
+	];
+?>
 	<nav class="navbar navbar-inverse">
 		<div class="container">
 			<div class="navbar-header">
@@ -15,8 +21,11 @@
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
 						<li><a href="{{ url('/demo') }}" target="_blank">Demo</a></li>
-						<li><a href="{{ url('/auth/login') }}">Login</a></li>
-						<li><a href="{{ url('/auth/register') }}">Register</a></li>
+						@foreach ($pages as $page)
+							@unless ($path === $page['path'])
+								<li><a href="{{ url('/'.$page['path']) }}">{{$page['label']}}</a></li>	
+							@endunless
+						@endforeach
 					@else
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
