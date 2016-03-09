@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+let fakeIndex = 0;
+
 export const addItemToCategories = (categories, item) => {
 	let newCategories = [].concat(categories);
 	let added = false;
@@ -49,7 +51,9 @@ export const removeItemFromCategories = (categories, item) => {
 export const updateItemInCategories = (categories, item) => {
 	console.debug('updateItemInCategories', categories, item);
 	const newCategories = [];
+	//// index of new category
 	const newCategoryIndex = _.findIndex(categories, category => category.name === item.category);
+	//// index of old category
 	let oldCategoryIndex;
 	for (let i = 0; i < categories.length; i++) {
 		let category = categories[i];
@@ -59,60 +63,58 @@ export const updateItemInCategories = (categories, item) => {
 			break;
 		}
 	}
+	//// build new categories array
 	for (let i = 0; i < categories.length; i++) {
+		let newItem, container_id;
 		let category = categories[i];
 		let newCategory = {...category};
 		if (i === oldCategoryIndex) {
 			let itemIndex = _.findIndex(container.items, catitem => catitem.id === item.id);
+			container_id = category.container_id;
 			//// category is same, update existing item
 			if (oldCategoryIndex === newCategoryIndex) {
-				const newItem = {
+				newItem = {
 					...item,
 					category_id: category.id
 				};
-				newCategory.items[itemIndex] + newItem;
+				newCategory.items[itemIndex] = newItem;
 
 			//// category is different, remove old item
 			} else {
-
+				newCategory.items = _.filter(newCategory.items, catitem => catitem.id !== item.id);
 			}
 		//// category is different, add new item			
 		} else if (i === newCategoryIndex) {
-
+				newItem = {
+					...item,
+					category_id: category.id
+				};
+				newCategory.items.push(newItem);
+				newCategory.items.sort(sortByNameKey);
+		}
+		//// add if category has items
+		if (newCategory.items.length) {
+			newCategories.push(newCategory);
 		}
 
 	}
 	//// add new category
 	if (newCategoryIndex === -1) {
-
+		const category_id = fakeIndex++;
+		const newItem = {
+			...item,
+			category_id,
+		};
+		const newCategory = {
+			id: category_id,
+			name: item.category,
+			container_id,
+			items: [newItem]
+		};
+		newCategories.push(newCategory);
+		newCategories.sort(sortByNameKey);
 	}
-
-	//// remove item
-	if (newCategoryIndex !== oldCategoryIndex) {
-
-	}
-
-	const currentCategoryId = (categoryIndex > -1) ? 
-		categories[categoryIndex].id:
-		-1;
-	const isCategoryNew = 
-	for (let i = 0; i < categories.length; i++) {
-		let category = categories[i];
-		let index = _.find(category.items, catitem => catitem.id === item.id);
-		if (index > -1) {
-			//// category is same
-			if (category.name === item.category) {
-				const newItem = {
-					...item,
-					category_id: category.id
-				};
-			//// category is different
-			} else {
-
-			}
-		} //// category is new
-	}
-	return categories;
+	return newCategories;
 };
 
 const sortByNameKey = (x, y) => {
