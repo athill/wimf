@@ -37,6 +37,32 @@ describe('ContainerOperations', () => {
 		});		
 	});
 
+	describe('updateItemInCategories', () => {
+		it('should update an item with the same category', () => {
+			const tmp = categories[0].items[0];
+			const item = {
+				...tmp,
+				name: 'changed'
+			};
+			const result = ops.updateItemInCategories(categories, item);
+			expect(result[0].items[0]).toEqual(item);
+		});
+
+		it('should update an item with the a different category', () => {
+			const tmp = categories[0].items[0];
+			const item = {
+				...tmp,
+				category: 'xxx'
+			};
+			item.category = 'xxx';
+			const result = ops.updateItemInCategories(categories, item);
+			expect(result[1].items[3]).toEqual({
+				...item,
+				category_id: categories[1].id
+			});
+		});		
+	});
+
 	describe('removeItemFromCategories', () => {
 		it('should remove an item from a category', () => {
 			const category = categories[0];

@@ -49,7 +49,6 @@ export const removeItemFromCategories = (categories, item) => {
 };
 
 export const updateItemInCategories = (categories, item) => {
-	console.debug('updateItemInCategories', categories, item);
 	const newCategories = [];
 	//// index of new category
 	const newCategoryIndex = _.findIndex(categories, category => category.name === item.category);
@@ -69,7 +68,7 @@ export const updateItemInCategories = (categories, item) => {
 		let category = categories[i];
 		let newCategory = {...category};
 		if (i === oldCategoryIndex) {
-			let itemIndex = _.findIndex(container.items, catitem => catitem.id === item.id);
+			let itemIndex = _.findIndex(category.items, catitem => catitem.id === item.id);
 			container_id = category.container_id;
 			//// category is same, update existing item
 			if (oldCategoryIndex === newCategoryIndex) {
