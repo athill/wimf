@@ -44,19 +44,25 @@ var config = {
     loaders: [
         {
             test: /\.js$/,
-	    exclude: /node_modules/,            
+	          exclude: /node_modules/,            
             loader: 'babel',
             query: {
                 // https://github.com/babel/babel-loader#options
                 cacheDirectory: true,
                 presets: ['react','es2015', 'stage-0']
             }
-        }
+        },
+        { 
+          test: /\.css$/, 
+          loader: "style-loader!css-loader"
+        },
     ],
   },
-  // postcss: [
-  //   autoprefixer
-  // ],
+
+  postcss: [
+    require('autoprefixer-core')
+  ],
+
   plugins: plugins,
   resolve: {
     extensions: ['', '.js', '.json', '.jsx']
