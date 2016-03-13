@@ -23,7 +23,7 @@ InputLabel.propTypes = {
 
 
 
-const ValidatedInput = ({ error, id, maxLength, mutatedValue, readOnly, touched, warning, 
+const ValidatedInput = ({ children, error, id, maxLength, mutatedValue, readOnly, touched, warning, 
     label = '', value = '', showTextLengthFeedback = false, valid = true, labelCols = 4, ...otherProps }) => {
   let errorMessage, style, warningMessage;
   if (touched) {
@@ -50,7 +50,9 @@ const ValidatedInput = ({ error, id, maxLength, mutatedValue, readOnly, touched,
         
         <input {...otherProps}  type="hidden" />
         <FormControls.Static label={label} value={value} labelClassName={labelClassName}
-          wrapperClassName={wrapperClassName} />
+          wrapperClassName={wrapperClassName}>
+            { children }
+        </FormControls.Static>
       </div>
     );
   } else {
@@ -66,7 +68,9 @@ const ValidatedInput = ({ error, id, maxLength, mutatedValue, readOnly, touched,
         hasFeedback={showTextLengthFeedback}
         bsStyle={style}
         labelClassName={labelClassName} 
-        wrapperClassName={wrapperClassName} />
+        wrapperClassName={wrapperClassName}>
+          { children }
+        </Input>
     );
   }
 };

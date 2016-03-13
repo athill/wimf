@@ -44,7 +44,7 @@ export default class Datepicker extends React.Component {
 		const datepicker = readOnly ?
 								'foo' :
 								<DatePicker {...field}
-									selected={this.state.startDate} readOnly={readOnly}
+									selected={this.state.startDate}
 									onChange={this._handleChange} />;
 		return (
 			<ValidatedInput type={undefined} label={label} help={help} hasFeedback={hasFeedback}
