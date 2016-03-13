@@ -10,6 +10,7 @@ import { hideItemForm } from '../../actions/itemForm';
 import { ModalTypes } from '../../constants/ActionTypes';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
+import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id'];
@@ -61,7 +62,7 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 		{' '}			
 		<ValidatedInput type='text' id='measurement' label='Measurement' readOnly={readOnly} {...measurement} />
 		{' '}
-		<ValidatedInput type='text' id='date' label='Date' readOnly={readOnly} {...date} />
+		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
 		{' '}
 		<input type='hidden' id='container' value={containerId} {...container} />
 

@@ -43,9 +43,11 @@ const ValidatedInput = ({ error, id, maxLength, mutatedValue, readOnly, touched,
   //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
   const labelClassName = "col-xs-"+labelCols;
   const wrapperClassName = "col-xs-"+(12-labelCols);
+
   if (readOnly) {
     return (
       <div>
+        
         <input {...otherProps}  type="hidden" />
         <FormControls.Static label={label} value={value} labelClassName={labelClassName}
           wrapperClassName={wrapperClassName} />
