@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import {reduxForm} from 'redux-form';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 
 import { fetchContainers } from '../../actions/containers';
@@ -109,7 +110,8 @@ const mapStateToProps = ({ containers: { selected },
 		title,
 		submitAction,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: show === ModalTypes.CREATE ? {} : selectedItem
+		initialValues: show === ModalTypes.CREATE ? { date: getDisplayFormat(moment().startOf('day')) } : 
+													selectedItem
 	};
 };
 
