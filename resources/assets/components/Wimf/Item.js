@@ -4,6 +4,9 @@ import { Panel } from 'react-bootstrap';
 //// components
 import { Icon } from '../common/common';
 
+//// utils
+import { getDisplayFormat } from '../../util/DateUtils';
+
 const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item}) => {
 	const header = 	(<div className='clearfix'>
     		<h4 className="card-title">{ item.name }</h4>
@@ -13,7 +16,7 @@ const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item})
     		</div>
     	</div>);
 	return (<Panel header={header} className='card-block'>
-    		{ item.quantity } { item.measurement }
+    		{ item.quantity } { item.measurement } {getDisplayFormat(item.date)}
     		</Panel>);
 };
 Item.propTypes = {

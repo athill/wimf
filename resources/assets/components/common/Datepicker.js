@@ -8,11 +8,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 //// components
 import ValidatedInput from './ValidatedInput';
 
-/****
+//// utils
+import { getDisplayFormat } from '../../util/DateUtils';
 
-readonly 
+/****
 validate
-convert on submit/read
 */
 
 export default class Datepicker extends React.Component {
@@ -25,10 +25,10 @@ export default class Datepicker extends React.Component {
 	}	
 
 	componentWillMount() {
-		const { value } = this.props;
-		if (value) {
+		const { initialValue } = this.props;
+		if (initialValue) {
 			this.setState({
-				startDate: value
+				startDate: initialValue
 			});
 		}
 	}
@@ -40,9 +40,10 @@ export default class Datepicker extends React.Component {
 	}
 
 	render() {
+		console.log(this.props);
 		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
 		const datepicker = readOnly ?
-								'foo' :
+								field.initialValue :
 								<DatePicker {...field}
 									selected={this.state.startDate}
 									onChange={this._handleChange} />;
