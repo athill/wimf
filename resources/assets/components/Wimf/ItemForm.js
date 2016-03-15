@@ -13,6 +13,9 @@ import FormModal from '../common/FormModal';
 import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
 
+//// utils
+import { getDisplayFormat } from '../../util/DateUtils';
+
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id'];
 
 const validate = values => {
@@ -95,6 +98,9 @@ const mapStateToProps = ({ containers: { selected },
 			console.error('Invalid Modal Type', show);
 	}
 	title += ' Item';
+	if (selectedItem) {
+		selectedItem.date = getDisplayFormat(selectedItem.date);	
+	}
 	return {
 		containerId,
 		serverErrors: errors,

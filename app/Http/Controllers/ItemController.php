@@ -86,6 +86,7 @@ class ItemController extends Controller {
 		$item->name = $request->get('name');
 		$item->quantity = $request->get('quantity');
 		$item->measurement = $request->get('measurement');
+		$item->date = $request->get('date');
 		return $item;		
 	}	
 }

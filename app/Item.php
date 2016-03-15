@@ -7,7 +7,7 @@ use App\Category;
 
 class Item extends ChangelogModelBase {
 
-	protected $fillable = ['name', 'user_id', 'quantity', 'measurement', 'category_id'];
+	protected $fillable = ['name', 'user_id', 'quantity', 'measurement', 'category_id', 'date'];
 
 	protected $hidden = ['user_id', 'created_at', 'updated_at', 'category'];
 

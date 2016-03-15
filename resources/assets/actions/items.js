@@ -3,6 +3,9 @@ import { createAction } from 'redux-actions';
 
 import * as types from '../constants/ActionTypes'
 import { setItemFormError } from './itemForm';
+
+//// utils
+import { getIsoFormat } from '../util/DateUtils';
 import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
 
 
@@ -24,6 +27,7 @@ export const add = item => {
     // const { containers: { selected: { id } }  } = getState();
     const container = state.containers.selected;
     item.container_id = container.id;
+    item.date = getIsoFormat(item.date);
     dispatch(addItem());
     return post(
       `/api/items/`,
@@ -47,6 +51,7 @@ export const edit = item => {
     // const { containers: { selected: { id } }  } = getState();
     const container = state.containers.selected;
     item.container_id = container.id;
+    item.date = getIsoFormat(item.date);
     dispatch(editItem());
     return put(
       `/api/items/${item.id}`,
