@@ -9,7 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ValidatedInput from './ValidatedInput';
 
 //// utils
-import { momentFormats, momentize } from '../../util/DateUtils';
+import { momentFormats, momentize, getIsoFormat } from '../../util/DateUtils';
 
 /****
 validate
@@ -36,13 +36,14 @@ export default class Datepicker extends React.Component {
 	}
 
 	_handleChange(date) {
+		const { onChange } = this.props;
+		onChange(getIsoFormat(date));
 		this.setState({
 			startDate: date
 		});
 	}
 
 	render() {
-		console.log(this.props);
 		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
 		const datepicker = readOnly ?
 								field.initialValue :
