@@ -9,7 +9,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ValidatedInput from './ValidatedInput';
 
 //// utils
+import Compatibility from '../../util/Compatibility';
 import { momentFormats, momentize, getIsoFormat } from '../../util/DateUtils';
+
 
 /****
 validate
@@ -45,17 +47,23 @@ export default class Datepicker extends React.Component {
 
 	render() {
 		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
-		const datepicker = readOnly ?
-								field.initialValue :
-								<DatePicker {...field}
-									selected={this.state.startDate}
-									onChange={this._handleChange} />;
-		return (
-			<ValidatedInput type={undefined} label={label} help={help} hasFeedback={hasFeedback}
+		if (Compatibility.isDateSupported()) {
+			return <ValidatedInput {...field} type='date' label={label} help={help} hasFeedback={hasFeedback}
 					labelClassName={labelClassName} wrapperClassName={wrapperClassName}
-					readOnly={readOnly}>
-				{ datepicker }
-			</ValidatedInput>
-		);
+					readOnly={readOnly} />;
+		} else {
+			const datepicker = readOnly ?
+									field.initialValue :
+									<DatePicker {...field}
+										selected={this.state.startDate}
+										onChange={this._handleChange} />;
+			return (
+				<ValidatedInput type={undefined} label={label} help={help} hasFeedback={hasFeedback}
+						labelClassName={labelClassName} wrapperClassName={wrapperClassName}
+						readOnly={readOnly}>
+					{ datepicker }
+				</ValidatedInput>
+			);
+		}
 	}  
 }
