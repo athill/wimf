@@ -27,7 +27,7 @@ const validate = values => {
 			errors[field] = `${field} is required`;
 		} 
 	});
-	if (!isValidDate(values.date)) {
+	if (values.date !== '' && !isValidDate(values.date)) {
 		errors.date = `Invalid date: valid formats are ${momentFormats.join(', ')}`;
 	}
 
