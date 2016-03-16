@@ -8,7 +8,7 @@ export const addItemToCategories = (categories, item) => {
 	//// add to existing category
 	for (let i = 0; i < newCategories.length; i++) {
 		let category = newCategories[i];
-		if (category.id === item.category_id) {
+		if (category.name === item.category) {
 			category.items.push(item);
 			category.items.sort(sortByNameKey);
 			added = true;
