@@ -6,8 +6,8 @@ Basic container inventory tracking app
 - [x] Filter
 - [x] Client side update when adding/removing/editing items
 - [x] Fix navbar links
+- [x] Date Picker
 - [ ] Category admin
 - [ ] Container admin
-- [ ] Date Picker
 - [ ] Auto-complete
 
