@@ -58,7 +58,7 @@ export const updateItemInCategories = (categories, item) => {
 		let category = categories[i];
 		let index = _.findIndex(category.items, catitem => catitem.id === item.id);
 		if (index > -1) {
-			oldCategoryIndex = index;
+			oldCategoryIndex = i;
 			break;
 		}
 	}
