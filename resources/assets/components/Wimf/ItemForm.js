@@ -15,7 +15,7 @@ import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
 
 //// utils
-import { getDisplayFormat } from '../../util/DateUtils';
+import { getDisplayFormat, isValidDate, momentFormats } from '../../util/DateUtils';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id'];
 
@@ -27,6 +27,10 @@ const validate = values => {
 			errors[field] = `${field} is required`;
 		} 
 	});
+	if (!isValidDate(values.date)) {
+		errors.date = `Invalid date: valid formats are ${momentFormats.join(', ')}`;
+	}
+
 	return errors;
 };
 
