@@ -10,7 +10,7 @@ import ValidatedInput from './ValidatedInput';
 
 //// utils
 import Compatibility from '../../util/Compatibility';
-import { momentFormats, momentize, getIsoFormat } from '../../util/DateUtils';
+import { momentFormats, momentize, getIsoFormat, getDisplayFormat } from '../../util/DateUtils';
 
 
 /****
@@ -48,9 +48,11 @@ export default class Datepicker extends React.Component {
 	render() {
 		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
 		if (Compatibility.isDateSupported()) {
+			var value = readOnly ?  getDisplayFormat(field.initialValue) : getIsoFormat(field.initialValue);
+			console.log(value);
 			return <ValidatedInput {...field} type='date' label={label} help={help} hasFeedback={hasFeedback}
 					labelClassName={labelClassName} wrapperClassName={wrapperClassName}
-					readOnly={readOnly} />;
+					readOnly={readOnly} value={value} />;
 		} else {
 			const datepicker = readOnly ?
 									field.initialValue :
