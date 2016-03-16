@@ -38,6 +38,7 @@ export default class Datepicker extends React.Component {
 	}
 
 	_handleChange(date) {
+		console.log('date', date);
 		const { onChange } = this.props;
 		onChange(getIsoFormat(date));
 		this.setState({
@@ -48,11 +49,11 @@ export default class Datepicker extends React.Component {
 	render() {
 		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
 		if (Compatibility.isDateSupported()) {
-			var value = readOnly ?  getDisplayFormat(field.initialValue) : getIsoFormat(field.initialValue);
+			var value = readOnly ?  getDisplayFormat(field.initialValue) : getIsoFormat(this.state.startDate);
 			console.log(value);
 			return <ValidatedInput {...field} type='date' label={label} help={help} hasFeedback={hasFeedback}
 					labelClassName={labelClassName} wrapperClassName={wrapperClassName}
-					readOnly={readOnly} value={value} />;
+					readOnly={readOnly} value={value} onChange={e => this._handleChange(momentize(e.target.value))} />;
 		} else {
 			const datepicker = readOnly ?
 									field.initialValue :
