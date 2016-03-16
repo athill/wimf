@@ -13,10 +13,6 @@ import Compatibility from '../../util/Compatibility';
 import { momentFormats, momentize, getIsoFormat, getDisplayFormat } from '../../util/DateUtils';
 
 
-/****
-validate
-*/
-
 export default class Datepicker extends React.Component {
 	constructor() {
 		super();
