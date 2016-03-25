@@ -3,7 +3,6 @@ var util = require('util');
 // var autoprefixer = require('autoprefixer');
 var pkg = require('../package.json');
 
-var loaders = require('./loaders');
 var plugins = require('./plugins');
 
 var DEBUG = process.env.NODE_ENV === 'development';
