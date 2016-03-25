@@ -6,11 +6,16 @@ import loggerMiddleware from 'redux-logger';
 
 import rootReducer from '../reducers';
 
-const createStoreWithMiddleware = applyMiddleware(
+const middleware = [
   thunkMiddleware,
   promiseMiddleware,
-  loggerMiddleware()
-)(createStore)
+];
+
+if (process.env.NODE_ENV === 'development') {
+  middleware.push(loggerMiddleware());
+}
+
+const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
 
 export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState)
