@@ -11,7 +11,25 @@ var TEST = process.env.NODE_ENV === 'test';
 var jsBundle = path.join('js', '[name].js');
 
 var entry = {
-  app: ['./app.js']
+    app: "./app.js",
+    vendor: [
+      'axios',
+      'classnames',
+      'moment',
+      'lodash',
+      'react',
+      'react-bootstrap',
+      'react-datepicker',
+      'react-dom',
+      'react-redux',
+      'redux',
+      'redux-actions',
+      'redux-form',
+      'redux-logger',
+      'redux-mock-store',
+      'redux-promise',
+      'redux-thunk',
+    ],
 };
 
 // if (DEBUG) {
