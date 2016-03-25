@@ -27,10 +27,10 @@ const WimfNavbar = ({ user, isDemo }) => (
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
           {(() => (
             isDemo ?
-              [<MenuItem eventKey={3.1} href='/auth/login'>Login</MenuItem>,
-              <MenuItem eventKey={3.1} href='/auth/register'>Register</MenuItem>] :
+              [<MenuItem key='login' eventKey={3.1} href='/auth/login'>Login</MenuItem>,
+              <MenuItem key='register' eventKey={3.1} href='/auth/register'>Register</MenuItem>] :
 
-              [<MenuItem eventKey={3.1} href='/auth/logout'>Logout</MenuItem>]
+              [<MenuItem key='logout' eventKey={3.1} href='/auth/logout'>Logout</MenuItem>]
           ))()}
         </NavDropdown>
       </Nav>

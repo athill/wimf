@@ -1,15 +1,14 @@
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var util = require('util');
+var webpack = require('webpack');
 // var autoprefixer = require('autoprefixer');
 var pkg = require('../package.json');
-
-var plugins = require('./plugins');
 
 var DEBUG = process.env.NODE_ENV === 'development';
 var TEST = process.env.NODE_ENV === 'test';
 
 var jsBundle = path.join('js', '[name].js');
-
 var entry = {
     app: "./app.js",
     vendor: [
@@ -31,6 +30,32 @@ var entry = {
       'redux-thunk',
     ],
 };
+
+//// plugins
+var cssBundle = path.join('css', util.format('[name].%s.css', pkg.version));
+var plugins = [
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */path.join('js', "vendor.bundle.js"))  
+];
+if (DEBUG) {
+  plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  );
+} else if (!TEST) {
+  plugins.push(
+    new ExtractTextPlugin(cssBundle, {
+      allChunks: true
+    }),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new webpack.NoErrorsPlugin()
+  );
+}
 
 // if (DEBUG) {
 //   entry.app.push(

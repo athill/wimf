@@ -9,7 +9,7 @@ const ContainerSelector = ({containers}) => (
 			containers.items.map(container => {
 				const selected = container.id === containers.selected.id;
 				return (
-					<option selected={selected} value={container.id}>
+					<option selected={selected} value={container.id} key={container}>
 						{ container.name }
 					</option>
 				);

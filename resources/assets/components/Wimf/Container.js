@@ -14,15 +14,15 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 		<div>
 		<h3>{name}</h3>
 		{
-			categories.map(category => (
-				<div>
+			categories.map((category) => (
+				<div key={category.name}>
 					<h4>{category.name}</h4>
 					{
-						_.chunk(category.items, 4).map(items => (
-							<Row>
+						_.chunk(category.items, 4).map((items, i) => (
+							<Row key={i}>
 								{
 									items.map(item => (
-										<Col md={3} sm={6}>
+										<Col md={3} sm={6} key={item.name}>
 											<Item {...item} 
 												deleteClickHandler={itemDeleteClickHandler} 
 												editClickHandler={itemEditClickHandler} />
