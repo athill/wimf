@@ -5,6 +5,7 @@ var webpack = require('webpack');
 // var autoprefixer = require('autoprefixer');
 var pkg = require('../package.json');
 
+console.log('env', process.env.NODE_ENV); 
 var DEBUG = process.env.NODE_ENV === 'development';
 var TEST = process.env.NODE_ENV === 'test';
 
@@ -35,7 +36,12 @@ var entry = {
 var cssBundle = path.join('css', util.format('[name].%s.css', pkg.version));
 var plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */path.join('js', "vendor.bundle.js"))  
+  new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */path.join('js', "vendor.bundle.js")),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      }
+    }),
 ];
 if (DEBUG) {
   plugins.push(
@@ -48,11 +54,6 @@ if (DEBUG) {
     }),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.DedupePlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }),
     new webpack.NoErrorsPlugin()
   );
 }
