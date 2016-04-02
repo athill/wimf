@@ -70,6 +70,7 @@
     "redux-thunk": "^1.0.3",
     "sinon": "^1.17.3",
     "source-map-support": "^0.4.0",
+    "style-loader": "^0.13.1",
     "template-html-loader": "0.0.3",
     "webpack": "^1.10.1"
   },
