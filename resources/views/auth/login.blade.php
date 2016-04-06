@@ -3,7 +3,23 @@
 @include('navbar')
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-4 col-md-offset-2">
+			<div class="panel panel-success">
+				<div class="panel-heading">New Here?</div>
+				<div class="panel-body">			
+					<p><strong>What's in my Freezer?</strong> is a simple inventory application. It was inspired by going 
+					to the grocery store and buying things that were already in my freezer.</p>
+					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
+					<p>I do have some things planned, such as multiple containers.For example, it could also work well for a closet, etc.</p>
+					<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
+					<p>To get started, check out the <a href="{{ url('/demo') }}" target='_blank'>demo</a> (data stored 
+						<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
+						or <a href="{{ url('auth/register') }}">register</a>.
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">Login</div>
 				<div class="panel-body">
