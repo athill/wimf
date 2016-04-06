@@ -12,7 +12,8 @@
 					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
 					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>
 					<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
-					<p>To get started, check out the <a href="{{ url('/demo') }}" target='_blank'>demo</a> (data stored 
+					<p><strong>To get started</strong>, 
+						check out the <a href="{{ url('/demo') }}" target='_blank'>demo</a> (data stored 
 						<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
 						or <a href="{{ url('auth/register') }}">register</a>.
 					</p>
