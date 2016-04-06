@@ -3,16 +3,19 @@ import React from 'react';
 import { Row, Col, Navbar, Nav, NavItem } from 'react-bootstrap';
 
 //// components
+import ContainerWelcome from './ContainerWelcome';
 import Item from './Item';
+
 
 
 const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler }) => {
 	if (!categories) {
 		return <noscript />;
+	} else if (categories.length === 0) {
+		return <ContainerWelcome name={name} />;
 	}
 	return (
-		<div>
-		<h3>{name}</h3>
+		<div id='categories'>
 		{
 			categories.map((category) => (
 				<div key={category.name}>
