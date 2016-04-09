@@ -1,4 +1,4 @@
-import { RECEIVE_ITEMS, ADD_ITEM_SUCCESS, DELETE_ITEM_SUCCESS, 
+import { REQUEST_ITEMS, RECEIVE_ITEMS, ADD_ITEM_SUCCESS, DELETE_ITEM_SUCCESS, 
   EDIT_ITEM_SUCCESS, SET_ITEMS_FILTER } from '../constants/ActionTypes';
 import { sortCategories, addItemToCategories, removeItemFromCategories,
   updateItemInCategories } from '../util/ContainerOperations';
@@ -8,14 +8,21 @@ export const initialState = {
     name: '',
     id: 0,
     description: '',
-    filter: ''
+    filter: '',
+    loading: true
 };
 
 export default function items(state = initialState, action) {
   switch (action.type) {
+    case REQUEST_ITEMS:
+      return {
+        ...state,
+        loading: true
+      };
     case RECEIVE_ITEMS:
       return {
         ...state,
+        loading: false,
         name: action.payload.name,
         id: action.payload.id,
         description: action.payload.description,

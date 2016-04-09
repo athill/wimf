@@ -16,14 +16,15 @@ import ItemForm from './ItemForm';
 //// utils
 import { filterCategories } from '../../util/ContainerOperations';
 
-const mapStateToProps = ({containers, items: { categories, filter, name: containerName }}) => {
+const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
   if (filter != '') {
     categories = filterCategories(categories, filter);
   }
   return {
     containers,
     categories,
-    containerName
+    containerName,
+    containerLoading
   };
 };
 
@@ -50,12 +51,14 @@ class Wimf extends React.Component {
   }
 
   render() {
-    const {containers, containerName, categories, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange} = this.props;
+    const {containers, containerName, categories, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange, 
+      containerLoading } = this.props;
     return (
       <div>
           <ContainerSelector containers={containers} />
           <Filter handleChange={handleFilterChange} />
           <Container name={containerName} categories={categories} 
+            loading={containerLoading}
             itemEditClickHandler={itemEditClickHandler}
             itemDeleteClickHandler={itemDeleteClickHandler} />
           <AddItemButton />

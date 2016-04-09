@@ -5,12 +5,19 @@ import { Row, Col, Navbar, Nav, NavItem } from 'react-bootstrap';
 //// components
 import ContainerWelcome from './ContainerWelcome';
 import Item from './Item';
+import { Spinner } from '../common/common';
 
 
 
-const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler }) => {
+const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler, loading }) => {
 	if (!categories) {
 		return <noscript />;
+	} else if (loading) {
+		return (
+			<h2 className='text-primary'>
+				<Spinner /> Retrieving your items ...
+			</h2>
+		);
 	} else if (categories.length === 0) {
 		return <ContainerWelcome name={name} />;
 	}
