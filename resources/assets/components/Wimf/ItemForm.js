@@ -77,7 +77,7 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 		<ValidatedInput type='text' id='measurement' label='Measurement' readOnly={readOnly} {...measurement} />
 		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
 		<input type='hidden' id='container' value={containerId} {...container} />
-		{ ModalTypes.CREATE === type && <Input type='checkbox' id='keepOpen' label='Keep Open' {...keepOpen} /> }
+		{ ModalTypes.CREATE === type && <Input type='checkbox' wrapperClassName='col-xs-offset-1' id='keepOpen' label='Keep Open' {...keepOpen} /> }
 
 		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> }
 
