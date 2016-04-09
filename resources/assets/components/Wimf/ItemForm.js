@@ -15,7 +15,7 @@ import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
 
 //// utils
-import { getDisplayFormat, isValidDate, momentFormats } from '../../util/DateUtils';
+import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../util/DateUtils';
 
 const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id', 'keepOpen'];
 
@@ -123,7 +123,7 @@ const mapStateToProps = ({ containers: { selected },
 		submitAction,
 		submitButtonBsStyle,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: show === ModalTypes.CREATE ? { date: getDisplayFormat(moment().startOf('day')) } : 
+		initialValues: show === ModalTypes.CREATE ? { date: getValueFormat(moment().startOf('day')) } : 
 													selectedItem
 	};
 };

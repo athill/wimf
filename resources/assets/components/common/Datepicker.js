@@ -18,13 +18,13 @@ export default class Datepicker extends React.Component {
 		super();
 		this._handleChange = this._handleChange.bind(this);
 		this.state = {
-			startDate: ''
+			startDate: moment()
 		}
 	}	
 
 	componentWillReceiveProps(nextProps) {
-		const initialMoment = momentize(this.props.initialValue, momentFormats).startOf('day'),
-			nextInitialMoment = momentize(nextProps.initialValue, momentFormats).startOf('day');
+		const initialMoment = momentize(this.props.initialValue).startOf('day'),
+			nextInitialMoment = momentize(nextProps.initialValue).startOf('day');
 		if (nextProps.initialValue && 
 				(!this.props.initialValue || !initialMoment.isSame(nextInitialMoment))) {
 			this.setState({
@@ -43,14 +43,17 @@ export default class Datepicker extends React.Component {
 
 	render() {
 		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
+		const displayValue = getDisplayFormat(field.initialValue);
+		//// native datepicker
 		if (Compatibility.isDateSupported()) {
-			var value = readOnly ?  getDisplayFormat(field.initialValue) : getIsoFormat(this.state.startDate);
+			const value = readOnly ?  displayValue : getIsoFormat(this.state.startDate);
 			return <ValidatedInput {...field} type='date' label={label} help={help} hasFeedback={hasFeedback}
 					labelClassName={labelClassName} wrapperClassName={wrapperClassName}
 					readOnly={readOnly} value={value} onChange={e => this._handleChange(momentize(e.target.value))} />;
+		//// no native datepicker
 		} else {
 			const datepicker = readOnly ?
-									field.initialValue :
+									displayValue :
 									<DatePicker {...field}
 										selected={this.state.startDate}
 										onChange={this._handleChange} />;
