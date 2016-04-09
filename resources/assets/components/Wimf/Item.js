@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel } from 'react-bootstrap';
+import { Col, Panel, Row } from 'react-bootstrap';
 
 //// components
 import { Icon } from '../common/common';
@@ -8,15 +8,24 @@ import { Icon } from '../common/common';
 import { getDisplayFormat } from '../../util/DateUtils';
 
 const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item}) => {
-	const header = 	(<div className='clearfix'>
-    		<h4 className="card-title">{ item.name }</h4>
-    		<div className='card-navbar'>
+	const header = 	(<Row>
+            <Col xs={8} className="card-title">
+        		<h4>{ item.name }</h4>
+            </Col>
+            <Col xs={4} className='card-navbar'>
     			<Icon icon='edit' title={`Edit ${item.name}`} onClick={e => editClickHandler(item)} />
     			<Icon icon='remove' title={`Delete ${item.name}`} onClick={e => deleteClickHandler(item)} />
-    		</div>
-    	</div>);
+            </Col>
+    	</Row>);
 	return (<Panel header={header} className='card-block'>
-    		{ item.quantity } { item.measurement } {getDisplayFormat(item.date)}
+                <Row>
+                    <Col xs={8} className='item-quantity'>
+                        { item.quantity } { item.measurement }
+                    </Col>
+                    <Col xs={4} className='item-date'>
+                        {getDisplayFormat(item.date)}
+                    </Col> 
+                </Row>
     		</Panel>);
 };
 Item.propTypes = {

@@ -12,12 +12,17 @@ body, label, .checkbox label {
 		padding: 5px 10px;
 
 		.card-title {
-			float: left;
+			// float: left;
 			margin: 0;
+			padding: 0 7px;
+			h4 {
+				margin: 0;
+			}
 		}		
 		.card-navbar {
-			float: right;
-			width: 4em;
+			padding: 0 7px;
+			// float: right;
+			// width: 4em;
 			text-align: right;
 			i {
 				padding: 0 0.1em;
@@ -29,6 +34,15 @@ body, label, .checkbox label {
 			.fa-remove {
 				color: @brand-danger;
 			}
+		}
+	}
+	.panel-body {
+		.item-quantity {
+			padding: 0 0 0 7px;
+
+		}
+		.item-date {
+			padding: 0;
 		}
 	}
 }
