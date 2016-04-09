@@ -35,7 +35,7 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
         <Button id="confirmModal" bsStyle={submitButtonBsStyle} type="submit" disabled={!valid || submitting} accessKey="s">
           { submitButtonText }
         </Button>
-        <Button id="cancelModal" className='cancel' onClick={ e => { e.preventDefault(); onHide(); }} disabled={submitting}>
+        <Button id="cancelModal" className='cancel' onClick={onHide} disabled={submitting}>
           Cancel
         </Button>
       </Modal.Footer> 
