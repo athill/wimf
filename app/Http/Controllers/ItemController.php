@@ -85,7 +85,6 @@ class ItemController extends Controller {
 	private function getRequestItem($request, $item) {
 		$item->name = $request->get('name');
 		$item->quantity = $request->get('quantity');
-		$item->measurement = $request->get('measurement');
 		$item->date = $request->get('date');
 		return $item;		
 	}	

@@ -11,8 +11,7 @@ const getDummyItem = () => {
 	return {
 		name: 'dummyName',
 		category: 'dummyCategory',
-		quantity: '1',
-		measurement: 'lb',
+		quantity: '1 lb',
 		container_id
 	};
 };	

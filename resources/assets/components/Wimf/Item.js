@@ -20,7 +20,7 @@ const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item})
 	return (<Panel header={header} className='card-block'>
                 <Row>
                     <Col xs={8} className='item-quantity'>
-                        { item.quantity } { item.measurement }
+                        { item.quantity }
                     </Col>
                     <Col xs={4} className='item-date'>
                         {getDisplayFormat(item.date)}

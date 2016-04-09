@@ -32,7 +32,6 @@ class ItemTest extends TestCase {
                     'category' => $category_name,
                     'name'=>$item_name,
                     'quantity' => '1',
-                    'measurement' => 'baz',
                     'container_id' => $container->id
                 ])
             ->seeJson(['name'=>$item_name]);

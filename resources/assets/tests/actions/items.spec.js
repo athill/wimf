@@ -34,12 +34,11 @@ describe('items actions', () => {
 	  // 		...item,
 			// category_id: 75,
 			// comment: "",
-			// id: 77,
-			// measurement: null
+			// id: 77
 	  // 	};
 
 	  	// const mock = sinon.mock(axios);
-	  	// {measurement: null, name: '2', quantity: '3', category: 'foo', container_id: 0}
+	  	// {name: '2', quantity: '3', category: 'foo', container_id: 0}
 
 	    // fetchMock.mock('/api/items', 'POST', { body: returnItem });
 	      // .post('', formItem)

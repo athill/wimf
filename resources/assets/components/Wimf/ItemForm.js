@@ -17,7 +17,7 @@ import ValidatedInput from '../common/ValidatedInput';
 //// utils
 import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../util/DateUtils';
 
-const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id', 'keepOpen'];
+const fields = ['category', 'name', 'quantity', 'date', 'container', 'id', 'keepOpen'];
 
 const formName = 'item';
 
@@ -47,7 +47,7 @@ const submit = (submitAction) => (values, dispatch) => {
 
 const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle,
-			fields: { category, name, measurement, quantity, date, container, id, keepOpen },
+			fields: { category, name, quantity, date, container, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => {
@@ -74,7 +74,6 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 		<ValidatedInput type='text' autoFocus id='category' readOnly={readOnly} label='Category' {...category} />
 		<ValidatedInput type='text' id='name' label='Name' readOnly={readOnly} {...name} />
 		<ValidatedInput type='text' id='quantity' label='Quantity' readOnly={readOnly} {...quantity} />
-		<ValidatedInput type='text' id='measurement' label='Measurement' readOnly={readOnly} {...measurement} />
 		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
 		<input type='hidden' id='container' value={containerId} {...container} />
 		{ ModalTypes.CREATE === type && <Input type='checkbox' wrapperClassName='col-xs-offset-1' id='keepOpen' label='Keep Open' {...keepOpen} /> }

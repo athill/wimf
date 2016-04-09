@@ -18,7 +18,6 @@ describe('items reducer', () => {
  //    				items: [{
  //    					name: 'peas',
  //    					quantity: '2',
- //    					measurement: 'oz'
  //    				}]
  //    			}
  //    		]
