@@ -3,8 +3,6 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use DB;
-
 use App\Container;
 use App\Category;
 use App\Item;
