@@ -19,7 +19,7 @@ const ErrorDisplay = ({ errors }) => {
 };
 
 const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, 
-    submitting = false, submitButtonText = 'Submit', ...otherProps }) => (
+    submitting = false, submitButtonBsStyle='primary', submitButtonText = 'Submit', ...otherProps }) => (
   <Modal onHide={() => { if(!submitting) { onHide(); } }} {...otherProps}>
     <Modal.Header>
       <Modal.Title>{ title }</Modal.Title>
@@ -32,7 +32,7 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
       <Modal.Footer>
         <ErrorDisplay errors={errors} />
         {submitting && <Spinner />} {' '}
-        <Button id="confirmModal" bsStyle="primary" type="submit" disabled={!valid || submitting} accessKey="s">
+        <Button id="confirmModal" bsStyle={submitButtonBsStyle} type="submit" disabled={!valid || submitting} accessKey="s">
           { submitButtonText }
         </Button>
         <Button id="cancelModal" className='cancel' onClick={ e => { e.preventDefault(); onHide(); }} disabled={submitting}>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Alert } from 'react-bootstrap';
-import {reduxForm} from 'redux-form';
+import { Button, Alert, Input } from 'react-bootstrap';
+import { reduxForm, change, focus } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -17,7 +17,9 @@ import ValidatedInput from '../common/ValidatedInput';
 //// utils
 import { getDisplayFormat, isValidDate, momentFormats } from '../../util/DateUtils';
 
-const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id'];
+const fields = ['category', 'name', 'measurement', 'quantity', 'date', 'container', 'id', 'keepOpen'];
+
+const formName = 'item';
 
 const validate = values => {
 	const errors = {};
@@ -44,35 +46,38 @@ const submit = (submitAction) => (values, dispatch) => {
 
 
 const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
-			type, 
-			fields: { category, name, measurement, quantity, date, container, id },
+			type, submitButtonBsStyle,
+			fields: { category, name, measurement, quantity, date, container, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => {
 	const submit  = (submitAction) => (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
+
 		resetForm();
-		onHide();
+		if (values.keepOpen) {
+			dispatch(change(formName, 'keepOpen', true));
+			const category = document.getElementById('category');
+			category.focus();
+		} else {
+			onHide();	
+		}
 		resolve();
 	  });		
 	};
-	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} 
+	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle}
 		onSubmit={handleSubmit(submit(submitAction))} onHide={() => {
 			resetForm(); 
 			onHide();
 		}}>
 		<ValidatedInput type='text' autoFocus id='category' readOnly={readOnly} label='Category' {...category} />
-		{' '}
 		<ValidatedInput type='text' id='name' label='Name' readOnly={readOnly} {...name} />
-		{' '}
 		<ValidatedInput type='text' id='quantity' label='Quantity' readOnly={readOnly} {...quantity} />
-		{' '}			
 		<ValidatedInput type='text' id='measurement' label='Measurement' readOnly={readOnly} {...measurement} />
-		{' '}
 		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
-		{' '}
 		<input type='hidden' id='container' value={containerId} {...container} />
+		{ ModalTypes.CREATE === type && <Input type='checkbox' id='keepOpen' label='Keep Open' {...keepOpen} /> }
 
 		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> }
 
@@ -82,19 +87,22 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 const mapStateToProps = ({ containers: { selected }, 
 		itemForm: { errors, show, selected: selectedItem } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
-	let submitAction, title;
+	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
 			submitAction = remove;
 			title = 'Delete';
+			submitButtonBsStyle='danger';
 			break;
 		case ModalTypes.EDIT:
 			submitAction = edit;
 			title = 'Edit';
+			submitButtonBsStyle='primary';
 			break;
 		case ModalTypes.CREATE:
 			submitAction = add;
 			title = 'Add';
+			submitButtonBsStyle='success';
 			break;			
 		case ModalTypes.NONE:
 			//// do nothing
@@ -113,6 +121,7 @@ const mapStateToProps = ({ containers: { selected },
 		type: show,
 		title,
 		submitAction,
+		submitButtonBsStyle,
 		readOnly: show === ModalTypes.DELETE,
 		initialValues: show === ModalTypes.CREATE ? { date: getDisplayFormat(moment().startOf('day')) } : 
 													selectedItem
@@ -129,7 +138,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default reduxForm({ // <----- THIS IS THE IMPORTANT PART!
-  form: 'item',                           // a unique name for this form
+  form: formName,                           // a unique name for this form
   fields: fields, // all the fields in your form,
   validate,
 }, mapStateToProps, mapDispatchToProps)(ItemForm);
