@@ -7,9 +7,10 @@ Basic container inventory tracking app
 - [x] Client side update when adding/removing/editing items
 - [x] Fix navbar links
 - [x] Date Picker
+- [x] split vendor in webpack
+- [x] use env var to not show redux logging in production
 - [ ] webpack less
-- [ ] split vendor in webpack
-- [ ] use env var to not show redux logging in production
+- [ ] export/import
 - [ ] Auto-complete (typeahead)
 - [ ] Category admin
 - [ ] Container admin
