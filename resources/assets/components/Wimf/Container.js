@@ -32,7 +32,7 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 							<Row key={i}>
 								{
 									items.map(item => (
-										<Col md={3} sm={6} key={item.name}>
+										<Col xs={12} sm={9} md={6} lg={3} key={item.name}>
 											<Item {...item} 
 												deleteClickHandler={itemDeleteClickHandler} 
 												editClickHandler={itemEditClickHandler} />
