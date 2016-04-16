@@ -1,18 +1,24 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { Router, Route, hashHistory } from 'react-router'
 
 import BootstrapContainer from './common/BootstrapContainer';
-import Wimf from './Wimf/Wimf';
 import WimfNavbar from './Wimf/WimfNavbar';
 
+//// modules
+import Wimf from './Wimf/Wimf';
+import Containers from './Wimf/modules/Containers';
 
 
 const App = () => (
 	<div>
 		<WimfNavbar />
         <BootstrapContainer>
-			<Wimf />
+		  <Router history={hashHistory}>
+		    <Route path="/" component={Wimf} />
+		    <Route path="/containers" component={Containers}/>
+		  </Router>
 		</BootstrapContainer> 
 	</div>
 );

@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+// import Router from 'react-router';
+import { LinkContainer }  from 'react-router-bootstrap';
 
 
 const mapStateToProps = ({ user }) => {
@@ -24,6 +26,9 @@ const WimfNavbar = ({ user, isDemo }) => (
       </Nav>
       <Nav pullRight>
         { !isDemo && <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem> }
+        <LinkContainer to='/containers'>
+          <NavItem>Containers</NavItem>
+        </LinkContainer>
         <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
           {(() => (
             isDemo ?

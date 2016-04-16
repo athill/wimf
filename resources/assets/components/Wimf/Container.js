@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Row, Col, Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 //// components
 import ContainerWelcome from './ContainerWelcome';
@@ -23,6 +24,7 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 	}
 	return (
 		<div id='categories'>
+		<Link to="/containers">Containers</Link>
 		{
 			categories.map((category) => (
 				<div key={category.name}>
