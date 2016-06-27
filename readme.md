@@ -1,6 +1,6 @@
 # What's in my Freezer?
 
-Basic container inventory tracking app using Laravel. 
+Basic container inventory tracking app using Laravel, MySQL, and React.  
 
 ## Todo
 - [x] Filter
