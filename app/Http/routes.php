@@ -24,6 +24,12 @@ Route::get('/mailTest', function() {
 	return 'sent';
 });
 
+// Display all SQL executed in Eloquent
+// Event::listen('illuminate.query', function($query)
+// {
+//     var_dump($query);
+// });
+
 Route::get('home', 'HomeController@index');
 //// same page, but react will render the demo based on url
 Route::get('/demo', 'DemoController@index');

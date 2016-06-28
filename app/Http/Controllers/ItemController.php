@@ -32,7 +32,8 @@ class ItemController extends Controller {
 
 		//// save
 		try {
-			$item = Item::persist($item, $category)->toArray();
+			$item = Item::persist($item, $category);
+			$item = $item->toArray();
 			$item['category'] = $category->name;
 			return $item;
 		} catch (\PDOException $e) {

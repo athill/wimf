@@ -1,6 +1,6 @@
 # What's in my Freezer?
 
-Basic container inventory tracking app
+Basic container inventory tracking app using Laravel and React.  
 
 ## Todo
 - [x] Filter
@@ -9,6 +9,7 @@ Basic container inventory tracking app
 - [x] Date Picker
 - [x] split vendor in webpack
 - [x] use env var to not show redux logging in production
+- [ ] send email on registration
 - [ ] webpack less
 - [ ] export/import
 - [ ] Auto-complete (typeahead)
