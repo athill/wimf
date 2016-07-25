@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchContainers } from '../../actions/containers';
 import { setItemsFilter } from '../../actions/items';
 import { showDeleteItemForm, showEditItemForm } from '../../actions/itemForm';
-import { fetchUserInfo } from '../../actions/user';
+
 //// components
 import AddItemButton from './AddItemButton';
 import Container from './Container';
@@ -47,7 +47,6 @@ class Wimf extends React.Component {
   componentDidMount()  {
   	const {dispatch} = this.props;
     dispatch(fetchContainers());
-    dispatch(fetchUserInfo());
   }
 
   render() {

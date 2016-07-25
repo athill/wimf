@@ -16,9 +16,8 @@ const App = () => (
 		<WimfNavbar />
         <BootstrapContainer>
 		  <Router history={hashHistory}>
-		    <Route path="/" component={Wimf}>
-		    	<Route path="/containers" component={Containers}/>
-		    </Route>
+		    <Route path="/" component={Wimf} />
+		    { /* <Route path="/containers" component={Containers}/> */ }
 		  </Router>
 		</BootstrapContainer> 
 	</div>
