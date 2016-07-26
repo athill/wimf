@@ -16,6 +16,15 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+const Container = ({ container }) => (
+	<li>
+		<div>
+			<div>Name: { container.name }</div>
+			<div>Description: { container.desription }</div>
+		</div>
+	</li>
+);
+
 
 class Containers extends React.Component {
     constructor(props) {
@@ -23,9 +32,22 @@ class Containers extends React.Component {
     }
     componentDidMount() {
     	const {dispatch} = this.props;
+    	dispatch(fetchContainers());
     }
     render() {
-        return <div>Containers <Link to="/">Home</Link></div>;
+    	const { containers } = this.props;
+        return (<div>
+        	<Link to="/">Home</Link>
+        	<h2>Containers</h2>
+        	<ul>
+        	{
+        		containers.items.map(container => (
+        			<Container container={container} />
+        		))
+        	}
+        	</ul>
+        	</div>
+        );
     }
 }
 

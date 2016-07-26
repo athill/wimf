@@ -17,7 +17,7 @@ const App = () => (
         <BootstrapContainer>
 		  <Router history={hashHistory}>
 		    <Route path="/" component={Wimf} />
-		    { /* <Route path="/containers" component={Containers}/> */ }
+		    <Route path="/containers" component={Containers}/>
 		  </Router>
 		</BootstrapContainer> 
 	</div>

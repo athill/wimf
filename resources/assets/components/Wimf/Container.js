@@ -24,7 +24,7 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 	}
 	return (
 		<div id='categories'>
-		{ /* <Link to="/containers">Containers</Link> */ }
+		<Link to="/containers">Containers</Link> 
 		{
 			categories.map((category) => (
 				<div key={category.name}>
