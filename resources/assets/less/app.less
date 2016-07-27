@@ -58,10 +58,27 @@ body, label, .checkbox label {
 	margin: 0;
 }
 
-#add-item-button {
+#add-item-button, .add-button {
 	position: fixed;
 	top: 1.5em;
 	right: 0.2em;
 	cursor: pointer;
 	color: @brand-success;
+}
+
+#containers .container {
+	.controls {
+		text-align: right;
+		i {
+			padding: 0 0.1em;
+			cursor: pointer;	
+			font-size: 2em;		
+		}
+		.fa-edit {
+			color: @brand-primary;
+		}
+		.fa-remove {
+			color: @brand-danger;
+		}
+	}
 }
