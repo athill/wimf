@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { fetchContainers } from '../../actions/containers';
 import { setItemsFilter } from '../../actions/items';
 import { showDeleteItemForm, showEditItemForm } from '../../actions/itemForm';
+import { toggleAddItemForm } from '../../actions/itemForm';
 
 //// components
-import AddItemButton from './AddItemButton';
+import AddItemButton from '../common/AddButton';
 import Container from './Container';
 import ContainerSelector from './ContainerSelector';
 import Filter from './Filter';
@@ -29,10 +30,13 @@ const mapStateToProps = ({containers, items: { categories, filter, name: contain
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
+  return {    
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
     },
+    itemAddClickHandler: () => {
+      dispatch(toggleAddItemForm());
+    },    
     itemEditClickHandler: (item) => {
       dispatch(showEditItemForm(item));
     },        
@@ -50,7 +54,7 @@ class Wimf extends React.Component {
   }
 
   render() {
-    const {containers, containerName, categories, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange, 
+    const {containers, containerName, categories, itemAddClickHandler, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange, 
       containerLoading } = this.props;
     return (
       <div>
@@ -60,7 +64,7 @@ class Wimf extends React.Component {
             loading={containerLoading}
             itemEditClickHandler={itemEditClickHandler}
             itemDeleteClickHandler={itemDeleteClickHandler} />
-          <AddItemButton />
+          <AddItemButton clickHandler={itemAddClickHandler} title='Add Item' />
           <ItemForm /> 
       </div>
     );
