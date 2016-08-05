@@ -2,16 +2,13 @@ import React from 'react';
 import { Button, Alert, Input } from 'react-bootstrap';
 import { reduxForm, change, focus } from 'redux-form';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 
-import { fetchContainers } from '../../../actions/containers';
-import { add, remove, edit } from '../../../actions/containers';
-import { hideContainerForm } from '../../../actions/itemForm';
+import { add, fetchContainers, remove, edit } from '../../../actions/containers';
+import { hideContainerForm } from '../../../actions/containerForm';
 import { ModalTypes } from '../../../constants/ActionTypes';
 import { NoOp } from '../../common/common';
 import FormModal from '../../common/FormModal';
-import Datepicker from '../../common/Datepicker';
 import ValidatedInput from '../../common/ValidatedInput';
 
 
@@ -41,7 +38,7 @@ const submit = (submitAction) => (values, dispatch) => {
 
 
 const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
-			type, submitButtonBsStyle,
+			type, submitButtonBsStyle, submitButtonText, 
 			fields: { name, description, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
@@ -61,7 +58,8 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 		resolve();
 	  });		
 	};
-	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle}
+	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
+		submitButtonText={submitButtonText}
 		onSubmit={handleSubmit(submit(submitAction))} onHide={() => {
 			resetForm(); 
 			onHide();
@@ -101,6 +99,7 @@ const mapStateToProps = ({ containers: { selected },
 		default:
 			console.error('Invalid Modal Type', show);
 	}
+	const submitButtonText = title;
 	title += ' Container';
 	const rtn = {
 		serverErrors: errors,
@@ -109,6 +108,7 @@ const mapStateToProps = ({ containers: { selected },
 		title,
 		submitAction,
 		submitButtonBsStyle,
+		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
 		initialValues: selectedContainer
 	};

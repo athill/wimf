@@ -46,7 +46,7 @@ const submit = (submitAction) => (values, dispatch) => {
 
 
 const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
-			type, submitButtonBsStyle,
+			type, submitButtonBsStyle, submitButtonText, 
 			fields: { category, name, quantity, date, container, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
@@ -66,7 +66,8 @@ const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, subm
 		resolve();
 	  });		
 	};
-	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle}
+	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
+		submitButtonText={submitButtonText}
 		onSubmit={handleSubmit(submit(submitAction))} onHide={() => {
 			resetForm(); 
 			onHide();
@@ -109,6 +110,7 @@ const mapStateToProps = ({ containers: { selected },
 		default:
 			console.error('Invalid Modal Type', show);
 	}
+	const submitButtonText = title;
 	title += ' Item';
 	if (selectedItem) {
 		selectedItem.date = getDisplayFormat(selectedItem.date);	
@@ -121,6 +123,7 @@ const mapStateToProps = ({ containers: { selected },
 		title,
 		submitAction,
 		submitButtonBsStyle,
+		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
 		initialValues: show === ModalTypes.CREATE ? { date: getValueFormat(moment().startOf('day')) } : 
 													selectedItem
