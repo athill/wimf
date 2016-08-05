@@ -7,6 +7,6 @@ export const initialState = {
     selected: undefined
 };
 
-export default function itemForm(state = initialState, action) {
-  return defaultFormModalHandler('ITEM', state, action);
+export default function containerForm(state = initialState, action) {
+  return defaultFormModalHandler('CONTAINER', state, action);
 }

@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 //// actions
 import { fetchContainers } from '../../actions/containers';
 import { setItemsFilter } from '../../actions/items';
-import { showDeleteItemForm, showEditItemForm } from '../../actions/itemForm';
-import { toggleAddItemForm } from '../../actions/itemForm';
+import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../actions/itemForm';
 
 //// components
 import AddItemButton from '../common/AddButton';

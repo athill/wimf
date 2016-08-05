@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Category;
 use App\Container;
 use App\Item;
+use App\Library\Utils;
 
 class ContainerController extends Controller {
 
@@ -74,9 +75,10 @@ class ContainerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
-		//
+	public function store(Request $request) {
+		$container = new Container();
+		$this->populateContainerFromRequest($container, $request);
+		$container->save();
 	}
 
 
@@ -112,6 +114,12 @@ class ContainerController extends Controller {
 	public function destroy($id)
 	{
 		//
+	}
+
+	private function populateContainerFromRequest($container, $request) {
+		$map = ['name', 'description'];
+		Utils::mapObjectFromRequest($map, $container, $request);
+		return $item;	
 	}
 
 }

@@ -11,7 +11,7 @@ class Container extends ChangelogModelBase {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'user_id'];
+	protected $fillable = ['name', 'user_id', 'description'];
 
 	// /**
 	//  * The attributes excluded from the model's JSON form.
