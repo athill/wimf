@@ -15,9 +15,9 @@ import ContainerForm from './ContainerForm';
 const Container = ({editClickHandler = e => e, deleteClickHandler = e => e,  container }) => (
     <Panel className='container'>
         <Row>
-            <Col xs={12} sm={6} md={5} lg={5} key={container.name} className='name'>Name: { container.name }</Col>
-            <Col xs={12} sm={6} md={5} lg={5} key={container.description} className='description'>Description: { container.desription }</Col>
-            <Col xs={12} sm={12} md={2} lg={2} key='controls' className='controls'>
+            <Col xs={12} sm={2} md={2} lg={2} key={container.name} className='name'>Name: { container.name }</Col>
+            <Col xs={12} sm={8} md={8} lg={8} key={container.description} className='description'>Description: { container.desription }</Col>
+            <Col xs={12} sm={2} md={2} lg={2} key='controls' className='controls'>
                 <Icon icon='edit' title={`Edit ${container.name}`} onClick={e => editClickHandler(container)} />
                 <Icon icon='remove' title={`Delete ${container.name}`} onClick={e => deleteClickHandler(container)} />
             </Col>
