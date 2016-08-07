@@ -24,7 +24,6 @@ const validate = values => {
 			errors[field] = `${field} is required`;
 		} 
 	});
-
 	return errors;
 };
 

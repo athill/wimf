@@ -2,6 +2,7 @@
 
 use Log;
 use Response;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
@@ -79,6 +80,7 @@ class ContainerController extends Controller {
 		$container = new Container();
 		$this->populateContainerFromRequest($container, $request);
 		$container->save();
+		return $container;
 	}
 
 
@@ -118,8 +120,7 @@ class ContainerController extends Controller {
 
 	private function populateContainerFromRequest($container, $request) {
 		$map = ['name', 'description'];
-		Utils::mapObjectFromRequest($map, $container, $request);
-		return $item;	
+		Utils::mapObjectFromRequest($map, $container, $request);	
 	}
 
 }

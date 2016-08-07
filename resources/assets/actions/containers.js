@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 
 import * as types from '../constants/ActionTypes'
 import { fetchItems } from './items';
-import { fetch } from '../util/RemoteOperations';
+import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
 
 
 export function fetchContainers() {
@@ -20,69 +20,56 @@ export function fetchContainers() {
 }
 
 
-export const add = item => {
+export const add = container => {
   return (dispatch, getState) => {
     const state = getState();
-    // const { containers: { selected: { id } }  } = getState();
-    const container = state.containers.selected;
-    item.container_id = container.id;
-    item.date = getIsoFormat(item.date);
-    dispatch(addItem());
+    dispatch(addContainer());
     return post(
-      `/api/items/`,
-      item,
+      `/api/containers/`,
+      container,
       response => {
-        // dispatch(fetchItems(container));
-        dispatch(addItemSuccess(response));
+        dispatch(addContainerSuccess(response));
       },
       error => {
-        dispatch(addItemError());
-        dispatch(setItemFormError(error.data));
-        setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
+        dispatch(addContainerError());
+        dispatch(setContainerFormError(error.data));
+        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
       }
     );
   };
 };
 
-export const edit = item => {
+export const edit = container => {
   return (dispatch, getState) => {
     const state = getState();
-    // const { containers: { selected: { id } }  } = getState();
-    const container = state.containers.selected;
-    item.container_id = container.id;
-    item.date = getIsoFormat(item.date);
-    dispatch(editItem());
+    dispatch(editContainer());
     return put(
-      `/api/items/${item.id}`,
-      item,
+      `/api/containers/${container.id}`,
+      container,
       response => {
-        // dispatch(fetchItems(container));
-        dispatch(editItemSuccess(item));
+        dispatch(editContainerSuccess(item));
       },
       error => {
-        dispatch(editItemError());
-        dispatch(setItemFormError(error.data));
-        setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
+        dispatch(editContainerError());
+        dispatch(setContainerFormError(error.data));
+        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
       }
     );
   };
 };
 
-export const remove = item => {
+export const remove = container => {
   return (dispatch, getState) => {
     const state = getState();
-    // const { containers: { selected: { id } }  } = getState();
-    const container = state.containers.selected;
-    item.container_id = container.id;
-    dispatch(deleteItem());
+    dispatch(deleteContainer());
     return deleteRequest(
-      `/api/items/${item.id}`,
+      `/api/containers/${container.id}`,
       response => {
-        dispatch(deleteItemSuccess(item));
+        dispatch(deleteContainerSuccess(container));
       },
       error => {
         console.error(error);
-        dispatch(deleteItemError());
+        dispatch(deleteContainerError());
       }
     );
   };

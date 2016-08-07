@@ -68,7 +68,7 @@ class Containers extends React.Component {
             	<div id="containers">
             	{
             		containers.items.map(container => (
-            			<Container container={container}
+            			<Container key={container.id} container={container}
                             editClickHandler={containerEditClickHandler}
                             deleteClickHandler={containerDeleteClickHandler} />
             		))
