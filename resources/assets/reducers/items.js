@@ -29,19 +29,16 @@ export default function items(state = initialState, action) {
         categories: sortCategories(action.payload.categories)
       };
     case ADD_ITEM_SUCCESS:
-      console.debug('items reducer ADD_ITEM_SUCCESS', state, action);
     	return {
         ...state,
         categories: addItemToCategories(state.categories, action.payload.data)
       };
     case DELETE_ITEM_SUCCESS:
-      console.debug('items reducer DELETE_ITEM_SUCCESS', state, action);
       return {
         ...state,
         categories: removeItemFromCategories(state.categories, action.payload)
       };
     case EDIT_ITEM_SUCCESS:
-      console.debug('items reducer EDIT_ITEM_SUCCESS', state, action);
       return {
         ...state,
         categories: updateItemInCategories(state.categories, action.payload)

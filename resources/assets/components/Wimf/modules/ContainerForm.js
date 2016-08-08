@@ -27,14 +27,6 @@ const validate = values => {
 	return errors;
 };
 
-const submit = (submitAction) => (values, dispatch) => {
-  return new Promise((resolve, reject) => {
-	dispatch(submitAction(values));	
-	dispatch(fetchContainers());
-	resolve();
-  });
-};
-
 
 const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 

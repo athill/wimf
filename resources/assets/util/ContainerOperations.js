@@ -2,6 +2,34 @@ import _ from 'lodash';
 
 let fakeIndex = 0;
 
+export const addContainerToContainers = (containers, container) => {
+	let newContainers = [].concat(containers);
+	newContainers.push(container);
+	newContainers.sort(sortByNameKey);
+	return newContainers;
+};
+
+export const removeContainerFromContainers = (containers, container) => {
+	let newContainers = [];
+	for (let i = 0; i < containers.length; i++) {
+		if (containers[i].id !== container.id) {
+			newContainers.push(containers[i]);
+		}
+	}
+	return newContainers;
+};
+
+export const updateContainerInContainers = (containers, container) => {
+	let newContainers = [].concat(containers);
+	for (let i = 0; i < newContainers.length; i++) {
+		if (newContainers[i].id === container.id) {
+			newContainers[i] = container;
+			break;
+		}
+	}
+	return newContainers;
+}
+
 export const addItemToCategories = (categories, item) => {
 	let newCategories = [].concat(categories);
 	let added = false;
