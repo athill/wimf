@@ -1,4 +1,6 @@
 <?php
+use Carbon\Carbon;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -12,46 +14,60 @@ class ItemTest extends TestCase {
 
 	use DatabaseTransactions;
 
+    private $fakeUser;
+
+    public function setUp() {
+        parent::setUp();
+
+        $this->fakeUser = User::create([
+            'name' => 'user name',
+        ]);        
+
+        
+        // Auth::shouldReceive('check')->andReturn(true);
+    }
+
     /**
      * A basic functional test example.
      *
      * @return void
      */
-    // public function testAddItem() {
-    //     $user = factory(User::class)->create();
-    //     $category_name = 'foo';
-    //     $item_name = 'bar';
+    public function testAddItem() {
+        $user = $this->fakeUser;
+        $category_name = 'foo';
+        $item_name = 'bar';
 
-    //     $container = $this->getFakeContainer($user->id);
+        $container = $this->getFakeContainer($user->id);
 
-    //     //// create new item
-    //     $this->actingAs($user)
-    //          ->post('/api/items', [
-    //                 'category' => $category_name,
-    //                 'name'=>$item_name,
-    //                 'quantity' => '1',
-    //                 'container_id' => $container->id
-    //             ])
-    //         ->seeJson(['name'=>$item_name]);
+        //// create new item
+        $this->actingAs($user)
+             ->post('/api/items', [
+                    'category' => $category_name,
+                    'name'=>$item_name,
+                    'quantity' => '1',
+                    'container_id' => $container->id,
+                    'date' => Carbon::now()
+                ])
+            ->seeJson(['name'=>$item_name]);
 
-    //     //// verify category added to db
-    //     $categoryCriteria = [
-    //         'user_id' => $user->id,      
-    //         'container_id' => $container->id,
-    //         'name' => $category_name            
-    //     ];
-    //     $this->seeInDatabase('categories', $categoryCriteria);
-    //     //// get category id
-    //     $category_id = Category::where($categoryCriteria)->value('id');
+        //// verify category added to db
+        $categoryCriteria = [
+            'user_id' => $user->id,      
+            'container_id' => $container->id,
+            'name' => $category_name            
+        ];
+        $this->seeInDatabase('categories', $categoryCriteria);
+        //// get category id
+        $category_id = Category::where($categoryCriteria)->value('id');
 
-    //     //// verify item added to db
-    //     $itemCriteria = [
-    //         'user_id' => $user->id,
-    //         'category_id' => $category_id,
-    //         'name' => $item_name
-    //     ];
-    //     $this->seeInDatabase('items', $itemCriteria);
-    // }
+        //// verify item added to db
+        $itemCriteria = [
+            'user_id' => $user->id,
+            'category_id' => $category_id,
+            'name' => $item_name
+        ];
+        $this->seeInDatabase('items', $itemCriteria);
+    }
 
     public function testDeleteItem() {
         $user = factory(User::class)->create();       

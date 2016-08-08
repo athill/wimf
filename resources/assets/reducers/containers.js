@@ -1,9 +1,9 @@
-import { RECEIVE_CONTAINERS } from '../constants/ActionTypes'
+import { RECEIVE_CONTAINERS, ADD_CONTAINER_SUCCESS, EDIT_CONTAINER_SUCCESS, DELETE_CONTAINER_SUCCESS } from '../constants/ActionTypes'
 import { addContainerToContainers, updateContainerInContainers, removeContainerFromContainers } from '../util/ContainerOperations';
 
 export const initialState = {
-        items: [],
-        selected: null
+  items: [],
+  selected: null
 };
 
 export default function containers(state = initialState, action) {
@@ -16,16 +16,16 @@ export default function containers(state = initialState, action) {
         ...state,
         items: addContainerToContainers(state.items, action.payload.data)
       };
-    case DELETE_CONTAINER_SUCCESS:
-      return {
-        ...state,
-        items: removeContainerFromContainers(state.items, action.payload)
-      };
     case EDIT_CONTAINER_SUCCESS:
       return {
         ...state,
         items: updateContainerInContainers(state.items, action.payload)
-      };       
+      };        
+    case DELETE_CONTAINER_SUCCESS:
+      return {
+        ...state,
+        items: removeContainerFromContainers(state.items, action.payload)
+      };     
     default:
       return state
   }
