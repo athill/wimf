@@ -79,7 +79,16 @@ class ContainerController extends Controller {
 	public function store(Request $request) {
 		$container = new Container();
 		$this->populateContainerFromRequest($container, $request);
-		$container->save();
+		if (Container::nameExists($container->name)) {
+			$errorMessage = 'Container "'.$container->name.'" already exists.';
+			return response()->json(['error'=>$errorMessage], 400);
+		}
+		try {
+			$container->save();
+		} catch (\PDOException $e) {
+			Log::info($e->getMessage());
+			return response()->json(['error'=>$e->getMessage()], 400);
+		} 
 		return $container;
 	}
 

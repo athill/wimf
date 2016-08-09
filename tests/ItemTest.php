@@ -22,9 +22,6 @@ class ItemTest extends TestCase {
         $this->fakeUser = User::create([
             'name' => 'user name',
         ]);        
-
-        
-        // Auth::shouldReceive('check')->andReturn(true);
     }
 
     /**

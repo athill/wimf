@@ -24,6 +24,10 @@ class Container extends ChangelogModelBase {
 		return $this->hasMany('App\Category');
 	}	
 
+	public static function nameExists($name) {
+		return Container::user()->where('name', $name)->first() !== null;
+	}
+
 
 	public static function getUser() {
 		$result = Container::user()->orderBy('name', 'ASC')->get();
