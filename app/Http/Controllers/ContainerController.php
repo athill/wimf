@@ -102,9 +102,21 @@ class ContainerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
-		//
+	public function update($id, Request $request) {
+		$container = Container::findOrFail($id);
+		populateContainerFromRequest($container, $request);
+		try {
+			$container->save();
+		} catch (\PDOException $e) {
+			if (Utils::isDbIntegrityException($e)) {
+				$errorMessage = 'Container "'.$item->name.'" already exists.';
+				// $errorMessage = $e->getMessage();
+				Log::info($e->getMessage());
+				return response()->json(['error'=>$errorMessage], 400);
+			} else {
+				throw $e;
+			}
+		}
 	}
 
 	/**
@@ -113,8 +125,9 @@ class ContainerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
+		$container = Container::findOrFail($id);
+		$container->delete();
 		//
 	}
 

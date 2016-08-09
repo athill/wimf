@@ -47,7 +47,7 @@ export const edit = container => {
       `/api/containers/${container.id}`,
       container,
       response => {
-        dispatch(editContainerSuccess(item));
+        dispatch(editContainerSuccess(container));
       },
       error => {
         dispatch(editContainerError());
