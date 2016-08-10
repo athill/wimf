@@ -1,22 +1,23 @@
 import React from 'react';
 import { Input } from 'react-bootstrap';
 
-const ContainerSelector = ({containers}) => (
-	<form className="form-horizontal">
+const ContainerSelector = ({containers, onChange}) => {
+	const selected = containers.selected ? containers.selected.id : '';
+	return (<form className="form-horizontal">
 		<Input type='select' label='Container:' className='component-selector'
-			labelClassName="col-md-2 component-selector-label" wrapperClassName="col-md-10">
+			labelClassName="col-md-2 component-selector-label" wrapperClassName="col-md-10" defaultValue={selected} 
+			onChange={onChange}>
 		{
 			containers.items.map(container => {
-				const selected = container.id === containers.selected.id;
 				return (
-					<option selected={selected} value={container.id} key={container}>
+					<option value={container.id} key={container.id}>
 						{ container.name }
 					</option>
 				);
 			})
 		}
 		</Input> 
-	</form>
-);
+	</form>)
+};
 
 export default ContainerSelector;

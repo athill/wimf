@@ -29,7 +29,10 @@ const mapStateToProps = ({containers, items: { categories, filter, name: contain
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {    
+  return {   
+    handleContainerChange: e => {
+      console.log(e.target.value);
+    },
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
     },
@@ -54,10 +57,10 @@ class Wimf extends React.Component {
 
   render() {
     const {containers, containerName, categories, itemAddClickHandler, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange, 
-      containerLoading } = this.props;
+      containerLoading, handleContainerChange } = this.props;
     return (
       <div>
-          <ContainerSelector containers={containers} />
+          <ContainerSelector containers={containers} onChange={handleContainerChange} />
           <Filter handleChange={handleFilterChange} />
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
