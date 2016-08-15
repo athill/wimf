@@ -17,7 +17,6 @@
     "lint": "eslint --ext .js --ext .jsx ./resources/assets/app.js ./webpack && echo No linting errors.",
     "prebuild": "npm run clean",
     "prestart": "npm install",
-    "pretest": "npm install && npm run lint",
     "pretest-travis": "npm install && npm run lint",
     "start": "NODE_ENV=development node dev-server ./webpack/config",
     "test": "NODE_ENV=test karma start",
@@ -129,5 +128,8 @@
       "react/self-closing-comp": 1,
       "react/wrap-multilines": 1
     }
+  },
+  "devDependencies": {
+    "karma-mocha-reporter": "^2.1.0"
   }
 }

@@ -10,14 +10,19 @@ import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
 
 
 export const fetchItems = container => (
-  dispatch => {
+  (dispatch, getState) => {
+    const { items } = getState();
     dispatch(requestItems());
-    fetch(
-      `/api/containers/${container.id}`,
-      response => {
-        dispatch(receiveItems(response.data));
-      }
-    );
+    if (items[container.id]) {
+      dispatch(receiveItems(containers[container.id]));
+    } else {
+      fetch(
+        `/api/containers/${container.id}`,
+        response => {
+          dispatch(receiveItems(response.data));
+        }
+      );
+    }
   }
 );
 

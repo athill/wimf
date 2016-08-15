@@ -4,6 +4,7 @@ import { sortCategories, addItemToCategories, removeItemFromCategories,
   updateItemInCategories } from '../util/ContainerOperations';
 
 export const initialState = {
+    containers: {},
     categories: [],
     name: '',
     id: 0,
@@ -11,6 +12,7 @@ export const initialState = {
     filter: '',
     loading: true
 };
+
 
 export default function items(state = initialState, action) {
   switch (action.type) {
@@ -20,8 +22,16 @@ export default function items(state = initialState, action) {
         loading: true
       };
     case RECEIVE_ITEMS:
+      let containers = state.containers;
+      if (!containers[action.payload.id]) { 
+        containers = {
+          ...containers,
+          [action.payload.id]: action.payload
+        };
+      }
       return {
         ...state,
+        containers,
         loading: false,
         name: action.payload.name,
         id: action.payload.id,
