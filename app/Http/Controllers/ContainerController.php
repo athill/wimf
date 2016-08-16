@@ -39,7 +39,8 @@ class ContainerController extends Controller {
 	{
 		$container = Container::findOrFail($id);
 		$data = [
-			'name' => $container->name
+			'name' => $container->name,
+			'id' => $id
 		];
 		
 		$cats = [];

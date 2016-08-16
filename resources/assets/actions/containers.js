@@ -13,7 +13,7 @@ export function fetchContainers() {
       '/api/containers',
       response => {
         dispatch(receiveContainers(response.data));
-        dispatch(fetchItems(response.data[0]));
+        dispatch(fetchItems(response.data[0].id));
       }
     );
   };
@@ -75,6 +75,13 @@ export const remove = container => {
   };
 };
 
+export const select = id => {
+  return (dispatch, getState) => {
+    dispatch(selectContainer());
+    dispatch(fetchItems(id));
+  };
+}
+
 
 const requestContainers = createAction(types.REQUEST_CONTAINERS);
 const receiveContainers = createAction(types.RECEIVE_CONTAINERS, data => processContainers(data));
@@ -92,19 +99,19 @@ const editContainer = createAction(types.EDIT_CONTAINER);
 const editContainerSuccess = createAction(types.EDIT_CONTAINER_SUCCESS);
 const editContainerError = createAction(types.EDIT_CONTAINER_ERROR);
 
-
+const selectContainer = createAction(types.SELECT_CONTAINER);
 
 
 const processContainers = json => {
-  const items = json.map(child => { 
+  const items = json.map(item => { 
     return {
-          name: child.name, 
-          description: child.description,
-          id: child.id
+          name: item.name, 
+          description: item.description,
+          id: item.id
       };
     });
   return {
       items,
-      selected: items[0]
+      selected: items[0].id
   };
 };

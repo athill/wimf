@@ -9,15 +9,15 @@ import { getIsoFormat } from '../util/DateUtils';
 import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
 
 
-export const fetchItems = container => (
+export const fetchItems = containerId => (
   (dispatch, getState) => {
     const { items } = getState();
-    dispatch(requestItems());
-    if (items[container.id]) {
-      dispatch(receiveItems(containers[container.id]));
+    if (containerId in items.containers) {
+      dispatch(receiveItems(items.containers[containerId]));
     } else {
+      dispatch(requestItems());
       fetch(
-        `/api/containers/${container.id}`,
+        `/api/containers/${containerId}`,
         response => {
           dispatch(receiveItems(response.data));
         }

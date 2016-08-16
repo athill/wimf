@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //// actions
-import { fetchContainers } from '../../actions/containers';
+import { fetchContainers, select as selectContainer } from '../../actions/containers';
 import { setItemsFilter } from '../../actions/items';
 import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../actions/itemForm';
 
@@ -31,7 +31,7 @@ const mapStateToProps = ({containers, items: { categories, filter, name: contain
 const mapDispatchToProps = (dispatch) => {
   return {   
     handleContainerChange: e => {
-      console.log(e.target.value);
+      dispatch(selectContainer(e.target.value));
     },
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
