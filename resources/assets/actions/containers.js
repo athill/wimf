@@ -112,6 +112,6 @@ const processContainers = json => {
     });
   return {
       items,
-      selected: items[0].id
+      selected: items[0]
   };
 };

@@ -19,15 +19,16 @@ export const removeContainerFromContainers = (containers, container) => {
 	return newContainers;
 };
 
-export const updateContainerInContainers = (containers, container) => {
-	let newContainers = [].concat(containers);
-	for (let i = 0; i < newContainers.length; i++) {
-		if (newContainers[i].id === container.id) {
-			newContainers[i] = container;
-			break;
-		}
-	}
-	return newContainers;
+export const updateCategoriesInContainers = (containers, container_id, categories) => {
+	return {
+		...containers,
+		[container_id]: categories
+	};
+}
+
+export const updateContainerCategory = (containers, category) => {
+	const container = Object.assign({}, containers[item.container_id]);
+	
 }
 
 export const addItemToCategories = (categories, item) => {

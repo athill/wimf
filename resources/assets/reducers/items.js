@@ -1,7 +1,7 @@
 import { REQUEST_ITEMS, RECEIVE_ITEMS, ADD_ITEM_SUCCESS, DELETE_ITEM_SUCCESS, 
   EDIT_ITEM_SUCCESS, SET_ITEMS_FILTER } from '../constants/ActionTypes';
 import { sortCategories, addItemToCategories, removeItemFromCategories,
-  updateItemInCategories } from '../util/ContainerOperations';
+  updateItemInCategories, updateCategoriesInContainers } from '../util/ContainerOperations';
 
 export const initialState = {
     containers: {},
@@ -12,6 +12,28 @@ export const initialState = {
     filter: '',
     loading: true
 };
+
+const updateItems = (state, action) => {
+  let categories;
+  switch (action.type) {
+    case ADD_ITEM_SUCCESS:
+      categories = addItemToCategories(state.categories, action.payload.data);
+      break;
+    case EDIT_ITEM_SUCCESS:
+      categories = updateCategoriesInContainers(state.categories, action.payload.data);
+      break;
+    case DELETE_ITEM_SUCCESS:
+      categories = removeItemFromCategories(state.categories, action.payload.data);
+      break;
+    default:
+      console.error('How did I get here?');           
+  }
+  return {
+    ...state,
+    categories,
+    containers: updateCategoriesInContainers(state.containers, action.payload.container_id, categories)
+  }
+}
 
 
 export default function items(state = initialState, action) {
@@ -39,20 +61,10 @@ export default function items(state = initialState, action) {
         categories: sortCategories(action.payload.categories)
       };
     case ADD_ITEM_SUCCESS:
-    	return {
-        ...state,
-        categories: addItemToCategories(state.categories, action.payload.data)
-      };
     case DELETE_ITEM_SUCCESS:
-      return {
-        ...state,
-        categories: removeItemFromCategories(state.categories, action.payload)
-      };
     case EDIT_ITEM_SUCCESS:
-      return {
-        ...state,
-        categories: updateItemInCategories(state.categories, action.payload)
-      };          
+      const items = updateItems(state, action); 
+    	return  items;
     case SET_ITEMS_FILTER:
       return {
         ...state,
