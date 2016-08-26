@@ -40,7 +40,9 @@ class ItemController extends Controller {
 			//// duplicate item
 			if (Utils::isDbIntegrityException($e)) {
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
-				// $errorMessage = $e->getMessage();
+				if ($_ENV['APP_DEBUG'] === 'true') {
+					$errorMessage = $e->getMessage();
+				}
 				Log::info($e->getMessage());
 				return response()->json(['error'=>$errorMessage], 400);				
 			} else {
