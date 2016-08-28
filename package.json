@@ -48,9 +48,11 @@
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",
     "karma-cli": "^0.1.2",
+    "karma-chrome-launcher": "^0.2.3",
     "karma-mocha": "^0.2.2",
+    "karma-mocha-reporter": "^2.1.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^1.7.0",
+    "karma-webpack": "^1.8.0",
     "laravel-elixir": "^5.0.0",
     "lodash": "^4.3.0",
     "mocha": "^2.4.5",
@@ -128,12 +130,5 @@
       "react/self-closing-comp": 1,
       "react/wrap-multilines": 1
     }
-  },
-  "devDependencies": {
-    "karma-chrome-launcher": "^0.2.3",
-    "karma-mocha": "^0.2.2",
-    "karma-mocha-reporter": "^2.1.0",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^1.8.0"
   }
 }
