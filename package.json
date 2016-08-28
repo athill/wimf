@@ -130,6 +130,10 @@
     }
   },
   "devDependencies": {
-    "karma-mocha-reporter": "^2.1.0"
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-mocha": "^0.2.2",
+    "karma-mocha-reporter": "^2.1.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.8.0"
   }
 }
