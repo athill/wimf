@@ -15,6 +15,8 @@ class ItemTest extends TestCase {
 	use DatabaseTransactions;
 
     private $fakeUser;
+    private $default_category_name = 'foo';
+
 
     public function setUp() {
         parent::setUp();
@@ -31,27 +33,19 @@ class ItemTest extends TestCase {
      */
     public function testAddItem() {
         $user = $this->fakeUser;
-        $category_name = 'foo';
         $item_name = 'bar';
 
         $container = $this->getFakeContainer($user->id);
 
         //// create new item
-        $this->actingAs($user)
-             ->post('/api/items', [
-                    'category' => $category_name,
-                    'name'=>$item_name,
-                    'quantity' => '1',
-                    'container_id' => $container->id,
-                    'date' => Carbon::now()
-                ])
+        $this->postAddItem($container->id, $this->default_category_name, $item_name)
             ->seeJson(['name'=>$item_name]);
 
         //// verify category added to db
         $categoryCriteria = [
             'user_id' => $user->id,      
             'container_id' => $container->id,
-            'name' => $category_name            
+            'name' => $this->default_category_name
         ];
         $this->seeInDatabase('categories', $categoryCriteria);
         //// get category id
@@ -64,6 +58,34 @@ class ItemTest extends TestCase {
             'name' => $item_name
         ];
         $this->seeInDatabase('items', $itemCriteria);
+    }
+
+
+    /**
+    * @expectedException \PDOException
+    */
+    // public function testItemExistsInCategory() {
+    //     $user = $this->fakeUser;
+    //     $item_name = 'bar';
+    //     $container = $this->getFakeContainer($user->id);
+
+    //     $this->postAddItem($container->id, $this->default_category_name, $item_name)
+    //     ->seeJson(['name'=>$item_name]);
+
+    //     $this->postAddItem($container->id, $this->default_category_name, $item_name);        
+    // }
+
+    private function postAddItem($container_id, $category_name, $item_name, $opts=[]) {
+        //// TODO: implement $opts for user, date, etc.
+        return $this->actingAs($this->fakeUser)
+             ->post('/api/items', [
+                    'category' => $category_name,
+                    'name'=>$item_name,
+                    'quantity' => '1',
+                    'container_id' => $container_id,
+                    'date' => Carbon::now()
+                ]);        
+
     }
 
     public function testDeleteItem() {
