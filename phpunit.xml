@@ -15,16 +15,16 @@
         </testsuite>
     </testsuites>
     <filter>
-<!--         <blacklist>
-            <directory suffix=".php">./vendor</directory>
-        </blacklist> -->
+        <blacklist>
+            <!-- <directory suffix=".php">./vendor</directory> -->
+        </blacklist>
           <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">/path/to/files</directory>
-            <file>/path/to/file</file>
-            <exclude>
-              <directory suffix=".php">./vendor</directory>
-              <file>/path/to/file</file>
-            </exclude>
+            <directory suffix=".php">./app</directory>
+            <!-- <file>/path/to/file</file> -->
+            <!-- <exclude> -->
+              <!-- <directory suffix=".php">./vendor</directory> -->
+              <!-- <file>/path/to/file</file> -->
+            <!-- </exclude> -->
           </whitelist>        
     </filter>    
     <php>
