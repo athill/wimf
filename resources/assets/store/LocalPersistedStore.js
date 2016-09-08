@@ -19,7 +19,7 @@ let store = getStorePristine();
 
 let storeBackup = getStorePristine();
 
-// localStorage.removeItem('wimf');
+localStorage.removeItem('wimf');
 
 const setStore = (newStore) => store = {...newStore};
 
@@ -91,6 +91,22 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 				});
 				return returnContainer;
 			}
+			break;
+		case 'post':
+			const container = {
+				name: data.name,
+				description: data.description,
+				id: store.maxid++,
+				categories: []
+			};
+			//// check for duplicates
+			if (_.find(store.containers, { name: container.name })) {
+				reject({ data: { error: `Add: Container "${container.name}" exists`}});
+				return;
+			}				
+			store.containers.push(container);
+			return container;
+			break;
 		default:
 			console.error('bad method');
 	}
