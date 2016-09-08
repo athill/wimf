@@ -19,7 +19,7 @@ let store = getStorePristine();
 
 let storeBackup = getStorePristine();
 
-localStorage.removeItem('wimf');
+// localStorage.removeItem('wimf');
 
 const setStore = (newStore) => store = {...newStore};
 
