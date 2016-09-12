@@ -78,6 +78,7 @@ class ItemController extends Controller {
 		//// category object
 		$category = new Category();
 		$category->name = $request->get('category');
+
 		$category->container_id = $request->get('container_id');
 
 		$item = Item::persist($item, $category)->toArray();

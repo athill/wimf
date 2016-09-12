@@ -1,4 +1,6 @@
 <?php
+// namespace TestNamespace;
+
 use Carbon\Carbon;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -14,16 +16,31 @@ class ItemTest extends TestCase {
 
 	use DatabaseTransactions;
 
+    private $defaultCategoryName = 'foo';
+    private $defaultItemName = 'bar';
+    private $defaultQuantity = '1';
+    private $defaultDate;
+
+    private $defaultParams;
     private $fakeUser;
-    private $default_category_name = 'foo';
+    private $defaultContainer;
 
 
     public function setUp() {
         parent::setUp();
+        $this->defaultDate = Carbon::now()->toDateTimeString();
 
         $this->fakeUser = User::create([
             'name' => 'user name',
-        ]);        
+        ]); 
+        $this->defaultContainer =  $this->getFakeContainer($this->fakeUser->id);  
+        $this->defaultParams = [
+            'category' => $this->defaultCategoryName,
+            'name'=>$this->defaultItemName,
+            'quantity' => $this->defaultQuantity,
+            'container_id' => $this->defaultContainer->id,
+            'date' => $this->defaultDate
+        ];            
     }
 
     /**
@@ -38,14 +55,14 @@ class ItemTest extends TestCase {
         $container = $this->getFakeContainer($user->id);
 
         //// create new item
-        $this->postAddItem($container->id, $this->default_category_name, $item_name)
+        $this->postAddItem()
             ->seeJson(['name'=>$item_name]);
 
         //// verify category added to db
         $categoryCriteria = [
-            'user_id' => $user->id,      
-            'container_id' => $container->id,
-            'name' => $this->default_category_name
+            'user_id' => $this->fakeUser->id,      
+            'container_id' => $this->defaultContainer->id,
+            'name' => $this->defaultCategoryName
         ];
         $this->seeInDatabase('categories', $categoryCriteria);
         //// get category id
@@ -53,41 +70,59 @@ class ItemTest extends TestCase {
 
         //// verify item added to db
         $itemCriteria = [
-            'user_id' => $user->id,
+            'user_id' => $this->fakeUser->id,
             'category_id' => $category_id,
-            'name' => $item_name
+            'name' => $this->defaultItemName
         ];
         $this->seeInDatabase('items', $itemCriteria);
     }
 
+    
+    public function testItemExistsInCategory() {
+        $this->postAddItem()
+            ->seeJson(['name'=>$this->defaultItemName]);
 
-    /**
-    * @expectedException \PDOException
-    */
-    // public function testItemExistsInCategory() {
-    //     $user = $this->fakeUser;
-    //     $item_name = 'bar';
-    //     $container = $this->getFakeContainer($user->id);
-
-    //     $this->postAddItem($container->id, $this->default_category_name, $item_name)
-    //     ->seeJson(['name'=>$item_name]);
-
-    //     $this->postAddItem($container->id, $this->default_category_name, $item_name);        
-    // }
-
-    private function postAddItem($container_id, $category_name, $item_name, $opts=[]) {
-        //// TODO: implement $opts for user, date, etc.
-        return $this->actingAs($this->fakeUser)
-             ->post('/api/items', [
-                    'category' => $category_name,
-                    'name'=>$item_name,
-                    'quantity' => '1',
-                    'container_id' => $container_id,
-                    'date' => Carbon::now()
-                ]);        
-
+        $this->postAddItem()
+            ->seeJsonStructure(['error']);        
     }
 
+
+    
+    public function testUpdateItem() {
+        $updated_item_name = 'baz';
+        $updated_quantity = '2';
+        // $container = $this->getFakeContainer($user->id);
+        $response = $this->postAddItem();
+        $json = $this->getResponseContentAsJson($response);
+        $id = $json['id'];
+
+        $updates = [
+            'name'=>$updated_item_name,
+            'quantity' => $updated_quantity,
+        ];
+        $params = array_merge($json, $updates, ['container_id' => $this->defaultContainer->id]);
+        // dd($params);
+        $response = $this->putItem($id, $params);
+        // dd($response->response->);
+        // $json = $this->getResponseContentAsJson($response);
+        // dd($response->response->getContent());
+
+
+        $response->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]);
+
+        // $this->actingAs($this->fakeUser)
+        //      ->put('/api/items/'.$id, [
+        //             'category' => $this->defaultCategoryName,
+        //             'name'=>$updated_item_name,
+        //             'quantity' => $updated_quantity,
+        //             'container_id' => $container->id,
+        //             'date' => Carbon::now()
+        //         ])->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]); 
+    }
+
+
+
+    /*
     public function testDeleteItem() {
         $user = factory(User::class)->create();       
 
@@ -95,9 +130,6 @@ class ItemTest extends TestCase {
 
         $itemtest = Item::find($item->id);
 
-        //// TODO: why is user_id -1 in created object???
-        print('user_id: '.$user->id.' category_id: '.$item->category_id);
-        print('Itemtest: user_id: '.$itemtest->user_id.' category_id: '.$itemtest->category_id);
 
         $item_criteria = [
             'name' => $item->name,
@@ -113,4 +145,23 @@ class ItemTest extends TestCase {
 
         $this->notSeeInDatabase('items', $item_criteria);
     }
+    */
+
+    private function postAddItem($params=[], $user=null) {
+        if (!$user) {
+            $user = $this->fakeUser;
+        }
+        $opts = array_merge($this->defaultParams, $params);
+        return $this->actingAs($user)
+             ->post('/api/items', $opts); 
+    }
+
+    private function putItem($id, $params=[], $user=null) {
+        if (!$user) {
+            $user = $this->fakeUser;
+        }
+        return $this->actingAs($user)
+             ->put('/api/items/'.$id, $params); 
+    }
+
 }

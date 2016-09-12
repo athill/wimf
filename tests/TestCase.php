@@ -50,5 +50,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         return $item;
     }
 
+    protected function getResponseContentAsJson($response) {
+        return json_decode($response->response->getContent(), true);
+    }
 
 }
