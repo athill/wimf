@@ -43,8 +43,9 @@ class ItemControllerTest extends TestCase {
      */
     public function testAddItem() {
         $item_name = 'bar';
+        
         //// create new item
-        $this->postAddItem()
+        $this->postItem()
             ->seeJson(['name'=>$item_name]);
 
         //// verify category added to db
@@ -68,10 +69,10 @@ class ItemControllerTest extends TestCase {
 
     
     public function testItemExistsInCategory() {
-        $this->postAddItem()
+        $this->postItem()
             ->seeJson(['name'=>$this->defaultItemName]);
 
-        $this->postAddItem()
+        $this->postItem()
             ->seeJsonStructure(['error']);        
     }
 
@@ -80,7 +81,7 @@ class ItemControllerTest extends TestCase {
     public function testUpdateItem() {
         $updated_item_name = 'baz';
         $updated_quantity = '2';
-        $this->postAddItem();
+        $this->postItem();
         $response = self::getResponseContentAsJson($this->response);
         $id = $response['id'];
 
@@ -94,38 +95,31 @@ class ItemControllerTest extends TestCase {
 
         $response->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]);
     }
-
-
-
     
     public function testDeleteItem() {
         $item = $this->getFakeItem();
 
-        $itemtest = Item::find($item->id);
-
-
         $item_criteria = [
             'name' => $item->name,
-            // 'user_id' => $user->id,
             'category_id' => $item->category_id             
         ];
 
         $this->seeInDatabase('items', $item_criteria);
 
-        //// create new item
-        $this->delete('/api/items/'.$item->id);     
+        //// delete item
+        $this->delete(self::ITEMS_PATH.'/'.$item->id);     
 
         $this->notSeeInDatabase('items', $item_criteria);
     }
     
 
-    private function postAddItem($params=[]) {
+    private function postItem(array $params=[]) {
         $opts = array_merge($this->defaultParams, $params);
-        return $this->post('/api/items', $opts); 
+        return $this->post(self::ITEMS_PATH, $opts); 
     }
 
-    private function putItem($id, $params=[]) {
-        return $this->put('/api/items/'.$id, $params); 
+    private function putItem(string $id, array $params=[]) {
+        return $this->put(self::ITEMS_PATH.'/'.$id, $params); 
     }
 
 }

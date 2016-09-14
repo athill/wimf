@@ -27,7 +27,7 @@ class ContainerTest extends TestCase {
      */
     public function testGetContainers() {
         //// verify json
-        $this->get('/api/containers')
+        $this->get(self::CONTAINERS_PATH)
 			 ->seeJsonStructure([
                 '*' => ['id', 'name', 'description']
              ]);
@@ -45,8 +45,7 @@ class ContainerTest extends TestCase {
     //     $item1 = $this->getFakeItem($cat1->id);
     //     $item2 = $this->getFakeItem($cat1->id);
     //     $item3 = $this->getFakeItem($cat2->id);
-    //     $request = $this->actingAs($this->defaultUser)
-    //                 ->get(self::CONTAINERS_URL.'/'.$container->id);
+    //     $request = $this->get(self::CONTAINERS_URL.'/'.$container->id);
     // }
     
 

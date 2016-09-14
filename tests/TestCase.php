@@ -2,6 +2,10 @@
 use Carbon\Carbon;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
+
+    const ITEMS_PATH = '/api/items';
+    const CONTAINERS_PATH = '/api/containers';
+
     /**
      * The base URL to use while testing the application.
      *
