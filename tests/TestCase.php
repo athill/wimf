@@ -8,14 +8,23 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      * @var string
      */
     protected $baseUrl = 'http://localhost';
+
+    //// my vars
+    /**
+     * Default user
+     *
+     * @var App\User
+     */    
     protected $defaultUser;
 
+    /**
+     * Default date string
+     *
+     * @var \Carbon\Carbon
+     */        
+    protected $defaultDate;
 
-    public function setUp() {
-        parent::setUp();
-        $this->defaultUser = factory(App\User::class)->create(); 
-        $this->defaultDate = Carbon::now()->toDateTimeString();
-    }
+    //// how about this voodoo?
 
     /**
      * Creates the application.
@@ -30,11 +39,30 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 
     ///// my stuff
-    protected function getFakeContainer($overrides=[]) {
-        $container = factory(App\Container::class)->create($overrides);
-        return $container;
+
+    public function setUp() {
+        parent::setUp();
+        $this->defaultUser = factory(App\User::class)->create(); 
+        $this->defaultDate = Carbon::now()->toDateTimeString();
     }
 
+
+    /**
+     * Creates the a fake container.
+     *
+     * @param Array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @return App\Container
+     */
+    protected function getFakeContainer($overrides=[]) {
+        return factory(App\Container::class)->create($overrides);
+    }
+
+    /**
+     * Creates the a fake category.
+     *
+     * @param Array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @return App\Category
+     */
     protected function getFakeCategory($overrides=[]) {
         if (!isset($overrides['container_id'])) {
             $overrides['container_id'] = $this->getFakeContainer()->id;
@@ -42,6 +70,12 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         return factory(App\Category::class)->create($overrides); 
     }
 
+    /**
+     * Creates the a fake item.
+     *
+     * @param Array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @return App\Item
+     */
     protected function getFakeItem($overrides=[]) {
         if (!isset($overrides['category_id'])) {
             $overrides['category_id'] = $this->getFakeCategory()->id;
@@ -49,6 +83,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         return factory(App\Item::class)->create($overrides); 
     }
 
+    ///// Statics
     protected static function getResponseContentAsJson(Illuminate\Http\Response $response) {
         return json_decode($response->getContent(), true);
     }
