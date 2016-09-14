@@ -25,7 +25,8 @@ class Container extends ChangelogModelBase {
 	}	
 
 	public static function nameExists($name) {
-		return Container::user()->where('name', $name)->first() !== null;
+		$result = Container::user()->where('name', $name)->first();
+		return $result !== null;
 	}
 
 

@@ -29,14 +29,20 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 
     ///// my stuff
-    protected function getFakeContainer($user_id) {
-        $container = factory(App\Container::class)->create();
-        $container->user_id = $user_id;
+    protected function getFakeContainer($overrides=[]) {
+        if (!is_array($overrides)) {
+            $overrides = [];
+        }
+        $defaults = [
+            'user_id' => $this->fakeUser->id
+        ];
+        $overrides = array_merge($defaults, $overrides);
+        $container = factory(App\Container::class)->create($overrides);
+        // $container->user_id = $user_id;
         return $container;
     }
 
     protected function getFakeCategory($user_id, $container_id=null) {
-        // $this->mockAuth();
         if ($container_id === null) {
             $container = $this->getFakeContainer($user_id);
             $container_id = $container->id;
@@ -48,8 +54,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     protected function getFakeItem($user_id, $category_id=null) {
-        // $this->mockAuth();
-        print('in getFakeItem'. $user_id."\n");
         if ($category_id === null) {
             $category = $this->getFakeCategory($user_id);
             $category_id = $category->id;

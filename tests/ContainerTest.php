@@ -13,11 +13,18 @@ class ContainerTest extends TestCase {
 
     private $faker;
 
-    function __construct() {
+    // function __construct() {
+        
 
+        
+    // }
+
+
+    public function setUp() {
+        parent::setUp();
         $this->faker = Faker\Factory::create();
+        $this->be($this->fakeUser);
     }
-
 
     /**
      * A basic functional test example.
@@ -25,17 +32,16 @@ class ContainerTest extends TestCase {
      * @return void
      */
     public function testGetContainers() {
-        $user = factory(App\User::class)->create();
+        // $user = factory(App\User::class)->create();
 
         //// verify json
-        $this->actingAs($user)
-        	 ->get('/api/containers')
+        $this->get('/api/containers')
 			 ->seeJsonStructure([
                 '*' => ['id', 'name', 'description']
              ]);
         //// verify freezer added to db
         $this->seeInDatabase('containers', [
-        	'user_id' => $user->id,
+        	'user_id' => $this->fakeUser->id,
         	'name' => 'Freezer'
         ]);
     }
@@ -53,14 +59,16 @@ class ContainerTest extends TestCase {
     
 
     public function testNameExistsIsTrueIfNameExists() {
-        
         $container1 = $this->getFakeContainer($this->fakeUser->id);
         $this->assertTrue(Container::nameExists($container1->name));
 
     }
 
     public function testNameExistsIsFalseIfNameDoesNotExists() {
+        
         $name = $this->faker->word;
+        // $container1 = $this->getFakeContainer($this->fakeUser->id);
+        // $this->assertNotEquals($name, $container1->name);
         //// TODO: verify and delete if name exists
         $this->assertFalse(Container::nameExists($name));
     }
