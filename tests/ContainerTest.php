@@ -21,7 +21,7 @@ class ContainerTest extends TestCase {
     }
 
     /**
-     * A basic functional test example.
+     * Verify getting list of containers for a user
      *
      * @return void
      */
@@ -38,17 +38,43 @@ class ContainerTest extends TestCase {
         ]);
     }
 
-    // public function testGetContainer() {
-    //     $container = $this->getFakeContainer();
-    //     $cat1 = $this->getFakeCategory($container->id);
-    //     $cat2 = $this->getFakeCategory($container->id);
-    //     $item1 = $this->getFakeItem($cat1->id);
-    //     $item2 = $this->getFakeItem($cat1->id);
-    //     $item3 = $this->getFakeItem($cat2->id);
-    //     $request = $this->get(self::CONTAINERS_URL.'/'.$container->id);
-    // }
-    
+    /**
+     * Verify getting a container
+     *
+     * @return void
+     */
+    public function testGetContainer() {
+        $container = $this->getFakeContainer();
+        $categoryArgs = [
+            'container_id' => $container->id
+        ];
+        $cat1 = $this->getFakeCategory($categoryArgs);
+        $cat2 = $this->getFakeCategory($categoryArgs);
+        $item1 = $this->getFakeItem($cat1->id);
+        $item2 = $this->getFakeItem($cat1->id);
+        $item3 = $this->getFakeItem($cat2->id);
+        $this->get(self::CONTAINERS_PATH.'/'.$container->id);
+        // $json = self::getResponseContentAsJson($this->response);
+        $json = $this->getResponseContentAsJson();
+        $this->seeJsonStructure([
+            'name', 
+            'id', 
+            'categories' => [
+                '*' => [
+                    'name',
+                    'items' => [
+                        '*' => [
+                            'id', 'name', 'quantity', 'comment', 'category_id', 'date', 'category'
+                        ]
+                    ]
+                ]
+            ]
+            
+        ]);
+    }
 
+
+    //// model tests
     public function testNameExistsIsTrueIfNameExists() {
         $container = $this->getFakeContainer();
         $this->assertTrue(Container::nameExists($container->name));

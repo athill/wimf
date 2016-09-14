@@ -64,10 +64,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     /**
      * Creates the a fake category.
      *
-     * @param array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @param array|int $overrides Override properties set by App\ModelFactory via \Faker\Generator, int will
+     *     set container_id
      * @return App\Category
      */
-    protected function getFakeCategory(array $overrides=[]) {
+    protected function getFakeCategory($overrides=[]) {
+        //// allow passing in container_id as single value
+        if (is_numeric($overrides)) {
+            $overrides = [
+                'container_id' => $overrides
+            ];
+        }
         if (!isset($overrides['container_id'])) {
             $overrides['container_id'] = $this->getFakeContainer()->id;
         }
@@ -80,16 +87,29 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      * @param array $overrides Override properties set by App\ModelFactory via \Faker\Generator
      * @return App\Item
      */
-    protected function getFakeItem(array $overrides=[]) {
+    protected function getFakeItem($overrides=[]) {
+        //// allow passing in category_id as single value
+        if (is_numeric($overrides)) {
+            $overrides = [
+                'category_id' => $overrides
+            ];
+        }
         if (!isset($overrides['category_id'])) {
             $overrides['category_id'] = $this->getFakeCategory()->id;
         }
         return factory(App\Item::class)->create($overrides); 
     }
 
-    ///// Statics
-    protected static function getResponseContentAsJson(Illuminate\Http\Response $response) {
-        return json_decode($response->getContent(), true);
-    }
+    ///// helpers
+    // protected static function getResponseContentAsJson(Illuminate\Http\Response $response) {
+    //     return json_decode($response->getContent(), true);
+    // }
+    protected function getResponseContentAsJson() {
+        $response = $this->response;
+        if (is_null($response)) {
+            throw new Exception('$this->response is null in TestCase.getResponseContentAsJson(). This method must be called after making a http request.');
+        }
+        return json_decode($this->response->getContent(), true);
+    }    
 
 }

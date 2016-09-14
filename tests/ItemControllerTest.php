@@ -82,7 +82,7 @@ class ItemControllerTest extends TestCase {
         $updated_item_name = 'baz';
         $updated_quantity = '2';
         $this->postItem();
-        $response = self::getResponseContentAsJson($this->response);
+        $response = $this->getResponseContentAsJson();
         $id = $response['id'];
 
         $updates = [
