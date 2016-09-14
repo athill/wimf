@@ -1,8 +1,6 @@
 <?php
 // namespace TestNamespace;
 
-use Carbon\Carbon;
-
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,7 +17,6 @@ class ItemTest extends TestCase {
     private $defaultCategoryName = 'foo';
     private $defaultItemName = 'bar';
     private $defaultQuantity = '1';
-    private $defaultDate;
 
     private $defaultParams;
     
@@ -28,7 +25,7 @@ class ItemTest extends TestCase {
 
     public function setUp() {
         parent::setUp();
-        $this->defaultDate = Carbon::now()->toDateTimeString();
+        $this->be($this->fakeUser);
 
         $this->defaultContainer =  $this->getFakeContainer($this->fakeUser->id);  
         $this->defaultParams = [

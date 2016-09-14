@@ -13,12 +13,6 @@ class ContainerTest extends TestCase {
 
     private $faker;
 
-    // function __construct() {
-        
-
-        
-    // }
-
 
     public function setUp() {
         parent::setUp();

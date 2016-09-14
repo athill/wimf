@@ -1,5 +1,5 @@
 <?php
-
+use Carbon\Carbon;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
     /**
@@ -14,6 +14,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     public function setUp() {
         parent::setUp();
         $this->fakeUser = factory(App\User::class)->create(); 
+        $this->defaultDate = Carbon::now()->toDateTimeString();
     }
 
     /**
@@ -33,11 +34,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         if (!is_array($overrides)) {
             $overrides = [];
         }
-        $defaults = [
-            'user_id' => $this->fakeUser->id
-        ];
-        $overrides = array_merge($defaults, $overrides);
-        $container = factory(App\Container::class)->create($overrides);
+        $container = factory(App\Container::class)->create();
         // $container->user_id = $user_id;
         return $container;
     }
