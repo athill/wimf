@@ -31,40 +31,26 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
     ///// my stuff
     protected function getFakeContainer($overrides=[]) {
-        if (!is_array($overrides)) {
-            $overrides = [];
-        }
-        $container = factory(App\Container::class)->create();
-        // $container->user_id = $user_id;
+        $container = factory(App\Container::class)->create($overrides);
         return $container;
     }
 
-    protected function getFakeCategory($user_id, $container_id=null) {
-        if ($container_id === null) {
-            $container = $this->getFakeContainer($user_id);
-            $container_id = $container->id;
+    protected function getFakeCategory($overrides=[]) {
+        if (!isset($overrides['container_id'])) {
+            $overrides['container_id'] = $this->getFakeContainer()->id;
         }
-        return factory(App\Category::class)->create([
-           'user_id' => $user_id,
-           'container_id' => $container->id 
-        ]); 
+        return factory(App\Category::class)->create($overrides); 
     }
 
-    protected function getFakeItem($user_id, $category_id=null) {
-        if ($category_id === null) {
-            $category = $this->getFakeCategory($user_id);
-            $category_id = $category->id;
+    protected function getFakeItem($overrides=[]) {
+        if (!isset($overrides['category_id'])) {
+            $overrides['category_id'] = $this->getFakeCategory()->id;
         }
-        $overrides = [
-           'category_id' => $category_id,
-           'user_id' => $user_id
-        ];
-        $item = factory(App\Item::class)->create($overrides);
-        return $item;
+        return factory(App\Item::class)->create($overrides); 
     }
 
-    protected function getResponseContentAsJson($response) {
-        return json_decode($response->response->getContent(), true);
+    protected static function getResponseContentAsJson(Illuminate\Http\Response $response) {
+        return json_decode($response->getContent(), true);
     }
 
 }

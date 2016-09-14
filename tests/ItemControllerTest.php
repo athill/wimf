@@ -10,7 +10,7 @@ use App\Category;
 use App\Item;
 use App\User;
 
-class ItemTest extends TestCase {
+class ItemControllerTest extends TestCase {
 
 	use DatabaseTransactions;
 
@@ -43,7 +43,6 @@ class ItemTest extends TestCase {
      */
     public function testAddItem() {
         $item_name = 'bar';
-
         //// create new item
         $this->postAddItem()
             ->seeJson(['name'=>$item_name]);
@@ -81,15 +80,15 @@ class ItemTest extends TestCase {
     public function testUpdateItem() {
         $updated_item_name = 'baz';
         $updated_quantity = '2';
-        $response = $this->postAddItem();
-        $json = $this->getResponseContentAsJson($response);
-        $id = $json['id'];
+        $this->postAddItem();
+        $response = self::getResponseContentAsJson($this->response);
+        $id = $response['id'];
 
         $updates = [
             'name'=>$updated_item_name,
             'quantity' => $updated_quantity,
         ];
-        $params = array_merge($json, $updates, ['container_id' => $this->defaultContainer->id]);
+        $params = array_merge($response, $updates, ['container_id' => $this->defaultContainer->id]);
         $response = $this->putItem($id, $params);
 
 
@@ -98,11 +97,9 @@ class ItemTest extends TestCase {
 
 
 
-    /*
+    
     public function testDeleteItem() {
-        $user = factory(User::class)->create();       
-
-        $item = $this->getFakeItem($user->id);
+        $item = $this->getFakeItem();
 
         $itemtest = Item::find($item->id);
 
@@ -116,28 +113,19 @@ class ItemTest extends TestCase {
         $this->seeInDatabase('items', $item_criteria);
 
         //// create new item
-        $this->actingAs($user)
-             ->delete('/api/items/'.$item->id);     
+        $this->delete('/api/items/'.$item->id);     
 
         $this->notSeeInDatabase('items', $item_criteria);
     }
-    */
+    
 
-    private function postAddItem($params=[], $user=null) {
-        if (!$user) {
-            $user = $this->defaultUser;
-        }
+    private function postAddItem($params=[]) {
         $opts = array_merge($this->defaultParams, $params);
-        return $this->actingAs($user)
-             ->post('/api/items', $opts); 
+        return $this->post('/api/items', $opts); 
     }
 
-    private function putItem($id, $params=[], $user=null) {
-        if (!$user) {
-            $user = $this->defaultUser;
-        }
-        return $this->actingAs($user)
-             ->put('/api/items/'.$id, $params); 
+    private function putItem($id, $params=[]) {
+        return $this->put('/api/items/'.$id, $params); 
     }
 
 }

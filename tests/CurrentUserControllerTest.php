@@ -2,7 +2,8 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-class CurrentUserTest extends TestCase {
+
+class CurrentUserControllerTest extends TestCase {
 
     use DatabaseTransactions;
     
