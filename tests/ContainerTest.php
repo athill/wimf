@@ -40,9 +40,21 @@ class ContainerTest extends TestCase {
         ]);
     }
 
+    // public function testGetContainer() {
+    //     $container = $this->defaultContainer;
+    //     $cat1 = $this->getFakeCategory($container->id);
+    //     $cat2 = $this->getFakeCategory($container->id);
+    //     $item1 = $this->getFakeItem($cat1->id);
+    //     $item2 = $this->getFakeItem($cat1->id);
+    //     $item3 = $this->getFakeItem($cat2->id);
+    //     $request = $this->actingAs($this->defaultUser)
+    //                 ->get(self::CONTAINERS_URL.'/'.$container->id);
+    // }
+    
+
     public function testNameExistsIsTrueIfNameExists() {
-        $user = factory(App\User::class)->create();
-        $container1 = $this->getFakeContainer($user->id);
+        
+        $container1 = $this->getFakeContainer($this->fakeUser->id);
         $this->assertTrue(Container::nameExists($container1->name));
 
     }

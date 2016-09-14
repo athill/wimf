@@ -1,4 +1,6 @@
 <?php
+
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
     /**
      * The base URL to use while testing the application.
@@ -6,6 +8,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      * @var string
      */
     protected $baseUrl = 'http://localhost';
+    protected $fakeUser;
+
+
+    public function setUp() {
+        parent::setUp();
+        $this->fakeUser = factory(App\User::class)->create(); 
+    }
+
     /**
      * Creates the application.
      *
@@ -20,12 +30,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
     ///// my stuff
     protected function getFakeContainer($user_id) {
-        return factory(App\Container::class)->create([
-            'user_id' => $user_id
-        ]);
+        $container = factory(App\Container::class)->create();
+        $container->user_id = $user_id;
+        return $container;
     }
 
     protected function getFakeCategory($user_id, $container_id=null) {
+        // $this->mockAuth();
         if ($container_id === null) {
             $container = $this->getFakeContainer($user_id);
             $container_id = $container->id;
@@ -37,6 +48,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     protected function getFakeItem($user_id, $category_id=null) {
+        // $this->mockAuth();
         print('in getFakeItem'. $user_id."\n");
         if ($category_id === null) {
             $category = $this->getFakeCategory($user_id);

@@ -22,7 +22,7 @@ class ItemTest extends TestCase {
     private $defaultDate;
 
     private $defaultParams;
-    private $fakeUser;
+    
     private $defaultContainer;
 
 
@@ -30,9 +30,6 @@ class ItemTest extends TestCase {
         parent::setUp();
         $this->defaultDate = Carbon::now()->toDateTimeString();
 
-        $this->fakeUser = User::create([
-            'name' => 'user name',
-        ]); 
         $this->defaultContainer =  $this->getFakeContainer($this->fakeUser->id);  
         $this->defaultParams = [
             'category' => $this->defaultCategoryName,
