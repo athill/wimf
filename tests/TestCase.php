@@ -50,20 +50,20 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     /**
      * Creates the a fake container.
      *
-     * @param Array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @param array $overrides Override properties set by App\ModelFactory via \Faker\Generator
      * @return App\Container
      */
-    protected function getFakeContainer($overrides=[]) {
+    protected function getFakeContainer(array $overrides=[]) {
         return factory(App\Container::class)->create($overrides);
     }
 
     /**
      * Creates the a fake category.
      *
-     * @param Array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @param array $overrides Override properties set by App\ModelFactory via \Faker\Generator
      * @return App\Category
      */
-    protected function getFakeCategory($overrides=[]) {
+    protected function getFakeCategory(array $overrides=[]) {
         if (!isset($overrides['container_id'])) {
             $overrides['container_id'] = $this->getFakeContainer()->id;
         }
@@ -73,10 +73,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     /**
      * Creates the a fake item.
      *
-     * @param Array $overrides Override properties set by App\ModelFactory via \Faker\Generator
+     * @param array $overrides Override properties set by App\ModelFactory via \Faker\Generator
      * @return App\Item
      */
-    protected function getFakeItem($overrides=[]) {
+    protected function getFakeItem(array $overrides=[]) {
         if (!isset($overrides['category_id'])) {
             $overrides['category_id'] = $this->getFakeCategory()->id;
         }
