@@ -8,12 +8,12 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      * @var string
      */
     protected $baseUrl = 'http://localhost';
-    protected $fakeUser;
+    protected $defaultUser;
 
 
     public function setUp() {
         parent::setUp();
-        $this->fakeUser = factory(App\User::class)->create(); 
+        $this->defaultUser = factory(App\User::class)->create(); 
         $this->defaultDate = Carbon::now()->toDateTimeString();
     }
 

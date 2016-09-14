@@ -25,9 +25,8 @@ class ItemTest extends TestCase {
 
     public function setUp() {
         parent::setUp();
-        $this->be($this->fakeUser);
-
-        $this->defaultContainer =  $this->getFakeContainer($this->fakeUser->id);  
+        $this->be($this->defaultUser);
+        $this->defaultContainer =  $this->getFakeContainer();  
         $this->defaultParams = [
             'category' => $this->defaultCategoryName,
             'name'=>$this->defaultItemName,
@@ -43,10 +42,7 @@ class ItemTest extends TestCase {
      * @return void
      */
     public function testAddItem() {
-        $user = $this->fakeUser;
         $item_name = 'bar';
-
-        $container = $this->getFakeContainer($user->id);
 
         //// create new item
         $this->postAddItem()
@@ -54,7 +50,7 @@ class ItemTest extends TestCase {
 
         //// verify category added to db
         $categoryCriteria = [
-            'user_id' => $this->fakeUser->id,      
+            'user_id' => $this->defaultUser->id,      
             'container_id' => $this->defaultContainer->id,
             'name' => $this->defaultCategoryName
         ];
@@ -64,7 +60,7 @@ class ItemTest extends TestCase {
 
         //// verify item added to db
         $itemCriteria = [
-            'user_id' => $this->fakeUser->id,
+            'user_id' => $this->defaultUser->id,
             'category_id' => $category_id,
             'name' => $this->defaultItemName
         ];
@@ -85,7 +81,6 @@ class ItemTest extends TestCase {
     public function testUpdateItem() {
         $updated_item_name = 'baz';
         $updated_quantity = '2';
-        // $container = $this->getFakeContainer($user->id);
         $response = $this->postAddItem();
         $json = $this->getResponseContentAsJson($response);
         $id = $json['id'];
@@ -95,23 +90,10 @@ class ItemTest extends TestCase {
             'quantity' => $updated_quantity,
         ];
         $params = array_merge($json, $updates, ['container_id' => $this->defaultContainer->id]);
-        // dd($params);
         $response = $this->putItem($id, $params);
-        // dd($response->response->);
-        // $json = $this->getResponseContentAsJson($response);
-        // dd($response->response->getContent());
 
 
         $response->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]);
-
-        // $this->actingAs($this->fakeUser)
-        //      ->put('/api/items/'.$id, [
-        //             'category' => $this->defaultCategoryName,
-        //             'name'=>$updated_item_name,
-        //             'quantity' => $updated_quantity,
-        //             'container_id' => $container->id,
-        //             'date' => Carbon::now()
-        //         ])->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]); 
     }
 
 
@@ -143,7 +125,7 @@ class ItemTest extends TestCase {
 
     private function postAddItem($params=[], $user=null) {
         if (!$user) {
-            $user = $this->fakeUser;
+            $user = $this->defaultUser;
         }
         $opts = array_merge($this->defaultParams, $params);
         return $this->actingAs($user)
@@ -152,7 +134,7 @@ class ItemTest extends TestCase {
 
     private function putItem($id, $params=[], $user=null) {
         if (!$user) {
-            $user = $this->fakeUser;
+            $user = $this->defaultUser;
         }
         return $this->actingAs($user)
              ->put('/api/items/'.$id, $params); 

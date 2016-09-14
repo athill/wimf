@@ -17,7 +17,7 @@ class ContainerTest extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->faker = Faker\Factory::create();
-        $this->be($this->fakeUser);
+        $this->be($this->defaultUser);       
     }
 
     /**
@@ -26,8 +26,6 @@ class ContainerTest extends TestCase {
      * @return void
      */
     public function testGetContainers() {
-        // $user = factory(App\User::class)->create();
-
         //// verify json
         $this->get('/api/containers')
 			 ->seeJsonStructure([
@@ -35,13 +33,13 @@ class ContainerTest extends TestCase {
              ]);
         //// verify freezer added to db
         $this->seeInDatabase('containers', [
-        	'user_id' => $this->fakeUser->id,
+        	'user_id' => $this->defaultUser->id,
         	'name' => 'Freezer'
         ]);
     }
 
     // public function testGetContainer() {
-    //     $container = $this->defaultContainer;
+    //     $container = $this->getFakeContainer();
     //     $cat1 = $this->getFakeCategory($container->id);
     //     $cat2 = $this->getFakeCategory($container->id);
     //     $item1 = $this->getFakeItem($cat1->id);
@@ -53,16 +51,15 @@ class ContainerTest extends TestCase {
     
 
     public function testNameExistsIsTrueIfNameExists() {
-        $container1 = $this->getFakeContainer($this->fakeUser->id);
-        $this->assertTrue(Container::nameExists($container1->name));
+        $container = $this->getFakeContainer();
+        $this->assertTrue(Container::nameExists($container->name));
 
     }
 
     public function testNameExistsIsFalseIfNameDoesNotExists() {
-        
+        $container = $this->getFakeContainer();
         $name = $this->faker->word;
-        // $container1 = $this->getFakeContainer($this->fakeUser->id);
-        // $this->assertNotEquals($name, $container1->name);
+        $this->assertNotEquals($name, $container->name);
         //// TODO: verify and delete if name exists
         $this->assertFalse(Container::nameExists($name));
     }
