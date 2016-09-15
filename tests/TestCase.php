@@ -101,9 +101,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     }
 
     ///// helpers
-    // protected static function getResponseContentAsJson(Illuminate\Http\Response $response) {
-    //     return json_decode($response->getContent(), true);
-    // }
     protected function getResponseContentAsJson() {
         $response = $this->response;
         if (is_null($response)) {
@@ -111,5 +108,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         }
         return json_decode($this->response->getContent(), true);
     }    
+
+    //// statics
+    protected static function mapSeeJson($json, array $excludes=[]) {
+        $map = [];
+        foreach ($json as $key => $value) {
+            if (!in_array($key, $excludes)) {
+                $map[$key] = $json[$key];
+            }
+        }
+    }
 
 }

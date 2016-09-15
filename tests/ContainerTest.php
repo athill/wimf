@@ -13,11 +13,21 @@ class ContainerTest extends TestCase {
 
     private $faker;
 
+    private $defaultContainerName;
+    private $defaultDescription;
+
 
     public function setUp() {
         parent::setUp();
+        $this->be($this->defaultUser);
         $this->faker = Faker\Factory::create();
-        $this->be($this->defaultUser);       
+        $this->defaultContainerName = $this->faker->word;
+        $this->defaultDescription = $this->faker->sentence();
+        $this->be($this->defaultUser);
+        $this->defaultParams = [
+            'name'=>$this->defaultContainerName,
+            'description' => $this->defaultDescription,
+        ];               
     }
 
     /**
@@ -73,6 +83,11 @@ class ContainerTest extends TestCase {
         ]);
     }
 
+    public function testPostContainer() {
+        $this->post(self::CONTAINERS_PATH, $this->defaultParams);
+        $json = $this->getResponseContentAsJson();
+        $this->seeJson(self::mapSeeJson($this->defaultParams));
+    }    
 
     //// model tests
     public function testNameExistsIsTrueIfNameExists() {
