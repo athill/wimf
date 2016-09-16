@@ -22,7 +22,7 @@ class ItemController extends Controller {
 	public function store(Request $request) {
 		// Item object
 		$item = new Item();
-		$item = $this->getRequestItem($request, $item);
+		$item->updateFromRequest($request);
 		$item->comment = '';
 
 		//// category object
@@ -73,7 +73,7 @@ class ItemController extends Controller {
 	 */
 	public function update(Request $request, $id) {
 		$item = Item::findOrFail($id);
-		$item = $this->getRequestItem($request, $item);
+		$item->updateFromRequest($request);
 
 		//// category object
 		$category = new Category();
@@ -87,10 +87,10 @@ class ItemController extends Controller {
 
 	}
 
-	private function getRequestItem($request, $item) {
-		$item->name = $request->get('name');
-		$item->quantity = $request->get('quantity');
-		$item->date = $request->get('date');
-		return $item;		
-	}	
+	// private function updateFromRequest($request, $item) {
+	// 	$item->name = $request->get('name');
+	// 	$item->quantity = $request->get('quantity');
+	// 	$item->date = $request->get('date');
+	// 	return $item;		
+	// }	
 }

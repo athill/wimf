@@ -4,8 +4,11 @@ use Auth;
 
 use App\Library\ChangelogModelBase;
 use App\Category;
+use App\UpdateFromRequest;
 
 class Item extends ChangelogModelBase {
+
+	use UpdateFromRequest;
 
 	protected $fillable = ['name', 'user_id', 'quantity',  'category_id', 'date'];
 

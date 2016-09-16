@@ -45,8 +45,8 @@ class ItemControllerTest extends TestCase {
         $item_name = 'bar';
         
         //// create new item
-        $this->postItem()
-            ->seeJson(['name'=>$item_name]);
+        $this->postItem();
+        $this->seeJson(['name'=>$item_name]);
 
         //// verify category added to db
         $categoryCriteria = [
@@ -90,10 +90,8 @@ class ItemControllerTest extends TestCase {
             'quantity' => $updated_quantity,
         ];
         $params = array_merge($response, $updates, ['container_id' => $this->defaultContainer->id]);
-        $response = $this->putItem($id, $params);
-
-
-        $response->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]);
+        $this->putItem($id, $params);
+        $this->seeJson(['name'=>$updated_item_name, 'quantity'=>$updated_quantity]);
     }
     
     public function testDeleteItem() {
@@ -118,7 +116,7 @@ class ItemControllerTest extends TestCase {
         return $this->post(self::ITEMS_PATH, $opts); 
     }
 
-    private function putItem(string $id, array $params=[]) {
+    private function putItem($id, $params=[]) {
         return $this->put(self::ITEMS_PATH.'/'.$id, $params); 
     }
 

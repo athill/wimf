@@ -79,7 +79,7 @@ class ContainerController extends Controller {
 	 */
 	public function store(Request $request) {
 		$container = new Container();
-		$this->populateContainerFromRequest($container, $request);
+		$container->updateFromRequest($request);
 		if (Container::nameExists($container->name)) {
 			$errorMessage = 'Container "'.$container->name.'" already exists.';
 			return response()->json(['error'=>$errorMessage], 400);
@@ -114,7 +114,7 @@ class ContainerController extends Controller {
 	 */
 	public function update($id, Request $request) {
 		$container = Container::findOrFail($id);
-		populateContainerFromRequest($container, $request);
+		$container->updateFromRequest($request);
 		try {
 			$container->save();
 		} catch (\PDOException $e) {
@@ -139,11 +139,6 @@ class ContainerController extends Controller {
 		$container = Container::findOrFail($id);
 		$container->delete();
 		//
-	}
-
-	private function populateContainerFromRequest($container, $request) {
-		$map = ['name', 'description'];
-		Utils::mapObjectFromRequest($map, $container, $request);	
 	}
 
 }

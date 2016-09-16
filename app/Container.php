@@ -1,10 +1,15 @@
 <?php namespace App;
 
-use App\Library\ChangelogModelBase;
 
-use Auth;
+use Illuminate\Http\Request;
+
+use App\Library\ChangelogModelBase;
+use App\UpdateFromRequest;
+
 
 class Container extends ChangelogModelBase {
+
+	use updateFromRequest;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -29,9 +34,8 @@ class Container extends ChangelogModelBase {
 		return $result !== null;
 	}
 
-
 	public static function getUser() {
 		$result = Container::user()->orderBy('name', 'ASC')->get();
 		return $result;		
-	}
+	}	
 }
