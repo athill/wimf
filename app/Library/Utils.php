@@ -14,4 +14,8 @@ class Utils {
 		Log::info($exception->getMessage());
 		return response()->json(['error'=>$message], 400);
 	}
+
+	public static function handleInvalidId($id) {
+		return response()->json(['error' => 'Invalid id: '.$id], 400);
+	}
 }

@@ -22,13 +22,11 @@ class ItemController extends Controller {
 	public function store(Request $request) {
 		// Item object
 		$item = new Item();
-		$item->updateFromRequest($request);
 		$item->comment = '';
-
+		$item->updateFromRequest($request);
+		
 		//// category object
-		$category = new Category();
-		$category->name = $request->get('category');
-		$category->container_id = $request->get('container_id');
+		$category = self::getCategoryFromRequest($request);
 
 		//// save
 		try {
@@ -65,18 +63,25 @@ class ItemController extends Controller {
 	 * @return Response
 	 */
 	public function update(Request $request, $id) {
-		$item = Item::findOrFail($id);
+		$item = Item::find($id);
+		if (is_null($item)) {
+			return Utils::handleInvalidId($id);
+		}		
 		$item->updateFromRequest($request);
 
 		//// category object
-		$category = new Category();
-		$category->name = $request->get('category');
-
-		$category->container_id = $request->get('container_id');
+		$category = self::getCategoryFromRequest($request);
 
 		$item = Item::persist($item, $category)->toArray();
 		$item['category'] = $category->name;
 		return $item;
 
+	}
+
+	private static function getCategoryFromRequest(Request $request) {
+		$category = new Category();
+		$category->name = $request->get('category');
+		$category->container_id = $request->get('container_id');
+		return $category;
 	}
 }

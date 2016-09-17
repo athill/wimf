@@ -87,17 +87,42 @@ class ContainerTest extends TestCase {
         $this->post(self::CONTAINERS_PATH, $this->defaultParams);
         $json = $this->getResponseContentAsJson();
         $this->seeJson(self::mapSeeJson($this->defaultParams));
+        $this->seeInDatabase('containers', $this->defaultParams);
+
+    }
+
+    public function testPutContainer() {
+        $this->post(self::CONTAINERS_PATH, $this->defaultParams);
+        $json = $this->getResponseContentAsJson();
+        $newName = $this->faker->word;
+        $updateParams = [
+            'name' => $newName
+        ];
+        $this->put(self::CONTAINERS_PATH.'/'.$json['id'], $updateParams);
+        $this->seeJson(self::mapSeeJson($updateParams));
+
+        $this->seeInDatabase('containers', [
+            'id' => $json['id'],
+            'name' => $newName,
+            'user_id' => $this->defaultUser->id
+        ]);
     }  
 
     public function testDeleteContainer() {
         $container = $this->getFakeContainer();
         $criteria = [
-            'name' => $container->name
+            'name' => $container->name,
+            'user_id' => $this->defaultUser->id
         ];
 
         $this->seeInDatabase('containers', $criteria);        
-        $this->delete(self::CONTAINERS_PATH.'/'.$container->id);
+        $this->delete(self::CONTAINERS_PATH.'/'.$container->id);        
         $this->notSeeInDatabase('containers', $criteria);
+    }
+
+    public function testDeleteNonExistingContainer() {
+        $this->delete(self::CONTAINERS_PATH.'/'.$this->faker->word);
+        $this->assertEquals('', $this->response->getContent());
     }
 
     //// model tests

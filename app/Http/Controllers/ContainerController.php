@@ -113,7 +113,10 @@ class ContainerController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		$container = Container::findOrFail($id);
+		$container = Container::find($id);
+		if (is_null($container)) {
+			return Utils::handleInvalidId($id);
+		}
 		$container->updateFromRequest($request);
 		try {
 			$container->save();
@@ -125,6 +128,7 @@ class ContainerController extends Controller {
 				throw $exception;
 			}
 		}
+		return $container;
 	}
 
 	/**
@@ -134,9 +138,10 @@ class ContainerController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		$container = Container::findOrFail($id);
-		$container->delete();
-		//
+		$container = Container::find($id);
+		if (!is_null($container)) {
+			$container->delete();	
+		}
 	}
 
 }
