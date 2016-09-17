@@ -98,7 +98,7 @@ class ContainerTest extends TestCase {
         $updateParams = [
             'name' => $newName
         ];
-        $this->put(self::CONTAINERS_PATH.'/'.$json['id'], $updateParams);
+        $this->putContainer($json['id'], $updateParams);
         $this->seeJson(self::mapSeeJson($updateParams));
 
         $this->seeInDatabase('containers', [
@@ -110,10 +110,16 @@ class ContainerTest extends TestCase {
 
     public function testPutInvalidContainerId() {
         $id = $this->faker->word;
-        $this->put(self::CONTAINERS_PATH.'/'.$id, []);
+        $this->putContainer($id, []);
         $this->seeJson(['error' => 'Invalid id: '.$id]);
-
     } 
+
+    public function testPutContainerDuplicateName() {
+        $container1 = $this->getFakeContainer();
+        $container2 = $this->getFakeContainer();
+        $this->putContainer($container1->id, ['name' => $container2->name])
+            ->seeJsonStructure(['error']);
+    }
 
     public function testDeleteContainer() {
         $container = $this->getFakeContainer();
@@ -145,6 +151,10 @@ class ContainerTest extends TestCase {
         $this->assertNotEquals($name, $container->name);
         //// TODO: verify and delete if name exists
         $this->assertFalse(Container::nameExists($name));
+    }
+
+    private function putContainer($id, $args) {
+        return $this->put(self::CONTAINERS_PATH.'/'.$id, $args);
     }
 
 }

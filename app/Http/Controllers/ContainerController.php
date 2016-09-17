@@ -122,7 +122,7 @@ class ContainerController extends Controller {
 			$container->save();
 		} catch (\Illuminate\Database\QueryException $exception) {
 			if (Utils::isDbIntegrityException($exception)) {
-				$errorMessage = 'Container "'.$item->name.'" already exists.';
+				$errorMessage = 'Container "'.$container->name.'" already exists.';
 				return Utils::handleDbIntegrityException($exception, $errorMessage);
 			} else {
 				throw $exception;
