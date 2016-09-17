@@ -87,7 +87,18 @@ class ContainerTest extends TestCase {
         $this->post(self::CONTAINERS_PATH, $this->defaultParams);
         $json = $this->getResponseContentAsJson();
         $this->seeJson(self::mapSeeJson($this->defaultParams));
-    }    
+    }  
+
+    public function testDeleteContainer() {
+        $container = $this->getFakeContainer();
+        $criteria = [
+            'name' => $container->name
+        ];
+
+        $this->seeInDatabase('containers', $criteria);        
+        $this->delete(self::CONTAINERS_PATH.'/'.$container->id);
+        $this->notSeeInDatabase('containers', $criteria);
+    }
 
     //// model tests
     public function testNameExistsIsTrueIfNameExists() {

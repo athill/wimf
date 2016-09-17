@@ -117,14 +117,12 @@ class ContainerController extends Controller {
 		$container->updateFromRequest($request);
 		try {
 			$container->save();
-		} catch (\PDOException $e) {
-			if (Utils::isDbIntegrityException($e)) {
+		} catch (\Illuminate\Database\QueryException $exception) {
+			if (Utils::isDbIntegrityException($exception)) {
 				$errorMessage = 'Container "'.$item->name.'" already exists.';
-				// $errorMessage = $e->getMessage();
-				Log::info($e->getMessage());
-				return response()->json(['error'=>$errorMessage], 400);
+				return Utils::handleDbIntegrityException($exception, $errorMessage);
 			} else {
-				throw $e;
+				throw $exception;
 			}
 		}
 	}

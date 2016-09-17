@@ -36,18 +36,13 @@ class ItemController extends Controller {
 			$item = $item->toArray();
 			$item['category'] = $category->name;
 			return $item;
-		} catch (\Illuminate\Database\QueryException $e) {
+		} catch (\Illuminate\Database\QueryException $exception) {
 			//// duplicate item
-			if (Utils::isDbIntegrityException($e)) {
-				// dd($e);
+			if (Utils::isDbIntegrityException($exception)) {
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
-				if ($_ENV['APP_DEBUG'] === 'true') {
-					$errorMessage = $e->getMessage();
-				}
-				Log::info($e->getMessage());
-				return response()->json(['error'=>$errorMessage], 400);				
+				return Utils::handleDbIntegrityException($exception, $errorMessage);
 			} else {
-				throw $e;
+				throw $exception;
 			}
 		}
 	}
@@ -60,10 +55,7 @@ class ItemController extends Controller {
 	 */
 	public function destroy($id) {
 		$item = Item::findOrFail($id);
-		// $category = Category::findOrFail($item->category_id);
 		$item->delete();
-		//// delete item
-		//// delete category is empty?
 	}
 
 	/**
@@ -87,11 +79,4 @@ class ItemController extends Controller {
 		return $item;
 
 	}
-
-	// private function updateFromRequest($request, $item) {
-	// 	$item->name = $request->get('name');
-	// 	$item->quantity = $request->get('quantity');
-	// 	$item->date = $request->get('date');
-	// 	return $item;		
-	// }	
 }
