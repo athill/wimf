@@ -15,8 +15,9 @@ trait UpdateFromRequest {
         foreach ($requestFields as $key => $value) {
             if (in_array($key, $this->fillable)) { 
                 $this->{$key} = $value; 
-            } else if (in_array($key, $aliases)) {
-                $this->{$value} = $requestFields[$key];
+            } else if (array_key_exists($key, $aliases)) {
+                $attr = $aliases[$key];
+                $this->{$attr} = $requestFields[$key];
             }
         }
     }   

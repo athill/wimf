@@ -23,18 +23,25 @@ class UpdateFromRequestTest extends TestCase {
 		$this->assertEquals(self::ARG1_2, $model->{self::ARG1_KEY});
 	}
 
-	// public function testMappings() {
-	// 	$requestName = 'foo';
-	// 	$args = [$requestName => self::ARG1_2];
-	// 	$mappings = [$requestName => self::ARG1_KEY]
-	// 	list($model, $request) = $this->getModelAndRequest($args, $mappings);
-	// 	$model->updateFromRequest($request);
-	// 	$this->assertEquals(self::ARG1_2, $model->{self::ARG1_KEY});
-	// }
+	public function testMappings() {
+		$requestName = 'foo';
+		$args = [$requestName => self::ARG1_2];
+		$aliases = [$requestName => self::ARG1_KEY];
+		list($model, $request) = $this->getModelAndRequest($args);
+		$model->updateFromRequest($request, $aliases);
+		$this->assertEquals(self::ARG1_2, $model->{self::ARG1_KEY});
+	}
+
+	public function testDontUpdateNonFillable() {
+		$args = ['nonFillable' => 'nonFillable-2'];
+		list($model, $request) = $this->getModelAndRequest($args);
+		$model->updateFromRequest($request);
+		$this->assertEquals(self::NON_FILLABLE, $model->nonFillable);
+	}
 
 	private function getModelAndRequest($args) {
 		$model = new FakeModel;
-		$request = new Request([self::ARG1_KEY => self::ARG1_2]);
+		$request = new Request($args);
 		return [$model, $request];		
 	}
 }
@@ -44,7 +51,7 @@ class FakeModel {
 
 	public $arg1 = UpdateFromRequestTest::ARG1_1;
 	public $arg2 = UpdateFromRequestTest::ARG2_1;
-	public $notFillable = UpdateFromRequestTest::NON_FILLABLE;
+	public $nonFillable = UpdateFromRequestTest::NON_FILLABLE;
 
 	protected $fillable = [
 		UpdateFromRequestTest::ARG1_KEY, 

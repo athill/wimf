@@ -36,9 +36,10 @@ class ItemController extends Controller {
 			$item = $item->toArray();
 			$item['category'] = $category->name;
 			return $item;
-		} catch (\PDOException $e) {
+		} catch (\Illuminate\Database\QueryException $e) {
 			//// duplicate item
 			if (Utils::isDbIntegrityException($e)) {
+				// dd($e);
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
 				if ($_ENV['APP_DEBUG'] === 'true') {
 					$errorMessage = $e->getMessage();
