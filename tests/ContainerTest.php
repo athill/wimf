@@ -106,7 +106,14 @@ class ContainerTest extends TestCase {
             'name' => $newName,
             'user_id' => $this->defaultUser->id
         ]);
-    }  
+    } 
+
+    public function testPutInvalidContainerId() {
+        $id = $this->faker->word;
+        $this->put(self::CONTAINERS_PATH.'/'.$id, []);
+        $this->seeJson(['error' => 'Invalid id: '.$id]);
+
+    } 
 
     public function testDeleteContainer() {
         $container = $this->getFakeContainer();
