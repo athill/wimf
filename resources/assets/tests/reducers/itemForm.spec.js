@@ -1,6 +1,6 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../reducers/itemForm';
-import * as types from '../../constants/ActionTypes';
+import reducer, { initialState } from '../../src/reducers/itemForm';
+import * as types from '../../src/constants/ActionTypes';
 
 describe('itemForm reducer', () => {
   

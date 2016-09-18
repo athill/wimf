@@ -1,7 +1,7 @@
 import expect from 'expect';
 import _ from 'lodash';
 
-import LocalPersistedStore, * as localStore from '../../store/LocalPersistedStore';
+import LocalPersistedStore, * as localStore from '../../src/store/LocalPersistedStore';
 
 const resolve = response => { console.log('resolved', response); return 0; },
 	reject = response => { console.log('rejected', response); return 1; },

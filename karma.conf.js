@@ -11,11 +11,11 @@ module.exports = function (config) {
     frameworks: [ 'mocha' ],
 
     files: [
-      './resources/assets/tests.webpack.js'
+      './resources/assets/tests/index.js'
     ],
 
     preprocessors: {
-      './resources/assets/tests.webpack.js': [ 'webpack', 'sourcemap' ]
+      './resources/assets/tests/index.js': [ 'webpack', 'sourcemap' ]
     },
 
     plugins: [
@@ -48,7 +48,7 @@ module.exports = function (config) {
               //// instrument only testing sources with Istanbul
               // {
               //     test: /\.js$/,
-              //     include: path.resolve('resources/assets/'),
+              //     include: path.resolve('resources/assets/src'),
               //     loader: 'istanbul-instrumenter',
               //     query: {
               //         esModules: true
