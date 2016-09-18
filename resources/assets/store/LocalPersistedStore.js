@@ -106,7 +106,28 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 			}				
 			store.containers.push(container);
 			return container;
-			break;
+		case 'put':
+			//// check for other container with new name
+			let put_container = _.find(store.containers, { name: data.name });
+			if (put_container && put_container.id != data.id) {
+				reject({ data: { update: `Add: Container "${put_container.name}" exists`}});
+				return;
+			}
+			//// name changed
+			if (!put_container) {
+				put_container = _.find(store.containers, { id: data.id });
+			}
+			//// update container
+			put_container = { ...put_container, ...data };
+			//// update store
+			store.containers = store.containers.map(container => {
+				return (container.id === put_container.id) ? put_container : container;
+			});
+			return put_container;
+		case 'delete':
+			const id = args[0];
+			store.containers = _.filter(store.containers, c => c.id !== id);
+			return;
 		default:
 			console.error('bad method');
 	}
