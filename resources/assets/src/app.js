@@ -6,7 +6,7 @@ import { IndexRoute ,Router, Route, hashHistory } from 'react-router';
 
 
 import App from './components/App';
-import configureStore from './store/configureStore';
+import configureStore from './redux/create';
 
 //// modules
 import Wimf from './components/Wimf/Wimf';
