@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 import * as types from '../constants/ActionTypes'
-import { setContainerFormError } from './containerForm';
+import { setContainerFormError } from '../redux/modules/containerForm';
 import { fetchItems } from './items';
 import { fetch, post, deleteRequest, put } from '../util/RemoteOperations';
 

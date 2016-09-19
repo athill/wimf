@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 //// actions
 import { fetchContainers } from '../../../actions/containers';
-import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../actions/containerForm';
+import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 
 
 import { Icon } from '../../common/common';
