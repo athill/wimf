@@ -1,6 +1,5 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../src/reducers/containers';
-import * as types from '../../src/constants/ActionTypes';
+import reducer, { RECEIVE_CONTAINERS, initialState } from '../../src/redux/modules/containers';
 
 describe('containers reducer', () => {
   it('should return the initial state', () => {
@@ -21,7 +20,7 @@ describe('containers reducer', () => {
     }
     expect(
       reducer(initialState, {
-        type: types.RECEIVE_CONTAINERS,
+        type: RECEIVE_CONTAINERS,
         payload: containers
       })
     ).toEqual(containers);

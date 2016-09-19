@@ -4,7 +4,7 @@ import { reduxForm, change, focus } from 'redux-form';
 import { connect } from 'react-redux';
 
 
-import { add, fetchContainers, remove, edit } from '../../../actions/containers';
+import { add, fetchContainers, remove, edit } from '../../../redux/modules/containers';
 import { hideContainerForm } from '../../../redux/modules/containerForm';
 import { ModalTypes } from '../../../util/formModal';
 import { NoOp } from '../../common/common';

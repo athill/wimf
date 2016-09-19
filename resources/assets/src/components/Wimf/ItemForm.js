@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 
-import { fetchContainers } from '../../actions/containers';
+import { fetchContainers } from '../../redux/modules/containers';
 import { add, remove, edit } from '../../actions/items';
 import { hideItemForm } from '../../actions/itemForm';
 import { ModalTypes } from '../../util/formModal';

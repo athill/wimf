@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 //// actions
-import { fetchContainers } from '../../../actions/containers';
+import { fetchContainers } from '../../../redux/modules/containers';
 import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 
 
