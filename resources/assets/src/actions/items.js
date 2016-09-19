@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { createAction } from 'redux-actions';
 
-import { TOGGLE_ADD_ITEM_FORM, SHOW_ADD_ITEM_FORM, SHOW_DELETE_ITEM_FORM, SHOW_EDIT_ITEM_FORM, HIDE_ITEM_FORM, 
-    CLEAR_ADD_FORM, SET_ITEM_FORM_ERROR, 
-    setItemFormError } from '../redux/modules/itemForm';
+import * as types from '../constants/ActionTypes'
+import { setItemFormError } from '../redux/modules/itemForm';
 
 //// utils
 import { getIsoFormat } from '../util/DateUtils';
@@ -96,23 +95,23 @@ export const remove = item => {
 };
 
 
-const requestItems = createAction(REQUEST_ITEMS);
-const receiveItems = createAction(RECEIVE_ITEMS, data => processItems(data));
+const requestItems = createAction(types.REQUEST_ITEMS);
+const receiveItems = createAction(types.RECEIVE_ITEMS, data => processItems(data));
 
-const addItem = createAction(ADD_ITEM);
-const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
-const addItemError = createAction(ADD_ITEM_ERROR);
+const addItem = createAction(types.ADD_ITEM);
+const addItemSuccess = createAction(types.ADD_ITEM_SUCCESS);
+const addItemError = createAction(types.ADD_ITEM_ERROR);
 
 
-const deleteItem = createAction(DELETE_ITEM);
-const deleteItemSuccess = createAction(DELETE_ITEM_SUCCESS);
-const deleteItemError = createAction(DELETE_ITEM_ERROR);
+const deleteItem = createAction(types.DELETE_ITEM);
+const deleteItemSuccess = createAction(types.DELETE_ITEM_SUCCESS);
+const deleteItemError = createAction(types.DELETE_ITEM_ERROR);
 
-const editItem = createAction(EDIT_ITEM);
-const editItemSuccess = createAction(EDIT_ITEM_SUCCESS);
-const editItemError = createAction(EDIT_ITEM_ERROR);
+const editItem = createAction(types.EDIT_ITEM);
+const editItemSuccess = createAction(types.EDIT_ITEM_SUCCESS);
+const editItemError = createAction(types.EDIT_ITEM_ERROR);
 
-export const setItemsFilter = createAction(SET_ITEMS_FILTER);
+export const setItemsFilter = createAction(types.SET_ITEMS_FILTER);
 
 
 const processItems = (json) => {
