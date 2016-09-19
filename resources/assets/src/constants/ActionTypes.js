@@ -38,62 +38,7 @@ export const SHOW_EDIT_ITEM_FORM = 'SHOW_EDIT_ITEM_FORM';
 export const HIDE_ITEM_FORM = 'HIDE_ITEM_FORM';
 export const CLEAR_ADD_FORM = 'CLEAR_ADD_FORM';
 export const SET_ITEM_FORM_ERROR = 'SET_ITEM_FORM_ERROR';
-//// container form
-export const TOGGLE_ADD_CONTAINER_FORM = 'TOGGLE_ADD_CONTAINER_FORM';
-export const SHOW_ADD_CONTAINER_FORM = 'SHOW_ADD_CONTAINER_FORM';
-export const SHOW_DELETE_CONTAINER_FORM = 'SHOW_DELETE_CONTAINER_FORM';
-export const SHOW_EDIT_CONTAINER_FORM = 'SHOW_EDIT_CONTAINER_FORM';
-export const HIDE_CONTAINER_FORM = 'HIDE_CONTAINER_FORM';
-export const SET_CONTAINER_FORM_ERROR = 'SET_CONTAINER_FORM_ERROR';
 
 //// item filter
 export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER';
 
-//// Modal
-export const ModalTypes = {
-  NONE: 'NONE',
-  CREATE: 'CREATE',
-  EDIT: 'EDIT',
-  DELETE: 'DELETE'
-};
-
-export function defaultFormModalHandler(type, state, action) {
-  type = type.toUpperCase();
-  if (action.type === 'TOGGLE_ADD_'+type+'_FORM') {
-    return {
-  	  ...state,
-  	  show: state.show == ModalTypes.NONE ? ModalTypes.CREATE : ModalTypes.NONE,
-      selected: undefined
-    };
-  } else if (action.type === 'SHOW_DELETE_'+type+'_FORM') {
-    return {
-      ...state,
-      show: ModalTypes.DELETE,
-      selected: action.payload
-    }; 
-  } else if (action.type === 'SHOW_EDIT_'+type+'_FORM') {
-    return {
-      ...state,
-      show: ModalTypes.EDIT,
-      selected: action.payload
-    };            
-  } else if (action.type === 'SET_'+type+'_FORM_ERROR') {
-    console.debug('addForm reducer', action);
-    let errors = action.payload.error;
-    if (!(errors instanceof Array)) {
-      errors = [errors];
-    }
-	  return {
-		  ...state,
-		  errors
-	  };
-  } else if (action.type === 'HIDE_'+type+'_FORM') {
-    return {
-      ...state,
-      show: ModalTypes.NONE,
-      selected: undefined
-    };
-  } else {
-    return state;
-  }
-}

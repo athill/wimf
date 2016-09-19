@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 
-import { defaultFormModalHandler, ModalTypes } from '../../constants/ActionTypes';
+import { defaultFormModalHandler, ModalTypes } from '../../util/formModal';
 
 //// actions
 export const TOGGLE_ADD_CONTAINER_FORM = 'TOGGLE_ADD_CONTAINER_FORM';

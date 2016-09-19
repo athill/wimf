@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { add, fetchContainers, remove, edit } from '../../../actions/containers';
 import { hideContainerForm } from '../../../redux/modules/containerForm';
-import { ModalTypes } from '../../../constants/ActionTypes';
+import { ModalTypes } from '../../../util/formModal';
 import { NoOp } from '../../common/common';
 import FormModal from '../../common/FormModal';
 import ValidatedInput from '../../common/ValidatedInput';

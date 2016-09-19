@@ -8,7 +8,7 @@ import moment from 'moment';
 import { fetchContainers } from '../../actions/containers';
 import { add, remove, edit } from '../../actions/items';
 import { hideItemForm } from '../../actions/itemForm';
-import { ModalTypes } from '../../constants/ActionTypes';
+import { ModalTypes } from '../../util/formModal';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
 import Datepicker from '../common/Datepicker';

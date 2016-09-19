@@ -1,4 +1,4 @@
-import { defaultFormModalHandler, ModalTypes } from '../constants/ActionTypes'
+import { defaultFormModalHandler, ModalTypes } from '../util/formModal';
 
 
 export const initialState = {
