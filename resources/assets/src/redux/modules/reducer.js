@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
 
-import itemForm from '../../reducers/itemForm';
+import itemForm from './itemForm';
 import items from '../../reducers/items';
 import containers from './containers';
 import user from '../../reducers/user';

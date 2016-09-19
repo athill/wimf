@@ -1,5 +1,5 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../src/reducers/itemForm';
+import reducer, { initialState } from '../../src/redux/modules/itemForm';
 import * as types from '../../src/constants/ActionTypes';
 
 describe('itemForm reducer', () => {

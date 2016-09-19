@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { fetchContainers } from '../../redux/modules/containers';
 import { add, remove, edit } from '../../actions/items';
-import { hideItemForm } from '../../actions/itemForm';
+import { hideItemForm } from '../../redux/modules/itemForm';
 import { ModalTypes } from '../../util/formModal';
 import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';

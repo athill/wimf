@@ -1,6 +1,4 @@
-
-
-//// items
+//// actions
 export const FETCH_ITEMS = 'FETCH_ITEMS';
 export const REQUEST_ITEMS  = 'REQUEST_ITEMS';
 export const RECEIVE_ITEMS = 'RECEIVE_ITEMS';
@@ -13,12 +11,3 @@ export const DELETE_ITEM_ERROR = 'DELETE_ITEM_ERROR';
 export const EDIT_ITEM = 'EDIT_ITEM';
 export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS';
 export const EDIT_ITEM_ERROR = 'EDIT_ITEM_ERROR';
-
-//// user info
-export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
-export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
-//// item form
-
-//// item filter
-export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER';
-
