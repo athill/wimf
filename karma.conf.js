@@ -17,15 +17,7 @@ module.exports = function (config) {
     preprocessors: {
       './resources/assets/tests/index.js': [ 'webpack', 'sourcemap' ]
     },
-
-    plugins: [
-
-      'karma-mocha-reporter',
-      'karma-chrome-launcher',
-      'karma-mocha',
-      'karma-sourcemap-loader',
-      'karma-webpack',
-    ],    
+ 
 
     reporters: [ 'mocha' ],
 
@@ -45,10 +37,6 @@ module.exports = function (config) {
                       cacheDirectory: true
                   }
               },
-              { 
-                test: /\.css$/, 
-                loader: "style-loader!css-loader"
-              },              
               //// instrument only testing sources with Istanbul
               // {
               //     test: /\.js$/,
@@ -64,10 +52,6 @@ module.exports = function (config) {
             ]
         }
     },    
-
-    webpackServer: {
-      noInfo: true
-    },
     // reporters: [ 'progress', 'coverage' ],
     // coverageReporter: {
     //     type: 'text'
