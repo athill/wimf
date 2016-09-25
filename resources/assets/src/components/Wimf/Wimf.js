@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //// actions
 import { fetchContainers, select as selectContainer } from '../../redux/modules/containers';
-import { setItemsFilter } from '../../actions/items';
+import { setItemsFilter } from '../../redux/modules/items';
 import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../redux/modules/itemForm';
 
 //// components
