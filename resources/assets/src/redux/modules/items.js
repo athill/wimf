@@ -81,7 +81,7 @@ export const edit = item => {
       item,
       response => {
         // dispatch(fetchItems(container));
-        dispatch(editItemSuccess(item));
+        dispatch(editItemSuccess(response));
       },
       error => {
         dispatch(editItemError());
@@ -102,7 +102,7 @@ export const remove = item => {
     return deleteRequest(
       `/api/items/${item.id}`,
       response => {
-        dispatch(deleteItemSuccess(item));
+        dispatch(deleteItemSuccess({ data: item }));
       },
       error => {
         console.error(error);
@@ -154,7 +154,8 @@ const updateItems = (state, action) => {
       categories = addItemToCategories(state.categories, action.payload.data);
       break;
     case EDIT_ITEM_SUCCESS:
-      categories = updateCategoriesInContainers(state.categories, action.payload.data);
+      categories = updateItemInCategories(state.categories, action.payload.data);
+      console.log('categories, ', categories);
       break;
     case DELETE_ITEM_SUCCESS:
       categories = removeItemFromCategories(state.categories, action.payload.data);
