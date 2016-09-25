@@ -2,8 +2,8 @@
 // context.keys().forEach(context);
 // module.exports = context;
 
-var testContext = require.context('.', true, /.+\.spec\.jsx?$/);
+var testContext = require.context('./redux/modules', true, /.+\.js$/);
 testContext.keys().forEach(testContext);
 
-var srcContext = require.context('../', true, /index.js$/);
+var srcContext = require.context('../src/', true, /.*\.js$/);
 srcContext.keys().forEach(srcContext);

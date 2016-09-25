@@ -22,9 +22,9 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 	} else if (categories.length === 0) {
 		return <ContainerWelcome name={name} />;
 	}
+	console.log('categories', categories);
 	return (
 		<div id='categories'>
-		<Link to="/containers">Containers</Link> 
 		{
 			categories.map((category) => (
 				<div key={category.name}>

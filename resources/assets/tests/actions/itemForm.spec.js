@@ -1,7 +1,7 @@
 import expect from 'expect';
 
-import * as actions from '../../actions/itemForm';
-import * as types from '../../constants/ActionTypes';
+import * as actions from '../../src/actions/itemForm';
+import * as types from '../../src/constants/ActionTypes';
 
 describe('itemForm actions', () => {
 	describe('setItemFormError', () => {

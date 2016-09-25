@@ -2,9 +2,9 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //// actions
-import { fetchContainers, select as selectContainer } from '../../actions/containers';
-import { setItemsFilter } from '../../actions/items';
-import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../actions/itemForm';
+import { fetchContainers, select as selectContainer } from '../../redux/modules/containers';
+import { setItemsFilter } from '../../redux/modules/items';
+import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../redux/modules/itemForm';
 
 //// components
 import AddItemButton from '../common/AddButton';

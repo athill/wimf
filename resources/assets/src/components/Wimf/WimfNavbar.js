@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer }  from 'react-router-bootstrap';
 
-import { fetchUserInfo } from '../../actions/user';
+import { fetchUserInfo } from '../../redux/modules/user';
 
 
 const mapStateToProps = ({ user }) => {

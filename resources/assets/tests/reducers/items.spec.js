@@ -1,6 +1,6 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../reducers/items';
-import * as types from '../../constants/ActionTypes';
+import reducer, { initialState } from '../../src/reducers/items';
+import * as types from '../../src/constants/ActionTypes';
 
 describe('items reducer', () => {
   it('should return the initial state', () => {

@@ -7,7 +7,7 @@ import containers from './containers';
 import user from './user';
 import containerForm from './containerForm'
 
-const rootReducer = combineReducers({
+export default combineReducers({
   containers,
   items,
   user,
@@ -15,5 +15,3 @@ const rootReducer = combineReducers({
   containerForm,
   form: formReducer
 });
-
-export default rootReducer

@@ -2,35 +2,52 @@ import React from 'react';
 import { Button, Alert, Input } from 'react-bootstrap';
 import { reduxForm, change, focus } from 'redux-form';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 
-import { add, fetchContainers, remove, edit } from '../../../actions/containers';
-import { hideContainerForm } from '../../../actions/containerForm';
-import { ModalTypes } from '../../../constants/ActionTypes';
-import { NoOp } from '../../common/common';
-import FormModal from '../../common/FormModal';
-import ValidatedInput from '../../common/ValidatedInput';
+import { fetchContainers } from '../../redux/modules/containers';
+import { add, remove, edit } from '../../redux/modules/items';
+import { hideItemForm } from '../../redux/modules/itemForm';
+import { ModalTypes } from '../../util/formModal';
+import { NoOp } from '../common/common';
+import FormModal from '../common/FormModal';
+import Datepicker from '../common/Datepicker';
+import ValidatedInput from '../common/ValidatedInput';
 
+//// utils
+import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../util/DateUtils';
 
-const fields = ['name', 'description', 'id', 'keepOpen'];
+const fields = ['category', 'name', 'quantity', 'date', 'container', 'id', 'keepOpen'];
 
-const formName = 'container';
+const formName = 'item';
 
 const validate = values => {
 	const errors = {};
   	//// required fields	
-	['name'].map(field => {
+	['category', 'name'].map(field => {
 		if (!values[field] || values[field] === '') {
 			errors[field] = `${field} is required`;
 		} 
 	});
+	if (values.date !== '' && !isValidDate(values.date)) {
+		errors.date = `Invalid date: valid formats are ${momentFormats.join(', ')}`;
+	}
+
 	return errors;
 };
 
+const submit = (submitAction) => (values, dispatch) => {
+  return new Promise((resolve, reject) => {
+	dispatch(submitAction(values));	
+	dispatch(fetchContainers());
+	resolve();
+  });
+};
 
-const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
+
+const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 
-			fields: { name, description, id, keepOpen },
+			fields: { category, name, quantity, date, container, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => {
@@ -41,8 +58,8 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 		resetForm();
 		if (values.keepOpen) {
 			dispatch(change(formName, 'keepOpen', true));
-			const name = document.getElementById('name');
-			name.focus();
+			const category = document.getElementById('category');
+			category.focus();
 		} else {
 			onHide();	
 		}
@@ -55,8 +72,11 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 			resetForm(); 
 			onHide();
 		}}>
-		<ValidatedInput type='text' autoFocus id='name' readOnly={readOnly} label='Name' {...name} />
-		<ValidatedInput type='text' id='description' label='Description' readOnly={readOnly} {...description} />
+		<ValidatedInput type='text' autoFocus id='category' readOnly={readOnly} label='Category' {...category} />
+		<ValidatedInput type='text' id='name' label='Name' readOnly={readOnly} {...name} />
+		<ValidatedInput type='text' id='quantity' label='Quantity' readOnly={readOnly} {...quantity} />
+		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
+		<input type='hidden' id='container' value={containerId} {...container} />
 		{ ModalTypes.CREATE === type && <Input type='checkbox' wrapperClassName='col-xs-offset-1' id='keepOpen' label='Keep Open' {...keepOpen} /> }
 
 		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> }
@@ -65,7 +85,7 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 };
 //, addForm: { show : showAddForm }
 const mapStateToProps = ({ containers: { selected }, 
-		containerForm: { errors, show, selected: selectedContainer } }) => {
+		itemForm: { errors, show, selected: selectedItem } }) => {
 	const containerId = selected && selected.id ? selected.id : -1;
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
@@ -91,8 +111,12 @@ const mapStateToProps = ({ containers: { selected },
 			console.error('Invalid Modal Type', show);
 	}
 	const submitButtonText = title;
-	title += ' Container';
-	const rtn = {
+	title += ' Item';
+	if (selectedItem) {
+		selectedItem.date = getDisplayFormat(selectedItem.date);	
+	}
+	return {
+		containerId,
 		serverErrors: errors,
 		showModal: show !== ModalTypes.NONE,
 		type: show,
@@ -101,15 +125,15 @@ const mapStateToProps = ({ containers: { selected },
 		submitButtonBsStyle,
 		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: selectedContainer
+		initialValues: show === ModalTypes.CREATE ? { date: getValueFormat(moment().startOf('day')) } : 
+													selectedItem
 	};
-	return rtn;
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onHide: () => {
-      dispatch(hideContainerForm());
+      dispatch(hideItemForm());
     }
   };
 };
@@ -119,4 +143,4 @@ export default reduxForm({ // <----- THIS IS THE IMPORTANT PART!
   form: formName,                           // a unique name for this form
   fields: fields, // all the fields in your form,
   validate,
-}, mapStateToProps, mapDispatchToProps)(ContainerForm);
+}, mapStateToProps, mapDispatchToProps)(ItemForm);
