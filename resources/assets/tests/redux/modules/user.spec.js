@@ -1,6 +1,5 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../src/reducers/user';
-import * as types from '../../src/constants/ActionTypes';
+import reducer, { initialState, RECEIVE_USER_INFO } from '../../../src/redux/modules/user';
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
@@ -17,7 +16,7 @@ describe('user reducer', () => {
     };
     expect(
       reducer(initialState, {
-        type: types.RECEIVE_USER_INFO,
+        type: RECEIVE_USER_INFO,
         payload: user
       })
     ).toEqual(user);

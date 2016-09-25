@@ -1,10 +1,23 @@
 import expect from 'expect';
-import reducer, { initialState } from '../../src/redux/modules/itemForm';
-import * as types from '../../src/constants/ActionTypes';
 
-describe('itemForm reducer', () => {
-  
-  it('should return the initial state', () => {
+import reducer, { initialState, setItemFormError, 
+	SET_ITEM_FORM_ERROR, TOGGLE_ADD_ITEM_FORM } from '../../../src/redux/modules/itemForm';
+import { ModalTypes } from '../../../src/util/formModal';
+
+describe('itemForm', () => {
+	//// actions
+	describe('actions', () => {
+		describe('setItemFormError', () => {
+		    const text = 'foo'
+		    const expectedAction = {
+		      type: SET_ITEM_FORM_ERROR,
+		      payload: text
+		    }
+		    expect(setItemFormError(text)).toEqual(expectedAction)		
+		});
+	});
+	//// reducer
+	 it('should return the initial state', () => {
     expect(
       reducer(undefined, {})
     ).toEqual(initialState);
@@ -14,15 +27,15 @@ describe('itemForm reducer', () => {
     expect(
       reducer({
         ...initialState,
-        show: types.ModalTypes.NONE
+        show: ModalTypes.NONE
         },  
         {
-          type: types.TOGGLE_ADD_ITEM_FORM,
+          type: TOGGLE_ADD_ITEM_FORM,
           payload: undefined
         })
     ).toEqual({
       ...initialState,
-      show: types.ModalTypes.CREATE
+      show: ModalTypes.CREATE
     });
   });
   
@@ -30,15 +43,15 @@ describe('itemForm reducer', () => {
     expect(
       reducer({
         ...initialState,
-        show: types.ModalTypes.CREATE
+        show: ModalTypes.CREATE
         },  
         {
-          type: types.TOGGLE_ADD_ITEM_FORM,
+          type: TOGGLE_ADD_ITEM_FORM,
           payload: undefined
         })
     ).toEqual({
       ...initialState,
-      show: types.ModalTypes.NONE
+      show: ModalTypes.NONE
     });
   });
 
@@ -49,7 +62,7 @@ describe('itemForm reducer', () => {
         errors: ['foo']
         },  
         {
-          type: types.SET_ITEM_FORM_ERROR,
+          type: SET_ITEM_FORM_ERROR,
           payload: {
             error: ['bar']
           }
@@ -58,5 +71,5 @@ describe('itemForm reducer', () => {
       ...initialState,
       errors: ['bar']
     });
-  }); 
+  });
 });

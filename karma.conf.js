@@ -45,6 +45,10 @@ module.exports = function (config) {
                       cacheDirectory: true
                   }
               },
+              { 
+                test: /\.css$/, 
+                loader: "style-loader!css-loader"
+              },              
               //// instrument only testing sources with Istanbul
               // {
               //     test: /\.js$/,
