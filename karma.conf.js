@@ -21,6 +21,10 @@ module.exports = function (config) {
 
     reporters: [ 'mocha' ],
 
+    webpackServer: {
+      noInfo: true // Suppress all webpack messages, except errors
+    },
+
     webpack: { //kind of a copy of your webpack config
         devtool: 'inline-source-map', //just do inline source maps instead of the default
         module: {
