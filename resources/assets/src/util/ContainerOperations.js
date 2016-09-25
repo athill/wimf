@@ -19,6 +19,22 @@ export const removeContainerFromContainers = (containers, container) => {
 	return newContainers;
 };
 
+export const updateContainerInContainers = (containers, container) => {
+	let newContainers = containers.map(c => (c.id === container.id) ? container : c);
+	newContainers.sort(sortByNameKey);
+	return newContainers;
+	// let newContainers = [].concat(containers);
+	// for (let i = 0; i < containers.length; i++) {
+	// 	if (containers[i].id === container.id) {
+	// 		newContainers.push(containers[i]);
+	// 	} else {
+	// 		newContainers.push(container);
+	// 	}
+	// }
+	// return newContainers;	
+
+}
+
 export const updateCategoriesInContainers = (containers, container_id, categories) => {
 	return {
 		...containers,

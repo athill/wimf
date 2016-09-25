@@ -16,7 +16,7 @@ const Container = ({editClickHandler = e => e, deleteClickHandler = e => e,  con
     <Panel className='container'>
         <Row>
             <Col xs={12} sm={2} md={2} lg={2} key={container.name} className='name'>Name: { container.name }</Col>
-            <Col xs={12} sm={8} md={8} lg={8} key={container.description} className='description'>Description: { container.desription }</Col>
+            <Col xs={12} sm={8} md={8} lg={8} key={container.description} className='description'>Description: { container.description }</Col>
             <Col xs={12} sm={2} md={2} lg={2} key='controls' className='controls'>
                 <Icon icon='edit' title={`Edit ${container.name}`} onClick={e => editClickHandler(container)} />
                 <Icon icon='remove' title={`Delete ${container.name}`} onClick={e => deleteClickHandler(container)} />
