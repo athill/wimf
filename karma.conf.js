@@ -42,24 +42,25 @@ module.exports = function (config) {
                   }
               },
               //// instrument only testing sources with Istanbul
-              // {
-              //     test: /\.js$/,
-              //     include: path.resolve('resources/assets/src'),
-              //     loader: 'istanbul-instrumenter',
-              //     query: {
-              //         esModules: true
-              //     }
-              // }
+              {
+                  test: /\.js$/,
+                  include: path.resolve('resources/assets/test'),
+                  loader: 'istanbul-instrumenter',
+                  query: {
+                      esModules: true
+                  }
+              }
                 // { test: /\.js$/, exclude: [/node_modules/], loader: 'babel-loader' },
                 // { test: /\.js$/, exclude: [/test/, /node_modules/], loader: 'isparta'},
                 // { test: /\.less$/, include: [/src\/main\/less/], exclude: [/node_modules/, /dist/], loader: "style!css!less" },
             ]
         }
     },    
-    // reporters: [ 'progress', 'coverage' ],
-    // coverageReporter: {
-    //     type: 'text'
-    // },
+    reporters: [ 'progress', 'coverage' ],
+    coverageReporter: {
+        type: 'html',
+        dir: 'coverage/' 
+    },
 
   });
 };
