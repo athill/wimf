@@ -1,7 +1,7 @@
 import expect from 'expect';
 import _ from 'lodash';
 
-import  * as ops from '../../util/ContainerOperations';
+import  * as ops from '../../src/util/ContainerOperations';
 
 describe('ContainerOperations', () => {
 	let categories, mocker;
@@ -143,8 +143,7 @@ class Mocker {
 			category: category_name,
 			category_id,
 			id: this.id++,
-			quantity: 1,
-			measurement: 'lb'
+			quantity: '1 lb'
 		}
 	}
 }

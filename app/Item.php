@@ -4,10 +4,13 @@ use Auth;
 
 use App\Library\ChangelogModelBase;
 use App\Category;
+use App\UpdateFromRequest;
 
 class Item extends ChangelogModelBase {
 
-	protected $fillable = ['name', 'user_id', 'quantity', 'measurement', 'category_id', 'date'];
+	use UpdateFromRequest;
+
+	protected $fillable = ['name', 'user_id', 'quantity',  'category_id', 'date'];
 
 	protected $hidden = ['user_id', 'created_at', 'updated_at', 'category'];
 

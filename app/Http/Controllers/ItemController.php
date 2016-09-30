@@ -22,27 +22,25 @@ class ItemController extends Controller {
 	public function store(Request $request) {
 		// Item object
 		$item = new Item();
-		$item = $this->getRequestItem($request, $item);
 		$item->comment = '';
-
+		$item->updateFromRequest($request);
+		
 		//// category object
-		$category = new Category();
-		$category->name = $request->get('category');
-		$category->container_id = $request->get('container_id');
+		$category = self::getCategoryFromRequest($request);
 
 		//// save
 		try {
-			$item = Item::persist($item, $category)->toArray();
+			$item = Item::persist($item, $category);
+			$item = $item->toArray();
 			$item['category'] = $category->name;
 			return $item;
-		} catch (\PDOException $e) {
+		} catch (\Illuminate\Database\QueryException $exception) {
 			//// duplicate item
-			if (Utils::isDbIntegrityException($e)) {
+			if (Utils::isDbIntegrityException($exception)) {
 				$errorMessage = 'Item "'.$item->name.'" already exists in category "'.$category->name.'".';
-				Log::info($e->getMessage());
-				return response()->json(['error'=>$errorMessage], 400);				
+				return Utils::handleDbIntegrityException($exception, $errorMessage);
 			} else {
-				throw $e;
+				throw $exception;
 			}
 		}
 	}
@@ -55,10 +53,7 @@ class ItemController extends Controller {
 	 */
 	public function destroy($id) {
 		$item = Item::findOrFail($id);
-		// $category = Category::findOrFail($item->category_id);
 		$item->delete();
-		//// delete item
-		//// delete category is empty?
 	}
 
 	/**
@@ -68,13 +63,14 @@ class ItemController extends Controller {
 	 * @return Response
 	 */
 	public function update(Request $request, $id) {
-		$item = Item::findOrFail($id);
-		$item = $this->getRequestItem($request, $item);
+		$item = Item::find($id);
+		if (is_null($item)) {
+			return Utils::handleInvalidId($id);
+		}		
+		$item->updateFromRequest($request);
 
 		//// category object
-		$category = new Category();
-		$category->name = $request->get('category');
-		$category->container_id = $request->get('container_id');
+		$category = self::getCategoryFromRequest($request);
 
 		$item = Item::persist($item, $category)->toArray();
 		$item['category'] = $category->name;
@@ -82,11 +78,10 @@ class ItemController extends Controller {
 
 	}
 
-	private function getRequestItem($request, $item) {
-		$item->name = $request->get('name');
-		$item->quantity = $request->get('quantity');
-		$item->measurement = $request->get('measurement');
-		$item->date = $request->get('date');
-		return $item;		
-	}	
+	private static function getCategoryFromRequest(Request $request) {
+		$category = new Category();
+		$category->name = $request->get('category');
+		$category->container_id = $request->get('container_id');
+		return $category;
+	}
 }

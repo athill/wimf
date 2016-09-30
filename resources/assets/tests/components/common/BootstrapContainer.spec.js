@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import ReactTestUtils from 'react/lib/ReactTestUtils';
 
-import BootstrapContainer from '../../../components/common/BootstrapContainer';
+import BootstrapContainer from '../../../src/components/common/BootstrapContainer';
 
 describe('BootstrapContainer', () => {
   it('works', () => {

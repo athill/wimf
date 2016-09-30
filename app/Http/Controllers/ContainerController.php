@@ -2,12 +2,14 @@
 
 use Log;
 use Response;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
 use App\Category;
 use App\Container;
 use App\Item;
+use App\Library\Utils;
 
 class ContainerController extends Controller {
 
@@ -37,7 +39,8 @@ class ContainerController extends Controller {
 	{
 		$container = Container::findOrFail($id);
 		$data = [
-			'name' => $container->name
+			'name' => $container->name,
+			'id' => $id
 		];
 		
 		$cats = [];
@@ -74,9 +77,20 @@ class ContainerController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
-		//
+	public function store(Request $request) {
+		$container = new Container();
+		$container->updateFromRequest($request);
+		if (Container::nameExists($container->name)) {
+			$errorMessage = 'Container "'.$container->name.'" already exists.';
+			return response()->json(['error'=>$errorMessage], 400);
+		}
+		try {
+			$container->save();
+		} catch (\PDOException $e) {
+			Log::info($e->getMessage());
+			return response()->json(['error'=>$e->getMessage()], 400);
+		} 
+		return $container;
 	}
 
 
@@ -98,9 +112,23 @@ class ContainerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
-		//
+	public function update($id, Request $request) {
+		$container = Container::find($id);
+		if (is_null($container)) {
+			return Utils::handleInvalidId($id);
+		}
+		$container->updateFromRequest($request);
+		try {
+			$container->save();
+		} catch (\Illuminate\Database\QueryException $exception) {
+			if (Utils::isDbIntegrityException($exception)) {
+				$errorMessage = 'Container "'.$container->name.'" already exists.';
+				return Utils::handleDbIntegrityException($exception, $errorMessage);
+			} else {
+				throw $exception;
+			}
+		}
+		return $container;
 	}
 
 	/**
@@ -109,9 +137,11 @@ class ContainerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
-		//
+	public function destroy($id) {
+		$container = Container::find($id);
+		if (!is_null($container)) {
+			$container->delete();	
+		}
 	}
 
 }

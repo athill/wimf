@@ -33,7 +33,6 @@ class Category extends ChangelogModelBase {
         	$category = $existing[0];
         }
         return $category->id;
-
 	}
 
 }
