@@ -28,7 +28,7 @@ const mapStateToProps = ({containers, items: { categories, filter, name: contain
   };
 };
 
-const mapDispatchToProps = (dispatch) => {  
+const mapDispatchToProps = (dispatch) => ({  
     handleContainerChange: e => {
       dispatch(selectContainer(e.target.value));
     },
@@ -45,8 +45,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(showDeleteItemForm(item));
     },    
     dispatch
-  };
-};
+});
 
 class Wimf extends React.Component {
   componentDidMount()  {
