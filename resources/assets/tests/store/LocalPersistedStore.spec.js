@@ -1,7 +1,7 @@
 import expect from 'expect';
 import _ from 'lodash';
 
-import LocalPersistedStore, * as localStore from '../../store/LocalPersistedStore';
+import LocalPersistedStore, * as localStore from '../../src/store/LocalPersistedStore';
 
 const resolve = response => { console.log('resolved', response); return 0; },
 	reject = response => { console.log('rejected', response); return 1; },
@@ -14,7 +14,12 @@ const getDummyItem = () => {
 		quantity: '1 lb',
 		container_id
 	};
-};	
+};
+
+const getDummyContainer = () => ({
+	name: 'dummyContainer',
+	description: 'dummyContainerDescription'
+});
 
 describe('LocalPersistedStore', () => {
 	beforeEach(function() {
@@ -29,21 +34,78 @@ describe('LocalPersistedStore', () => {
 	});
 
 	describe('persistContainers', () => {
-		it('should return list of containers with no id on GET', () => {
-			const tmpContainer = localStore.getStore().containers[0];
-			const expectedContainer = {
-				name: tmpContainer.name,
-				description: tmpContainer.description,
-				id: tmpContainer.id
-			};
-			const expectedContainers = [expectedContainer];
-			expect(localStore.persistContainers(resolve, reject, 'get')).toEqual(expectedContainers);
-		});
+		describe('GET', () => {
+			it('should return list of containers with no id on GET', () => {
+				const tmpContainer = localStore.getStore().containers[0];
+				const expectedContainer = {
+					name: tmpContainer.name,
+					description: tmpContainer.description,
+					id: tmpContainer.id
+				};
+				const expectedContainers = [expectedContainer];
+				expect(localStore.persistContainers(resolve, reject, 'get')).toEqual(expectedContainers);
+			});
 
-		it('should return container by id on GET', () => {
-			const container = localStore.getStore().containers[0];
-			expect(localStore.persistContainers(resolve, reject, 'get', [container_id])).toEqual(container);
+			it('should return container by id on GET', () => {
+				const container = localStore.getStore().containers[0];
+				expect(localStore.persistContainers(resolve, reject, 'get', [container_id])).toEqual(container);
+			});
 		});
+		describe('POST', () => {
+			it('should add a container', () => {
+				const test_container_id = 0,
+					container = getDummyContainer();
+
+				const result = localStore.persistContainers(resolve, reject, 'post', [], Object.assign({}, container));
+				const expected = {
+					name: 'dummyContainer', 
+					description: 'dummyContainerDescription', 
+					id: test_container_id, 
+					categories: []
+				};
+				//// verify json response
+				expect(result).toEqual(expected);
+				//// verify store is updated
+				const store = localStore.getStore();
+				expect(store.containers).toInclude(expected);
+
+			});
+		});
+		describe('PUT', () => {
+			it('should update a container', () => {
+				const test_container_id = 0,
+					container = getDummyContainer();
+
+				const result = localStore.persistContainers(resolve, reject, 'post', [], Object.assign({}, container));
+				const updatedContainer = {
+					name: 'updatedName',
+					description: 'updatedDescription',
+					id: test_container_id
+				};
+				const result2 = localStore.persistContainers(resolve, reject, 'put', [], updatedContainer);
+				const expected = {
+					...result,
+					...updatedContainer
+				};
+				//// verify json response
+				expect(result2).toEqual(expected);
+				//// verify store is updated
+				const store = localStore.getStore();
+				expect(store.containers).toInclude(expected);
+			});
+		});
+		describe('DELETE', () => {
+			it('should delete a container', () => {
+				//// create container
+				const result = localStore.persistContainers(resolve, reject, 'post', [], Object.assign({}, getDummyContainer()));
+
+				localStore.persistContainers(resolve, reject, 'delete', [result.id]);
+				//// verify store is updated
+				const store = localStore.getStore();
+				console.log(store.containers);
+				expect(_.findIndex(store.containers, { id: result.id })).toBe(-1);
+			});
+		});		
 	});
 
 	describe('persistItems', () => {
@@ -63,7 +125,6 @@ describe('LocalPersistedStore', () => {
 				delete(expectedStoreItem.category);
 				//// expected store
 				const expectedStore = localStore.getStorePristine();
-				// console.log('expectedStore', expectedStore);
 
 				expectedStore.containers[0].categories = [{
 					name: item.category,
@@ -78,7 +139,6 @@ describe('LocalPersistedStore', () => {
 				delete(expectedResultItem.container_id);
 				expect(result).toEqual(expectedResultItem);
 			});
-
 		});
 		describe('PUT', () => {
 			it('should update an item', () => {
@@ -100,8 +160,6 @@ describe('LocalPersistedStore', () => {
 				delete(updatedItem.category);
 				expect(store.containers[0].categories[0].items[0]).toEqual(updatedItem);
 			});
-
-
 		});
 		describe('DELETE', () => {
 			it('should delete an item by id', () => {
@@ -117,9 +175,6 @@ describe('LocalPersistedStore', () => {
 				expect(store.containers[0].categories[0].items.length).toEqual(0);
 
 			});
-
-
-
 		});				
 	});
 });

@@ -69,7 +69,7 @@ if (DEBUG) {
 //   entry.app.push('webpack/hot/dev-server');
 // }
 
-var context = path.join(__dirname, '../resources/assets');
+var context = path.join(__dirname, '../resources/assets/src');
 var config = {
   context: context,
   cache: DEBUG,
@@ -91,8 +91,7 @@ var config = {
             loader: 'babel',
             query: {
                 // https://github.com/babel/babel-loader#options
-                cacheDirectory: true,
-                presets: ['react','es2015', 'stage-0']
+                cacheDirectory: true
             }
         },
         { 

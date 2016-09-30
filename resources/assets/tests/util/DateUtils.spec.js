@@ -1,7 +1,7 @@
 import expect from 'expect';
 import _ from 'lodash';
 
-import  * as du from '../../util/DateUtils';
+import  * as du from '../../src/util/DateUtils';
 
 /*
  'MM-DD-YY',
