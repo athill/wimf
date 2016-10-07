@@ -14,7 +14,10 @@ import WimfNavbar from './Wimf/WimfNavbar';
 // );
 
 const App = ({children}) => (
-	<div>Up and running</div>
+	<div>
+		Up and running
+		<WimfNavbar />
+	</div>
 );
 
 export default App;
