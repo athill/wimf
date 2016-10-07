@@ -10,7 +10,7 @@ import ValidatedInput from './ValidatedInput';
 
 //// utils
 import Compatibility from '../../util/Compatibility';
-import { momentFormats, momentize, getIsoFormat, getDisplayFormat } from '../../util/DateUtils';
+import { momentize, getIsoFormat, getDisplayFormat } from '../../util/DateUtils';
 
 
 export default class Datepicker extends React.Component {
@@ -42,7 +42,7 @@ export default class Datepicker extends React.Component {
 	}
 
 	render() {
-		const { label, help, hasFeedback, bsStyle, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
+		const { label, help, hasFeedback, labelClassName, wrapperClassName, readOnly, ...field } = this.props;
 		const displayValue = getDisplayFormat(field.initialValue);
 		//// native datepicker
 		if (Compatibility.isDateSupported()) {

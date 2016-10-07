@@ -1,13 +1,10 @@
 import React from 'react';
-import { Button, Alert, Input } from 'react-bootstrap';
-import { reduxForm, change, focus } from 'redux-form';
-import { connect } from 'react-redux';
+import { Input } from 'react-bootstrap';
+import { reduxForm, change } from 'redux-form';
 
-
-import { add, fetchContainers, remove, edit } from '../../../redux/modules/containers';
+import { add, remove, edit } from '../../../redux/modules/containers';
 import { hideContainerForm } from '../../../redux/modules/containerForm';
 import { ModalTypes } from '../../../util/formModal';
-import { NoOp } from '../../common/common';
 import FormModal from '../../common/FormModal';
 import ValidatedInput from '../../common/ValidatedInput';
 
@@ -19,7 +16,7 @@ const formName = 'container';
 const validate = values => {
 	const errors = {};
   	//// required fields	
-	['name'].map(field => {
+	['name'].forEach(field => {
 		if (!values[field] || values[field] === '') {
 			errors[field] = `${field} is required`;
 		} 
@@ -101,7 +98,8 @@ const mapStateToProps = ({ containers: { selected },
 		submitButtonBsStyle,
 		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: selectedContainer
+		initialValues: selectedContainer,
+		containerId
 	};
 	return rtn;
 };

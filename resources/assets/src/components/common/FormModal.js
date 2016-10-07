@@ -32,7 +32,7 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
       <Modal.Footer>
         <ErrorDisplay errors={errors} />
         {submitting && <Spinner />} {' '}
-        <Button id="confirmModal" bsStyle={submitButtonBsStyle} type="submit" disabled={!valid || submitting} accessKey="s">
+        <Button id="confirmModal" bsStyle={submitButtonBsStyle} type="submit" disabled={!valid || submitting}>
           { submitButtonText }
         </Button>
         <Button id="cancelModal" className='cancel' onClick={onHide} disabled={submitting}>

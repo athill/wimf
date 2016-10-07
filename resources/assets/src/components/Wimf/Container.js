@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Row, Col, Navbar, Nav, NavItem } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Row, Col } from 'react-bootstrap';
 
 //// components
 import ContainerWelcome from './ContainerWelcome';

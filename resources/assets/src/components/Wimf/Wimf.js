@@ -1,5 +1,4 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //// actions
 import { fetchContainers, select as selectContainer } from '../../redux/modules/containers';
@@ -17,7 +16,7 @@ import ItemForm from './ItemForm';
 import { filterCategories } from '../../util/ContainerOperations';
 
 const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
-  if (filter != '') {
+  if (filter !== '') {
     categories = filterCategories(categories, filter);
   }
   return {

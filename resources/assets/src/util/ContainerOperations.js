@@ -2,12 +2,29 @@ import _ from 'lodash';
 
 let fakeIndex = 0;
 
+const sortByNameKey = (x, y) => {
+	if (x.name.toUpperCase() < y.name.toUpperCase()) return -1;
+	else if (x.name.toUpperCase() > y.name.toUpperCase()) return 1;
+	else return 0;
+}
+
+export const sortCategories = categories => {
+	const newCategories = categories.filter(category => category.items.length > 0);
+	newCategories.sort(sortByNameKey);
+	newCategories.forEach(category => {
+		category.items.sort(sortByNameKey);
+	});
+	return newCategories;
+};
+
 export const addContainerToContainers = (containers, container) => {
 	let newContainers = [].concat(containers);
 	newContainers.push(container);
 	newContainers.sort(sortByNameKey);
 	return newContainers;
 };
+
+const matchesFilterByName = (item, text) => item.name.toUpperCase().indexOf(text) > -1;
 
 export const removeContainerFromContainers = (containers, container) => {
 	let newContainers = [];
@@ -42,10 +59,10 @@ export const updateCategoriesInContainers = (containers, container_id, categorie
 	};
 }
 
-export const updateContainerCategory = (containers, category) => {
-	const container = Object.assign({}, containers[item.container_id]);
+// export const updateContainerCategory = (containers, category) => {
+// 	const container = Object.assign({}, containers[item.container_id]);
 	
-}
+// }
 
 export const addItemToCategories = (categories, item) => {
 	let newCategories = [].concat(categories);
@@ -107,9 +124,10 @@ export const updateItemInCategories = (categories, item) => {
 			break;
 		}
 	}
+	let container_id;
 	//// build new categories array
 	for (let i = 0; i < categories.length; i++) {
-		let newItem, container_id;
+		let newItem;
 		let category = categories[i];
 		let newCategory = {...category};
 		if (i === oldCategoryIndex) {
@@ -161,21 +179,10 @@ export const updateItemInCategories = (categories, item) => {
 	return newCategories;
 };
 
-const sortByNameKey = (x, y) => {
-	if (x.name.toUpperCase() < y.name.toUpperCase()) return -1;
-	else if (x.name.toUpperCase() > y.name.toUpperCase()) return 1;
-	else return 0;
-}
 
 
-export const sortCategories = categories => {
-	const newCategories = categories.filter(category => category.items.length > 0);
-	newCategories.sort(sortByNameKey);
-	newCategories.forEach(category => {
-		category.items.sort(sortByNameKey);
-	});
-	return newCategories;
-};
+
+
 
 export const filterCategories = (categories, text) => {
 	if (!text) {
@@ -199,10 +206,4 @@ export const filterCategories = (categories, text) => {
 		}
 	});
 	return newCategories;
-};
-
-const matchesFilterByName = (item, text) => item.name.toUpperCase().indexOf(text) > -1;
-
-export const sortCategory = category => {
-
 };

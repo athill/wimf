@@ -10,7 +10,7 @@ export function defaultFormModalHandler(type, state, action) {
   if (action.type === 'TOGGLE_ADD_'+type+'_FORM') {
     return {
   	  ...state,
-  	  show: state.show == ModalTypes.NONE ? ModalTypes.CREATE : ModalTypes.NONE,
+  	  show: state.show === ModalTypes.NONE ? ModalTypes.CREATE : ModalTypes.NONE,
       selected: undefined
     };
   } else if (action.type === 'SHOW_DELETE_'+type+'_FORM') {

@@ -97,4 +97,4 @@ class WimfNavbar extends React.Component {
 // );
 
 
-export default connect(mapStateToProps)(WimfNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(WimfNavbar);

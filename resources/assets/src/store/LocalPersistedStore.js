@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+
+//// store
 export const getStorePristine = () => ({
 	maxid: 0,
 	containers: [{
@@ -19,51 +21,52 @@ let store = getStorePristine();
 
 let storeBackup = getStorePristine();
 
+//// uncommenting the following line will give you a pristine store on every load for debugging
 // localStorage.removeItem('wimf');
 
-const setStore = (newStore) => store = {...newStore};
+//// apparently not used. what was it for?
+// const setStore = (newStore) => store = {...newStore};
 
 export const resetStore = () => {
-	const storePristine = getStorePristine();
+	// const storePristine = getStorePristine();
 	store = getStorePristine();
 }
 
 export const getStore = () => ({...store});
 
-export const localPersistedStore = (resolve, reject, method, url, data) => {
-	const parts = url.slice(1).split('/').slice(1),
-		type = parts[0],
-		args = parts.slice(1);
-	//// deserialize store
-	if (localStorage.getItem('wimf')) {
-		store = JSON.parse(localStorage.getItem('wimf')); 
-	}		
-	//// update store
-	let retval = {};
-	console.log('deserializeStore', resolve, reject, method, type, store);
-	switch (type) {
-		case 'containers':
-			retval = persistContainers(resolve, reject, method, args, data);
-			break;
-		case 'items':
-			retval = persistItems(resolve, reject, method, args, data);
-			break;
-		case 'currentUser':
-			retval = persistCurrentUser(resolve, reject, method, args, data);
-			break;
-		default:
-			console.error('Invalid type', parts);
-	}
-	////serializeStore
-	localStorage.setItem('wimf', JSON.stringify(store));
-	storeBackup = { ...store };
-	resolve({
-		data: retval
-	});
+
+////// Helpers
+const getReturnItem = (item, category) => {
+	const returnItem = {...item};
+	returnItem.category = category.name;
+	return returnItem;
 };
 
+export const getContainerById = (id) => {
+	const container = store.containers.find(container => (
+		parseInt(container.id, 10) === parseInt(id, 10)
+	));	
+	if (container === undefined) {
+		throw new Error(`container_id ${id} not found`);
+	}
+	return container;	
+}
 
+export const getCategoryByName = (container, name) => {
+	let category = _.find(container.categories, { name: name });	
+	if (category === undefined) {
+		category = {
+			id: store.maxid++,
+			name: name,
+			container_id: container.id,
+			items: []
+		};
+		container.categories.push(category);
+	}
+	return category;
+};
 
+//// persistence methods
 export const persistContainers = (resolve, reject, method, args=[], data={}) => {
 	switch (method) {
 		case 'get':
@@ -78,7 +81,7 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 			} else {
 				const container_id = args[0];
 				const container = store.containers.find(container => (
-						parseInt(container.id) === parseInt(container_id)
+						parseInt(container.id, 10) === parseInt(container_id, 10)
 					));
 				if (container === undefined) {
 					throw new Error(`Undefined container, ${args[0]}`);
@@ -91,7 +94,6 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 				});
 				return returnContainer;
 			}
-			break;
 		case 'post':
 			const container = {
 				name: data.name,
@@ -109,7 +111,7 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 		case 'put':
 			//// check for other container with new name
 			let put_container = _.find(store.containers, { name: data.name });
-			if (put_container && put_container.id != data.id) {
+			if (put_container && put_container.id !== data.id) {
 				reject({ data: { update: `Add: Container "${put_container.name}" exists`}});
 				return;
 			}
@@ -193,8 +195,8 @@ export const persistItems = (resolve, reject, method, args, data) => {
 				let categories = store.containers[i].categories;
 				for (let j = 0; j < categories.length; j++) {
 					let category = categories[j];
-					if (_.find(category.items, catitem => parseInt(catitem.id) === parseInt(id))) {
-						category.items = _.filter(category.items, catitem => parseInt(catitem.id) !== parseInt(id));
+					if (_.find(category.items, catitem => parseInt(catitem.id, 10) === parseInt(id, 10))) {
+						category.items = _.filter(category.items, catitem => parseInt(catitem.id, 10) !== parseInt(id, 10));
 						break;						
 					}
 				}
@@ -205,36 +207,36 @@ export const persistItems = (resolve, reject, method, args, data) => {
 	}
 };
 
-////// Helpers
-
-const getReturnItem = (item, category) => {
-	const returnItem = {...item};
-	returnItem.category = category.name;
-	return returnItem;
-};
-
-export const getContainerById = (id) => {
-	const container = store.containers.find(container => (
-		parseInt(container.id) === parseInt(id)
-	));	
-	if (container === undefined) {
-		throw new Error(`container_id ${id} not found`);
+export const localPersistedStore = (resolve, reject, method, url, data) => {
+	const parts = url.slice(1).split('/').slice(1),
+		type = parts[0],
+		args = parts.slice(1);
+	//// deserialize store
+	if (localStorage.getItem('wimf')) {
+		store = JSON.parse(localStorage.getItem('wimf')); 
+	}		
+	//// update store
+	let retval = {};
+	console.log('deserializeStore', resolve, reject, method, type, store);
+	switch (type) {
+		case 'containers':
+			retval = persistContainers(resolve, reject, method, args, data);
+			break;
+		case 'items':
+			retval = persistItems(resolve, reject, method, args, data);
+			break;
+		case 'currentUser':
+			retval = persistCurrentUser(resolve, reject, method, args, data);
+			break;
+		default:
+			console.error('Invalid type', parts);
 	}
-	return container;	
-}
-
-export const getCategoryByName = (container, name) => {
-	let category = _.find(container.categories, { name: name });	
-	if (category === undefined) {
-		category = {
-			id: store.maxid++,
-			name: name,
-			container_id: container.id,
-			items: []
-		};
-		container.categories.push(category);
-	}
-	return category;
+	////serializeStore
+	localStorage.setItem('wimf', JSON.stringify(store));
+	storeBackup = { ...store };
+	resolve({
+		data: retval
+	});
 };
 
 export default localPersistedStore;

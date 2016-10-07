@@ -48,14 +48,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-
-
-
-
 class Containers extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     componentDidMount() {
     	const {dispatch} = this.props;
     	dispatch(fetchContainers());

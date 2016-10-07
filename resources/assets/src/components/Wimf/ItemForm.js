@@ -1,15 +1,11 @@
 import React from 'react';
-import { Button, Alert, Input } from 'react-bootstrap';
-import { reduxForm, change, focus } from 'redux-form';
-import { connect } from 'react-redux';
+import { Input } from 'react-bootstrap';
+import { reduxForm, change } from 'redux-form';
 import moment from 'moment';
 
-
-import { fetchContainers } from '../../redux/modules/containers';
 import { add, remove, edit } from '../../redux/modules/items';
 import { hideItemForm } from '../../redux/modules/itemForm';
 import { ModalTypes } from '../../util/formModal';
-import { NoOp } from '../common/common';
 import FormModal from '../common/FormModal';
 import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
@@ -24,7 +20,7 @@ const formName = 'item';
 const validate = values => {
 	const errors = {};
   	//// required fields	
-	['category', 'name'].map(field => {
+	['category', 'name'].forEach(field => {
 		if (!values[field] || values[field] === '') {
 			errors[field] = `${field} is required`;
 		} 
@@ -34,14 +30,6 @@ const validate = values => {
 	}
 
 	return errors;
-};
-
-const submit = (submitAction) => (values, dispatch) => {
-  return new Promise((resolve, reject) => {
-	dispatch(submitAction(values));	
-	dispatch(fetchContainers());
-	resolve();
-  });
 };
 
 

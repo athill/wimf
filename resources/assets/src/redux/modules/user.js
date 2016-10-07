@@ -25,7 +25,9 @@ export default function reducer(state = initialState, action={}) {
 }
 
 //// action creators
-// import axios from 'axios';
+const requestUserInfo = createAction(REQUEST_USER_INFO);
+
+const receiveUserInfo = createAction(RECEIVE_USER_INFO);
 
 export function fetchUserInfo(container) {
   return dispatch => {
@@ -36,7 +38,3 @@ export function fetchUserInfo(container) {
     );  
   }
 }
-
-const requestUserInfo = createAction(REQUEST_USER_INFO);
-
-const receiveUserInfo = createAction(RECEIVE_USER_INFO);

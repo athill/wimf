@@ -21,83 +21,51 @@ export const EDIT_CONTAINER_SUCCESS = 'EDIT_CONTAINER_SUCCESS';
 export const EDIT_CONTAINER_ERROR = 'EDIT_CONTAINER_ERROR';
 export const SELECT_CONTAINER = 'SELECT_CONTAINER';
 
+//// reducer
+export const initialState = {
+  items: [],
+  selected: null
+};
+
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
+    case RECEIVE_CONTAINERS:
+      return action.payload;
+
+    case ADD_CONTAINER_SUCCESS:
+      return {
+        ...state,
+        items: addContainerToContainers(state.items, action.payload.data)
+      };
+    case EDIT_CONTAINER_SUCCESS:
+      return {
+        ...state,
+        items: updateContainerInContainers(state.items, action.payload)
+      };        
+    case DELETE_CONTAINER_SUCCESS:
+      return {
+        ...state,
+        items: removeContainerFromContainers(state.items, action.payload)
+      };     
+    default:
+      return state
+  }
+}
+
 //// action creators
-export function fetchContainers() {
-  return dispatch => {
-    dispatch(requestContainers());
-    return fetch(
-      '/api/containers',
-      response => {
-        dispatch(receiveContainers(response.data));
-        dispatch(fetchItems(response.data[0].id));
-      }
-    );
-  };
-}
-
-
-export const add = container => {
-  return (dispatch, getState) => {
-    const state = getState();
-    dispatch(addContainer());
-    return post(
-      `/api/containers/`,
-      container,
-      response => {
-        dispatch(addContainerSuccess(response));
-      },
-      error => {
-        dispatch(addContainerError());
-        dispatch(setContainerFormError(error.data));
-        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
-      }
-    );
+const processContainers = json => {
+  const items = json.map(item => { 
+    return {
+          name: item.name, 
+          description: item.description,
+          id: item.id
+      };
+    });
+  return {
+      items,
+      selected: items[0]
   };
 };
-
-export const edit = container => {
-  return (dispatch, getState) => {
-    const state = getState();
-    dispatch(editContainer());
-    return put(
-      `/api/containers/${container.id}`,
-      container,
-      response => {
-        dispatch(editContainerSuccess(container));
-      },
-      error => {
-        dispatch(editContainerError());
-        dispatch(setContainerFormError(error.data));
-        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
-      }
-    );
-  };
-};
-
-export const remove = container => {
-  return (dispatch, getState) => {
-    const state = getState();
-    dispatch(deleteContainer());
-    return deleteRequest(
-      `/api/containers/${container.id}`,
-      response => {
-        dispatch(deleteContainerSuccess(container));
-      },
-      error => {
-        console.error(error);
-        dispatch(deleteContainerError());
-      }
-    );
-  };
-};
-
-export const select = id => {
-  return (dispatch, getState) => {
-    dispatch(selectContainer());
-    dispatch(fetchItems(id));
-  };
-}
-
 
 const requestContainers = createAction(REQUEST_CONTAINERS);
 const receiveContainers = createAction(RECEIVE_CONTAINERS, data => processContainers(data));
@@ -118,49 +86,75 @@ const editContainerError = createAction(EDIT_CONTAINER_ERROR);
 const selectContainer = createAction(SELECT_CONTAINER);
 
 
-const processContainers = json => {
-  const items = json.map(item => { 
-    return {
-          name: item.name, 
-          description: item.description,
-          id: item.id
-      };
-    });
-  return {
-      items,
-      selected: items[0]
+export function fetchContainers() {
+  return dispatch => {
+    dispatch(requestContainers());
+    return fetch(
+      '/api/containers',
+      response => {
+        dispatch(receiveContainers(response.data));
+        dispatch(fetchItems(response.data[0].id));
+      }
+    );
+  };
+}
+
+
+export const add = container => {
+  return (dispatch, getState) => {
+    dispatch(addContainer());
+    return post(
+      `/api/containers/`,
+      container,
+      response => {
+        dispatch(addContainerSuccess(response));
+      },
+      error => {
+        dispatch(addContainerError());
+        dispatch(setContainerFormError(error.data));
+        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
+      }
+    );
   };
 };
 
-
-//// reducer
-export const initialState = {
-  items: [],
-  selected: null
+export const edit = container => {
+  return (dispatch, getState) => {
+    dispatch(editContainer());
+    return put(
+      `/api/containers/${container.id}`,
+      container,
+      response => {
+        dispatch(editContainerSuccess(container));
+      },
+      error => {
+        dispatch(editContainerError());
+        dispatch(setContainerFormError(error.data));
+        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
+      }
+    );
+  };
 };
 
-export default function containers(state = initialState, action) {
-  switch (action.type) {
-    case RECEIVE_CONTAINERS:
-      return action.payload;
+export const remove = container => {
+  return (dispatch, getState) => {
+    dispatch(deleteContainer());
+    return deleteRequest(
+      `/api/containers/${container.id}`,
+      response => {
+        dispatch(deleteContainerSuccess(container));
+      },
+      error => {
+        console.error(error);
+        dispatch(deleteContainerError());
+      }
+    );
+  };
+};
 
-    case ADD_CONTAINER_SUCCESS:
-    	return {
-        ...state,
-        items: addContainerToContainers(state.items, action.payload.data)
-      };
-    case EDIT_CONTAINER_SUCCESS:
-      return {
-        ...state,
-        items: updateContainerInContainers(state.items, action.payload)
-      };        
-    case DELETE_CONTAINER_SUCCESS:
-      return {
-        ...state,
-        items: removeContainerFromContainers(state.items, action.payload)
-      };     
-    default:
-      return state
-  }
+export const select = id => {
+  return (dispatch, getState) => {
+    dispatch(selectContainer());
+    dispatch(fetchItems(id));
+  };
 }
-

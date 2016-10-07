@@ -2,26 +2,12 @@ import axios from 'axios';
 
 import localPersistedStore from '../store/LocalPersistedStore';
 
-export const fetch = (url, resolves, reject) => {
-    const promise = makePromise('get', url);
-    chain(promise, resolves, reject);
+const localStoragePromise = (method, url, data) => {
+  return new Promise(
+    (resolve, reject) => {
+      localPersistedStore(resolve, reject, method, url, data);
+    });
 };
-
-export const post = (url, data, resolves, reject)  => {
-  const promise = makePromise('post', url, data);
-  chain(promise, resolves, reject);
-};
-
-export const put = (url, data, resolves, reject)  => {
-  const promise = makePromise('put', url, data);
-  chain(promise, resolves, reject);
-};
-
-export const deleteRequest = (url, resolves, reject) => {
-  const promise = makePromise('delete', url);
-  chain(promise, resolves, reject);  
-};
-
 
 const makePromise = (method, url, data)  => {
   let promise = null;
@@ -49,9 +35,26 @@ const chain = (promise, resolves, reject = response => {console.error(response);
 };
 
 
-const localStoragePromise = (method, url, data) => {
-  return new Promise(
-    (resolve, reject) => {
-      localPersistedStore(resolve, reject, method, url, data);
-    });
+
+
+export const fetch = (url, resolves, reject) => {
+    const promise = makePromise('get', url);
+    chain(promise, resolves, reject);
 };
+
+export const post = (url, data, resolves, reject)  => {
+  const promise = makePromise('post', url, data);
+  chain(promise, resolves, reject);
+};
+
+export const put = (url, data, resolves, reject)  => {
+  const promise = makePromise('put', url, data);
+  chain(promise, resolves, reject);
+};
+
+export const deleteRequest = (url, resolves, reject) => {
+  const promise = makePromise('delete', url);
+  chain(promise, resolves, reject);  
+};
+
+

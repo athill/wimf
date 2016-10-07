@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, FormControls, Glyphicon, Label, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Input, FormControls, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { Icon, NoOp } from './common';
 
@@ -25,20 +25,21 @@ InputLabel.propTypes = {
 
 const ValidatedInput = ({ children, error, id, maxLength, mutatedValue, readOnly, touched, warning, 
     label = '', value = '', showTextLengthFeedback = false, valid = true, labelCols = 4, ...otherProps }) => {
-  let errorMessage, style, warningMessage;
+  let style;
+  // let errorMessage, style, warningMessage;
   if (touched) {
     if (valid) {
-      if (warning != undefined) {
-        warningMessage = warning;
+      if (!warning) {
+  //       warningMessage = warning;
         style = 'warning';
       }
     } else {
-      errorMessage = error;
+  //     errorMessage = error;
       style = 'error';
     }
   }
   //const lengthBadge = (<LengthBadge length={value.length} maxLength={maxLength} />);
-  const labelComponent = (<InputLabel title={label} warning={warningMessage} error={errorMessage} />);
+  // const labelComponent = (<InputLabel title={label} warning={warningMessage} error={errorMessage} />);
   const errorComponent = touched && error ? <div className='text-danger'>{error}</div> : <NoOp />;
   //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
   const labelClassName = "col-xs-"+labelCols;

@@ -15,16 +15,19 @@ export default class Compatibility {
   static _checkCompatibility() {
     let tester = document.createElement('input');
     for (let type in Compatibility._supported) {
-      try {
-        tester.type = type;
-        tester.value = ':(';
+      if (Compatibility._supported.hasOwnProperty(type)) {
+        try {
+          tester.type = type;
+          tester.value = ':(';
 
-        if (tester.type === type && tester.value === '') {
-          Compatibility._supported[type] = true;
-        }
-      } catch (error) {
-        // Do nothing for now
+          if (tester.type === type && tester.value === '') {
+            Compatibility._supported[type] = true;
+          }
+        } catch (error) {
+          // Do nothing for now
+        }        
       }
+
     }
     Compatibility._checked = true;
   }

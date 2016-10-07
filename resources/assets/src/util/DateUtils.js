@@ -12,12 +12,12 @@ export const momentFormats = [
   isoFormat
 ];
 
-export const isValidDate = date => (
-	momentize(date).isValid()
-);
-
 export const momentize = date => (
 	date instanceof moment ? date : moment(date, momentFormats)
+);
+
+export const isValidDate = date => (
+	momentize(date).isValid()
 );
 
 export const getDisplayFormat = date => (
