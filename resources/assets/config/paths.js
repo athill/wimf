@@ -24,17 +24,21 @@ var nodePaths = (process.env.NODE_PATH || '')
   .filter(Boolean)
   .map(resolveApp);
 
-var relativeRoot = 'resources/assets/'
+var sourceRoot = 'resources/assets/';
+var publicRoot = sourceRoot + 'public/';
+var buildRoot = 'public/build/';
 // config after eject: we're in ./config/
 module.exports = {
-  appBuild: resolveApp(relativeRoot + 'build'),
-  appPublic: resolveApp(relativeRoot + 'public'),
-  appHtml: resolveApp(relativeRoot + 'public/index.html'),
-  appIndexJs: resolveApp(relativeRoot + 'src/app.js'),
+  appBuild: resolveApp(buildRoot),
+  appPublic: resolveApp(publicRoot),
+  appHtml: resolveApp(publicRoot + 'index.html'),
+  appIndexJs: resolveApp(sourceRoot + 'src/app.js'),
   appPackageJson: resolveApp('package.json'),
-  appSrc: resolveApp(relativeRoot + 'src'),
+  appSrc: resolveApp(sourceRoot + 'src'),
   testsSetup: resolveApp('src/setupTests.js'),
   appNodeModules: resolveApp('node_modules'),
   ownNodeModules: resolveApp('node_modules'),
   nodePaths: nodePaths
 };
+
+console.log('*******************', module.exports);

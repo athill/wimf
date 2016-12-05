@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "autoprefixer": "6.4.1",
+    "axios": "^0.15.1",
     "babel-core": "6.14.0",
     "babel-eslint": "6.1.2",
     "babel-jest": "15.0.0",
@@ -55,7 +56,7 @@
     "start": "node resources/assets/scripts/start.js",
     "build": "node resources/assets/scripts/build.js",
     "test": "node resources/assets/scripts/test.js --env=jsdom",
-    "webpack": "webpack --colors --progress --config ./resources/assets/config"
+    "webpack": "webpack --colors --progress --config ./resources/assets/config/webpack.config.dev.js"
   },
   "jest": {
     "moduleFileExtensions": [

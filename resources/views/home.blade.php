@@ -1,8 +1,8 @@
 @extends('app')
 
 @section('content')
-<div id="app"></div>
+<div id="root"></div>
 
-	<script src="{{ asset('/js/vendor.bundle.js') }}"></script>
-	<script src="{{ asset('/js/app.js') }}"></script>
+	<!-- <script src="{{ asset('/js/vendor.bundle.js') }}"></script> -->
+	<script src="{{ asset('/build/static/js/app.js') }}"></script>
 @endsection
