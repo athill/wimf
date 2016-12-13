@@ -20,6 +20,8 @@ var prompt = require('react-dev-utils/prompt');
 var config = require('../config/webpack.config.dev');
 var paths = require('../config/paths');
 
+var stubApis = require('./stub-api');
+
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
@@ -164,7 +166,7 @@ function addMiddleware(devServer) {
     // - /*.hot-update.json (WebpackDevServer uses this too for hot reloading)
     // - /sockjs-node/* (WebpackDevServer uses this for hot reloading)
     // Tip: use https://jex.im/regulex/ to visualize the regex
-    var mayProxy = /^(?!\/(index\.html$|.*\.hot-update\.json$|sockjs-node\/)).*$/;
+    var mayProxy = /^(?!\/(index\.html$|.*\.hot-update\.json$|api\/|sockjs-node\/)).*$/;
     devServer.use(mayProxy,
       // Pass the scope regex both to Express and to the middleware for proxying
       // of both HTTP and WebSockets to work without false positives.
@@ -226,6 +228,9 @@ function runDevServer(host, port, protocol) {
 
   // Our custom middleware proxies requests to /index.html or a remote API.
   addMiddleware(devServer);
+  // Add route for stubbing out REST endpoints with flat JSON files
+  // to WebpackDevServer's internal express app  
+  stubApis(devServer.app);
 
   // Launch WebpackDevServer.
   devServer.listen(port, (err, result) => {

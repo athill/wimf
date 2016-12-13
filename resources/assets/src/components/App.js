@@ -15,8 +15,10 @@ import WimfNavbar from './Wimf/WimfNavbar';
 
 const App = ({children}) => (
 	<div>
-		Up and running
 		<WimfNavbar />
+        <BootstrapContainer>
+        {children}
+		</BootstrapContainer> 		
 	</div>
 );
 
