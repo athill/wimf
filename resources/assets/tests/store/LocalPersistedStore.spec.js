@@ -102,7 +102,6 @@ describe('LocalPersistedStore', () => {
 				localStore.persistContainers(resolve, reject, 'delete', [result.id]);
 				//// verify store is updated
 				const store = localStore.getStore();
-				console.log(store.containers);
 				expect(_.findIndex(store.containers, { id: result.id })).toBe(-1);
 			});
 		});		
