@@ -1,4 +1,4 @@
-node { 
+node('tst.wimf.space') { 
     stage('Build') { 
         checkout scm
         composer update
