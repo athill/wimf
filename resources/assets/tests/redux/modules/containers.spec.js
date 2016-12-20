@@ -1,4 +1,4 @@
-import expect from 'expect';
+// import expect from 'expect';
 import reducer, { initialState, RECEIVE_CONTAINERS } from '../../../src/redux/modules/containers';
 
 
