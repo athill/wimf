@@ -1,10 +1,10 @@
-
+#!groovy
 
 node('tst.wimf.space') { 
     stage('Build') { 
         checkout scm
         sh 'composer update'
-	sh 'cp /var/www/laravel/.env .'
+	    sh 'cp /var/www/laravel/.env .'
         sh 'npm install'
     }
     stage('Test PHP') {
@@ -14,6 +14,6 @@ node('tst.wimf.space') {
         sh 'npm test'
     }
     stage('Deploy') {
-   	echo 'deploying ... (not really)'     
+   	    echo 'deploying ... (not really)'     
    }
 }
