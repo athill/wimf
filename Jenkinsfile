@@ -2,7 +2,7 @@
 
 node('tst.wimf.space') { 
     stage('Build') { 
-        sh 'checkout scm'
+        checkout scm
         sh 'composer update'
 	sh 'cp /var/www/laravel/.env .'
     }
