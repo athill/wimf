@@ -1,13 +1,15 @@
+
+
 node('tst.wimf.space') { 
     stage('Build') { 
-        sh checkout scm
-        sh composer update
-		sh cp /var/www/laravel/.env .
+        sh 'checkout scm'
+        sh 'composer update'
+		sh 'cp /var/www/laravel/.env' .
     }
     stage('Test') {
-        sh vendor/phpunit/phpunit/phpunit
+        sh 'vendor/phpunit/phpunit/phpunit'
     }
     stage('Deploy') {
-        /* .. snip .. */
-    }
+   	echo 'deploying ... (not really)'     
+   }
 }
