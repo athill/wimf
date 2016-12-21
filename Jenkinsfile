@@ -11,7 +11,7 @@ node('tst.wimf.space') {
         sh 'vendor/phpunit/phpunit/phpunit'
     }
     stage('Test JS') {
-        withEnv(['NODE_ENV=CI']) {
+        withEnv(['CI=true']) {
             sh 'npm test'
         }
     }
