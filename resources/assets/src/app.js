@@ -19,11 +19,13 @@ const Application = () => (
 		<Router history={hashHistory}>
 			<Route path="/" component={App}>
 				<IndexRoute component={Wimf} />
-				{/* <Route path="/containers" component={Containers}/> */}
+				<Route path="/containers" component={Containers}/>
 			</Route>
 		</Router>
 	</Provider>
 );
+
+console.log('starting');
 
 
 ReactDOM.render(
