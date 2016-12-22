@@ -21,5 +21,6 @@ const App = ({children}) => (
 		</BootstrapContainer> 		
 	</div>
 );
+App.displayName = 'App';
 
 export default App;

@@ -14,14 +14,16 @@ import Containers from './components/Wimf/modules/Containers';
 
 const store = configureStore();
 
+console.log(Route, App, IndexRoute, Wimf);
+
 const Application = () => (
 	<Provider store={store}>
 		<Router history={hashHistory}>
 			<Route path="/" component={App}>
 				<IndexRoute component={Wimf} />
-				<Route path="/containers" component={Containers}/>
+				<Route path="/containers" component={Containers}/> 
 			</Route>
-		</Router>
+		</Router> 
 	</Provider>
 );
 

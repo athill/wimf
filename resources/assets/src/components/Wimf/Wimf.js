@@ -57,14 +57,14 @@ class Wimf extends React.Component {
       containerLoading, handleContainerChange } = this.props;
     return (
       <div>
-          <ContainerSelector containers={containers} onChange={handleContainerChange} />
-          <Filter handleChange={handleFilterChange} />
+          {/* <ContainerSelector containers={containers} onChange={handleContainerChange} />
+          <Filter handleChange={handleFilterChange} /> */}
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
             itemEditClickHandler={itemEditClickHandler}
             itemDeleteClickHandler={itemDeleteClickHandler} />
           <AddItemButton clickHandler={itemAddClickHandler} title='Add Item' />
-          <ItemForm /> 
+          {/* <ItemForm /> */}
       </div>
     );
   }

@@ -76,7 +76,7 @@
     "start": "node resources/assets/scripts/start.js",
     "build": "node resources/assets/scripts/build.js",
     "test": "node resources/assets/scripts/test.js --env=jsdom",
-    "webpack": "webpack --colors --progress --config ./resources/assets/config/webpack.config.dev.js"
+    "watch": "NODE_ENV=production webpack --config resources/assets/config/webpack.config.prod.js --progress --colors --watch"
   },
   "jest": {
     "moduleFileExtensions": [
