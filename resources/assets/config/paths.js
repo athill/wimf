@@ -40,5 +40,3 @@ module.exports = {
   ownNodeModules: resolveApp('node_modules'),
   nodePaths: nodePaths
 };
-
-console.log('*******************', module.exports);
