@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
+import ReactTestUtils from 'react-addons-test-utils';
 
 import BootstrapContainer from '../../../src/components/common/BootstrapContainer';
 

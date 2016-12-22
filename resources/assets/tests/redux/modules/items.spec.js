@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import fetchMock from 'fetch-mock';
 
-import reducer, { add, ADD_ITEM, initialState } from '../../../src/redux/modules/items';
+import reducer, { add, ADD_ITEM, addItem, initialState } from '../../../src/redux/modules/items';
 
 const middlewares = [ thunk ];
 const mockStore = configureMockStore(middlewares);
@@ -72,7 +72,7 @@ describe('item', () => {
 		    const dispatch = expect.createSpy();
 		    const item = {};
 		    add(item)(dispatch, getState);
-		    expect(dispatch).toHaveBeenCalledWith({type: ADD_ITEM, payload: undefined});
+		    expect(dispatch).toHaveBeenCalledWith({ type: ADD_ITEM });
 		  });
 		});
 	});
