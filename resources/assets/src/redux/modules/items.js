@@ -106,7 +106,7 @@ const processItems = (json) => {
 const requestItems = createAction(REQUEST_ITEMS);
 const receiveItems = createAction(RECEIVE_ITEMS, data => processItems(data));
 
-const addItem = createAction(ADD_ITEM);
+export const addItem = createAction(ADD_ITEM);
 const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
 const addItemError = createAction(ADD_ITEM_ERROR);
 
