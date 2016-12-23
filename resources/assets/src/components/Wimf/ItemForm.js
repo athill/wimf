@@ -33,7 +33,7 @@ const validate = values => {
 };
 
 
-const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
+export const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 
 			fields: { category, name, quantity, date, container, id, keepOpen },
 	      handleSubmit,
