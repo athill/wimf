@@ -1,22 +1,26 @@
 import React from 'react';
-import { Input } from 'react-bootstrap';
+import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 const ContainerSelector = ({containers, onChange}) => {
 	const selected = containers.selected ? containers.selected.id : '';
 	return (<form className="form-horizontal">
-		<Input type='select' label='Container:' className='component-selector'
-			labelClassName="col-md-2 component-selector-label" wrapperClassName="col-md-10" defaultValue={selected} 
-			onChange={onChange}>
-		{
-			containers.items.map(container => {
-				return (
-					<option value={container.id} key={container.id}>
-						{ container.name }
-					</option>
-				);
-			})
-		}
-		</Input> 
+		<FormGroup>
+			<ControlLabel className='col-md-2 component-selector-label'>Container:</ControlLabel>
+			<div className='col-md-10'>		
+				<FormControl type='select' className='component-selector' componentClass='select'
+					defaultValue={selected} onChange={onChange}>
+				{
+					containers.items.map(container => {
+						return (
+							<option value={container.id} key={container.id}>
+								{ container.name }
+							</option>
+						);
+					})
+				}
+				</FormControl> 
+			</div>
+		</FormGroup>		
 	</form>)
 };
 

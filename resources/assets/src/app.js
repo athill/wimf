@@ -2,20 +2,21 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { IndexRoute ,Router, Route, hashHistory } from 'react-router';
+import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
-
-import App from './components/App';
+//// store creation function 
 import configureStore from './redux/create';
 
-//// modules
+//// components
+import App from './components/App';
+////// pages
 import Wimf from './components/Wimf/Wimf';
 import Containers from './components/Wimf/modules/Containers';
 
+//// store
 const store = configureStore();
 
-console.log(Route, App, IndexRoute, Wimf);
-
+//// application structure
 const Application = () => (
 	<Provider store={store}>
 		<Router history={hashHistory}>
@@ -27,9 +28,7 @@ const Application = () => (
 	</Provider>
 );
 
-console.log('starting');
-
-
+//// start the party
 ReactDOM.render(
 	React.createElement(Application), document.getElementById('root')
 );
