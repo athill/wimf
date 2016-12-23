@@ -1,26 +1,19 @@
 #!groovy
 
 node('tst.wimf.space') { 
-    stage('Deploy') {
-        echo 'deploying ... (not really)'
+    stage('Checkout') {
+        checkout scm
+   }
+    stage('Build') { 
         parallel php: {
-            echo 'deploying php'
+            sh 'cp /var/www/laravel/.env .'
+            sh 'composer update'
         },
         js: {
-            echo 'deploying js'
+            checkout scm
+            sh 'npm install'
         }
-   }
-//    stage('Build') { 
-//        parallel php: {
-//            checkout scm
-//            sh 'cp /var/www/laravel/.env .'
-//            sh 'composer update'
-//        },
-//        js: {
-//            checkout scm
-//            sh 'npm install'
-//        }
-//    }
+    }
 //    stage('Test PHP') {
 //        sh 'vendor/phpunit/phpunit/phpunit'
 //    }
