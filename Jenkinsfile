@@ -4,11 +4,11 @@ node('tst.wimf.space') {
     stage('Deploy') {
         echo 'deploying ... (not really)'
         parallel php: {
-                echo 'deploying php'
-            },
-            js: {
-                echo 'deploying js'
-            }
+            echo 'deploying php'
+        },
+        js: {
+            echo 'deploying js'
+        }
    }
 //    stage('Build') { 
 //        parallel php: {
