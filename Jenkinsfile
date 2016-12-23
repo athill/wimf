@@ -14,6 +14,16 @@ node('tst.wimf.space') {
             sh 'npm install'
         }
     }
+    stage('Test') {
+        parallel php: {
+            sh 'vendor/phpunit/phpunit/phpunit'
+        },
+        js: {
+            withEnv(['CI=true']) {
+                sh 'npm test'
+            }            
+        }
+    }
 //    stage('Test PHP') {
 //        sh 'vendor/phpunit/phpunit/phpunit'
 //    }
@@ -22,7 +32,7 @@ node('tst.wimf.space') {
 //            sh 'npm test'
 //        }
 //    }
-//    stage('Deploy') {
-//   	    echo 'deploying ... (not really)'     
-//   }
+    stage('Deploy') {
+   	    echo 'deploying ... (not really)'     
+   }
 }
