@@ -24,14 +24,6 @@ node('tst.wimf.space') {
             }            
         }
     }
-//    stage('Test PHP') {
-//        sh 'vendor/phpunit/phpunit/phpunit'
-//    }
-//    stage('Test JS') {
-//        withEnv(['CI=true']) {
-//            sh 'npm test'
-//        }
-//    }
     stage('Deploy') {
    	    echo 'deploying ... (not really)'     
    }
