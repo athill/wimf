@@ -2,10 +2,15 @@
 
 node('tst.wimf.space') { 
     stage('Build') { 
-        checkout scm
-        sh 'composer update'
-	    sh 'cp /var/www/laravel/.env .'
-        sh 'npm install'
+        parallel php: {
+            checkout scm
+            sh 'cp /var/www/laravel/.env .'
+            sh 'composer update'
+        },
+        js: {
+            checkout scm
+            sh 'npm install'
+        }
     }
     stage('Test PHP') {
         sh 'vendor/phpunit/phpunit/phpunit'
