@@ -32,7 +32,7 @@ node('tst.wimf.space') {
                 sh 'pwd'
                 sh 'hostname'
                 sh 'whoami'
-                //sh './bin/deploy'
+                sh '/home/athill/bin/deploy'
             }
         } else if (env.BRANCH_NAME == 'master') {
             sshagent(['3a4ff721-3273-48fd-8493-b6e3b157afb1']) {
