@@ -25,6 +25,7 @@ node('tst.wimf.space') {
         }
     }
     stage('Deploy') {
-   	    echo 'deploying ... (not really)'     
+   	    echo 'deploying ... (not really)'
+        echo env.BRANCH_NAME     
    }
 }
