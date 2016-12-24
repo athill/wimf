@@ -25,19 +25,13 @@ node('tst.wimf.space') {
         }
     }
     stage('Deploy') {
-   	    echo 'deploying ... (not really)'
         if (env.BRANCH_NAME == 'develop') {
             sshagent(['1d637c77-7dd7-4ac6-9c28-7d1c5be3dce6']) {
-                sh 'cd /home/athill'
-                sh 'pwd'
-                sh 'hostname'
-                sh 'whoami'
                 sh '/home/athill/bin/deploy'
             }
         } else if (env.BRANCH_NAME == 'master') {
             sshagent(['3a4ff721-3273-48fd-8493-b6e3b157afb1']) {
-                sh 'cd ~'
-                // sh './bin/deploy'
+                sh '/home/athill/bin/deploy'
             }            
         } else {
             echo "Successfully built and tested ${env.BRANCH_NAME}"
