@@ -1,18 +1,21 @@
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import thunkMiddleware from 'redux-thunk';
-import loggerMiddleware from 'redux-logger';
+import createLogger from 'redux-logger';
 
 
 import reducer from './modules/reducer';
 
+const logger = createLogger();
+
 const middleware = [
   thunkMiddleware,
-  promiseMiddleware,
+  promiseMiddleware
 ];
 
-if (process.env.NODE_ENV === 'development') {
-  middleware.push(loggerMiddleware());
+
+if (process.env.NODE_ENV === 'development' || location.host === 'wimf.app') {
+  middleware.push(logger);
 }
 
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
