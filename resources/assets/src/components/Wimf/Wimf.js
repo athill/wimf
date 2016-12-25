@@ -64,7 +64,7 @@ class Wimf extends React.Component {
             itemEditClickHandler={itemEditClickHandler}
             itemDeleteClickHandler={itemDeleteClickHandler} />
           <AddItemButton clickHandler={itemAddClickHandler} title='Add Item' />
-          {/* <ItemForm /> */}
+          <ItemForm />
       </div>
     );
   }

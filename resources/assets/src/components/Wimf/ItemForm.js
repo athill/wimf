@@ -1,13 +1,14 @@
 import React from 'react';
-import { Input } from 'react-bootstrap';
-import { reduxForm, change } from 'redux-form';
+import { Checkbox } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { reduxForm, change, Field } from 'redux-form';
 import moment from 'moment';
 
 import { add, remove, edit } from '../../redux/modules/items';
 import { hideItemForm } from '../../redux/modules/itemForm';
 import { ModalTypes } from '../../util/formModal';
 import FormModal from '../common/FormModal';
-import Datepicker from '../common/Datepicker';
+// import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
 
 //// utils
@@ -33,12 +34,20 @@ const validate = values => {
 };
 
 
+// export const ItemForm = (readOnly) => (
+// 	<FormModal>
+// 		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" containerComponent={ValidatedInput} />
+// 	</FormModal>
+// );
+
+
 export const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 
-			fields: { category, name, quantity, date, container, id, keepOpen },
+			// fields: { category, name, quantity, date, container, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => {
+	console.log('showItemForm', showModal);
 	const submit  = (submitAction) => (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
@@ -60,14 +69,14 @@ export const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnl
 			resetForm(); 
 			onHide();
 		}}>
-		<ValidatedInput type='text' autoFocus id='category' readOnly={readOnly} label='Category' {...category} />
-		<ValidatedInput type='text' id='name' label='Name' readOnly={readOnly} {...name} />
-		<ValidatedInput type='text' id='quantity' label='Quantity' readOnly={readOnly} {...quantity} />
+		{/*  <Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" containerComponent={ValidatedInput} />
+		<Field type='text' id='name' label='Name' readOnly={readOnly} {...name} />
+		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" containerComponent={ValidatedInput} />
 		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
-		<input type='hidden' id='container' value={containerId} {...container} />
-		{ ModalTypes.CREATE === type && <Input type='checkbox' wrapperClassName='col-xs-offset-1' id='keepOpen' label='Keep Open' {...keepOpen} /> }
+		<input type='hidden' id='container' value={containerId} name="container"  />
+		{ ModalTypes.CREATE === type && <Checkbox name="keepOpen" id='keepOpen'>Keep Open</Checkbox> }
 
-		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> }
+		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> } */}
 
 	</FormModal>)
 };
@@ -126,9 +135,14 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+// export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ 
+//   form: formName,
+//   validate,
+// }), (ItemForm));
 
-export default reduxForm({ // <----- THIS IS THE IMPORTANT PART!
-  form: formName,                           // a unique name for this form
-  fields: fields, // all the fields in your form,
-  validate,
-}, mapStateToProps, mapDispatchToProps)(ItemForm);
+const form = reduxForm({
+	form: formName,
+	validate
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(form(ItemForm));

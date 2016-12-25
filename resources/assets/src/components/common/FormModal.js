@@ -19,7 +19,8 @@ const ErrorDisplay = ({ errors }) => {
 };
 
 const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, 
-    submitting = false, submitButtonBsStyle='primary', submitButtonText = 'Submit', ...otherProps }) => (
+    submitting = false, submitButtonBsStyle='primary', submitButtonText = 'Submit', ...otherProps }) => {
+  return (
   <Modal onHide={() => { if(!submitting) { onHide(); } }} {...otherProps}>
     <Modal.Header>
       <Modal.Title>{ title }</Modal.Title>
@@ -41,7 +42,7 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
       </Modal.Footer> 
     </form>
   </Modal>
-);
+)};
 
 FormModal.propTypes = {
   errors: React.PropTypes.array,
