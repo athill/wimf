@@ -8,7 +8,7 @@ import { add, remove, edit } from '../../redux/modules/items';
 import { hideItemForm } from '../../redux/modules/itemForm';
 import { ModalTypes } from '../../util/formModal';
 import FormModal from '../common/FormModal';
-// import Datepicker from '../common/Datepicker';
+import Datepicker from '../common/Datepicker';
 import ValidatedInput from '../common/ValidatedInput';
 
 //// utils
@@ -69,14 +69,14 @@ export const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnl
 			resetForm(); 
 			onHide();
 		}}>
-		{/*  <Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" containerComponent={ValidatedInput} />
-		<Field type='text' id='name' label='Name' readOnly={readOnly} {...name} />
-		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" containerComponent={ValidatedInput} />
-		<Datepicker id='date' label='Date' readOnly={readOnly} {...date} /> 
+		<Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" component={ValidatedInput} />
+		<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
+		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
+		{/* <Field id='date' label='Date' readOnly={readOnly} name="date" component={Datepicker} />  */}
 		<input type='hidden' id='container' value={containerId} name="container"  />
 		{ ModalTypes.CREATE === type && <Checkbox name="keepOpen" id='keepOpen'>Keep Open</Checkbox> }
 
-		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> } */}
+		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' /> } 
 
 	</FormModal>)
 };

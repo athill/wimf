@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, FormControls, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { ControlLabel, FormControl, FormGroup, HelpBlock, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { Icon, NoOp } from './common';
 
@@ -23,7 +23,7 @@ InputLabel.propTypes = {
 
 
 
-const ValidatedInput = ({ children, error, id, maxLength, mutatedValue, readOnly, touched, warning, 
+const ValidatedInput = ({ children, error, help, id, maxLength, mutatedValue, readOnly, touched, warning, 
     label = '', value = '', showTextLengthFeedback = false, valid = true, labelCols = 4, ...otherProps }) => {
   let style;
   // let errorMessage, style, warningMessage;
@@ -47,34 +47,39 @@ const ValidatedInput = ({ children, error, id, maxLength, mutatedValue, readOnly
 
   if (readOnly) {
     return (
-      <div>
-        
+      <FormGroup>
         <input {...otherProps}  type="hidden" />
-        <FormControls.Static label={label} value={value} labelClassName={labelClassName}
-          wrapperClassName={wrapperClassName}>
-            { children }
-        </FormControls.Static>
-      </div>
+        <ControlLabel className={labelClassName}>{label}</ControlLabel>
+        <div className={wrapperClassName}>
+          <FormControl.Static value={value}>
+              { children }
+          </FormControl.Static>
+        </div>
+      </FormGroup>
     );
   } else {
     return (
-      <Input {...otherProps}
-        id={id}
-        maxLength={maxLength}
-        label={label}
-        help={errorComponent}
-        title={label}
-        value={value}
-        placeholder={label}
-        hasFeedback={showTextLengthFeedback}
-        bsStyle={style}
-        labelClassName={labelClassName} 
-        wrapperClassName={wrapperClassName}>
-          { children }
-        </Input>
+      <FormGroup>
+        <ControlLabel className={labelClassName}>{label}</ControlLabel>
+        <div className={wrapperClassName}>
+          <FormControl {...otherProps}
+            id={id}
+            maxLength={maxLength}
+            title={label}
+            value={value}
+            placeholder={label}
+            hasFeedback={showTextLengthFeedback}
+            bsStyle={style}>
+              { children }
+          </FormControl>
+          { help && <HelpBlock>{help}</HelpBlock> }
+        </div>
+      </FormGroup>       
     );
   }
 };
+
+
 
 ValidatedInput.propTypes = {
   error: React.PropTypes.string,
