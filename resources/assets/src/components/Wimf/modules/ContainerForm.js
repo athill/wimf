@@ -1,6 +1,7 @@
 import React from 'react';
-import { Input } from 'react-bootstrap';
-import { reduxForm, change } from 'redux-form';
+import { Checkbox } from 'react-bootstrap';
+import { Field, reduxForm, change } from 'redux-form';
+import { connect } from 'react-redux';
 
 import { add, remove, edit } from '../../../redux/modules/containers';
 import { hideContainerForm } from '../../../redux/modules/containerForm';
@@ -27,7 +28,6 @@ const validate = values => {
 
 const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 
-			fields: { name, description, id, keepOpen },
 	      handleSubmit,
 	      resetForm,
 	      submitting }) => {
@@ -52,11 +52,11 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 			resetForm(); 
 			onHide();
 		}}>
-		<ValidatedInput type='text' autoFocus id='name' readOnly={readOnly} label='Name' {...name} />
-		<ValidatedInput type='text' id='description' label='Description' readOnly={readOnly} {...description} />
-		{ ModalTypes.CREATE === type && <Input type='checkbox' wrapperClassName='col-xs-offset-1' id='keepOpen' label='Keep Open' {...keepOpen} /> }
+		<Field type='text' autoFocus id='name' name="name" readOnly={readOnly} label='Name' component={ValidatedInput} />
+		<Field type='text' id='description' name="description" label='Description' readOnly={readOnly} component={ValidatedInput} />
+		{ ModalTypes.CREATE === type && <Checkbox id='keepOpen'>Keep Open</Checkbox> }
 
-		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' {...id} /> }
+		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' /> }
 
 	</FormModal>)
 };
@@ -112,9 +112,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+const form = reduxForm({
+	form: formName,
+	validate
+});
 
-export default reduxForm({ // <----- THIS IS THE IMPORTANT PART!
-  form: formName,                           // a unique name for this form
-  fields: fields, // all the fields in your form,
-  validate,
-}, mapStateToProps, mapDispatchToProps)(ContainerForm);
+export default connect(mapStateToProps, mapDispatchToProps)(form(ContainerForm));

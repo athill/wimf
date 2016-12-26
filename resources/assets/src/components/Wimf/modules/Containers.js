@@ -68,7 +68,7 @@ class Containers extends React.Component {
             	}
             	</div>
                 <AddContainerButton clickHandler={containerAddClickHandler} />
-                {/* <ContainerForm /> */}
+                <ContainerForm />
         	</div>
         );
     }

@@ -135,11 +135,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ 
-//   form: formName,
-//   validate,
-// }), (ItemForm));
-
 const form = reduxForm({
 	form: formName,
 	validate
