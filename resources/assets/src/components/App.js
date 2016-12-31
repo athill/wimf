@@ -1,21 +1,11 @@
 import React from 'react';
 
 import BootstrapContainer from './common/BootstrapContainer';
-import WimfNavbar from './Wimf/WimfNavbar';
-
-
-// const App = ({children}) => (
-// 	<div>
-// 		<WimfNavbar />
-//         <BootstrapContainer>
-//         {children}
-// 		</BootstrapContainer> 
-// 	</div>
-// );
+import AppNavbar from './AppNavbar';
 
 const App = ({children}) => (
 	<div>
-		<WimfNavbar />
+		<AppNavbar />
         <BootstrapContainer>
         {children}
 		</BootstrapContainer> 		
