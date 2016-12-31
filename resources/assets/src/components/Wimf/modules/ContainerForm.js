@@ -9,9 +9,6 @@ import { ModalTypes } from '../../../util/formModal';
 import FormModal from '../../common/FormModal';
 import ValidatedInput from '../../common/ValidatedInput';
 
-
-const fields = ['name', 'description', 'id', 'keepOpen'];
-
 const formName = 'container';
 
 const validate = values => {
@@ -29,13 +26,13 @@ const validate = values => {
 const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 
 	      handleSubmit,
-	      resetForm,
+	      reset,
 	      submitting }) => {
-	const submit  = (submitAction) => (values, dispatch) => {
+	const submit  = (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
 
-		resetForm();
+		reset();
 		if (values.keepOpen) {
 			dispatch(change(formName, 'keepOpen', true));
 			const name = document.getElementById('name');
@@ -47,23 +44,19 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 	  });		
 	};
 	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
-		submitButtonText={submitButtonText}
-		onSubmit={handleSubmit(submit(submitAction))} onHide={() => {
-			resetForm(); 
-			onHide();
-		}}>
+			submitButtonText={submitButtonText}
+			onSubmit={handleSubmit(submit)} 
+			onHide={() => {
+				reset(); 
+				onHide();
+			}}>
 		<Field type='text' autoFocus id='name' name="name" readOnly={readOnly} label='Name' component={ValidatedInput} />
 		<Field type='text' id='description' name="description" label='Description' readOnly={readOnly} component={ValidatedInput} />
-		{ ModalTypes.CREATE === type && <Checkbox id='keepOpen'>Keep Open</Checkbox> }
-
-		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' /> }
+		{ ModalTypes.CREATE === type && <Field id='keepOpen' component={Checkbox}>Keep Open</Field> }
 
 	</FormModal>)
 };
-//, addForm: { show : showAddForm }
-const mapStateToProps = ({ containers: { selected }, 
-		containerForm: { errors, show, selected: selectedContainer } }) => {
-	const containerId = selected && selected.id ? selected.id : -1;
+const mapStateToProps = ({ containerForm: { errors, show, selected: selectedContainer } }) => {
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
@@ -98,8 +91,7 @@ const mapStateToProps = ({ containers: { selected },
 		submitButtonBsStyle,
 		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: selectedContainer,
-		containerId
+		initialValues: selectedContainer
 	};
 	return rtn;
 };
