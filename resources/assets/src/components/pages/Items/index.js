@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 //// actions
-import { fetchContainers, select as selectContainer } from '../../redux/modules/containers';
-import { setItemsFilter } from '../../redux/modules/items';
-import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../redux/modules/itemForm';
+import { fetchContainers, select as selectContainer } from '../../../redux/modules/containers';
+import { setItemsFilter } from '../../../redux/modules/items';
+import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../../redux/modules/itemForm';
 
 //// components
-import AddItemButton from '../common/AddButton';
+import AddItemButton from '../../common/AddButton';
 import Container from './Container';
 import ContainerSelector from './ContainerSelector';
-import Filter from '../common/Filter';
+import Filter from '../../common/Filter';
 import ItemForm from './ItemForm';
 
 //// utils
-import { filterCategories } from '../../util/ContainerOperations';
+import { filterCategories } from '../../../util/ContainerOperations';
 
 const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
   if (filter !== '') {
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch
 });
 
-class Wimf extends React.Component {
+class Items extends React.Component {
   componentDidMount()  {
   	const {dispatch} = this.props;
     dispatch(fetchContainers());
@@ -70,4 +70,4 @@ class Wimf extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wimf);
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

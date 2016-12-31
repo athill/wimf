@@ -2,10 +2,10 @@ import React from 'react';
 import { Col, Panel, Row } from 'react-bootstrap';
 
 //// components
-import { Icon } from '../common/common';
+import { Icon } from '../../common/common';
 
 //// utils
-import { getDisplayFormat } from '../../util/DateUtils';
+import { getDisplayFormat } from '../../../util/DateUtils';
 
 const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item}) => {
 	const header = 	(<Row>

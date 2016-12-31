@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 //// components
 import ContainerWelcome from './ContainerWelcome';
 import Item from './Item';
-import { Spinner } from '../common/common';
+import { Spinner } from '../../common/common';
 
 
 

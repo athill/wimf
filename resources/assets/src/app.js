@@ -10,7 +10,7 @@ import configureStore from './redux/create';
 //// components
 import App from './components/App';
 ////// pages
-import Wimf from './components/Wimf/Wimf';
+import Items from './components/pages/Items';
 import Containers from './components/pages/Containers';
 
 //// store
@@ -21,7 +21,7 @@ const Application = () => (
 	<Provider store={store}>
 		<Router history={hashHistory}>
 			<Route path="/" component={App}>
-				<IndexRoute component={Wimf} />
+				<IndexRoute component={Items} />
 				<Route path="/containers" component={Containers}/> 
 			</Route>
 		</Router> 
