@@ -9,7 +9,7 @@ import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../r
 import AddItemButton from '../common/AddButton';
 import Container from './Container';
 import ContainerSelector from './ContainerSelector';
-import Filter from './Filter';
+import Filter from '../common/Filter';
 import ItemForm from './ItemForm';
 
 //// utils
