@@ -23,8 +23,8 @@ InputLabel.propTypes = {
 
 
 
-const ValidatedInput = ({ children, error, help, id, maxLength, mutatedValue, readOnly, touched, warning, 
-    label = '', value = '', showTextLengthFeedback = false, valid = true, labelCols = 4, ...otherProps }) => {
+const ValidatedInput = ({ children, error, help, id, input, maxLength, mutatedValue, readOnly, touched, warning, 
+    label = '', value='', showTextLengthFeedback = false, valid = true, labelCols = 4, ...otherProps }) => {
   let style;
   // let errorMessage, style, warningMessage;
   if (touched) {
@@ -44,15 +44,15 @@ const ValidatedInput = ({ children, error, help, id, maxLength, mutatedValue, re
   //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
   const labelClassName = "col-xs-"+labelCols;
   const wrapperClassName = "col-xs-"+(12-labelCols);
-
+  console.log(input);
   if (readOnly) {
     return (
       <FormGroup>
         <input {...otherProps}  type="hidden" />
         <ControlLabel className={labelClassName}>{label}</ControlLabel>
         <div className={wrapperClassName}>
-          <FormControl.Static value={value}>
-              { children }
+          <FormControl.Static>
+              { input.value }
           </FormControl.Static>
         </div>
       </FormGroup>
@@ -66,10 +66,10 @@ const ValidatedInput = ({ children, error, help, id, maxLength, mutatedValue, re
             id={id}
             maxLength={maxLength}
             title={label}
-            value={value}
             placeholder={label}
             hasFeedback={showTextLengthFeedback}
-            bsStyle={style}>
+            bsStyle={style}
+            {...input}>
               { children }
           </FormControl>
           { help && <HelpBlock>{help}</HelpBlock> }

@@ -43,7 +43,6 @@ const updateItems = (state, action) => {
       break;
     case EDIT_ITEM_SUCCESS:
       categories = updateItemInCategories(state.categories, action.payload.data);
-      console.log('categories, ', categories);
       break;
     case DELETE_ITEM_SUCCESS:
       categories = removeItemFromCategories(state.categories, action.payload.data);
@@ -191,7 +190,6 @@ export const edit = item => {
 export const remove = item => {
   return (dispatch, getState) => {
     const state = getState();
-    // const { containers: { selected: { id } }  } = getState();
     const container = state.containers.selected;
     item.container_id = container.id;
     dispatch(deleteItem());

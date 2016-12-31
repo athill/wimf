@@ -14,8 +14,6 @@ import ValidatedInput from '../common/ValidatedInput';
 //// utils
 import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../util/DateUtils';
 
-const fields = ['category', 'name', 'quantity', 'date', 'container', 'id', 'keepOpen'];
-
 const formName = 'item';
 
 const validate = values => {
@@ -26,33 +24,27 @@ const validate = values => {
 			errors[field] = `${field} is required`;
 		} 
 	});
-	if (values.date !== '' && !isValidDate(values.date)) {
+	//// date validation
+	if (values.date && !isValidDate(values.date)) {
 		errors.date = `Invalid date: valid formats are ${momentFormats.join(', ')}`;
 	}
-
 	return errors;
 };
 
 
-// export const ItemForm = (readOnly) => (
-// 	<FormModal>
-// 		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" containerComponent={ValidatedInput} />
-// 	</FormModal>
-// );
 
 
-export const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnly, submitAction, title,
+
+export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title, initialValues,
 			type, submitButtonBsStyle, submitButtonText, 
-			// fields: { category, name, quantity, date, container, id, keepOpen },
 	      handleSubmit,
-	      resetForm,
+	      reset,
 	      submitting }) => {
-	console.log('showItemForm', showModal);
-	const submit  = (submitAction) => (values, dispatch) => {
+	const submit  = (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
 
-		resetForm();
+		reset();
 		if (values.keepOpen) {
 			dispatch(change(formName, 'keepOpen', true));
 			const category = document.getElementById('category');
@@ -63,27 +55,24 @@ export const ItemForm = ({ containerId, serverErrors, showModal, onHide, readOnl
 		resolve();
 	  });		
 	};
+	// const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+	// const submit2 = values => sleep(10).then(() => console.log('here'), errors => console.log('errors', errors));
 	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
 		submitButtonText={submitButtonText}
-		onSubmit={handleSubmit(submit(submitAction))} onHide={() => {
-			resetForm(); 
+		onSubmit={handleSubmit(submit)} 
+		onHide={() => {
+			reset(); 
 			onHide();
 		}}>
 		<Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" component={ValidatedInput} />
 		<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
 		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
-		{/* <Field id='date' label='Date' readOnly={readOnly} name="date" component={Datepicker} />  */}
-		<input type='hidden' id='container' value={containerId} name="container"  />
-		{ ModalTypes.CREATE === type && <Checkbox name="keepOpen" id='keepOpen'>Keep Open</Checkbox> }
-
-		{ [ModalTypes.EDIT, ModalTypes.DELETE].indexOf(type) > 0 && <input type='hidden' id='id' /> } 
-
+		<Field id='date' label='Date' readOnly={readOnly} name="date" component={ValidatedInput} /> 
+		{ ModalTypes.CREATE === type && <Field name="keepOpen" id='keepOpen' component={Checkbox}>Keep Open</Field> }
 	</FormModal>)
 };
 //, addForm: { show : showAddForm }
-const mapStateToProps = ({ containers: { selected }, 
-		itemForm: { errors, show, selected: selectedItem } }) => {
-	const containerId = selected && selected.id ? selected.id : -1;
+const mapStateToProps = ({ itemForm: { errors, show, selected } }) => {
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
@@ -109,11 +98,13 @@ const mapStateToProps = ({ containers: { selected },
 	}
 	const submitButtonText = title;
 	title += ' Item';
-	if (selectedItem) {
-		selectedItem.date = getDisplayFormat(selectedItem.date);	
-	}
+	let initialValues = {};
+	if (show === ModalTypes.CREATE) {
+		initialValues = { date: getValueFormat(moment().startOf('day')) };
+	} else if (selected) {
+		initialValues = { ...selected, date: getDisplayFormat(selected.date) };
+	}			
 	return {
-		containerId,
 		serverErrors: errors,
 		showModal: show !== ModalTypes.NONE,
 		type: show,
@@ -122,8 +113,7 @@ const mapStateToProps = ({ containers: { selected },
 		submitButtonBsStyle,
 		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: show === ModalTypes.CREATE ? { date: getValueFormat(moment().startOf('day')) } : 
-													selectedItem
+		initialValues
 	};
 };
 
@@ -137,7 +127,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const form = reduxForm({
 	form: formName,
-	validate
+	validate,
+	enableReinitialize: true
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(form(ItemForm));
