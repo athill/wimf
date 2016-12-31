@@ -11,7 +11,7 @@ import configureStore from './redux/create';
 import App from './components/App';
 ////// pages
 import Wimf from './components/Wimf/Wimf';
-import Containers from './components/Wimf/modules/Containers';
+import Containers from './components/pages/Containers/Containers';
 
 //// store
 const store = configureStore();

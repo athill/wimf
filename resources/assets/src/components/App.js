@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AppContainer from './common/AppContainer';
+import AppContainer from './AppContainer';
 import AppNavbar from './AppNavbar';
 
 const App = ({children}) => (
