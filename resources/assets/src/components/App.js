@@ -1,14 +1,14 @@
 import React from 'react';
 
-import BootstrapContainer from './common/BootstrapContainer';
+import AppContainer from './common/AppContainer';
 import AppNavbar from './AppNavbar';
 
 const App = ({children}) => (
 	<div>
 		<AppNavbar />
-        <BootstrapContainer>
+        <AppContainer>
         {children}
-		</BootstrapContainer> 		
+		</AppContainer> 		
 	</div>
 );
 App.displayName = 'App';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BootstrapContainer = ({ children }) => (
+const AppContainer = ({ children }) => (
 	<main>
 		<div className="container">
 			<div className="col-md-12">
@@ -10,4 +10,4 @@ const BootstrapContainer = ({ children }) => (
 	</main>
 );
 
-export default BootstrapContainer;
+export default AppContainer;
