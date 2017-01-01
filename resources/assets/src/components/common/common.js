@@ -21,5 +21,7 @@ export const Spinner = ({ size = 'lg' }) => <Icon icon="cog" size={size} spinnin
 Spinner.propTypes = {
   size: faSizes
 };
+Spinner.displayName = 'Spinner';
 
 export const NoOp = () => <noscript />;
+NoOp.displayName = 'NoOp';
