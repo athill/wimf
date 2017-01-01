@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import ContainerSelector from '../../../src/components/Wimf/ContainerSelector';
+import ContainerSelector from '../../../../src/components/pages/Items/ContainerSelector';
 
 describe('ContainerSelector', () => {
   it('works', () => {
