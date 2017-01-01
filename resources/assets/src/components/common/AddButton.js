@@ -7,9 +7,7 @@ const AddButton = ({title, clickHandler = e => e}) => {
 	return <Icon id={id} icon='plus-square' size='3x' title={title	}
 		onClick={e => {e.preventDefault(); clickHandler();  }} />
 };
-AddButton.defaultProps = {
-  addButtonClickHandler: e => e
-};
+AddButton.displayName = 'AddButton';
 
 
 export default AddButton;

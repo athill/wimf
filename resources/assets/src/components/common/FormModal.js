@@ -17,6 +17,7 @@ const ErrorDisplay = ({ errors }) => {
     return <NoOp />;
   }
 };
+ErrorDisplay.displayName = 'ErrorDisplay';
 
 const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, 
     submitting = false, submitButtonBsStyle='primary', submitButtonText = 'Submit', ...otherProps }) => {
@@ -43,6 +44,8 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
     </form>
   </Modal>
 )};
+
+FormModal.displayName = 'FormModal';
 
 FormModal.propTypes = {
   errors: React.PropTypes.array,

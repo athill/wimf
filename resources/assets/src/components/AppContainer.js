@@ -10,4 +10,6 @@ const AppContainer = ({ children }) => (
 	</main>
 );
 
+AppContainer.displayName = 'AppContainer';
+
 export default AppContainer;

@@ -14,6 +14,7 @@ Icon.propTypes = {
   size: faSizes,
   spinning: React.PropTypes.bool
 };
+Icon.displayName = 'Icon';
 
 export const Spinner = ({ size = 'lg' }) => <Icon icon="cog" size={size} spinning />;
 

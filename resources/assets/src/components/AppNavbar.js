@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 class AppNavbar extends React.Component {
     constructor(props) {
         super(props);
-        this.displayName = 'Navbar';
+        this.displayName = 'AppNavbar';
     }
     componentDidMount()  {
       const {dispatch} = this.props;

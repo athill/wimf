@@ -30,6 +30,7 @@
     "eslint-plugin-react": "6.3.0",
     "expect": "^1.20.2",
     "extract-text-webpack-plugin": "1.0.1",
+    "faker": "^3.1.0",
     "fetch-mock": "^5.8.0",
     "file-loader": "0.9.0",
     "filesize": "3.3.0",
@@ -64,6 +65,7 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "rimraf": "2.5.4",
+    "sinon": "^1.17.7",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
@@ -82,6 +84,15 @@
     "watch": "NODE_ENV=production webpack --config resources/assets/config/webpack.config.prod.js --progress --colors --watch"
   },
   "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "resources/assets/src/**/*.js",
+      "!**/src/app.js"
+    ],
+    "coverageDirectory": "public/jscoverage",
+    "coverageReporters": [
+      "html"
+    ],
     "moduleFileExtensions": [
       "jsx",
       "js",

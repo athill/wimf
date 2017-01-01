@@ -17,7 +17,7 @@ import Containers from './components/pages/Containers';
 const store = configureStore();
 
 //// application structure
-const Application = () => (
+export const Application = () => (
 	<Provider store={store}>
 		<Router history={hashHistory}>
 			<Route path="/" component={App}>
