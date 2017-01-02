@@ -87,7 +87,8 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "resources/assets/src/**/*.js",
-      "!**/src/app.js"
+      "!**/src/app.js",
+      "!**/src/redux/create.js"
     ],
     "coverageDirectory": "public/jscoverage",
     "coverageReporters": [
