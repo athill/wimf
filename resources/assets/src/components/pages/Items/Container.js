@@ -11,7 +11,7 @@ import { Spinner } from '../../common/common';
 
 const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler, loading }) => {
 	if (!categories) {
-		return <noscript />;
+		return null;
 	} else if (loading) {
 		return (
 			<h2 className='text-primary'>

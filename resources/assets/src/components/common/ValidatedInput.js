@@ -3,18 +3,19 @@ import { ControlLabel, FormControl, FormGroup, HelpBlock, OverlayTrigger, Toolti
 
 import { Icon, NoOp } from './common';
 
-const InputLabel = ({ title, error = '', warning = '' }) => {
+const InputLabel = ({ className, title, error = '', warning = '' }) => {
   const message = error || warning;
   if (message) {
     const icon = error ? 'times-circle' : 'exclamation-triangle';
     const tooltip = (<Tooltip id={`${title}ToolTip`} tabIndex={1000}>{message}</Tooltip>);
     return (
-      <span>{title} <OverlayTrigger overlay={tooltip}><Icon icon={icon} size="sm" /></OverlayTrigger></span>
+      <ControlLabel className={className}>{title} <OverlayTrigger overlay={tooltip}><Icon icon={icon} size="sm" /></OverlayTrigger></ControlLabel>
     );
   } else {
-    return <span>{title}</span>;
+    return <ControlLabel className={className}>{title}</ControlLabel>;
   }
 };
+InputLabel.displayName = 'InputLabel';
 InputLabel.propTypes = {
   error: React.PropTypes.string,
   title: React.PropTypes.string.isRequired,
@@ -22,29 +23,27 @@ InputLabel.propTypes = {
 };
 
 
+const ValidatedInput = ({ children, help, id, input, maxLength, meta, mutatedValue, readOnly,  
+    label = '', value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
 
-const ValidatedInput = ({ children, error, help, id, input, maxLength, mutatedValue, readOnly, touched, warning, 
-    label = '', value='', showTextLengthFeedback = false, valid = true, labelCols = 4, ...otherProps }) => {
-  let style;
-  // let errorMessage, style, warningMessage;
-  if (touched) {
-    if (valid) {
-      if (!warning) {
-  //       warningMessage = warning;
+  let errorMessage, style, warningMessage;
+  if (meta.touched) {
+    if (meta.valid) {
+      if (meta.warning) {
+        warningMessage = meta.warning;
         style = 'warning';
       }
     } else {
-  //     errorMessage = error;
+      errorMessage = meta.error;
       style = 'error';
     }
   }
-  //const lengthBadge = (<LengthBadge length={value.length} maxLength={maxLength} />);
-  // const labelComponent = (<InputLabel title={label} warning={warningMessage} error={errorMessage} />);
-  const errorComponent = touched && error ? <div className='text-danger'>{error}</div> : <NoOp />;
-  //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
   const labelClassName = "col-xs-"+labelCols;
   const wrapperClassName = "col-xs-"+(12-labelCols);
-  console.log(input);
+  //const lengthBadge = (<LengthBadge length={value.length} maxLength={maxLength} />);
+  const labelComponent = (<InputLabel title={label} warning={warningMessage} error={errorMessage} className={labelClassName} />);
+  const errorComponent = meta.touched && meta.error ? <div className='text-danger'>{meta.error}</div> : <NoOp />;
+  //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
   if (readOnly) {
     return (
       <FormGroup>
@@ -60,7 +59,7 @@ const ValidatedInput = ({ children, error, help, id, input, maxLength, mutatedVa
   } else {
     return (
       <FormGroup>
-        <ControlLabel className={labelClassName}>{label}</ControlLabel>
+        {labelComponent}
         <div className={wrapperClassName}>
           <FormControl {...otherProps}
             id={id}
@@ -82,15 +81,12 @@ const ValidatedInput = ({ children, error, help, id, input, maxLength, mutatedVa
 
 
 ValidatedInput.propTypes = {
-  error: React.PropTypes.string,
+  meta: React.PropTypes.object,
   maxLength: React.PropTypes.number,
   showTextLengthFeedback: React.PropTypes.bool,
   label: React.PropTypes.string.isRequired,
-  touched: React.PropTypes.bool,
   type: React.PropTypes.string,
-  valid: React.PropTypes.bool,
-  value: React.PropTypes.string,
-  warning: React.PropTypes.string
+  value: React.PropTypes.string
 };
 
 export default ValidatedInput;

@@ -28,6 +28,7 @@ const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item})
                 </Row>
     		</Panel>);
 };
+Item.displayName = 'Item';
 Item.propTypes = {
     editClickHandler: React.PropTypes.func,
     deleteClickHandler: React.PropTypes.func,
