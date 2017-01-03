@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import faker from 'faker';
 import sinon from 'sinon';
 
-import AppNavbar from '../../src/components/AppNavbar';
+import AppNavbar, { AppNavbar as UndecoratedAppNavbar } from '../../src/components/AppNavbar';
 
 const mockStore = configureStore();
 
@@ -13,7 +13,7 @@ const state = {
 		email: faker.internet.email(),
 		name: faker.name.findName()
 	}
-}
+};
 
 describe('AppNavbar', () => {
 	it('works', () => {
@@ -33,9 +33,20 @@ describe('AppNavbar', () => {
 		expect(output.props().isDemo).toBe(true);
 	});
 
-	xit('works2', () => {
+	it('works undecorated demo', () => {
 		const dispatch = sinon.spy();
-		const output = mount(<AppNavbar dispatch={dispatch} store={mockStore(state)} />);
-		console.log(output.debug());
+		const output = mount(<UndecoratedAppNavbar dispatch={dispatch} store={mockStore(state)} user={state.user} isDemo={true} />);
+		expect(dispatch.calledOnce).toBe(true);
+		const menuItems = output.find('MenuItem');
+		expect(menuItems.get(0).props.children).toBe('Login');
+		expect(menuItems.get(1).props.children).toBe('Register');
 	});	
+
+	it('works undecorated non-demo', () => {
+		const dispatch = sinon.spy();
+		const output = mount(<UndecoratedAppNavbar dispatch={dispatch} store={mockStore(state)} user={state.user} isDemo={false} />);
+		expect(dispatch.calledOnce).toBe(true);
+		const menuItems = output.find('MenuItem');
+		expect(menuItems.get(0).props.children).toBe('Logout');
+	});		
 });

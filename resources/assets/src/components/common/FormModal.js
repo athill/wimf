@@ -2,9 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import { Alert, Button, Modal } from 'react-bootstrap';
 
-import { NoOp, Spinner } from './common';
+import { Spinner } from './common';
 
-const ErrorDisplay = ({ errors }) => {
+export const ErrorDisplay = ({ errors }) => {
   if (errors && _.isArray(errors) && errors.length > 0) {
     return (
       <Alert bsStyle="danger">
@@ -14,7 +14,7 @@ const ErrorDisplay = ({ errors }) => {
       </Alert>
     );
   } else {
-    return <NoOp />;
+    return null;
   }
 };
 ErrorDisplay.displayName = 'ErrorDisplay';

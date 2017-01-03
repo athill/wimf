@@ -1,8 +1,25 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import faker from 'faker';
+import sinon from 'sinon';
 
-import FormModal from '../../../src/components/common/FormModal';
+import FormModal, { ErrorDisplay } from '../../../src/components/common/FormModal';
+
+describe('ErrorDisplay', () => {
+	it('works', () => {
+		const errors = [ faker.lorem.words(), faker.lorem.words() ];
+		const output = shallow(<ErrorDisplay errors={errors} />);
+		expect(output.is('Alert')).toBe(true);
+		const items = output.find('li');
+		expect(items.get(0).props.children).toBe(errors[0]);
+		expect(items.get(1).props.children).toBe(errors[1]);
+	});
+
+	it('returns null if no errors', () => {
+		const output = shallow(<ErrorDisplay errors={[]} />);
+		expect(output.node).toBe(null);
+	});	
+});
 
 describe('FormModal', () => {
 	const title = faker.lorem.words();
@@ -33,4 +50,32 @@ describe('FormModal', () => {
 		expect(cancel.length).toBe(1);
 		expect(cancel.children().node).toBe('Cancel');
 	});
+
+	it('shows a spinner if submitting', () => {
+		const output = shallow(<FormModal title={title} valid={true} submitting={true}>foo</FormModal>);
+		expect(output.find('Spinner').length).toBe(1);
+	});
+
+	it('calls onSubmit on submit', () => {
+		const onSubmit = sinon.spy();
+		const output = shallow(<FormModal title={title} valid={true} onSubmit={onSubmit}>foo</FormModal>);
+		const form = output.find('form');
+		form.simulate('submit', { preventDefault: e => e });
+		expect(onSubmit.calledOnce).toBe(true);
+	});
+
+	it('calls onHide on cancel', () => {
+		const onHide = sinon.spy();
+		const output = shallow(<FormModal title={title} valid={true} onHide={onHide}>foo</FormModal>);
+		const cancelButton = output.find('#cancelModal');
+		cancelButton.simulate('click', { preventDefault: e => e });
+		expect(onHide.calledOnce).toBe(true);
+	});	
+
+	it('calls onHide on modal hide', () => {
+		const onHide = sinon.spy();
+		const output = shallow(<FormModal title={title} valid={true} onHide={onHide}>foo</FormModal>);
+		output.simulate('hide');
+		expect(onHide.calledOnce).toBe(true);
+	});		
 });

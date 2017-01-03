@@ -3,7 +3,7 @@ import { ControlLabel, FormControl, FormGroup, HelpBlock, OverlayTrigger, Toolti
 
 import { Icon, NoOp } from './common';
 
-const InputLabel = ({ className, title, error = '', warning = '' }) => {
+export const InputLabel = ({ error, className, title, warning }) => {
   const message = error || warning;
   if (message) {
     const icon = error ? 'times-circle' : 'exclamation-triangle';
@@ -23,8 +23,8 @@ InputLabel.propTypes = {
 };
 
 
-const ValidatedInput = ({ children, help, id, input, maxLength, meta, mutatedValue, readOnly,  
-    label = '', value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
+const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mutatedValue, readOnly,  
+    value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
 
   let errorMessage, style, warningMessage;
   if (meta.touched) {
@@ -66,7 +66,6 @@ const ValidatedInput = ({ children, help, id, input, maxLength, meta, mutatedVal
             maxLength={maxLength}
             title={label}
             placeholder={label}
-            hasFeedback={showTextLengthFeedback}
             bsStyle={style}
             {...input}>
               { children }
@@ -78,7 +77,7 @@ const ValidatedInput = ({ children, help, id, input, maxLength, meta, mutatedVal
   }
 };
 
-
+ValidatedInput.displayName = 'ValidatedInput';
 
 ValidatedInput.propTypes = {
   meta: React.PropTypes.object,
