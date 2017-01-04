@@ -6,7 +6,7 @@ import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import sinon from 'sinon';
 
-import DatePicker from '../../../src/components/common/DatePicker';
+import DatePicker from '../../../src/components/common/Datepicker';
 
 const mockStore = configureStore();
 
