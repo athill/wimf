@@ -6,6 +6,6 @@
 .DS_Store
 composer.lock
 npm-debug.log
-/tests/coverage
 public/build
 public/jscoverage
+public/phpcoverage
