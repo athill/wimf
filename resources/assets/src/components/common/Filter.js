@@ -12,6 +12,7 @@ const Filter = ({ handleChange }) => (
 			</FormGroup>
 	</form>
 );
+Filter.displayName = 'Filter';
 Filter.propTypes = {
 	handleChange: React.PropTypes.func
 };

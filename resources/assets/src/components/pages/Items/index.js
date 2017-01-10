@@ -15,7 +15,7 @@ import ItemForm from './ItemForm';
 //// utils
 import { filterCategories } from '../../../util/ContainerOperations';
 
-const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
+export const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
   if (filter !== '') {
     categories = filterCategories(categories, filter);
   }
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch
 });
 
-class Items extends React.Component {
+export class Items extends React.Component {
   componentDidMount()  {
   	const {dispatch} = this.props;
     dispatch(fetchContainers());

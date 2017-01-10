@@ -115,6 +115,7 @@ const mapStateToProps = ({ itemForm: { errors, show, selected } }) => {
 		initialValues
 	};
 };
+ItemForm.displayName = 'ItemForm';
 
 const mapDispatchToProps = (dispatch) => {
   return {

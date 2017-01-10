@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import faker from 'faker';
 import configureStore from 'redux-mock-store';
 
-import DecoratedContainers, { Container, Containers} from '../../../../src/components/pages/Containers';
+import DecoratedContainers, { Container, Containers, mapStateToProps, mapDispatchToProps } from '../../../../src/components/pages/Containers';
 
 const mockStore = configureStore();
 
@@ -16,6 +16,7 @@ const state = {
 };
 
 const getFakeContainer = () => ({
+	id: faker.random.number(),
 	name: faker.lorem.word(),
 	description: faker.lorem.words()
 });
@@ -61,4 +62,20 @@ describe('Containers', () => {
 		console.log(output.debug());
 
 	});	
+
+	it('maps state to props', () => {
+		const state = { containers: {} };
+		const props = mapStateToProps(state);
+		expect(props).toEqual(state);
+	});
+
+	it('maps dispatch to props', () => {
+		const dispatch = sinon.spy();
+		const props = mapDispatchToProps(dispatch);
+		// console.log(props);
+		expect('dispatch' in props).toBe(true);
+		expect('containerAddClickHandler' in props).toBe(true);
+		expect('containerEditClickHandler' in props).toBe(true);
+		expect('containerDeleteClickHandler' in props).toBe(true);
+	});
 });

@@ -3,6 +3,8 @@ import _ from 'lodash';
 
 import  * as ops from '../../src/util/ContainerOperations';
 
+import Mocker from '../testUtil/Mocker';
+
 describe('ContainerOperations', () => {
 	let categories, mocker;
 
@@ -121,29 +123,3 @@ describe('ContainerOperations', () => {
 		});		
 	});
 });
-
-class Mocker {
-	constructor() {
-		this.id = 0;	
-	}
-	
-
-	category(name, items) {
-		const catid = this.id++;
-		return {
-			name,
-			id: catid,
-			items: items.map(item => this.item(item, name, catid)),
-			container_id: 9999999
-		};
-	}
-	item(name, category_name, category_id) {
-		return {
-			name,
-			category: category_name,
-			category_id,
-			id: this.id++,
-			quantity: '1 lb'
-		}
-	}
-}

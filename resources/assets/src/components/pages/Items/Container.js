@@ -47,9 +47,8 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 		}
 		</div>
 	);
-
 }
-
+Container.displayName = 'Container';
 
 
 export default Container;

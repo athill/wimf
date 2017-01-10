@@ -26,13 +26,13 @@ export const Container = ({editClickHandler, deleteClickHandler,  container }) =
 );
 
 
-const mapStateToProps = ({containers}) => {
+export const mapStateToProps = ({containers}) => {
   return {
     containers
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return {
     containerAddClickHandler: () => {
       dispatch(toggleAddContainerForm());

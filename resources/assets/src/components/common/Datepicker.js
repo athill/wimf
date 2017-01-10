@@ -53,14 +53,10 @@ export default class Datepicker extends React.Component {
 					readOnly={readOnly} value={value} onChange={e => this._handleChange(momentize(e.target.value))} />;
 		//// no native datepicker
 		} else {
-			if (readOnly) {
-				return displayValue;
-			} else {
-				return (
-					<Field type='text' name={name} label={label} help={help} component={ValidatedInput}
-							readOnly={readOnly} />
-				);
-			}
+			return (
+				<Field type='text' name={name} label={label} help={help} component={ValidatedInput}
+						readOnly={readOnly} value={displayValue} />
+			);
 		}
 	}  
 }

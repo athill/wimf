@@ -23,5 +23,6 @@ const ContainerSelector = ({containers, onChange}) => {
 		</FormGroup>		
 	</form>)
 };
+ContainerSelector.displayName = 'ContainerSelector';
 
 export default ContainerSelector;

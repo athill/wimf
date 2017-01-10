@@ -20,14 +20,29 @@ const state = {
 describe('DatePicker', () => {
 	const label = faker.lorem.words();
 	const name = faker.lorem.words();
-	const Form = reduxForm({ form: 'foo' })(() => (
-		<form>
-			<DatePicker label={label} name={name} />
-		</form>
+	const getForm = (props={ label, name }) => (
+		reduxForm({ form: 'foo' })(() => (
+			<form>
+				<DatePicker {...props} />
+			</form>
+		)	
 	));
+
+	const getOutput = Form => (
+		mount(<Provider store={mockStore(state)}><Form /></Provider>)
+	);
+
 	it('works', () => {
-		const output = mount(<Provider store={mockStore(state)}><Form /></Provider>);
+		const Form = getForm();
+		const output = getOutput(Form);
 		expect(output.find('Field').length).toBe(1);
 	});
+
+	it('renders readonly', () => {
+		const Form = getForm({ name, label, readOnly: true });
+		const output = getOutput(Form);
+	});
+
+
 
 });

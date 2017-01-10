@@ -11,7 +11,7 @@ import ValidatedInput from '../../common/ValidatedInput';
 
 const formName = 'container';
 
-const validate = values => {
+export const validate = values => {
 	const errors = {};
   	//// required fields	
 	['name'].forEach(field => {
@@ -23,7 +23,7 @@ const validate = values => {
 };
 
 
-const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
+export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
 			type, submitButtonBsStyle, submitButtonText, 
 	      handleSubmit,
 	      reset,
@@ -52,11 +52,11 @@ const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction
 			}}>
 		<Field type='text' autoFocus id='name' name="name" readOnly={readOnly} label='Name' component={ValidatedInput} />
 		<Field type='text' id='description' name="description" label='Description' readOnly={readOnly} component={ValidatedInput} />
-		{ ModalTypes.CREATE === type && <Field id='keepOpen' component={Checkbox}>Keep Open</Field> }
+		{ ModalTypes.CREATE === type && <Field id='keepOpen' name='keepOpen' component={Checkbox}>Keep Open</Field> }
 
 	</FormModal>)
 };
-const mapStateToProps = ({ containerForm: { errors, show, selected: selectedContainer } }) => {
+export const mapStateToProps = ({ containerForm: { errors, show, selected: selectedContainer } }) => {
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
@@ -96,7 +96,7 @@ const mapStateToProps = ({ containerForm: { errors, show, selected: selectedCont
 	return rtn;
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return {
     onHide: () => {
       dispatch(hideContainerForm());
