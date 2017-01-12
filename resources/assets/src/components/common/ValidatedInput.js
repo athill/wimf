@@ -24,7 +24,7 @@ InputLabel.propTypes = {
 
 
 const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mutatedValue, readOnly,  
-    value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
+    componentClass='input', value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
 
   let errorMessage, style, warningMessage;
   if (meta.touched) {
@@ -67,6 +67,7 @@ const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mut
             title={label}
             placeholder={label}
             bsStyle={style}
+            componentClass={componentClass}
             {...input}>
               { children }
           </FormControl>

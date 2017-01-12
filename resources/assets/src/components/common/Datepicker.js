@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Field } from 'redux-form';
 
 //// styles
-// import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 //// components
 import ValidatedInput from './ValidatedInput';
@@ -48,14 +48,14 @@ export default class Datepicker extends React.Component {
 		//// native datepicker
 		if (Compatibility.isDateSupported()) {
 			const value = readOnly ?  displayValue : getIsoFormat(this.state.startDate);
-			return <Field {...field} type='date' label={label} help={help} 
-					component={ValidatedInput}
+			return <ValidatedInput {...field} type='date' label={label} help={help} 
+					component={ValidatedInput} hasFeedback={hasFeedback}
 					readOnly={readOnly} value={value} onChange={e => this._handleChange(momentize(e.target.value))} />;
 		//// no native datepicker
 		} else {
 			return (
-				<Field type='text' name={name} label={label} help={help} component={ValidatedInput}
-						readOnly={readOnly} value={displayValue} />
+				<ValidatedInput {...field} type='text' name={name} label={label} help={help} componentClass={DatePicker}
+						readOnly={readOnly} hasFeedback={hasFeedback} value={displayValue} />
 			);
 		}
 	}  
