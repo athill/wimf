@@ -8,6 +8,8 @@ import sinon from 'sinon';
 
 import DatePicker from '../../../src/components/common/Datepicker';
 
+import { getFakeReduxFormProps } from '../../testUtil/utils';
+
 const mockStore = configureStore();
 
 const state = {
@@ -17,10 +19,12 @@ const state = {
 	}
 };
 
-describe('DatePicker', () => {
+describe('Datepicker', () => {
 	const label = faker.lorem.words();
 	const name = faker.lorem.words();
-	const getForm = (props={ label, name }) => (
+	const { input, meta } = getFakeReduxFormProps();
+	const defaultProps = { input, label, meta, name };
+	const getForm = (props=defaultProps) => (
 		reduxForm({ form: 'foo' })(() => (
 			<form>
 				<DatePicker {...props} />
@@ -35,11 +39,11 @@ describe('DatePicker', () => {
 	it('works', () => {
 		const Form = getForm();
 		const output = getOutput(Form);
-		expect(output.find('Field').length).toBe(1);
+		expect(output.find('ValidatedInput').length).toBe(1);
 	});
 
 	it('renders readonly', () => {
-		const Form = getForm({ name, label, readOnly: true });
+		const Form = getForm({ ...defaultProps, readOnly: true });
 		const output = getOutput(Form);
 	});
 

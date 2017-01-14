@@ -43,8 +43,7 @@ export default class Datepicker extends React.Component {
 	}
 
 	render() {
-		console.log(this.props);
-		const { label, help, hasFeedback, name, readOnly, ...field } = this.props;
+		const { label, help, name, readOnly, ...field } = this.props;
 		const displayValue = getDisplayFormat(field.input.value);
 		//// native datepicker
 		if (Compatibility.isDateSupported()) {
@@ -56,7 +55,7 @@ export default class Datepicker extends React.Component {
 		} else {
 			return (
 				<ValidatedInput {...field} type='text' name={name} label={label} help={help} componentClass={DatePicker}
-						readOnly={readOnly} hasFeedback={hasFeedback} value={displayValue} selected={field.input.value ? momentize(field.input.value) : null } />
+						readOnly={readOnly} value={displayValue} selected={field.input.value ? momentize(field.input.value) : null } />
 			);
 		}
 	}  

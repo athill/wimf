@@ -45,7 +45,6 @@ describe('Items', () => {
 			state.items.filter = faker.lorem.word();
 			deepFreeze(state);
 			const props = mapStateToProps(state);
-			console.log(props);
 		});
 	});
 });
