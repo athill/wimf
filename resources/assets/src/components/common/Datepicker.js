@@ -1,10 +1,9 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import { Field } from 'redux-form';
 
 //// styles
-// import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 //// components
 import ValidatedInput from './ValidatedInput';
@@ -35,6 +34,7 @@ export default class Datepicker extends React.Component {
 	}
 
 	_handleChange(date) {
+
 		const { onChange } = this.props;
 		onChange(getIsoFormat(date));
 		this.setState({
@@ -43,19 +43,19 @@ export default class Datepicker extends React.Component {
 	}
 
 	render() {
-		const { label, help, hasFeedback, name, readOnly, ...field } = this.props;
-		const displayValue = getDisplayFormat(field.initialValue);
+		const { label, help, name, readOnly, ...field } = this.props;
+		const displayValue = getDisplayFormat(field.input.value);
 		//// native datepicker
 		if (Compatibility.isDateSupported()) {
-			const value = readOnly ?  displayValue : getIsoFormat(this.state.startDate);
-			return <Field {...field} type='date' label={label} help={help} 
-					component={ValidatedInput}
-					readOnly={readOnly} value={value} onChange={e => this._handleChange(momentize(e.target.value))} />;
+			field.input.value = readOnly ?  displayValue : getIsoFormat(field.input.value);
+			return <ValidatedInput {...field} type='date' label={label} help={help} 
+					componentClass={'input'} 
+					readOnly={readOnly} />;
 		//// no native datepicker
 		} else {
 			return (
-				<Field type='text' name={name} label={label} help={help} component={ValidatedInput}
-						readOnly={readOnly} value={displayValue} />
+				<ValidatedInput {...field} type='text' name={name} label={label} help={help} componentClass={DatePicker}
+						readOnly={readOnly} value={displayValue} selected={field.input.value ? momentize(field.input.value) : null } />
 			);
 		}
 	}  

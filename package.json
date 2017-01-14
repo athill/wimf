@@ -40,9 +40,11 @@
     "gzip-size": "3.0.0",
     "html-webpack-plugin": "2.22.0",
     "http-proxy-middleware": "0.17.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "15.1.1",
     "json-loader": "0.5.4",
     "laravel-elixir": "^6.0.0-15",
+    "less-loader": "^2.2.3",
     "lodash": "^4.17.3",
     "moment": "^2.17.1",
     "object-assign": "4.1.0",
@@ -95,6 +97,7 @@
     "coverageReporters": [
       "html"
     ],
+    "moduleDirectories": ["node_modules"],
     "moduleFileExtensions": [
       "jsx",
       "js",
@@ -102,7 +105,7 @@
     ],
     "moduleNameMapper": {
       "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/FileStub.js",
-      "^.+\\.css$": "<rootDir>/config/jest/CSSStub.js"
+      "^.+\\.css$": "identity-obj-proxy"
     },
     "setupFiles": [
       "<rootDir>/resources/assets/config/polyfills.js"

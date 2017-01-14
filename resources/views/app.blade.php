@@ -11,6 +11,8 @@
 	<title>What's in my Freezer?</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<link href="{{ asset('/build/static/css/main.css') }}" rel="stylesheet">
+
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 	
 

@@ -66,7 +66,7 @@ export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitActi
 		<Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" component={ValidatedInput} />
 		<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
 		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
-		<Field id='date' label='Date' readOnly={readOnly} name="date" component={ValidatedInput} /> 
+		<Field id='date' label='Date' readOnly={readOnly} name="date" component={Datepicker} /> 
 		{ ModalTypes.CREATE === type && <Field name="keepOpen" id='keepOpen' component={Checkbox}>Keep Open</Field> }
 	</FormModal>)
 };
