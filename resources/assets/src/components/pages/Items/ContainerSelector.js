@@ -1,28 +1,27 @@
 import React from 'react';
-import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Nav, NavItem } from 'react-bootstrap';
 
-const ContainerSelector = ({containers, onChange}) => {
-	const selected = containers.selected ? containers.selected.id : '';
-	return (<form className="form-horizontal">
-		<FormGroup>
-			<ControlLabel className='col-md-2 component-selector-label'>Container:</ControlLabel>
-			<div className='col-md-10'>		
-				<FormControl type='select' className='component-selector' componentClass='select'
-					defaultValue={selected} onChange={onChange}>
+import {Icon} from '../../common/common';
+
+const ContainerSelector = ({containers, handleSelect}) => {
+	const selected = containers.selected ? containers.selected.id : null;
+	console.log(selected);
+	return (
+			<Nav bsStyle="tabs" activeKey={selected} onSelect={handleSelect}>
 				{
 					containers.items.map(container => {
 						return (
-							<option value={container.id} key={container.id}>
-								{ container.name }
-							</option>
+							<NavItem eventKey={container.id} key={container.id} >{  container.name }</NavItem>
 						);
 					})
 				}
-				</FormControl> 
-			</div>
-		</FormGroup>		
-	</form>)
+				<NavItem eventKey="add-container" key="add-container" id="add-container-tab">
+					<Icon icon='plus' />
+				</NavItem>
+			</Nav>
+	);
 };
+
 ContainerSelector.displayName = 'ContainerSelector';
 
 export default ContainerSelector;

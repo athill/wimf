@@ -28,8 +28,8 @@ export const mapStateToProps = ({containers, items: { categories, filter, name: 
 };
 
 const mapDispatchToProps = (dispatch) => ({  
-    handleContainerChange: e => {
-      dispatch(selectContainer(e.target.value));
+    handleContainerChange: (eventKey, e) => {
+      dispatch(selectContainer(eventKey));
     },
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
@@ -57,7 +57,7 @@ export class Items extends React.Component {
       containerLoading, handleContainerChange } = this.props;
     return (
       <div>
-          <ContainerSelector containers={containers} onChange={handleContainerChange} />
+          <ContainerSelector containers={containers} handleSelect={handleContainerChange} />
           <Filter handleChange={handleFilterChange} />
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
