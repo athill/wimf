@@ -46,7 +46,14 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         items: removeContainerFromContainers(state.items, action.payload)
-      };     
+      };  
+    case SELECT_CONTAINER:
+      const selected = state.items.find(container => container.id === action.payload);
+      console.log(selected);
+      return {
+        ...state,
+        selected:  selected || state.selected
+      };           
     default:
       return state
   }
@@ -154,7 +161,7 @@ export const remove = container => {
 
 export const select = id => {
   return (dispatch, getState) => {
-    dispatch(selectContainer());
+    dispatch(selectContainer(id));
     dispatch(fetchItems(id));
   };
 }
