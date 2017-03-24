@@ -11,6 +11,8 @@ import Container from './Container';
 import ContainerSelector from './ContainerSelector';
 import Filter from '../../common/Filter';
 import ItemForm from './ItemForm';
+import ContainerForm from '../Containers/ContainerForm';
+import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 
 //// utils
 import { filterCategories } from '../../../util/ContainerOperations';
@@ -29,7 +31,12 @@ export const mapStateToProps = ({containers, items: { categories, filter, name: 
 
 const mapDispatchToProps = (dispatch) => ({  
     handleContainerChange: (eventKey, e) => {
-      dispatch(selectContainer(eventKey));
+      if (eventKey === 'add-container') {
+        dispatch(toggleAddContainerForm());
+      } else {
+        dispatch(selectContainer(eventKey));
+      }
+      
     },
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
@@ -65,6 +72,7 @@ export class Items extends React.Component {
             itemDeleteClickHandler={itemDeleteClickHandler} />
           <AddItemButton clickHandler={itemAddClickHandler} title='Add Item' />
           <ItemForm />
+          <ContainerForm />
       </div>
     );
   }
