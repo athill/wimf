@@ -5,7 +5,6 @@ import {Icon} from '../../common/common';
 
 const ContainerSelector = ({containers, handleSelect}) => {
 	const selected = containers.selected ? containers.selected.id : null;
-	console.log(selected);
 	return (
 			<Nav bsStyle="tabs" activeKey={selected} onSelect={handleSelect}>
 				{

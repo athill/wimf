@@ -15,7 +15,7 @@ describe('Items', () => {
 			expect(output.find('Filter').length).toBe(1);
 			expect(output.find('Container').length).toBe(1);
 			expect(output.find('AddButton').length).toBe(1);
-			expect(output.find('Connect(ReduxForm)').length).toBe(1);
+			expect(output.find('Connect(ReduxForm)').length).toBe(2);
 		});
 	});	
 
