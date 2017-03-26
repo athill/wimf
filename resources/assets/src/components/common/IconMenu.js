@@ -4,7 +4,6 @@
 
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import cx from 'classnames';
 
 const menuItemStyle = {
   margin: 0,
@@ -16,7 +15,8 @@ export const MenuItem = ({ children, onClick }) => (
 
 const parentStyle = {
   position: 'relative', 
-  display: 'inline-block'
+  display: 'inline-block',
+  zIndex: '9000'
 };
 
 
@@ -62,7 +62,7 @@ export default class  Dropdown extends React.Component {
    this.menuStyle.display = active ? 'block' : 'none';
 
     return (
-      <div style={parentStyle}>
+      <div style={parentStyle} className={className}>
         <span ref="trigger" onClick = { event => this._onToggleClick( event ) }>{ triggerLabel }</span>
         <ul style={this.menuStyle}>
           { children }
