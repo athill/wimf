@@ -5,20 +5,9 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 
-const menuItemStyle = {
-  margin: 0,
-  padding: '0.3em',
-};
 export const MenuItem = ({ children, onClick }) => (
-  <li onClick={onClick} style={menuItemStyle}>{children}</li>
+  <li onClick={onClick}>{children}</li>
 );
-
-const parentStyle = {
-  position: 'relative', 
-  display: 'inline-block',
-  zIndex: '9000'
-};
-
 
 
 export default class  Dropdown extends React.Component {
@@ -28,17 +17,7 @@ export default class  Dropdown extends React.Component {
       active: false
     }
 
-    this.menuStyle = { 
-      display: this.state.active ? 'block' : 'none', 
-      position: 'absolute', 
-      top: '20px', 
-      right: 0,
-      backgroundColor: '#EEE',
-      border: 'thin solid black',
-      listStyle: 'none',
-      margin: 0,
-      padding: 0      
-    } 
+
 
     this._onWindowClick = this._onWindowClick.bind(this);
     this._onToggleClick = this._onToggleClick.bind(this);
@@ -59,12 +38,12 @@ export default class  Dropdown extends React.Component {
     // create component classes
     const active = this.isActive();
 
-   this.menuStyle.display = active ? 'block' : 'none';
+    const style = { display: active ? 'block' : 'none' };
 
     return (
-      <div style={parentStyle} className={className}>
-        <span ref="trigger" onClick = { event => this._onToggleClick( event ) }>{ triggerLabel }</span>
-        <ul style={this.menuStyle}>
+      <div className={className}>
+        <span ref="trigger" className={`${className}-trigger`} onClick = { event => this._onToggleClick( event ) }>{ triggerLabel }</span>
+        <ul className={`${className}-menu`} style={style}>
           { children }
         </ul>      
       </div>
