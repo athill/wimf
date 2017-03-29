@@ -49,7 +49,6 @@ export default function reducer(state = initialState, action) {
       };  
     case SELECT_CONTAINER:
       const selected = state.items.find(container => container.id === action.payload);
-      console.log(selected);
       return {
         ...state,
         selected:  selected || state.selected

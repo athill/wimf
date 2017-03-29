@@ -4,32 +4,35 @@ import { Nav, NavItem } from 'react-bootstrap';
 
 import {Icon} from '../../common/common';
 import IconMenu, { MenuItem } from '../../common/IconMenu';
+import { showDeleteContainerForm, showEditContainerForm } from '../../../redux/modules/containerForm';
 
 const triggerLabel = <Icon icon="cog" style={{ fontSize: '1em' }} />;
-const ConfigMenu = ({ id }) => (
+const ConfigMenu = ({ container, editContainer, deleteContainer }) => (
 	<IconMenu triggerLabel={triggerLabel} className="icon-menu">
-		<MenuItem onClick={ e => console.log('edited', id)}>Edit</MenuItem>
-		<MenuItem onClick={ e => console.log('deleted', id)}>Delete</MenuItem>
+		<MenuItem onClick={ e => { e.preventDefault(); editContainer(container); }}>Edit</MenuItem>
+		<MenuItem onClick={ e => { e.preventDefault(); deleteContainer(container); }}>Delete</MenuItem>
 	</IconMenu>
 );
 
 
-const ContainerTab = ({ active, container }) => (
-	<div style={{ whiteSpace: 'nowrap' }}>{  container.name } { active && <ConfigMenu id={container.id} /> }</div>
+const ContainerTab = ({ active, container, editContainer, deleteContainer }) => (
+	<div style={{ whiteSpace: 'nowrap' }}>{  container.name } { active && <ConfigMenu container={container} editContainer={editContainer} deleteContainer={deleteContainer} /> }</div>
 );
 
 
-const ContainerSelector = ({containers, handleSelect}) => {
+const ContainerSelector = ({containers, editContainer, deleteContainer, handleSelect }) => {
 	const selected = containers.selected ? containers.selected.id : null;
 	return (
 			<Nav bsStyle="tabs" activeKey={selected} onSelect={handleSelect}>
 				{
 					containers.items.map(container => {
 						return (
-							<NavItem key={container.id} eventKey={container.id} title={ container.description }>
-								<ContainerTab 
-									container={container}  
+							<NavItem key={container.id} eventKey={container.id} title={ container.description || null }>
+								<ContainerTab	
 									active={container.id === selected}
+									container={container}  
+									editContainer={editContainer}
+									deleteContainer={deleteContainer}
 									/>
 							</NavItem>
 						);

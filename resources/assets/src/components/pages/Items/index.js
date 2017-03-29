@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchContainers, select as selectContainer } from '../../../redux/modules/containers';
 import { setItemsFilter } from '../../../redux/modules/items';
 import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../../redux/modules/itemForm';
+import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 
 //// components
 import AddItemButton from '../../common/AddButton';
@@ -12,7 +13,7 @@ import ContainerSelector from './ContainerSelector';
 import Filter from '../../common/Filter';
 import ItemForm from './ItemForm';
 import ContainerForm from '../Containers/ContainerForm';
-import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
+
 
 //// utils
 import { filterCategories } from '../../../util/ContainerOperations';
@@ -30,14 +31,19 @@ export const mapStateToProps = ({containers, items: { categories, filter, name: 
 };
 
 const mapDispatchToProps = (dispatch) => ({  
+    editContainer: (container) => {
+      dispatch(showEditContainerForm(container));
+    },
+    deleteContainer: (container) => {
+      dispatch(showDeleteContainerForm(container));
+    },  
     handleContainerChange: (eventKey, e) => {
       if (eventKey === 'add-container') {
         dispatch(toggleAddContainerForm());
       } else {
         dispatch(selectContainer(eventKey));
       }
-      
-    },
+    },    
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
     },
@@ -60,11 +66,11 @@ export class Items extends React.Component {
   }
 
   render() {
-    const {containers, containerName, categories, itemAddClickHandler, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange, 
-      containerLoading, handleContainerChange } = this.props;
+    const {containers, containerName, categories, editContainer, deleteContainer, itemAddClickHandler, itemEditClickHandler, 
+        itemDeleteClickHandler, handleFilterChange, containerLoading, handleContainerChange } = this.props;
     return (
       <div>
-          <ContainerSelector containers={containers} handleSelect={handleContainerChange} />
+          <ContainerSelector containers={containers} handleSelect={handleContainerChange} editContainer={editContainer} deleteContainer={deleteContainer}  />
           <Filter handleChange={handleFilterChange} />
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
