@@ -13,11 +13,13 @@ const ConfigMenu = ({ container, editContainer, deleteContainer }) => (
 		<MenuItem onClick={ e => { e.preventDefault(); deleteContainer(container); }}>Delete</MenuItem>
 	</IconMenu>
 );
+ConfigMenu.displayName = 'ConfigMenu';
 
 
 const ContainerTab = ({ active, container, editContainer, deleteContainer }) => (
 	<div style={{ whiteSpace: 'nowrap' }}>{  container.name } { active && <ConfigMenu container={container} editContainer={editContainer} deleteContainer={deleteContainer} /> }</div>
 );
+ContainerTab.displayName = 'ContainerTab';
 
 
 const ContainerSelector = ({containers, editContainer, deleteContainer, handleSelect }) => {

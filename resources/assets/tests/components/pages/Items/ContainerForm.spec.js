@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import faker from 'faker';
 
-import DecoratedContainerForm, { ContainerForm, mapStateToProps, mapDispatchToProps, validate } from '../../../../src/components/pages/Containers/ContainerForm';
+import DecoratedContainerForm, { ContainerForm, mapStateToProps, mapDispatchToProps, validate } from '../../../../src/components/pages/Items/ContainerForm';
 import { ModalTypes } from '../../../../src/util/formModal';
 
 describe('ContainerForm', () => {

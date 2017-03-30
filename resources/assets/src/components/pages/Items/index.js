@@ -12,7 +12,7 @@ import Container from './Container';
 import ContainerSelector from './ContainerSelector';
 import Filter from '../../common/Filter';
 import ItemForm from './ItemForm';
-import ContainerForm from '../Containers/ContainerForm';
+import ContainerForm from './ContainerForm';
 
 
 //// utils
