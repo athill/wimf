@@ -2,6 +2,10 @@ import _ from 'lodash';
 
 let fakeIndex = 0;
 
+export const getSelectedContainer = (state) => {
+	return state.containers.containers[state.containers.selected];
+};
+
 const sortByNameKey = (x, y) => {
 	if (x.name.toUpperCase() < y.name.toUpperCase()) return -1;
 	else if (x.name.toUpperCase() > y.name.toUpperCase()) return 1;
