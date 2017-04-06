@@ -3,6 +3,7 @@ import { Nav, NavItem } from 'react-bootstrap';
 // import Menu from 'react-menu';
 
 import {Icon} from '../../common/common';
+import { sortByNameKey } from '../../../util/ContainerOperations';
 import IconMenu, { MenuItem } from '../../common/IconMenu';
 import { showDeleteContainerForm, showEditContainerForm } from '../../../redux/modules/containerForm';
 
@@ -10,7 +11,7 @@ const triggerLabel = <Icon icon="cog" style={{ fontSize: '1em' }} />;
 const ConfigMenu = ({ container, editContainer, deleteContainer }) => (
 	<IconMenu triggerLabel={triggerLabel} className="icon-menu">
 		<MenuItem onClick={ e => { e.preventDefault(); editContainer(container); }}>Edit</MenuItem>
-		<MenuItem onClick={ e => { e.preventDefault(); deleteContainer(container); }}>Delete</MenuItem>
+		{ deleteContainer && <MenuItem onClick={ e => { e.preventDefault(); deleteContainer(container); }}>Delete</MenuItem> }
 	</IconMenu>
 );
 ConfigMenu.displayName = 'ConfigMenu';
@@ -22,19 +23,21 @@ const ContainerTab = ({ active, container, editContainer, deleteContainer }) => 
 ContainerTab.displayName = 'ContainerTab';
 
 
-const ContainerSelector = ({containers, editContainer, deleteContainer, handleSelect }) => {
-	const selected = containers.selected ? containers.selected.id : null;
+const ContainerSelector = ({containers, editContainer, deleteContainer, handleSelect, selectedId }) => {
+	const containerArray = Object.keys(containers).map(id => containers[id]);
+	containerArray.sort(sortByNameKey);
+	const deleteContainerHandler = containerArray.length > 1 ? deleteContainer : null;
 	return (
-			<Nav bsStyle="tabs" activeKey={selected} onSelect={handleSelect}>
+			<Nav bsStyle="tabs" activeKey={selectedId} onSelect={handleSelect}>
 				{
-					containers.items.map(container => {
+					containerArray.map(container => {
 						return (
 							<NavItem key={container.id} eventKey={container.id} title={ container.description || null }>
 								<ContainerTab	
-									active={container.id === selected}
+									active={container.id === selectedId}
 									container={container}  
 									editContainer={editContainer}
-									deleteContainer={deleteContainer}
+									deleteContainer={deleteContainerHandler}
 									/>
 							</NavItem>
 						);

@@ -11,10 +11,9 @@ describe('ContainerSelector', () => {
   	const containers = getFakeContainers(2);
   	const output = shallow(<ContainerSelector onChange={e => e} containers={containers} />);
   	const options = output.find('NavItem');
-
-    // console.log(options.debug());
   	expect(options.length).toBe(3);
-  	containers.items.forEach((container, i) => {
+  	Object.keys(containers).forEach((key, i) => {
+      const container = containers[key];
   		const option = options.get(i);
       const containerTab = option.props.children;
       // expect(containerTab.type.displayName).toBe('ContainerTab');

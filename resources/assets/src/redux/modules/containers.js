@@ -42,8 +42,9 @@ export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER';
 //// reducer
 export const initialState = {
   containers: [],
-  selected: null,
-  loading: false
+  selectedId: null,
+  loading: false,
+  filter: ''
 };
 
 
@@ -72,7 +73,6 @@ const updateItems = (state, action) => {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_CONTAINERS:
-      // convert to map (id => container), sort by name in component
       return action.payload;
 
     case ADD_CONTAINER_SUCCESS:
@@ -83,13 +83,12 @@ export default function reducer(state = initialState, action) {
     case EDIT_CONTAINER_SUCCESS:
       return {
         ...state,
-        items: updateContainerInContainers(state.items, action.payload)
+        containers: updateContainerInContainers(state.containers, action.payload)
       };        
     case DELETE_CONTAINER_SUCCESS:
       return {
         ...state,
-        items: removeContainerFromContainers(state.items, action.payload)
-        s
+        containers: removeContainerFromContainers(state.containers, action.payload)
       }; 
 
     case REQUEST_ITEMS:
@@ -100,13 +99,10 @@ export default function reducer(state = initialState, action) {
     case RECEIVE_ITEMS:
       let containers = Object.assign({}, state.containers);
       const container = action.payload;
-      if (!containers[container.id]) {
-        throw new Error('container id not in containers, all containers should already be in state: ' + container.id);
+      if (!('categories' in container)) {
+        throw new Error('categories should exist in container (see fetchItems): ' + container.id);
       }
-      if (!('items' in containers[container.id])) {
-        throw new Error('items should exist in container (see fetchItems): ' + container.id);
-      }
-      const items = container.items;
+      const categories = container.categories;
       return {
         ...state,
         loading: false,
@@ -114,15 +110,15 @@ export default function reducer(state = initialState, action) {
           ...containers,
           [container.id]: {
             ...container,
-            items
+            categories
           }
         }
       };      
     case SELECT_CONTAINER:
-      const selected = state.containers.find(container => container.id === action.payload);
+      // const selected = state.containers.find(container => container.id === action.payload);
       return {
         ...state,
-        selectedId:  selected.id || state.selected
+        selectedId:  action.payload || state.selectedId
       }; 
     case ADD_ITEM_SUCCESS:
     case DELETE_ITEM_SUCCESS:
@@ -142,16 +138,11 @@ export default function reducer(state = initialState, action) {
 
 //// action creators
 const processContainers = json => {
-  const items = json.map(item => { 
-    return {
-          name: item.name, 
-          description: item.description,
-          id: item.id
-      };
-    });
+  const containers = {};
+  json.forEach(container => containers[container.id] = container );
   return {
-      items,
-      selected: items[0]
+      containers,
+      selectedId: json[0].id+''
   };
 };
 
@@ -175,18 +166,18 @@ const selectContainer = createAction(SELECT_CONTAINER);
 
 //// items
 const requestItems = createAction(REQUEST_ITEMS);
-const receiveItems = createAction(RECEIVE_ITEMS, data => processItems(data));
+const receiveItems = createAction(RECEIVE_ITEMS);
 
-export const addItem = createAction(ADD_ITEM);
+export const addItemRequest = createAction(ADD_ITEM);
 const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
 const addItemError = createAction(ADD_ITEM_ERROR);
 
 
-const deleteItem = createAction(DELETE_ITEM);
+const deleteItemRequest = createAction(DELETE_ITEM);
 const deleteItemSuccess = createAction(DELETE_ITEM_SUCCESS);
 const deleteItemError = createAction(DELETE_ITEM_ERROR);
 
-const editItem = createAction(EDIT_ITEM);
+const editItemRequest = createAction(EDIT_ITEM);
 const editItemSuccess = createAction(EDIT_ITEM_SUCCESS);
 const editItemError = createAction(EDIT_ITEM_ERROR);
 
@@ -269,9 +260,9 @@ export const select = id => {
 
 export const fetchItems = containerId => (
   (dispatch, getState) => {
-    const { items } = getState();
-    if (containerId in items.containers) {
-      dispatch(receiveItems(items.containers[containerId]));
+    const { containers} = getState();
+    if ('categories' in containers.containers[containerId]) {
+      dispatch(receiveItems(containers.containers[containerId]));
     } else {
       dispatch(requestItems());
       fetch(
@@ -292,7 +283,7 @@ export const addItem = item => {
     const container = state.containers[state.containers.selected];
     item.container_id = container.id;
     item.date = getIsoFormat(item.date);
-    dispatch(addItem());
+    dispatch(addItemRequest());
     return post(
       `/api/items/`,
       item,
@@ -312,10 +303,10 @@ export const editItem = item => {
   return (dispatch, getState) => {
     const state = getState();
     // const { containers: { selected: { id } }  } = getState();
-    const container = state.containers.selected;
+    const container = state.containers[state.containers.selected];
     item.container_id = container.id;
     item.date = getIsoFormat(item.date);
-    dispatch(editItem());
+    dispatch(editItemRequest());
     return put(
       `/api/items/${item.id}`,
       item,
@@ -337,7 +328,7 @@ export const removeItem = item => {
     const state = getState();
     const container = state.containers.selected;
     item.container_id = container.id;
-    dispatch(deleteItem());
+    dispatch(deleteItemRequest());
     return deleteRequest(
       `/api/items/${item.id}`,
       response => {

@@ -18,15 +18,18 @@ import ContainerForm from './ContainerForm';
 //// utils
 import { filterCategories } from '../../../util/ContainerOperations';
 
-export const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
+export const mapStateToProps = ({ containers: { containers, filter, loading, selectedId } }) => {
+  const container = containers[selectedId] 
+  let categories = container && container.categories ? container.categories : [];
   if (filter !== '') {
     categories = filterCategories(categories, filter);
   }
   return {
     containers,
     categories,
-    containerName,
-    containerLoading
+    containerName: (container && container.name) || null,
+    containerLoading: loading,
+    selectedId
   };
 };
 
@@ -67,10 +70,11 @@ export class Items extends React.Component {
 
   render() {
     const {containers, containerName, categories, editContainer, deleteContainer, itemAddClickHandler, itemEditClickHandler, 
-        itemDeleteClickHandler, handleFilterChange, containerLoading, handleContainerChange } = this.props;
+        itemDeleteClickHandler, handleFilterChange, containerLoading, handleContainerChange, selectedId } = this.props;
     return (
       <div>
-          <ContainerSelector containers={containers} handleSelect={handleContainerChange} editContainer={editContainer} deleteContainer={deleteContainer}  />
+          <ContainerSelector containers={containers} handleSelect={handleContainerChange} 
+            editContainer={editContainer} deleteContainer={deleteContainer} selectedId={selectedId}  />
           <Filter handleChange={handleFilterChange} />
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
