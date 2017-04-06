@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 //// actions
 import { fetchContainers, select as selectContainer } from '../../../redux/modules/containers';
-import { setItemsFilter } from '../../../redux/modules/items';
+import { setItemsFilter } from '../../../redux/modules/containers';
 import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../../redux/modules/itemForm';
 import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 

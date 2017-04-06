@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 let fakeIndex = 0;
 
-export const getSelectedContainer = (state) => {
+export const getSelectedContainer = state => {
 	return state.containers.containers[state.containers.selected];
 };
 
