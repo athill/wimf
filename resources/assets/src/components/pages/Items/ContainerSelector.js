@@ -25,16 +25,17 @@ ContainerTab.displayName = 'ContainerTab';
 
 const ContainerSelector = ({containers, editContainer, deleteContainer, handleSelect, selectedId }) => {
 	const containerArray = Object.keys(containers).map(id => containers[id]);
+	// console.log(containerArray);
 	containerArray.sort(sortByNameKey);
 	const deleteContainerHandler = containerArray.length > 1 ? deleteContainer : null;
 	return (
-			<Nav bsStyle="tabs" activeKey={selectedId} onSelect={handleSelect}>
+			<Nav bsStyle="tabs" activeKey={parseInt(selectedId)} onSelect={handleSelect}>
 				{
 					containerArray.map(container => {
 						return (
-							<NavItem key={container.id} eventKey={container.id} title={ container.description || null }>
+							<NavItem key={container.id} eventKey={parseInt(container.id)} title={ container.description || null }>
 								<ContainerTab	
-									active={container.id === selectedId}
+									active={parseInt(container.id) === parseInt(selectedId)}
 									container={container}  
 									editContainer={editContainer}
 									deleteContainer={deleteContainerHandler}

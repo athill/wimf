@@ -6,9 +6,11 @@ export const getSelectedContainer = state => {
 	return state.containers.containers[state.containers.selected];
 };
 
-const sortByNameKey = (x, y) => {
-	if (x.name.toUpperCase() < y.name.toUpperCase()) return -1;
-	else if (x.name.toUpperCase() > y.name.toUpperCase()) return 1;
+export const sortByNameKey = (x, y) => {
+	const upperX = x.name.toUpperCase();
+	const upperY = y.name.toUpperCase();
+	if (upperX < upperY) return -1;
+	else if (upperX > upperY) return 1;
 	else return 0;
 }
 
