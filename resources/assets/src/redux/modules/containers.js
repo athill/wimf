@@ -48,25 +48,25 @@ export const initialState = {
 };
 
 
-const updateItems = (state, action) => {
-  let categories;
+const updateItem = (state, action) => {
+  let categories = state.containers[state.selectedId].categories;
   switch (action.type) {
     case ADD_ITEM_SUCCESS:
-      categories = addItemToCategories(state.categories, action.payload.data);
+      categories = addItemToCategories(categories, action.payload.data);
       break;
     case EDIT_ITEM_SUCCESS:
-      categories = updateItemInCategories(state.categories, action.payload.data);
+      categories = updateItemInCategories(categories, action.payload.data);
       break;
     case DELETE_ITEM_SUCCESS:
-      categories = removeItemFromCategories(state.categories, action.payload.data);
+      categories = removeItemFromCategories(categories, action.payload.data);
       break;
     default:
       console.error('How did I get here?');           
   }
+  const containers = updateCategoriesInContainers(state.containers, state.selectedId, categories);
   return {
     ...state,
-    categories,
-    containers: updateCategoriesInContainers(state.containers, action.payload.container_id, categories)
+    containers
   }
 };
 
@@ -123,7 +123,7 @@ export default function reducer(state = initialState, action) {
     case ADD_ITEM_SUCCESS:
     case DELETE_ITEM_SUCCESS:
     case EDIT_ITEM_SUCCESS:
-      const items = updateItems(state, action); 
+      const items = updateItem(state, action); 
       return  items;
     case SET_ITEMS_FILTER:
       return {
@@ -280,8 +280,8 @@ export const addItem = item => {
     const state = getState();
 
     // const { containers: { selected: { id } }  } = getState();
-    const container = state.containers[state.containers.selected];
-    item.container_id = container.id;
+    // const container = state.containers[state.containers.selected];
+    item.container_id = state.containers.selectedId;
     item.date = getIsoFormat(item.date);
     dispatch(addItemRequest());
     return post(
@@ -302,11 +302,11 @@ export const addItem = item => {
 export const editItem = item => {
   return (dispatch, getState) => {
     const state = getState();
-    // const { containers: { selected: { id } }  } = getState();
-    const container = state.containers[state.containers.selected];
-    item.container_id = container.id;
+    item.container_id = state.containers.selectedId;
     item.date = getIsoFormat(item.date);
     dispatch(editItemRequest());
+    console.log(item);
+    // return new Promise((resolve, reject) => item); 
     return put(
       `/api/items/${item.id}`,
       item,
@@ -325,9 +325,6 @@ export const editItem = item => {
 
 export const removeItem = item => {
   return (dispatch, getState) => {
-    const state = getState();
-    const container = state.containers.selected;
-    item.container_id = container.id;
     dispatch(deleteItemRequest());
     return deleteRequest(
       `/api/items/${item.id}`,

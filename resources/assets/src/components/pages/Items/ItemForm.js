@@ -42,7 +42,6 @@ export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitActi
 	const submit  = (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
-
 		reset();
 		if (values.keepOpen) {
 			dispatch(change(formName, 'keepOpen', true));

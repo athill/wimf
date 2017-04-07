@@ -3,7 +3,7 @@ import _ from 'lodash';
 let fakeIndex = 0;
 
 export const getSelectedContainer = state => {
-	return state.containers.containers[state.containers.selected];
+	return state.containers[state.containers.selected];
 };
 
 export const sortByNameKey = (x, y) => {
@@ -50,9 +50,13 @@ export const updateContainerInContainers = (containers, container) => {
 }
 
 export const updateCategoriesInContainers = (containers, container_id, categories) => {
+	const container = containers[container_id];
 	return {
 		...containers,
-		[container_id]: categories
+		[container_id]: {
+			...container,
+			categories
+		}
 	};
 }
 
