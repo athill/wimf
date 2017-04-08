@@ -34,4 +34,12 @@ return [
 		'secret' => '',
 	],
 
+,
+
+    'analytics' => [
+        'google' => [
+            'key' => env('GOOGLE_ANALYTICS_KEY', null)
+        ],
+    ]	
+
 ];

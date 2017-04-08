@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+		View::share('google_analytics_key', config('services.analytics.google.key'));
 	}
 
 	/**
