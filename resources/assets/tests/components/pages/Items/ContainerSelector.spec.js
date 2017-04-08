@@ -1,8 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getFakeContainers } from './fakes'
+import { getFakeCategories, getFakeContainers } from '../../../testUtil/fakes';
 
+import { sortByNameKey } from '../../../../src/util/ContainerOperations';
 import ContainerSelector from '../../../../src/components/pages/Items/ContainerSelector';
 
 describe('ContainerSelector', () => {
@@ -12,10 +13,13 @@ describe('ContainerSelector', () => {
   	const output = shallow(<ContainerSelector onChange={e => e} containers={containers} />);
   	const options = output.find('NavItem');
   	expect(options.length).toBe(3);
-  	Object.keys(containers).forEach((key, i) => {
-      const container = containers[key];
+    const containerArray = Object.keys(containers).map(id => containers[id]);
+    // console.log(containerArray);
+    containerArray.sort(sortByNameKey);    
+  	containerArray.forEach((container, i) => {
   		const option = options.get(i);
       const containerTab = option.props.children;
+      // console.log(container, option);
       // expect(containerTab.type.displayName).toBe('ContainerTab');
       expect(option.props.eventKey).toBe(container.id);
       expect(containerTab.props.container.name).toBe(container.name);   

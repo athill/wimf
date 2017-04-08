@@ -74,6 +74,11 @@ class ItemControllerTest extends TestCase {
             ->seeJsonStructure(['error']);        
     }
 
+    public function testItemNoContainerId() {
+        $this->postItem(['container_id' => null])
+            ->seeJsonStructure(['error']);
+    }
+
 
     
     public function testUpdateItem() {

@@ -7,7 +7,7 @@ import { setContainerFormError } from './containerForm';
 import { getIsoFormat } from '../../util/DateUtils';
 
 import { fetch, post, deleteRequest, put } from '../../util/RemoteOperations';
-import { addContainerToContainers, addItemToCategories, removeContainerFromContainers, removeItemFromCategories, 
+import { addContainerToContainers, addItemToCategories, getSortedContainerArray, removeContainerFromContainers, removeItemFromCategories, 
   sortCategories, updateItemInCategories, updateCategoriesInContainers, updateContainerInContainers } from '../../util/ContainerOperations';
 
 //// actions
@@ -86,8 +86,15 @@ export default function reducer(state = initialState, action) {
         containers: updateContainerInContainers(state.containers, action.payload)
       };        
     case DELETE_CONTAINER_SUCCESS:
+      const containerArray = getSortedContainerArray(state.containers);
+      const index = containerArray.findIndex(x => x.id === action.payload.id);
+      let selectedId = state.selectedId;
+      if (state.selectedId === index) {
+        selectedId = index === 0 ? 1 : index - 1;
+      }
       return {
         ...state,
+        selectedId,
         containers: removeContainerFromContainers(state.containers, action.payload)
       }; 
 
@@ -305,13 +312,10 @@ export const editItem = item => {
     item.container_id = state.containers.selectedId;
     item.date = getIsoFormat(item.date);
     dispatch(editItemRequest());
-    console.log(item);
-    // return new Promise((resolve, reject) => item); 
     return put(
       `/api/items/${item.id}`,
       item,
       response => {
-        // dispatch(fetchItems(container));
         dispatch(editItemSuccess(response));
       },
       error => {

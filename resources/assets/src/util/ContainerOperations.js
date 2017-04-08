@@ -14,6 +14,12 @@ export const sortByNameKey = (x, y) => {
 	else return 0;
 }
 
+export const getSortedContainerArray = containers => {
+	const containerArray = Object.keys(containers).map(id => containers[id]);
+	containerArray.sort(sortByNameKey);
+	return containerArray;
+};
+
 export const sortCategories = categories => {
 	const newCategories = categories.filter(category => category.items.length > 0);
 	newCategories.sort(sortByNameKey);
@@ -24,29 +30,23 @@ export const sortCategories = categories => {
 };
 
 export const addContainerToContainers = (containers, container) => {
-	let newContainers = [].concat(containers);
-	newContainers.push(container);
-	newContainers.sort(sortByNameKey);
-	return newContainers;
+	return {
+		...containers,
+		[container.id]: container
+	}
 };
 
 const matchesFilterByName = (item, text) => item.name.toUpperCase().indexOf(text) > -1;
 
 export const removeContainerFromContainers = (containers, container) => {
-	let newContainers = [];
-	for (let i = 0; i < containers.length; i++) {
-		if (containers[i].id !== container.id) {
-			newContainers.push(containers[i]);
-		}
-	}
-	return newContainers;
+	return _.omit(containers, container.id);
 };
 
 export const updateContainerInContainers = (containers, container) => {
-	let newContainers = containers.map(c => (c.id === container.id) ? container : c);
-	newContainers.sort(sortByNameKey);
-	return newContainers;	
-
+	return {
+		...containers,
+		[container.id]: container
+	};	
 }
 
 export const updateCategoriesInContainers = (containers, container_id, categories) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getFakeCategories, getFakeContainer } from './fakes'
+import { getFakeCategories, getFakeContainer } from '.../../../testUtil/fakes';
 
 import Container from '../../../../src/components/pages/Items/Container';
 

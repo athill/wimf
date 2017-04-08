@@ -28,6 +28,9 @@ export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submi
 	      handleSubmit,
 	      reset,
 	      submitting }) => {
+	if (showModal === ModalTypes.NONE) {
+		return null;
+	}
 	const submit  = (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
@@ -50,13 +53,14 @@ export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submi
 				reset(); 
 				onHide();
 			}}>
-		<Field type='text' autoFocus id='name' name="name" readOnly={readOnly} label='Name' component={ValidatedInput} />
-		<Field type='text' id='description' name="description" label='Description' readOnly={readOnly} component={ValidatedInput} />
+		<Field type="text" autoFocus id="name" name="name" label="Name" readOnly={readOnly} component={ValidatedInput} />
+		<Field type="text" id="description" name="description" label="Description" readOnly={readOnly} component={ValidatedInput} />
 		{ ModalTypes.CREATE === type && <Field id='keepOpen' name='keepOpen' component={Checkbox}>Keep Open</Field> }
 
 	</FormModal>)
 };
-export const mapStateToProps = ({ containerForm: { errors, show, selected: selectedContainer } }) => {
+export const mapStateToProps = ({ containerForm: { errors, show }, containers: { containers, selectedId } }) => {
+	const selectedContainer = containers[selectedId];
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
@@ -82,6 +86,7 @@ export const mapStateToProps = ({ containerForm: { errors, show, selected: selec
 	}
 	const submitButtonText = title;
 	title += ' Container';
+	console.log(selectedContainer);
 	const rtn = {
 		serverErrors: errors,
 		showModal: show !== ModalTypes.NONE,
@@ -91,7 +96,7 @@ export const mapStateToProps = ({ containerForm: { errors, show, selected: selec
 		submitButtonBsStyle,
 		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: selectedContainer
+		initialValues: show === ModalTypes.CREATE ? {} : selectedContainer
 	};
 	return rtn;
 };
