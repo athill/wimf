@@ -86,9 +86,12 @@ export default function reducer(state = initialState, action) {
         containers: updateContainerInContainers(state.containers, action.payload)
       };        
     case DELETE_CONTAINER_SUCCESS:
+      //// determine new selected container id
       const containerArray = getSortedContainerArray(state.containers);
+      //// find index of passed in container
       const index = containerArray.findIndex(x => x.id === action.payload.id);
       let selectedId = state.selectedId;
+      //// if passed in container is same as selected container (which it probably is), adjust selectedId
       if (state.selectedId === index) {
         selectedId = index === 0 ? 1 : index - 1;
       }

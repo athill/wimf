@@ -13,8 +13,7 @@ export const SET_CONTAINER_FORM_ERROR = 'SET_CONTAINER_FORM_ERROR';
 //// reducer
 export const initialState = {
     show: ModalTypes.NONE,
-    errors: [],
-    selected: undefined
+    errors: []
 };
 
 export default function reducer(state = initialState, action={}) {

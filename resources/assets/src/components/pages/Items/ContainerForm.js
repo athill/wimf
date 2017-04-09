@@ -23,11 +23,21 @@ export const validate = values => {
 };
 
 
-export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
-			type, submitButtonBsStyle, submitButtonText, 
-	      handleSubmit,
-	      reset,
-	      submitting }) => {
+export const ContainerForm = ({ 
+			initialValues,
+			onHide, 
+			serverErrors, 
+			readOnly,
+			showModal, 
+			submitAction, 
+			title,
+			type, 
+			submitButtonBsStyle, 
+			submitButtonText, 
+			//// provided by redux-form
+	     	handleSubmit,
+	     	reset,
+	     	submitting }) => {
 	if (showModal === ModalTypes.NONE) {
 		return null;
 	}
@@ -46,6 +56,7 @@ export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submi
 		resolve();
 	  });		
 	};
+	console.log('initialValues', initialValues);
 	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
 			submitButtonText={submitButtonText}
 			onSubmit={handleSubmit(submit)} 
@@ -86,7 +97,7 @@ export const mapStateToProps = ({ containerForm: { errors, show }, containers: {
 	}
 	const submitButtonText = title;
 	title += ' Container';
-	console.log(selectedContainer);
+	console.log('ContainerForm mapStateToProps selectedContainer', selectedContainer);
 	const rtn = {
 		serverErrors: errors,
 		showModal: show !== ModalTypes.NONE,
