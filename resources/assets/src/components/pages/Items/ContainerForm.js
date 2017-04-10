@@ -56,7 +56,6 @@ export const ContainerForm = ({
 		resolve();
 	  });		
 	};
-	console.log('initialValues', initialValues);
 	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
 			submitButtonText={submitButtonText}
 			onSubmit={handleSubmit(submit)} 
@@ -97,7 +96,6 @@ export const mapStateToProps = ({ containerForm: { errors, show }, containers: {
 	}
 	const submitButtonText = title;
 	title += ' Container';
-	console.log('ContainerForm mapStateToProps selectedContainer', selectedContainer);
 	const rtn = {
 		serverErrors: errors,
 		showModal: show !== ModalTypes.NONE,
