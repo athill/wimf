@@ -122,7 +122,8 @@ export const mapDispatchToProps = (dispatch) => {
 
 const form = reduxForm({
 	form: formName,
-	validate
+	validate,
+	enableReinitialize: true
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(form(ContainerForm));
