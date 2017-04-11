@@ -6,7 +6,7 @@ import { setContainerFormError } from './containerForm';
 //// utils
 import { getIsoFormat } from '../../util/DateUtils';
 
-import { fetch, post, deleteRequest, put } from '../../util/RemoteOperations';
+import { get, post, deleteRequest, put } from '../../util/RemoteOperations';
 import { addContainerToContainers, addItemToCategories, getSortedContainerArray, removeContainerFromContainers, removeItemFromCategories, 
   sortCategories, updateItemInCategories, updateCategoriesInContainers, updateContainerInContainers } from '../../util/ContainerOperations';
 
@@ -197,7 +197,7 @@ export const setItemsFilter = createAction(SET_ITEMS_FILTER);
 export function fetchContainers() {
   return dispatch => {
     dispatch(requestContainers());
-    return fetch(
+    return get(
       '/api/containers',
       response => {
         dispatch(receiveContainers(response.data));
@@ -218,7 +218,8 @@ export const add = container => {
       },
       error => {
         dispatch(addContainerError());
-        dispatch(setContainerFormError(error.data));
+        console.log('error is', error);
+        dispatch(setContainerFormError(error));
         setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
       }
     );
@@ -275,7 +276,7 @@ export const fetchItems = containerId => (
       dispatch(receiveItems(containers.containers[containerId]));
     } else {
       dispatch(requestItems());
-      fetch(
+      get(
         `/api/containers/${containerId}`,
         response => {
           dispatch(receiveItems(response.data));

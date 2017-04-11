@@ -107,6 +107,7 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 				return;
 			}				
 			store.containers.push(container);
+			console.log(store);
 			return container;
 		case 'put':
 			//// check for other container with new name
@@ -128,7 +129,8 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 			return put_container;
 		case 'delete':
 			const id = args[0];
-			store.containers = _.filter(store.containers, c => c.id !== id);
+			store.containers = store.containers.filter(c => parseInt(c.id) !== parseInt(id));
+			console.log(store);
 			return;
 		default:
 			console.error('bad method');
@@ -217,7 +219,7 @@ export const localPersistedStore = (resolve, reject, method, url, data) => {
 	}		
 	//// update store
 	let retval = {};
-	console.log('deserializeStore', resolve, reject, method, type, store);
+	
 	switch (type) {
 		case 'containers':
 			retval = persistContainers(resolve, reject, method, args, data);
@@ -232,6 +234,7 @@ export const localPersistedStore = (resolve, reject, method, url, data) => {
 			console.error('Invalid type', parts);
 	}
 	////serializeStore
+	console.log('deserializeStore', resolve, reject, method, type, store);
 	localStorage.setItem('wimf', JSON.stringify(store));
 	storeBackup = { ...store };
 	resolve({
