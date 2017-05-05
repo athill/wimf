@@ -37,7 +37,7 @@ const chain = (promise, resolves, reject = response => {console.error(response);
 
 
 
-export const fetch = (url, resolves, reject) => {
+export const get = (url, resolves, reject) => {
     const promise = makePromise('get', url);
     chain(promise, resolves, reject);
 };

@@ -47,15 +47,23 @@ body, label, .checkbox label {
 	}
 }
 
-.component-selector-label {
-	font-weight: bold;
-	font-size: 2em;
-}
+.item-filter {
+	padding: 1em 0;
 
-.component-selector {
-	font-size: 2em;
-	padding: 0;
-	margin: 0;
+	label {
+		font-weight: bold;
+		background-color: #DDD;
+		border-radius: 1em 0 0 1em;
+		height: @input-height-base;
+		padding: 0.3em 1em;
+	}
+	div {
+		padding-left: 0;
+		input {
+			border-radius: 0 1em 1em 0;
+		}		
+	}
+
 }
 
 #add-item-button, .add-button {
@@ -82,3 +90,43 @@ body, label, .checkbox label {
 		}
 	}
 }
+
+.icon-menu {
+	position: relative;
+	display: inline-block;
+
+	.icon-menu-trigger {
+		cursor: pointer;
+	}
+
+	.icon-menu-menu {
+		display: none; 
+		position: absolute; 
+		top: 20px;
+		right: 0;
+		border-radius: 0.2em;
+		background-color: #CCC;
+		border: thin solid black;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		z-index: 9000;
+		li {
+			border-radius: 0.2em;
+			margin: 0.2em;
+			background-color: #EEE;
+			padding: 0.3em 0.6em;
+			cursor: pointer;
+			&:hover {
+				background-color: #333;
+				color: white;
+			}	  	
+		}	  
+	}
+}
+
+
+
+// this.menuStyle = { 
+     
+// } 

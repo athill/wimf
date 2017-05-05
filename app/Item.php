@@ -24,8 +24,12 @@ class Item extends ChangelogModelBase {
 
 
 	public static function persist($item, $category) {
-		$item->category_id = Category::getId($category);
-		$item->save();
-		return $item;
+		try {
+			$item->category_id = Category::getId($category);
+			$item->save();
+			return $item;
+		} catch (Exception $e) {
+			return ['error' => $e->message];
+		}
 	}
 }

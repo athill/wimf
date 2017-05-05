@@ -2,11 +2,23 @@ import _ from 'lodash';
 
 let fakeIndex = 0;
 
-const sortByNameKey = (x, y) => {
-	if (x.name.toUpperCase() < y.name.toUpperCase()) return -1;
-	else if (x.name.toUpperCase() > y.name.toUpperCase()) return 1;
+export const getSelectedContainer = state => {
+	return state.containers[state.containers.selected];
+};
+
+export const sortByNameKey = (x, y) => {
+	const upperX = x.name.toUpperCase();
+	const upperY = y.name.toUpperCase();
+	if (upperX < upperY) return -1;
+	else if (upperX > upperY) return 1;
 	else return 0;
 }
+
+export const getSortedContainerArray = containers => {
+	const containerArray = Object.keys(containers).map(id => containers[id]);
+	containerArray.sort(sortByNameKey);
+	return containerArray;
+};
 
 export const sortCategories = categories => {
 	const newCategories = categories.filter(category => category.items.length > 0);
@@ -18,35 +30,33 @@ export const sortCategories = categories => {
 };
 
 export const addContainerToContainers = (containers, container) => {
-	let newContainers = [].concat(containers);
-	newContainers.push(container);
-	newContainers.sort(sortByNameKey);
-	return newContainers;
+	return {
+		...containers,
+		[container.id]: container
+	}
 };
 
 const matchesFilterByName = (item, text) => item.name.toUpperCase().indexOf(text) > -1;
 
 export const removeContainerFromContainers = (containers, container) => {
-	let newContainers = [];
-	for (let i = 0; i < containers.length; i++) {
-		if (containers[i].id !== container.id) {
-			newContainers.push(containers[i]);
-		}
-	}
-	return newContainers;
+	return _.omit(containers, container.id);
 };
 
 export const updateContainerInContainers = (containers, container) => {
-	let newContainers = containers.map(c => (c.id === container.id) ? container : c);
-	newContainers.sort(sortByNameKey);
-	return newContainers;	
-
+	return {
+		...containers,
+		[container.id]: container
+	};	
 }
 
 export const updateCategoriesInContainers = (containers, container_id, categories) => {
+	const container = containers[container_id];
 	return {
 		...containers,
-		[container_id]: categories
+		[container_id]: {
+			...container,
+			categories
+		}
 	};
 }
 

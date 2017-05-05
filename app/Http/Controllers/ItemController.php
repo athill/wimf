@@ -68,13 +68,17 @@ class ItemController extends Controller {
 			return Utils::handleInvalidId($id);
 		}		
 		$item->updateFromRequest($request);
-
 		//// category object
 		$category = self::getCategoryFromRequest($request);
+		try {
+			$item = Item::persist($item, $category)->toArray();
+			$item['category'] = $category->name;
+			return $item;			
+		} catch (Exception $exception) {
+			dd($exception);
+			return ['error' => $exception->message ];
+		}
 
-		$item = Item::persist($item, $category)->toArray();
-		$item['category'] = $category->name;
-		return $item;
 
 	}
 

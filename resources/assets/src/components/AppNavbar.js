@@ -45,9 +45,6 @@ export class AppNavbar extends React.Component {
             </Nav>
             <Nav pullRight>
               { !isDemo && <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem> }
-              <LinkContainer to='/containers'>
-                <NavItem>Containers</NavItem>
-              </LinkContainer>
               <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
                 {(() => (
                   isDemo ?

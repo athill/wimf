@@ -1,23 +1,30 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getFakeContainers } from './fakes'
+import { getFakeCategories, getFakeContainers } from '../../../testUtil/fakes';
 
+import { sortByNameKey } from '../../../../src/util/ContainerOperations';
 import ContainerSelector from '../../../../src/components/pages/Items/ContainerSelector';
 
 describe('ContainerSelector', () => {
 
   it('works', () => {
   	const containers = getFakeContainers(2);
-  	const output = shallow(<ContainerSelector containers={ { items: [] } } onChange={e => e} containers={containers} />);
-  	expect(output.find('form').length).toBe(1);
-  	const options = output.find('option');
-  	expect(options.length).toBe(2);
-  	containers.items.forEach((container, i) => {
+  	const output = shallow(<ContainerSelector onChange={e => e} containers={containers} />);
+  	const options = output.find('NavItem');
+  	expect(options.length).toBe(3);
+    const containerArray = Object.keys(containers).map(id => containers[id]);
+    // console.log(containerArray);
+    containerArray.sort(sortByNameKey);    
+  	containerArray.forEach((container, i) => {
   		const option = options.get(i);
-  		expect(option.props.value).toBe(container.id);
-  		expect(option.props.children).toBe(container.name);
+      const containerTab = option.props.children;
+      // console.log(container, option);
+      // expect(containerTab.type.displayName).toBe('ContainerTab');
+      expect(option.props.eventKey).toBe(container.id);
+      expect(containerTab.props.container.name).toBe(container.name);   
   	});
+    expect(options.get(options.length - 1).props.eventKey).toBe('add-container');
 
   });
 });

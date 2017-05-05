@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 //// actions
 import { fetchContainers, select as selectContainer } from '../../../redux/modules/containers';
-import { setItemsFilter } from '../../../redux/modules/items';
+import { setItemsFilter } from '../../../redux/modules/containers';
 import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../../redux/modules/itemForm';
+import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 
 //// components
 import AddItemButton from '../../common/AddButton';
@@ -11,26 +12,41 @@ import Container from './Container';
 import ContainerSelector from './ContainerSelector';
 import Filter from '../../common/Filter';
 import ItemForm from './ItemForm';
+import ContainerForm from './ContainerForm';
+
 
 //// utils
 import { filterCategories } from '../../../util/ContainerOperations';
 
-export const mapStateToProps = ({containers, items: { categories, filter, name: containerName, loading: containerLoading }}) => {
+export const mapStateToProps = ({ containers: { containers, filter, loading, selectedId } }) => {
+  const container = containers[selectedId] 
+  let categories = container && container.categories ? container.categories : [];
   if (filter !== '') {
     categories = filterCategories(categories, filter);
   }
   return {
     containers,
     categories,
-    containerName,
-    containerLoading
+    containerName: (container && container.name) || null,
+    containerLoading: loading,
+    selectedId
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({  
-    handleContainerChange: e => {
-      dispatch(selectContainer(e.target.value));
+    editContainer: (container) => {
+      dispatch(showEditContainerForm(container));
     },
+    deleteContainer: (container) => {
+      dispatch(showDeleteContainerForm(container));
+    },  
+    handleContainerChange: (eventKey, e) => {
+      if (eventKey === 'add-container') {
+        dispatch(toggleAddContainerForm());
+      } else {
+        dispatch(selectContainer(eventKey));
+      }
+    },    
     handleFilterChange: value => {
       dispatch(setItemsFilter(value));
     },
@@ -53,11 +69,12 @@ export class Items extends React.Component {
   }
 
   render() {
-    const {containers, containerName, categories, itemAddClickHandler, itemEditClickHandler, itemDeleteClickHandler, handleFilterChange, 
-      containerLoading, handleContainerChange } = this.props;
+    const {containers, containerName, categories, editContainer, deleteContainer, itemAddClickHandler, itemEditClickHandler, 
+        itemDeleteClickHandler, handleFilterChange, containerLoading, handleContainerChange, selectedId } = this.props;
     return (
       <div>
-          <ContainerSelector containers={containers} onChange={handleContainerChange} />
+          <ContainerSelector containers={containers} handleSelect={handleContainerChange} 
+            editContainer={editContainer} deleteContainer={deleteContainer} selectedId={selectedId}  />
           <Filter handleChange={handleFilterChange} />
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
@@ -65,6 +82,7 @@ export class Items extends React.Component {
             itemDeleteClickHandler={itemDeleteClickHandler} />
           <AddItemButton clickHandler={itemAddClickHandler} title='Add Item' />
           <ItemForm />
+          <ContainerForm />
       </div>
     );
   }

@@ -1,28 +1,54 @@
 import React from 'react';
-import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Nav, NavItem } from 'react-bootstrap';
+// import Menu from 'react-menu';
 
-const ContainerSelector = ({containers, onChange}) => {
-	const selected = containers.selected ? containers.selected.id : '';
-	return (<form className="form-horizontal">
-		<FormGroup>
-			<ControlLabel className='col-md-2 component-selector-label'>Container:</ControlLabel>
-			<div className='col-md-10'>		
-				<FormControl type='select' className='component-selector' componentClass='select'
-					defaultValue={selected} onChange={onChange}>
+import {Icon} from '../../common/common';
+import { getSortedContainerArray, sortByNameKey } from '../../../util/ContainerOperations';
+import IconMenu, { MenuItem } from '../../common/IconMenu';
+import { showDeleteContainerForm, showEditContainerForm } from '../../../redux/modules/containerForm';
+
+const triggerLabel = <Icon icon="cog" style={{ fontSize: '1em' }} />;
+const ConfigMenu = ({ container, editContainer, deleteContainer }) => (
+	<IconMenu triggerLabel={triggerLabel} className="icon-menu">
+		<MenuItem onClick={ e => { e.preventDefault(); editContainer(container); }}>Edit</MenuItem>
+		{ deleteContainer && <MenuItem onClick={ e => { e.preventDefault(); deleteContainer(container); }}>Delete</MenuItem> }
+	</IconMenu>
+);
+ConfigMenu.displayName = 'ConfigMenu';
+
+
+const ContainerTab = ({ active, container, editContainer, deleteContainer }) => (
+	<div style={{ whiteSpace: 'nowrap' }}>{  container.name } { active && <ConfigMenu container={container} editContainer={editContainer} deleteContainer={deleteContainer} /> }</div>
+);
+ContainerTab.displayName = 'ContainerTab';
+
+
+const ContainerSelector = ({containers, editContainer, deleteContainer, handleSelect, selectedId }) => {
+	const containerArray = getSortedContainerArray(containers);
+	const deleteContainerHandler = containerArray.length > 1 ? deleteContainer : null;
+	return (
+			<Nav bsStyle="tabs" activeKey={parseInt(selectedId)} onSelect={handleSelect}>
 				{
-					containers.items.map(container => {
+					containerArray.map(container => {
 						return (
-							<option value={container.id} key={container.id}>
-								{ container.name }
-							</option>
+							<NavItem key={container.id} eventKey={container.id} title={ container.description || null }>
+								<ContainerTab	
+									active={parseInt(container.id) === parseInt(selectedId)}
+									container={container}  
+									editContainer={editContainer}
+									deleteContainer={deleteContainerHandler}
+									/>
+							</NavItem>
 						);
 					})
 				}
-				</FormControl> 
-			</div>
-		</FormGroup>		
-	</form>)
+				<NavItem eventKey="add-container" key="add-container" id="add-container-tab">
+					<Icon icon='plus' />
+				</NavItem>
+			</Nav>
+	);
 };
+
 ContainerSelector.displayName = 'ContainerSelector';
 
 export default ContainerSelector;

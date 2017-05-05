@@ -12,13 +12,15 @@ import { Spinner } from '../../common/common';
 const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler, loading }) => {
 	if (!categories) {
 		return null;
-	} else if (loading) {
+	} 
+	if (loading) {
 		return (
 			<h2 className='text-primary'>
 				<Spinner /> Retrieving your items ...
 			</h2>
 		);
-	} else if (categories.length === 0) {
+	}
+	if (categories.length === 0) {
 		return <ContainerWelcome name={name} />;
 	}
 	return (

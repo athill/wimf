@@ -34,4 +34,11 @@ return [
 		'secret' => '',
 	],
 
+	//// custom config
+    'analytics' => [
+        'google' => [
+            'key' => env('GOOGLE_ANALYTICS_KEY', null)
+        ],
+    ],	
+
 ];

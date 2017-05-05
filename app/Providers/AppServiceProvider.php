@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -11,7 +12,7 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+		View::share('google_analytics_key', config('services.analytics.google.key'));
 	}
 
 	/**

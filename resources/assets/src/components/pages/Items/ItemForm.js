@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, change, Field } from 'redux-form';
 import moment from 'moment';
 
-import { add, remove, edit } from '../../../redux/modules/items';
+import { addItem, removeItem, editItem } from '../../../redux/modules/containers';
 import { hideItemForm } from '../../../redux/modules/itemForm';
 import { ModalTypes } from '../../../util/formModal';
 import FormModal from '../../common/FormModal';
@@ -42,7 +42,6 @@ export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitActi
 	const submit  = (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
-
 		reset();
 		if (values.keepOpen) {
 			dispatch(change(formName, 'keepOpen', true));
@@ -75,17 +74,17 @@ const mapStateToProps = ({ itemForm: { errors, show, selected } }) => {
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
-			submitAction = remove;
+			submitAction = removeItem;
 			title = 'Delete';
 			submitButtonBsStyle='danger';
 			break;
 		case ModalTypes.EDIT:
-			submitAction = edit;
+			submitAction = editItem;
 			title = 'Edit';
 			submitButtonBsStyle='primary';
 			break;
 		case ModalTypes.CREATE:
-			submitAction = add;
+			submitAction = addItem;
 			title = 'Add';
 			submitButtonBsStyle='success';
 			break;			

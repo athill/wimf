@@ -1,14 +1,13 @@
 import faker from 'faker';
 
 export const getFakeContainers = count => {
-  	return {
-	  	items: Array(count).fill().map(() => ({
-	  		id: faker.lorem.word(),
-	  		name: faker.lorem.words()
-	  	}))
-  	};
+    const containers = {};
+  	Array(count).fill().forEach(() => {
+        const container = getFakeContainer();
+	  		containers[container.id] = container;
+	  });
+    return containers;
 };
-
 
 
 
@@ -29,8 +28,9 @@ export const getFakeCategories = (catCount, itemCount) => {
 
 export const getFakeContainer = categories => {
   	return {
+      id: faker.lorem.word(),
   		name: faker.lorem.word(),
-  		categories
+  		categories: categories || []
   	};
 };
 

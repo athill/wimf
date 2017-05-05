@@ -3,7 +3,9 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import faker from 'faker';
 
-import DecoratedContainerForm, { ContainerForm, mapStateToProps, mapDispatchToProps, validate } from '../../../../src/components/pages/Containers/ContainerForm';
+import { initialState as containersInitialState } from '../../../../src/redux/modules/containers';
+import { initialState as containerFormInitialState } from '../../../../src/redux/modules/containerForm';
+import DecoratedContainerForm, { ContainerForm, mapStateToProps, mapDispatchToProps, validate } from '../../../../src/components/pages/Items/ContainerForm';
 import { ModalTypes } from '../../../../src/util/formModal';
 
 describe('ContainerForm', () => {
@@ -48,16 +50,20 @@ describe('ContainerForm', () => {
 
 	describe('map state to props', () => {
 		const defaultState = {
-			containerForm: {
-				errors: [],
-				show: ModalTypes.CREATE,
-				selected: {}
-			}
+			containerForm: containerFormInitialState,
+			containers: containersInitialState
 		}
 		
 		it('works', () => {
 			const action = 'Add';
-			const props = mapStateToProps(defaultState);
+			const state = {
+				containers: containersInitialState,
+				containerForm: {
+					...containerFormInitialState,
+					show: ModalTypes.CREATE
+				}
+			}
+			const props = mapStateToProps(state);
 			expect(props.showModal).toBe(true);
 			expect(props.type).toBe(ModalTypes.CREATE);
 			expect(props.title).toBe(action + ' Container');

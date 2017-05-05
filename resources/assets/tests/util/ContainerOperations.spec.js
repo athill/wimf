@@ -1,7 +1,9 @@
 import expect from 'expect';
 import _ from 'lodash';
+import faker from 'faker';
 
 import  * as ops from '../../src/util/ContainerOperations';
+import { getFakeContainer, getFakeContainers } from '../testUtil/fakes';
 
 import Mocker from '../testUtil/Mocker';
 
@@ -91,6 +93,37 @@ describe('ContainerOperations', () => {
 			expect(result).toEqual(expectedResult);
 		});
 	});
+
+	describe('addContainerToContainers', () => {
+		it('should add a container to containers', () => {
+			const containers = getFakeContainers(1);
+			const container = getFakeContainer();
+			const newContainers = ops.addContainerToContainers(containers, container);
+			expect(container.id in newContainers).toBe(true);			
+		});
+	});
+
+	describe('removeContainerFromContainers', () => {
+		it('should add a container to containers', () => {
+			const containers = getFakeContainers(1);
+			const container = getFakeContainer();
+			let newContainers = ops.addContainerToContainers(containers, container);
+			expect(container.id in newContainers).toBe(true);						
+			newContainers = ops.removeContainerFromContainers(containers, container);
+			expect(container.id in newContainers).toBe(false);
+		});
+	});	
+
+	describe('updateContainerInContainers', () => {
+		it('should add a container to containers', () => {
+			const containers = getFakeContainers(1);
+			const id = Object.keys(containers)[0];
+			const container = containers[id];
+			container.description = faker.lorem.words()
+			const newContainers = ops.updateContainerInContainers(containers, container);
+			expect(newContainers[id].description).toBe(container.description);
+		});
+	});		
 
 	describe('filterCategories', () => {
 		it('should return everything on empty string', () => {

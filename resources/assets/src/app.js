@@ -11,7 +11,6 @@ import configureStore from './redux/create';
 import App from './components/App';
 ////// pages
 import Items from './components/pages/Items';
-import Containers from './components/pages/Containers';
 
 //// store
 const store = configureStore();
@@ -22,7 +21,6 @@ export const Application = () => (
 		<Router history={hashHistory}>
 			<Route path="/" component={App}>
 				<IndexRoute component={Items} />
-				<Route path="/containers" component={Containers}/> 
 			</Route>
 		</Router> 
 	</Provider>

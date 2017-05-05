@@ -15,34 +15,44 @@ describe('Items', () => {
 			expect(output.find('Filter').length).toBe(1);
 			expect(output.find('Container').length).toBe(1);
 			expect(output.find('AddButton').length).toBe(1);
-			expect(output.find('Connect(ReduxForm)').length).toBe(1);
+			expect(output.find('Connect(ReduxForm)').length).toBe(2);
 		});
 	});	
 
 
 
 	describe('mapStateToProps', () => {
-		//// { containers, items: { categories, filter, name: containerName, loading: containerLoading }}
+		const selectedId = 0;
+		//// { containers: { containers, filter, loading, selectedId } }
 		const defaultState = {
-			containers: {},
-			items: {
-				categories: [],
+			containers: {
+				containers: {
+					[selectedId]: {
+						name: faker.lorem.words(),
+						categories: [
+							{
+								name: faker.lorem.words(),
+								items: []							
+							}
+						]
+					}
+				},
 				filter: '',
-				name: faker.lorem.words(),
-				loading: false
+				loading: false,
+				selectedId
 			}
 		};
 		it('works', () => {
 			const props = mapStateToProps(defaultState);
-			expect(props.containers).toEqual(defaultState.containers);
-			expect(props.categories).toEqual(defaultState.items.categories);
-			expect(props.containerName).toEqual(defaultState.items.name);
-			expect(props.containerLoading).toEqual(defaultState.items.loading);
+			expect(props.containers).toEqual(defaultState.containers.containers);
+			expect(props.categories).toEqual(defaultState.containers.containers[selectedId].categories);
+			expect(props.containerName).toEqual(defaultState.containers.containers[selectedId].name);
+			expect(props.containerLoading).toEqual(defaultState.containers.loading);
 		});
 
 		it('handles non-empty filter', () => {
 			let state = { ...defaultState };
-			state.items.filter = faker.lorem.word();
+			state.filter = faker.lorem.word();
 			deepFreeze(state);
 			const props = mapStateToProps(state);
 		});

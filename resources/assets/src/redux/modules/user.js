@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 
-import { fetch } from '../../util/RemoteOperations';
+import { get } from '../../util/RemoteOperations';
 
 //// actions
 export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
@@ -32,7 +32,7 @@ const receiveUserInfo = createAction(RECEIVE_USER_INFO);
 export function fetchUserInfo(container) {
   return dispatch => {
     dispatch(requestUserInfo());
-    fetch(
+    get(
       `/api/currentUser`,
       response => dispatch(receiveUserInfo(response.data))
     );  

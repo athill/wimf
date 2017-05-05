@@ -9,3 +9,4 @@ npm-debug.log
 public/build
 public/jscoverage
 public/phpcoverage
+/storage/debugbar/

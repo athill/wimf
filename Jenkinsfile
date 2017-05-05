@@ -6,7 +6,7 @@ node('tst.wimf.space') {
    }
     stage('Build') { 
         parallel php: {
-            sh 'cp /var/www/laravel/.env .'
+            sh 'cp /var/www/wimf/.env .'
             sh 'composer update'
         },
         js: {

@@ -23,11 +23,24 @@ export const validate = values => {
 };
 
 
-export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title,
-			type, submitButtonBsStyle, submitButtonText, 
-	      handleSubmit,
-	      reset,
-	      submitting }) => {
+export const ContainerForm = ({ 
+			initialValues,
+			onHide, 
+			serverErrors, 
+			readOnly,
+			showModal, 
+			submitAction, 
+			title,
+			type, 
+			submitButtonBsStyle, 
+			submitButtonText, 
+			//// provided by redux-form
+	     	handleSubmit,
+	     	reset,
+	     	submitting }) => {
+	if (showModal === ModalTypes.NONE) {
+		return null;
+	}
 	const submit  = (values, dispatch) => {
 	  return new Promise((resolve, reject) => {
 		dispatch(submitAction(values));	
@@ -50,13 +63,14 @@ export const ContainerForm = ({ serverErrors, showModal, onHide, readOnly, submi
 				reset(); 
 				onHide();
 			}}>
-		<Field type='text' autoFocus id='name' name="name" readOnly={readOnly} label='Name' component={ValidatedInput} />
-		<Field type='text' id='description' name="description" label='Description' readOnly={readOnly} component={ValidatedInput} />
+		<Field type="text" autoFocus id="name" name="name" label="Name" readOnly={readOnly} component={ValidatedInput} />
+		<Field type="text" id="description" name="description" label="Description" readOnly={readOnly} component={ValidatedInput} />
 		{ ModalTypes.CREATE === type && <Field id='keepOpen' name='keepOpen' component={Checkbox}>Keep Open</Field> }
 
 	</FormModal>)
 };
-export const mapStateToProps = ({ containerForm: { errors, show, selected: selectedContainer } }) => {
+export const mapStateToProps = ({ containerForm: { errors, show }, containers: { containers, selectedId } }) => {
+	const selectedContainer = containers[selectedId];
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
@@ -91,7 +105,7 @@ export const mapStateToProps = ({ containerForm: { errors, show, selected: selec
 		submitButtonBsStyle,
 		submitButtonText,
 		readOnly: show === ModalTypes.DELETE,
-		initialValues: selectedContainer
+		initialValues: show === ModalTypes.CREATE ? {} : selectedContainer
 	};
 	return rtn;
 };
@@ -106,7 +120,8 @@ export const mapDispatchToProps = (dispatch) => {
 
 const form = reduxForm({
 	form: formName,
-	validate
+	validate,
+	enableReinitialize: true
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(form(ContainerForm));
