@@ -218,7 +218,6 @@ export const add = container => {
       },
       error => {
         dispatch(addContainerError());
-        console.log('error is', error);
         dispatch(setContainerFormError(error));
         setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
       }
@@ -302,8 +301,21 @@ export const addItem = item => {
         dispatch(addItemSuccess(response));
       },
       error => {
-        dispatch(addItemError());
-        dispatch(setItemFormError(error.data));
+        let problem;
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          problem = error.response.data;
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          problem = error.request;
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          // console.log('Error', error.message);
+          problem = error.request;
+        }
+        dispatch(setItemFormError(problem));
         setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
       }
     );

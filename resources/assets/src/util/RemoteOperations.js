@@ -25,13 +25,29 @@ const makePromise = (method, url, data)  => {
 
 const chain = (promise, resolves, reject = response => {console.error(response); reject(); }) => {
     //// wrap resolve if not an array
-    if (!(resolves.constructor === Array)) {
+    if (!Array.isArray(resolves)) {
       resolves = [resolves];
     }
     //// chain resolves
     resolves.forEach(resolve => promise.then(resolve));
     //// chain catch
-    promise.catch(reject);  
+    promise.catch(error => {
+      let problem;
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        problem = error.response.data;
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        problem = error.request;
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        // console.log('Error', error.message);
+        problem = error.request;
+      }      
+      reject(problem);
+    });  
 };
 
 

@@ -26,13 +26,16 @@ export function defaultFormModalHandler(type, state, action) {
       selected: action.payload
     };            
   } else if (action.type === 'SET_'+type+'_FORM_ERROR') {
-    let errors = action.payload.error;
-    if (!(errors instanceof Array)) {
-      errors = [errors];
-    }
+    console.log('setting error', action);
+    // TODO: broken. there is no payload key
+    // let errors = action.payload.error;
+    // console.log('set error', errors);
+    // if (!Array.isArray(errors)) {
+    //   errors = [errors];
+    // }
 	  return {
 		  ...state,
-		  errors
+		  // errors
 	  };
   } else if (action.type === 'HIDE_'+type+'_FORM') {
     return {

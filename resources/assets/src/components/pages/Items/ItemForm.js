@@ -30,7 +30,28 @@ const validate = values => {
 	return errors;
 };
 
-
+const submit = (submitAction, reset, onHide) => (values, dispatch) => {
+		console.log('ummm');
+	 	return new Promise((resolve, reject) => {
+		  	console.log('submitting');
+			try {
+				dispatch(submitAction(values));	
+				reset();
+				if (values.keepOpen) {
+					dispatch(change(formName, 'keepOpen', true));
+					const category = document.getElementById('category');
+					category.focus();
+				} else {
+					onHide();	
+				}
+				console.log('resolving');
+				resolve();
+			} catch(e) {
+				console.error('rejecting', e);
+				reject(e);
+			}  
+		});	
+};
 
 
 
@@ -39,25 +60,9 @@ export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitActi
 	      handleSubmit,
 	      reset,
 	      submitting }) => {
-	const submit  = (values, dispatch) => {
-	  return new Promise((resolve, reject) => {
-		dispatch(submitAction(values));	
-		reset();
-		if (values.keepOpen) {
-			dispatch(change(formName, 'keepOpen', true));
-			const category = document.getElementById('category');
-			category.focus();
-		} else {
-			onHide();	
-		}
-		resolve();
-	  });		
-	};
-	// const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-	// const submit2 = values => sleep(10).then(() => console.log('here'), errors => console.log('errors', errors));
 	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
 		submitButtonText={submitButtonText}
-		onSubmit={handleSubmit(submit)} 
+		onSubmit={handleSubmit(submit(submitAction, reset, onHide))} 
 		onHide={() => {
 			reset(); 
 			onHide();
