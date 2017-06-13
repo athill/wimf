@@ -5,7 +5,10 @@ import { Alert, Button, Modal } from 'react-bootstrap';
 import { Spinner } from './common';
 
 export const ErrorDisplay = ({ errors }) => {
-  if (errors && _.isArray(errors) && errors.length > 0) {
+  if (errors && !Array.isArray(errors)) {
+    errors = [errors];
+  }
+  if (errors && errors.length > 0) {
     return (
       <Alert bsStyle="danger">
         <ul id="modal-errors">

@@ -23,13 +23,13 @@ const makePromise = (method, url, data)  => {
   return promise;
 };
 
-const chain = (promise, resolves, reject = response => {console.error(response); reject(); }) => {
+const chain = (promise, resolvers, rejecter = response => {console.error(response); reject(); }) => {
     //// wrap resolve if not an array
-    if (!Array.isArray(resolves)) {
-      resolves = [resolves];
+    if (!Array.isArray(resolvers)) {
+      resolvers = [resolvers];
     }
     //// chain resolves
-    resolves.forEach(resolve => promise.then(resolve));
+    resolvers.forEach(resolve => promise.then(resolve));
     //// chain catch
     promise.catch(error => {
       let problem;
@@ -44,10 +44,13 @@ const chain = (promise, resolves, reject = response => {console.error(response);
       } else {
         // Something happened in setting up the request that triggered an Error
         // console.log('Error', error.message);
-        problem = error.request;
+        problem = error;
       }      
-      reject(problem);
-    });  
+
+      rejecter(problem);
+    });
+
+    return promise;  
 };
 
 
@@ -55,22 +58,22 @@ const chain = (promise, resolves, reject = response => {console.error(response);
 
 export const get = (url, resolves, reject) => {
     const promise = makePromise('get', url);
-    chain(promise, resolves, reject);
+    return chain(promise, resolves, reject);
 };
 
 export const post = (url, data, resolves, reject)  => {
   const promise = makePromise('post', url, data);
-  chain(promise, resolves, reject);
+  return chain(promise, resolves, reject);
 };
 
 export const put = (url, data, resolves, reject)  => {
   const promise = makePromise('put', url, data);
-  chain(promise, resolves, reject);
+  return chain(promise, resolves, reject);
 };
 
 export const deleteRequest = (url, resolves, reject) => {
   const promise = makePromise('delete', url);
-  chain(promise, resolves, reject);  
+  return chain(promise, resolves, reject);  
 };
 
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { reduxForm, change, Field } from 'redux-form';
+import { reduxForm, change, Field, SubmissionError } from 'redux-form';
 import moment from 'moment';
 
-import { addItem, removeItem, editItem } from '../../../redux/modules/containers';
+import { addItem, editItem, ITEM_FORM_NAME, removeItem } from '../../../redux/modules/containers';
 import { hideItemForm } from '../../../redux/modules/itemForm';
 import { ModalTypes } from '../../../util/formModal';
 import FormModal from '../../common/FormModal';
@@ -12,8 +12,6 @@ import Datepicker from '../../common/Datepicker';
 import ValidatedInput from '../../common/ValidatedInput';
 //// utils
 import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../../util/DateUtils';
-
-const formName = 'item';
 
 const validate = values => {
 	const errors = {};
@@ -30,43 +28,27 @@ const validate = values => {
 	return errors;
 };
 
-const submit = (submitAction, reset, onHide) => (values, dispatch) => {
-		console.log('ummm');
-	 	return new Promise((resolve, reject) => {
-		  	console.log('submitting');
-			try {
-				dispatch(submitAction(values));	
-				reset();
-				if (values.keepOpen) {
-					dispatch(change(formName, 'keepOpen', true));
-					const category = document.getElementById('category');
-					category.focus();
-				} else {
-					onHide();	
-				}
-				console.log('resolving');
-				resolve();
-			} catch(e) {
-				console.error('rejecting', e);
-				reject(e);
-			}  
-		});	
+const submit = submitAction => (values, dispatch) => {
+	return new Promise((resolve, reject) => dispatch(submitAction(values, resolve, reject)))
+		.catch(error => {
+			throw new SubmissionError(error);
+		});
+
 };
 
-
-
-export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitAction, title, initialValues,
-			type, submitButtonBsStyle, submitButtonText, 
-	      handleSubmit,
-	      reset,
-	      submitting }) => {
-	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
-		submitButtonText={submitButtonText}
-		onSubmit={handleSubmit(submit(submitAction, reset, onHide))} 
-		onHide={() => {
-			reset(); 
-			onHide();
-		}}>
+export const ItemForm = ({ error, handleSubmit, initialValues, onHide, readOnly, reset, showModal, submitAction, 
+		submitButtonBsStyle, submitButtonText, submitting, title, type }) => {
+	//// TODO: keepOpen is not being passed with values
+	return (<FormModal 
+				errors={error}
+				onHide={() => { reset(); onHide();}}
+				onSubmit={handleSubmit(submit(submitAction))} 
+				show={showModal}
+				title={title} 
+				valid={true}   
+				submitButtonBsStyle={submitButtonBsStyle} 
+				submitButtonText={submitButtonText}
+				submitting={submitting}>
 		<Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" component={ValidatedInput} />
 		<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
 		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
@@ -74,8 +56,8 @@ export const ItemForm = ({ serverErrors, showModal, onHide, readOnly, submitActi
 		{ ModalTypes.CREATE === type && <Field name="keepOpen" id='keepOpen' component={Checkbox}>Keep Open</Field> }
 	</FormModal>)
 };
-//, addForm: { show : showAddForm }
-const mapStateToProps = ({ itemForm: { errors, show, selected } }) => {
+
+const mapStateToProps = ({ itemForm: { show, selected }, form }) => {
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
@@ -106,9 +88,10 @@ const mapStateToProps = ({ itemForm: { errors, show, selected } }) => {
 		initialValues = { date: getValueFormat(moment().startOf('day')) };
 	} else if (selected) {
 		initialValues = { ...selected, date: getDisplayFormat(selected.date) };
-	}			
+	}
+	const error = form.item && form.item.error;
 	return {
-		serverErrors: errors,
+		error,
 		showModal: show !== ModalTypes.NONE,
 		type: show,
 		title,
@@ -130,7 +113,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const form = reduxForm({
-	form: formName,
+	form: ITEM_FORM_NAME,
 	validate,
 	enableReinitialize: true
 });

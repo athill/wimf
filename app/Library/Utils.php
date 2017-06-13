@@ -8,14 +8,14 @@ class Utils {
 	}
 
 	public static function handleDbIntegrityException($exception, $message) {
-		if ($_ENV['APP_DEBUG'] === 'true') {
+		if (config('app.debug')) {
 			$message = $exception->getMessage();
 		}
 		Log::info($exception->getMessage());
-		return response()->json(['error'=>$message], 400);
+		return response()->json(['_error'=>$message], 400);
 	}
 
 	public static function handleInvalidId($id) {
-		return response()->json(['error' => 'Invalid id: '.$id], 400);
+		return response()->json(['_error' => 'Invalid id: '.$id], 400);
 	}
 }
