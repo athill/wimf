@@ -237,8 +237,6 @@ export const addContainer = (container, resolve, reject) => {
   };
 };
 
-
-
 export const editContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
     dispatch(editContainerRequest());

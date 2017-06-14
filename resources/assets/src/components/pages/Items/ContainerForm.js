@@ -28,25 +28,26 @@ const submit = submitAction => (values, dispatch) => {
 		});
 };
 
-export const ContainerForm = ({ 
+export const ContainerForm = ({ 			 
 			initialValues,
 			onHide, 
-			serverErrors, 
 			readOnly,
 			showModal, 
 			submitAction, 
+			submitButtonBsStyle, 
+			submitButtonText, 			
 			title,
 			type, 
-			submitButtonBsStyle, 
-			submitButtonText, 
+
 			//// provided by redux-form
+			error,
 	     	handleSubmit,
 	     	reset,
 	     	submitting }) => {
 	if (showModal === ModalTypes.NONE) {
 		return null;
 	}
-	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
+	return (<FormModal title={title} valid={true} show={showModal} errors={error} submitButtonBsStyle={submitButtonBsStyle} 
 			submitButtonText={submitButtonText}
 			onSubmit={handleSubmit(submit(submitAction))} 
 			onHide={() => {
@@ -59,7 +60,7 @@ export const ContainerForm = ({
 
 	</FormModal>)
 };
-export const mapStateToProps = ({ containerForm: { errors, show }, containers: { containers, selectedId } }) => {
+export const mapStateToProps = ({ containerForm: { show }, containers: { containers, selectedId }, form}) => {
 	const selectedContainer = containers[selectedId];
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
@@ -85,9 +86,10 @@ export const mapStateToProps = ({ containerForm: { errors, show }, containers: {
 			console.error('Invalid Modal Type', show);
 	}
 	const submitButtonText = title;
+	const error = form.container && form.container.error;
 	title += ' Container';
 	const rtn = {
-		serverErrors: errors,
+		error,
 		showModal: show !== ModalTypes.NONE,
 		type: show,
 		title,
