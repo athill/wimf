@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { SubmissionError, reset } from 'redux-form';
+import { change, SubmissionError, reset } from 'redux-form';
 
 import { hideItemForm, setItemFormError } from './itemForm';
 import { hideContainerForm, setContainerFormError } from './containerForm';
@@ -214,11 +214,12 @@ export const fetchContainers = () => {
 export const addContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
     dispatch(addContainerRequest());
+    console.log(container);
     return post(
       `/api/containers/`,
       container,
       response => {
-        reset(CONTAINER_FORM_NAME);
+        dispatch(reset(CONTAINER_FORM_NAME));
         dispatch(addContainerSuccess(response));
         if (container.keepOpen) {
           //// TODO: not working
@@ -309,7 +310,7 @@ export const addItem = (item, resolve, reject) => {
       item,
       response => {
         dispatch(addItemSuccess(response));
-        reset(ITEM_FORM_NAME);
+        dispatch(reset(ITEM_FORM_NAME));
         if (item.keepOpen) {
           //// TODO: not working
           dispatch(change(ITEM_FORM_NAME, 'keepOpen', true));

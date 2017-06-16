@@ -9,6 +9,7 @@ import { hideItemForm } from '../../../redux/modules/itemForm';
 import { ModalTypes } from '../../../util/formModal';
 import FormModal from '../../common/FormModal';
 import Datepicker from '../../common/Datepicker';
+import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
 import ValidatedInput from '../../common/ValidatedInput';
 //// utils
 import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../../util/DateUtils';
@@ -53,7 +54,7 @@ export const ItemForm = ({ error, handleSubmit, initialValues, onHide, readOnly,
 		<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
 		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
 		<Field id='date' label='Date' readOnly={readOnly} name="date" component={Datepicker} /> 
-		{ ModalTypes.CREATE === type && <Field name="keepOpen" id='keepOpen' component={Checkbox}>Keep Open</Field> }
+		{ ModalTypes.CREATE === type && <Field name='keepOpen' component={ReduxFormCheckbox}>Keep Open</Field> }
 	</FormModal>)
 };
 

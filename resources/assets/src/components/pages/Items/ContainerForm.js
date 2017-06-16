@@ -1,5 +1,4 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 
@@ -7,8 +6,11 @@ import { addContainer, CONTAINER_FORM_NAME, removeContainer, editContainer } fro
 import { hideContainerForm } from '../../../redux/modules/containerForm';
 import { ModalTypes } from '../../../util/formModal';
 import FormModal from '../../common/FormModal';
+import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
 import ValidatedInput from '../../common/ValidatedInput';
 
+
+const  { DOM: { input } } = React;
 
 export const validate = values => {
 	const errors = {};
@@ -56,7 +58,7 @@ export const ContainerForm = ({
 			}}>
 		<Field type="text" autoFocus id="name" name="name" label="Name" readOnly={readOnly} component={ValidatedInput} />
 		<Field type="text" id="description" name="description" label="Description" readOnly={readOnly} component={ValidatedInput} />
-		{ ModalTypes.CREATE === type && <Field id='keepOpen' name='keepOpen' component={Checkbox}>Keep Open</Field> }
+		{ ModalTypes.CREATE === type && <Field name='keepOpen' component={ReduxFormCheckbox}>Keep Open</Field> }
 
 	</FormModal>)
 };
