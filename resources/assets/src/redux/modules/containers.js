@@ -211,23 +211,50 @@ export const fetchContainers = () => {
   };
 }
 
-export const addContainer = (container, resolve, reject) => {
+// export const addContainer = (container, resolve, reject) => {
+//   return (dispatch, getState) => {
+//     dispatch(addContainerRequest());
+//     return post(
+//       `/api/containers/`,
+//       container,
+//       response => {
+//         dispatch(reset(CONTAINER_FORM_NAME));
+//         dispatch(addContainerSuccess(response));
+//         if (container.keepOpen) {
+//           //// TODO: not working
+//           dispatch(change(CONTAINER_FORM_NAME, 'keepOpen', true));
+//           const name = document.getElementById('name');
+//           name.focus();
+//         } else {
+//           dispatch(hideContainerForm());
+//         }        
+//         resolve();
+//       },
+//       error => {
+//         reject(error);
+//       }
+//     );
+//   };
+// };
+
+
+
+export const addEntity = ({ autofocusField, formName, hideAction, requestAction, successAction, url }) => (values, resolve, reject) => {
   return (dispatch, getState) => {
-    dispatch(addContainerRequest());
-    console.log(container);
+    dispatch(request());
     return post(
-      `/api/containers/`,
-      container,
+      url,
+      values,
       response => {
-        dispatch(reset(CONTAINER_FORM_NAME));
-        dispatch(addContainerSuccess(response));
-        if (container.keepOpen) {
+        dispatch(reset(formName));
+        dispatch(successAction(response));
+        if (values.keepOpen) {
           //// TODO: not working
-          dispatch(change(CONTAINER_FORM_NAME, 'keepOpen', true));
-          const name = document.getElementById('name');
-          name.focus();
+          dispatch(change(formName, 'keepOpen', true));
+          const autofocus = document.getElementById(autofocusField);
+          autofocus.focus();
         } else {
-          dispatch(hideContainerForm());
+          dispatch(hideAction());
         }        
         resolve();
       },
@@ -235,8 +262,18 @@ export const addContainer = (container, resolve, reject) => {
         reject(error);
       }
     );
-  };
-};
+  };  
+}
+
+export const addContainer = addEntity({
+  autofocusField: 'name', 
+  formName: CONTAINER_FORM_NAME, 
+  hideAction: hideContainerForm,  
+  requestAction: createAction(ADD_CONTAINER), 
+  successAction: createAction(ADD_CONTAINER_SUCCESS), 
+  url: '/api/containers/'
+
+});
 
 export const editContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
