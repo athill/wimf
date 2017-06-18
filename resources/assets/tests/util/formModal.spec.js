@@ -56,34 +56,6 @@ describe('formModal', () => {
 			});
 		});
 
-		it('handles set error', () => {
-			const error = [ faker.lorem.words() ];
-			const result = defaultFormModalHandler(type, state, {
-				type: `SET_${type}_FORM_ERROR`,
-				payload: {
-					error
-				}
-			});
-			expect(result).toEqual({
-				...state,
-				errors: error
-			});
-		});
-
-		it('handles set error and wraps string in array', () => {
-			const error = faker.lorem.words();
-			const result = defaultFormModalHandler(type, state, {
-				type: `SET_${type}_FORM_ERROR`,
-				payload: {
-					error
-				}
-			});
-			expect(result).toEqual({
-				...state,
-				errors: [ error ]
-			});
-		});
-
 		it('hides the form', () => {
 			const result = defaultFormModalHandler(type, state, {
 				type: `HIDE_${type}_FORM`,

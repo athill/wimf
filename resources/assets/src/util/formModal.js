@@ -24,19 +24,7 @@ export function defaultFormModalHandler(type, state, action) {
       ...state,
       show: ModalTypes.EDIT,
       selected: action.payload
-    };            
-  } else if (action.type === 'SET_'+type+'_FORM_ERROR') {
-    console.log('setting error', action);
-    // TODO: broken. there is no payload key
-    // let errors = action.payload.error;
-    // console.log('set error', errors);
-    // if (!Array.isArray(errors)) {
-    //   errors = [errors];
-    // }
-	  return {
-		  ...state,
-		  // errors
-	  };
+    };
   } else if (action.type === 'HIDE_'+type+'_FORM') {
     return {
       ...state,

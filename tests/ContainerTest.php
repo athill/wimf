@@ -111,14 +111,14 @@ class ContainerTest extends TestCase {
     public function testPutInvalidContainerId() {
         $id = $this->faker->word;
         $this->putContainer($id, []);
-        $this->seeJson(['error' => 'Invalid id: '.$id]);
+        $this->seeJson(['_error' => 'Invalid id: '.$id]);
     } 
 
     public function testPutContainerDuplicateName() {
         $container1 = $this->getFakeContainer();
         $container2 = $this->getFakeContainer();
         $this->putContainer($container1->id, ['name' => $container2->name])
-            ->seeJsonStructure(['error']);
+            ->seeJsonStructure(['_error']);
     }
 
     public function testDeleteContainer() {

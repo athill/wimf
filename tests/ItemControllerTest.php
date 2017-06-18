@@ -71,12 +71,12 @@ class ItemControllerTest extends TestCase {
             ->seeJson(['name'=>$this->defaultItemName]);
 
         $this->postItem()
-            ->seeJsonStructure(['error']);        
+            ->seeJsonStructure(['_error']);        
     }
 
     public function testItemNoContainerId() {
         $this->postItem(['container_id' => null])
-            ->seeJsonStructure(['error']);
+            ->seeJsonStructure(['_error']);
     }
 
 
