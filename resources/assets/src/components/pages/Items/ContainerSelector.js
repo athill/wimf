@@ -1,6 +1,5 @@
 import React from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
-// import Menu from 'react-menu';
 
 import {Icon} from '../../common/common';
 import { getSortedContainerArray, sortByNameKey } from '../../../util/ContainerOperations';
