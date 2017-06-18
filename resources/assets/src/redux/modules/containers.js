@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { change, SubmissionError, reset } from 'redux-form';
+import format from 'string-template';
 
 import { hideItemForm, setItemFormError } from './itemForm';
 import { hideContainerForm, setContainerFormError } from './containerForm';
@@ -87,7 +88,7 @@ export default function reducer(state = initialState, action) {
     case EDIT_CONTAINER_SUCCESS:
       return {
         ...state,
-        containers: updateContainerInContainers(state.containers, action.payload)
+        containers: updateContainerInContainers(state.containers, action.payload.data)
       };        
     case DELETE_CONTAINER_SUCCESS:
       //// determine new selected container id
@@ -239,17 +240,17 @@ export const fetchContainers = () => {
 
 
 
-export const addEntity = ({ autofocusField, formName, hideAction, requestAction, successAction, url }) => (values, resolve, reject) => {
+export const updateEntity = ({ autofocusField, formName, handler, hideAction, requestAction, successAction, url }) => (values, resolve, reject) => {
+  url = format(url, values);
   return (dispatch, getState) => {
-    dispatch(request());
-    return post(
+    dispatch(requestAction());
+    return handler(
       url,
       values,
       response => {
         dispatch(reset(formName));
         dispatch(successAction(response));
-        if (values.keepOpen) {
-          //// TODO: not working
+        if (autofocusField && values.keepOpen) {
           dispatch(change(formName, 'keepOpen', true));
           const autofocus = document.getElementById(autofocusField);
           autofocus.focus();
@@ -263,36 +264,51 @@ export const addEntity = ({ autofocusField, formName, hideAction, requestAction,
       }
     );
   };  
-}
+};
 
-export const addContainer = addEntity({
-  autofocusField: 'name', 
+export const updateContainer = ({ autofocusField, handler, requestAction, successAction, url }) => updateEntity({
+  autofocusField,
   formName: CONTAINER_FORM_NAME, 
+  handler,
   hideAction: hideContainerForm,  
+  requestAction,
+  successAction,
+  url
+});
+
+export const addContainer = updateContainer({
+  autofocusField: 'name',
+  handler: post,
   requestAction: createAction(ADD_CONTAINER), 
   successAction: createAction(ADD_CONTAINER_SUCCESS), 
   url: '/api/containers/'
-
 });
 
-export const editContainer = (container, resolve, reject) => {
-  return (dispatch, getState) => {
-    dispatch(editContainerRequest());
-    return put(
-      `/api/containers/${container.id}`,
-      container,
-      response => {
-        reset(CONTAINER_FORM_NAME);
-        dispatch(editContainerSuccess(container));
-        dispatch(hideContainerForm());
-        resolve();
-      },
-      error => {
-        reject(error);
-      }
-    );
-  };
-};
+export const editContainer = updateContainer({
+  handler: put,
+  requestAction: createAction(EDIT_CONTAINER), 
+  successAction: createAction(EDIT_CONTAINER_SUCCESS), 
+  url: '/api/containers/{id}'
+});
+
+// export const editContainer = (container, resolve, reject) => {
+//   return (dispatch, getState) => {
+//     dispatch(editContainerRequest());
+//     return put(
+//       `/api/containers/${container.id}`,
+//       container,
+//       response => {
+//         reset(CONTAINER_FORM_NAME);
+//         dispatch(editContainerSuccess(container));
+//         dispatch(hideContainerForm());
+//         resolve();
+//       },
+//       error => {
+//         reject(error);
+//       }
+//     );
+//   };
+// };
 
 export const removeContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
