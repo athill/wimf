@@ -63,16 +63,6 @@ class ContainerController extends Controller {
 	}
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -80,31 +70,20 @@ class ContainerController extends Controller {
 	public function store(Request $request) {
 		$container = new Container();
 		$container->updateFromRequest($request);
-		if (Container::nameExists($container->name)) {
-			$errorMessage = 'Container "'.$container->name.'" already exists.';
-			return response()->json(['error'=>$errorMessage], 400);
-		}
 		try {
 			$container->save();
-		} catch (\PDOException $e) {
-			Log::info($e->getMessage());
-			return response()->json(['error'=>$e->getMessage()], 400);
-		} 
-		return $container;
+			return $container;
+		} catch (\Illuminate\Database\QueryException $exception) {
+			//// duplicate item
+			if (Utils::isDbIntegrityException($exception)) {
+				$errorMessage = 'Container "'.$container->name.'" already exists.';
+				return Utils::handleDbIntegrityException($exception, $errorMessage);
+			} else {
+				throw $exception;
+			}
+		}
 	}
 
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
 
 	/**
 	 * Update the specified resource in storage.

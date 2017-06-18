@@ -8,6 +8,12 @@ import { initialState as containerFormInitialState } from '../../../../src/redux
 import DecoratedContainerForm, { ContainerForm, mapStateToProps, mapDispatchToProps, validate } from '../../../../src/components/pages/Items/ContainerForm';
 import { ModalTypes } from '../../../../src/util/formModal';
 
+const defaultState = {
+	containers: containersInitialState,
+	containerForm: containerFormInitialState,
+	form: {}
+};
+
 describe('ContainerForm', () => {
 	it('works', () => {
 		const handleSubmit = sinon.spy();
@@ -49,15 +55,12 @@ describe('ContainerForm', () => {
 	});
 
 	describe('map state to props', () => {
-		const defaultState = {
-			containerForm: containerFormInitialState,
-			containers: containersInitialState
-		}
+
 		
 		it('works', () => {
 			const action = 'Add';
 			const state = {
-				containers: containersInitialState,
+				...defaultState,
 				containerForm: {
 					...containerFormInitialState,
 					show: ModalTypes.CREATE
@@ -98,7 +101,7 @@ describe('ContainerForm', () => {
 			const props = mapStateToProps({
 				...defaultState,
 				containerForm: {
-					...containerForm,
+					...containerFormInitialState,
 					show: ModalTypes.DELETE
 				}
 				
@@ -116,7 +119,7 @@ describe('ContainerForm', () => {
 			const containerForm = defaultState.containerForm;
 			const props = mapStateToProps({
 				...defaultState,
-				containerForm: {
+				containerFormInitialState: {
 					...containerForm,
 					show: ModalTypes.NONE
 				}

@@ -1,15 +1,16 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
-import { Field, reduxForm, change } from 'redux-form';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { add, remove, edit } from '../../../redux/modules/containers';
+import { addContainer, CONTAINER_FORM_NAME, removeContainer, editContainer } from '../../../redux/modules/containers';
 import { hideContainerForm } from '../../../redux/modules/containerForm';
 import { ModalTypes } from '../../../util/formModal';
 import FormModal from '../../common/FormModal';
+import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
 import ValidatedInput from '../../common/ValidatedInput';
 
-const formName = 'container';
+
+const  { DOM: { input } } = React;
 
 export const validate = values => {
 	const errors = {};
@@ -22,69 +23,61 @@ export const validate = values => {
 	return errors;
 };
 
+const submit = submitAction => (values, dispatch) => {
+	return new Promise((resolve, reject) => dispatch(submitAction(values, resolve, reject)))
+		.catch(error => {
+			throw new SubmissionError(error);
+		});
+};
 
-export const ContainerForm = ({ 
+export const ContainerForm = ({ 			 
 			initialValues,
 			onHide, 
-			serverErrors, 
 			readOnly,
 			showModal, 
 			submitAction, 
+			submitButtonBsStyle, 
+			submitButtonText, 			
 			title,
 			type, 
-			submitButtonBsStyle, 
-			submitButtonText, 
+
 			//// provided by redux-form
+			error,
 	     	handleSubmit,
 	     	reset,
 	     	submitting }) => {
 	if (showModal === ModalTypes.NONE) {
 		return null;
 	}
-	const submit  = (values, dispatch) => {
-	  return new Promise((resolve, reject) => {
-		dispatch(submitAction(values));	
-
-		reset();
-		if (values.keepOpen) {
-			dispatch(change(formName, 'keepOpen', true));
-			const name = document.getElementById('name');
-			name.focus();
-		} else {
-			onHide();	
-		}
-		resolve();
-	  });		
-	};
-	return (<FormModal title={title} valid={true} show={showModal} errors={serverErrors} submitButtonBsStyle={submitButtonBsStyle} 
+	return (<FormModal title={title} valid={true} show={showModal} errors={error} submitButtonBsStyle={submitButtonBsStyle} 
 			submitButtonText={submitButtonText}
-			onSubmit={handleSubmit(submit)} 
+			onSubmit={handleSubmit(submit(submitAction))} 
 			onHide={() => {
 				reset(); 
 				onHide();
 			}}>
 		<Field type="text" autoFocus id="name" name="name" label="Name" readOnly={readOnly} component={ValidatedInput} />
 		<Field type="text" id="description" name="description" label="Description" readOnly={readOnly} component={ValidatedInput} />
-		{ ModalTypes.CREATE === type && <Field id='keepOpen' name='keepOpen' component={Checkbox}>Keep Open</Field> }
+		{ ModalTypes.CREATE === type && <Field name='keepOpen' component={ReduxFormCheckbox}>Keep Open</Field> }
 
 	</FormModal>)
 };
-export const mapStateToProps = ({ containerForm: { errors, show }, containers: { containers, selectedId } }) => {
+export const mapStateToProps = ({ containerForm: { show }, containers: { containers, selectedId }, form}) => {
 	const selectedContainer = containers[selectedId];
 	let submitAction, title, submitButtonBsStyle;
 	switch (show) {
 		case ModalTypes.DELETE:
-			submitAction = remove;
+			submitAction = removeContainer;
 			title = 'Delete';
 			submitButtonBsStyle='danger';
 			break;
 		case ModalTypes.EDIT:
-			submitAction = edit;
+			submitAction = editContainer;
 			title = 'Edit';
 			submitButtonBsStyle='primary';
 			break;
 		case ModalTypes.CREATE:
-			submitAction = add;
+			submitAction = addContainer;
 			title = 'Add';
 			submitButtonBsStyle='success';
 			break;			
@@ -95,9 +88,10 @@ export const mapStateToProps = ({ containerForm: { errors, show }, containers: {
 			console.error('Invalid Modal Type', show);
 	}
 	const submitButtonText = title;
+	const error = form.container && form.container.error;
 	title += ' Container';
 	const rtn = {
-		serverErrors: errors,
+		error,
 		showModal: show !== ModalTypes.NONE,
 		type: show,
 		title,
@@ -119,7 +113,7 @@ export const mapDispatchToProps = (dispatch) => {
 };
 
 const form = reduxForm({
-	form: formName,
+	form: CONTAINER_FORM_NAME,
 	validate,
 	enableReinitialize: true
 });

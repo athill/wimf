@@ -24,16 +24,7 @@ export function defaultFormModalHandler(type, state, action) {
       ...state,
       show: ModalTypes.EDIT,
       selected: action.payload
-    };            
-  } else if (action.type === 'SET_'+type+'_FORM_ERROR') {
-    let errors = action.payload.error;
-    if (!(errors instanceof Array)) {
-      errors = [errors];
-    }
-	  return {
-		  ...state,
-		  errors
-	  };
+    };
   } else if (action.type === 'HIDE_'+type+'_FORM') {
     return {
       ...state,

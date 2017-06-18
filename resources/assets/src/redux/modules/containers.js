@@ -1,7 +1,8 @@
 import { createAction } from 'redux-actions';
+import { change, SubmissionError, reset } from 'redux-form';
 
-import { setItemFormError } from './itemForm';
-import { setContainerFormError } from './containerForm';
+import { hideItemForm, setItemFormError } from './itemForm';
+import { hideContainerForm, setContainerFormError } from './containerForm';
 
 //// utils
 import { getIsoFormat } from '../../util/DateUtils';
@@ -39,6 +40,9 @@ export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS';
 export const EDIT_ITEM_ERROR = 'EDIT_ITEM_ERROR';
 export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER';
 
+export const ITEM_FORM_NAME = 'item';
+export const CONTAINER_FORM_NAME = 'container';
+
 //// reducer
 export const initialState = {
   containers: [],
@@ -48,7 +52,7 @@ export const initialState = {
 };
 
 
-const updateItem = (state, action) => {
+const updateItemReducer = (state, action) => {
   let categories = state.containers[state.selectedId].categories;
   switch (action.type) {
     case ADD_ITEM_SUCCESS:
@@ -133,7 +137,7 @@ export default function reducer(state = initialState, action) {
     case ADD_ITEM_SUCCESS:
     case DELETE_ITEM_SUCCESS:
     case EDIT_ITEM_SUCCESS:
-      const items = updateItem(state, action); 
+      const items = updateItemReducer(state, action); 
       return  items;
     case SET_ITEMS_FILTER:
       return {
@@ -159,16 +163,16 @@ const processContainers = json => {
 const requestContainers = createAction(REQUEST_CONTAINERS);
 const receiveContainers = createAction(RECEIVE_CONTAINERS, data => processContainers(data));
 
-const addContainer = createAction(ADD_CONTAINER);
+const addContainerRequest = createAction(ADD_CONTAINER);
 const addContainerSuccess = createAction(ADD_CONTAINER_SUCCESS);
 const addContainerError = createAction(ADD_CONTAINER_ERROR);
 
 
-const deleteContainer = createAction(DELETE_CONTAINER);
+const deleteContainerRequest = createAction(DELETE_CONTAINER);
 const deleteContainerSuccess = createAction(DELETE_CONTAINER_SUCCESS);
 const deleteContainerError = createAction(DELETE_CONTAINER_ERROR);
 
-const editContainer = createAction(EDIT_CONTAINER);
+const editContainerRequest = createAction(EDIT_CONTAINER);
 const editContainerSuccess = createAction(EDIT_CONTAINER_SUCCESS);
 const editContainerError = createAction(EDIT_CONTAINER_ERROR);
 
@@ -194,7 +198,7 @@ const editItemError = createAction(EDIT_ITEM_ERROR);
 export const setItemsFilter = createAction(SET_ITEMS_FILTER);
 
 //// containers
-export function fetchContainers() {
+export const fetchContainers = () => {
   return dispatch => {
     dispatch(requestContainers());
     return get(
@@ -207,54 +211,65 @@ export function fetchContainers() {
   };
 }
 
-export const add = container => {
+export const addContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
-    dispatch(addContainer());
+    dispatch(addContainerRequest());
+    console.log(container);
     return post(
       `/api/containers/`,
       container,
       response => {
+        dispatch(reset(CONTAINER_FORM_NAME));
         dispatch(addContainerSuccess(response));
+        if (container.keepOpen) {
+          //// TODO: not working
+          dispatch(change(CONTAINER_FORM_NAME, 'keepOpen', true));
+          const name = document.getElementById('name');
+          name.focus();
+        } else {
+          dispatch(hideContainerForm());
+        }        
+        resolve();
       },
       error => {
-        dispatch(addContainerError());
-        console.log('error is', error);
-        dispatch(setContainerFormError(error));
-        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
+        reject(error);
       }
     );
   };
 };
 
-export const edit = container => {
+export const editContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
-    dispatch(editContainer());
+    dispatch(editContainerRequest());
     return put(
       `/api/containers/${container.id}`,
       container,
       response => {
+        reset(CONTAINER_FORM_NAME);
         dispatch(editContainerSuccess(container));
+        dispatch(hideContainerForm());
+        resolve();
       },
       error => {
-        dispatch(editContainerError());
-        dispatch(setContainerFormError(error.data));
-        setTimeout(() => dispatch(setContainerFormError({error: []})), 3000);
+        reject(error);
       }
     );
   };
 };
 
-export const remove = container => {
+export const removeContainer = (container, resolve, reject) => {
   return (dispatch, getState) => {
-    dispatch(deleteContainer());
+    dispatch(deleteContainerRequest());
     return deleteRequest(
       `/api/containers/${container.id}`,
       response => {
+        reset(CONTAINER_FORM_NAME);
         dispatch(deleteContainerSuccess(container));
+        dispatch(hideContainerForm());
+        resolve();
       },
       error => {
-        console.error(error);
-        dispatch(deleteContainerError());
+        reject(error);
       }
     );
   };
@@ -266,8 +281,6 @@ export const select = id => {
     dispatch(fetchItems(id));
   };
 };
-
-
 
 export const fetchItems = containerId => (
   (dispatch, getState) => {
@@ -286,12 +299,9 @@ export const fetchItems = containerId => (
   }
 );
 
-export const addItem = item => {
+export const addItem = (item, resolve, reject) => {
   return (dispatch, getState) => {
     const state = getState();
-
-    // const { containers: { selected: { id } }  } = getState();
-    // const container = state.containers[state.containers.selected];
     item.container_id = state.containers.selectedId;
     item.date = getIsoFormat(item.date);
     dispatch(addItemRequest());
@@ -300,17 +310,26 @@ export const addItem = item => {
       item,
       response => {
         dispatch(addItemSuccess(response));
+        dispatch(reset(ITEM_FORM_NAME));
+        if (item.keepOpen) {
+          //// TODO: not working
+          dispatch(change(ITEM_FORM_NAME, 'keepOpen', true));
+          const category = document.getElementById('category');
+          category.focus();
+        } else {
+          dispatch(hideItemForm());
+        }
+        resolve();
       },
       error => {
-        dispatch(addItemError());
-        dispatch(setItemFormError(error.data));
-        setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
+        reject(error);
+
       }
     );
   };
 };
 
-export const editItem = item => {
+export const editItem = (item, resolve, reject) => {
   return (dispatch, getState) => {
     const state = getState();
     item.container_id = state.containers.selectedId;
@@ -320,28 +339,31 @@ export const editItem = item => {
       `/api/items/${item.id}`,
       item,
       response => {
+        reset(ITEM_FORM_NAME);
         dispatch(editItemSuccess(response));
+        dispatch(hideItemForm());
+        resolve();
       },
       error => {
-        dispatch(editItemError());
-        dispatch(setItemFormError(error.data));
-        setTimeout(() => dispatch(setItemFormError({error: []})), 3000);
+        reject(error);
       }
     );
   };
 };
 
-export const removeItem = item => {
+export const removeItem = (item, resolve, reject) => {
   return (dispatch, getState) => {
     dispatch(deleteItemRequest());
     return deleteRequest(
       `/api/items/${item.id}`,
       response => {
+        reset(ITEM_FORM_NAME);
         dispatch(deleteItemSuccess({ data: item }));
+        dispatch(hideItemForm());
+        resolve();
       },
       error => {
-        console.error(error);
-        dispatch(deleteItemError());
+        reject(error);
       }
     );
   };

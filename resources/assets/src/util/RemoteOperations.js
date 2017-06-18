@@ -23,15 +23,34 @@ const makePromise = (method, url, data)  => {
   return promise;
 };
 
-const chain = (promise, resolves, reject = response => {console.error(response); reject(); }) => {
+const chain = (promise, resolvers, rejecter = response => {console.error(response); reject(); }) => {
     //// wrap resolve if not an array
-    if (!(resolves.constructor === Array)) {
-      resolves = [resolves];
+    if (!Array.isArray(resolvers)) {
+      resolvers = [resolvers];
     }
     //// chain resolves
-    resolves.forEach(resolve => promise.then(resolve));
+    resolvers.forEach(resolve => promise.then(resolve));
     //// chain catch
-    promise.catch(reject);  
+    promise.catch(error => {
+      let problem;
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        problem = error.response.data;
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        problem = error.request;
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        // console.log('Error', error.message);
+        problem = error;
+      }      
+
+      rejecter(problem);
+    });
+
+    return promise;  
 };
 
 
@@ -39,22 +58,22 @@ const chain = (promise, resolves, reject = response => {console.error(response);
 
 export const get = (url, resolves, reject) => {
     const promise = makePromise('get', url);
-    chain(promise, resolves, reject);
+    return chain(promise, resolves, reject);
 };
 
 export const post = (url, data, resolves, reject)  => {
   const promise = makePromise('post', url, data);
-  chain(promise, resolves, reject);
+  return chain(promise, resolves, reject);
 };
 
 export const put = (url, data, resolves, reject)  => {
   const promise = makePromise('put', url, data);
-  chain(promise, resolves, reject);
+  return chain(promise, resolves, reject);
 };
 
 export const deleteRequest = (url, resolves, reject) => {
   const promise = makePromise('delete', url);
-  chain(promise, resolves, reject);  
+  return chain(promise, resolves, reject);  
 };
 
 
