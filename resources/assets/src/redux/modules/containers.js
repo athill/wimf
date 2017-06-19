@@ -94,7 +94,7 @@ export default function reducer(state = initialState, action) {
       //// determine new selected container id
       const containerArray = getSortedContainerArray(state.containers);
       //// find index of passed in container
-      const index = containerArray.findIndex(x => x.id === action.payload.id);
+      const index = containerArray.findIndex(x => x.id === action.payload.data.id);
       let selectedId = state.selectedId;
       //// if passed in container is same as selected container (which it probably is), adjust selectedId
       if (state.selectedId === index) {
@@ -103,7 +103,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         selectedId,
-        containers: removeContainerFromContainers(state.containers, action.payload)
+        containers: removeContainerFromContainers(state.containers, action.payload.data)
       }; 
 
     case REQUEST_ITEMS:
@@ -212,32 +212,6 @@ export const fetchContainers = () => {
   };
 }
 
-// export const addContainer = (container, resolve, reject) => {
-//   return (dispatch, getState) => {
-//     dispatch(addContainerRequest());
-//     return post(
-//       `/api/containers/`,
-//       container,
-//       response => {
-//         dispatch(reset(CONTAINER_FORM_NAME));
-//         dispatch(addContainerSuccess(response));
-//         if (container.keepOpen) {
-//           //// TODO: not working
-//           dispatch(change(CONTAINER_FORM_NAME, 'keepOpen', true));
-//           const name = document.getElementById('name');
-//           name.focus();
-//         } else {
-//           dispatch(hideContainerForm());
-//         }        
-//         resolve();
-//       },
-//       error => {
-//         reject(error);
-//       }
-//     );
-//   };
-// };
-
 
 
 export const updateEntity = ({ autofocusField, formName, handler, hideAction, requestAction, successAction, url }) => (values, resolve, reject) => {
@@ -249,7 +223,7 @@ export const updateEntity = ({ autofocusField, formName, handler, hideAction, re
       values,
       response => {
         dispatch(reset(formName));
-        dispatch(successAction(response));
+        dispatch(successAction(response || values));
         if (autofocusField && values.keepOpen) {
           dispatch(change(formName, 'keepOpen', true));
           const autofocus = document.getElementById(autofocusField);
@@ -291,15 +265,22 @@ export const editContainer = updateContainer({
   url: '/api/containers/{id}'
 });
 
-// export const editContainer = (container, resolve, reject) => {
+export const removeContainer = updateContainer({
+  handler: deleteRequest,
+  requestAction: createAction(DELETE_CONTAINER), 
+  successAction: createAction(DELETE_CONTAINER_SUCCESS), 
+  url: '/api/containers/{id}'
+});
+
+
+// export const removeContainer = (container, resolve, reject) => {
 //   return (dispatch, getState) => {
-//     dispatch(editContainerRequest());
-//     return put(
+//     dispatch(deleteContainerRequest());
+//     return deleteRequest(
 //       `/api/containers/${container.id}`,
-//       container,
 //       response => {
 //         reset(CONTAINER_FORM_NAME);
-//         dispatch(editContainerSuccess(container));
+//         dispatch(deleteContainerSuccess(container));
 //         dispatch(hideContainerForm());
 //         resolve();
 //       },
@@ -309,24 +290,6 @@ export const editContainer = updateContainer({
 //     );
 //   };
 // };
-
-export const removeContainer = (container, resolve, reject) => {
-  return (dispatch, getState) => {
-    dispatch(deleteContainerRequest());
-    return deleteRequest(
-      `/api/containers/${container.id}`,
-      response => {
-        reset(CONTAINER_FORM_NAME);
-        dispatch(deleteContainerSuccess(container));
-        dispatch(hideContainerForm());
-        resolve();
-      },
-      error => {
-        reject(error);
-      }
-    );
-  };
-};
 
 export const select = id => {
   return (dispatch, getState) => {
