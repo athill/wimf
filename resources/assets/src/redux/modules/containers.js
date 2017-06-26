@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { change, SubmissionError, reset } from 'redux-form';
+import { change, reset, SubmissionError } from 'redux-form';
 import format from 'string-template';
 
 import { hideItemForm, setItemFormError } from './itemForm';
@@ -8,9 +8,18 @@ import { hideContainerForm, setContainerFormError } from './containerForm';
 //// utils
 import { getIsoFormat } from '../../util/DateUtils';
 
-import { get, post, deleteRequest, put } from '../../util/RemoteOperations';
-import { addContainerToContainers, addItemToCategories, getSortedContainerArray, removeContainerFromContainers, removeItemFromCategories, 
-  sortCategories, updateItemInCategories, updateCategoriesInContainers, updateContainerInContainers } from '../../util/ContainerOperations';
+import { get, deleteRequest, post, put } from '../../util/RemoteOperations';
+import { 
+  addContainerToContainers, 
+  addItemToCategories, 
+  getSortedContainerArray, 
+  removeContainerFromContainers, 
+  removeItemFromCategories, 
+  sortCategories,
+  updateCategoriesInContainers, 
+  updateContainerInContainers,
+  updateItemInCategories 
+} from '../../util/ContainerOperations';
 
 //// actions
 export const FETCH_CONTAINERS = 'FETCH_CONTAINERS';
@@ -75,36 +84,44 @@ const updateItemReducer = (state, action) => {
   }
 };
 
+const updateContainerReducer = (state, action) => {
+    switch (action.type) {
+      case ADD_CONTAINER_SUCCESS:
+        return {
+          ...state,
+          containers: addContainerToContainers(state.containers, action.payload.data),
+          selectedId: action.payload.data.id
+        };
+      case EDIT_CONTAINER_SUCCESS:
+        return {
+          ...state,
+          containers: updateContainerInContainers(state.containers, action.payload.data)
+        };        
+      case DELETE_CONTAINER_SUCCESS:
+        //// determine new selected container id
+        const containerArray = getSortedContainerArray(state.containers);
+        //// find index of passed in container to remove
+        const removeIndex = containerArray.findIndex(x => x.id === action.payload.data.id);
+        const selectIndex = removeIndex == 0 ? 1 : removeIndex - 1;
+        let selectedId = containerArray[selectIndex].id;
+        return {
+          ...state,
+          selectedId,
+          containers: removeContainerFromContainers(state.containers, action.payload.data)
+        };      
+    }
+};
+
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_CONTAINERS:
       return action.payload;
 
     case ADD_CONTAINER_SUCCESS:
-      return {
-        ...state,
-        containers: addContainerToContainers(state.containers, action.payload.data)
-      };
     case EDIT_CONTAINER_SUCCESS:
-      return {
-        ...state,
-        containers: updateContainerInContainers(state.containers, action.payload.data)
-      };        
     case DELETE_CONTAINER_SUCCESS:
-      //// determine new selected container id
-      const containerArray = getSortedContainerArray(state.containers);
-      //// find index of passed in container
-      const index = containerArray.findIndex(x => x.id === action.payload.data.id);
-      let selectedId = state.selectedId;
-      //// if passed in container is same as selected container (which it probably is), adjust selectedId
-      if (state.selectedId === index) {
-        selectedId = index === 0 ? 1 : index - 1;
-      }
-      return {
-        ...state,
-        selectedId,
-        containers: removeContainerFromContainers(state.containers, action.payload.data)
-      }; 
+      const newState = updateContainerReducer(state, action);
+      return newState;
 
     case REQUEST_ITEMS:
       return {
@@ -164,18 +181,12 @@ const processContainers = json => {
 const requestContainers = createAction(REQUEST_CONTAINERS);
 const receiveContainers = createAction(RECEIVE_CONTAINERS, data => processContainers(data));
 
-const addContainerRequest = createAction(ADD_CONTAINER);
-const addContainerSuccess = createAction(ADD_CONTAINER_SUCCESS);
-const addContainerError = createAction(ADD_CONTAINER_ERROR);
 
 
 const deleteContainerRequest = createAction(DELETE_CONTAINER);
 const deleteContainerSuccess = createAction(DELETE_CONTAINER_SUCCESS);
 const deleteContainerError = createAction(DELETE_CONTAINER_ERROR);
 
-const editContainerRequest = createAction(EDIT_CONTAINER);
-const editContainerSuccess = createAction(EDIT_CONTAINER_SUCCESS);
-const editContainerError = createAction(EDIT_CONTAINER_ERROR);
 
 const selectContainer = createAction(SELECT_CONTAINER);
 
@@ -210,49 +221,80 @@ export const fetchContainers = () => {
       }
     );
   };
-}
+};
+
+
+/**
+ * determines whether to keep form after successful submission open or not, autofocuses selected field by name
+ * @param  {string} autofocusField name of field to autofocus if keeping form open
+ * @param  {string} formName       name of redux-form object
+ * @return {function(dispatch, hideAction, respone, values)} handler method for hideFormHandler
+ */
+const keepOpenHandler = autofocusField => {
+  /**
+   * handler method for hideFormHandler
+   * expects a boolean values.keepOpen to determine whether to keep the modal open after successful submission
+   * @param  {function} dispatch   redux dispatch function
+   * @param  {function} hideAction redux action to hide form modal
+   * @param  {object} values     values passed to form
+   * @return {none}            [description]
+   */
+  return (dispatch, formName, hideAction,  values) => {
+    if (values.keepOpen) {
+      dispatch(change(formName, 'keepOpen', true));
+      const autofocus = document.getElementById(autofocusField);
+      autofocus.focus();
+    } else {
+      dispatch(hideAction());
+    } 
+  }
+};
 
 
 
-export const updateEntity = ({ autofocusField, formName, handler, hideAction, requestAction, successAction, url }) => (values, resolve, reject) => {
-  url = format(url, values);
-  return (dispatch, getState) => {
-    dispatch(requestAction());
-    return handler(
-      url,
-      values,
-      response => {
-        dispatch(reset(formName));
-        dispatch(successAction(response || values));
-        if (autofocusField && values.keepOpen) {
-          dispatch(change(formName, 'keepOpen', true));
-          const autofocus = document.getElementById(autofocusField);
-          autofocus.focus();
-        } else {
-          dispatch(hideAction());
-        }        
-        resolve();
-      },
-      error => {
-        reject(error);
-      }
-    );
+export const updateEntity = ({ formName, handler, hideAction, requestAction, successAction, url,
+  hideFormHandler = (dispatch, formName, hideAction, values) => dispatch(hideAction()) }) => {
+  return (values, resolve, reject) => {
+    url = format(url, values);
+    return (dispatch, getState) => {
+      dispatch(requestAction());
+      return handler(
+        url,
+        values,
+        response => {
+          dispatch(reset(formName));
+          dispatch(successAction(response.data ? response : { data: values }));
+          hideFormHandler(dispatch, formName, hideAction, values);
+          // if (autofocusField && values.keepOpen) {
+          //   dispatch(change(formName, 'keepOpen', true));
+          //   const autofocus = document.getElementById(autofocusField);
+          //   autofocus.focus();
+          // } else {
+          //   dispatch(hideAction());
+          // }        
+          resolve();
+        },
+        error => {
+          reject(error);
+        }
+      );
+    };
   };  
 };
 
-export const updateContainer = ({ autofocusField, handler, requestAction, successAction, url }) => updateEntity({
-  autofocusField,
+export const updateContainer = ({ handler, hideFormHandler, requestAction, successAction, url }) => updateEntity({
   formName: CONTAINER_FORM_NAME, 
   handler,
   hideAction: hideContainerForm,  
+  hideFormHandler,
   requestAction,
   successAction,
   url
 });
 
 export const addContainer = updateContainer({
-  autofocusField: 'name',
   handler: post,
+  hideFormHandler: keepOpenHandler('name', CONTAINER_FORM_NAME),
   requestAction: createAction(ADD_CONTAINER), 
   successAction: createAction(ADD_CONTAINER_SUCCESS), 
   url: '/api/containers/'
@@ -349,7 +391,6 @@ export const editItem = (item, resolve, reject) => {
   return (dispatch, getState) => {
     const state = getState();
     item.container_id = state.containers.selectedId;
-    item.date = getIsoFormat(item.date);
     dispatch(editItemRequest());
     return put(
       `/api/items/${item.id}`,
