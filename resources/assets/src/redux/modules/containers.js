@@ -27,13 +27,10 @@ export const REQUEST_CONTAINERS  = 'REQUEST_CONTAINERS';
 export const RECEIVE_CONTAINERS = 'RECEIVE_CONTAINERS';
 export const ADD_CONTAINER = 'ADD_CONTAINER';
 export const ADD_CONTAINER_SUCCESS = 'ADD_CONTAINER_SUCCESS';
-export const ADD_CONTAINER_ERROR  = 'ADD_CONTAINER_ERROR';
 export const DELETE_CONTAINER = 'DELETE_CONTAINER';
 export const DELETE_CONTAINER_SUCCESS = 'DELETE_CONTAINER_SUCCESS';
-export const DELETE_CONTAINER_ERROR = 'DELETE_CONTAINER_ERROR';
 export const EDIT_CONTAINER = 'EDIT_CONTAINER';
 export const EDIT_CONTAINER_SUCCESS = 'EDIT_CONTAINER_SUCCESS';
-export const EDIT_CONTAINER_ERROR = 'EDIT_CONTAINER_ERROR';
 export const SELECT_CONTAINER = 'SELECT_CONTAINER';
 //// items
 export const FETCH_ITEMS = 'FETCH_ITEMS';
@@ -41,13 +38,11 @@ export const REQUEST_ITEMS  = 'REQUEST_ITEMS';
 export const RECEIVE_ITEMS = 'RECEIVE_ITEMS';
 export const ADD_ITEM = 'ADD_ITEM';
 export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
-export const ADD_ITEM_ERROR  = 'ADD_ITEM_ERROR';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS';
 export const DELETE_ITEM_ERROR = 'DELETE_ITEM_ERROR';
 export const EDIT_ITEM = 'EDIT_ITEM';
 export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS';
-export const EDIT_ITEM_ERROR = 'EDIT_ITEM_ERROR';
 export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER';
 
 export const ITEM_FORM_NAME = 'item';
@@ -75,7 +70,7 @@ const updateItemReducer = (state, action) => {
       categories = removeItemFromCategories(categories, action.payload.data);
       break;
     default:
-      console.error('How did I get here?');           
+      console.error('Invalid action', action.type);           
   }
   const containers = updateCategoriesInContainers(state.containers, state.selectedId, categories);
   return {
@@ -147,7 +142,6 @@ export default function reducer(state = initialState, action) {
         }
       };      
     case SELECT_CONTAINER:
-      // const selected = state.containers.find(container => container.id === action.payload);
       return {
         ...state,
         selectedId:  action.payload || state.selectedId
@@ -177,36 +171,13 @@ const processContainers = json => {
       selectedId: json[0].id+''
   };
 };
-
 const requestContainers = createAction(REQUEST_CONTAINERS);
 const receiveContainers = createAction(RECEIVE_CONTAINERS, data => processContainers(data));
-
-
-
-const deleteContainerRequest = createAction(DELETE_CONTAINER);
-const deleteContainerSuccess = createAction(DELETE_CONTAINER_SUCCESS);
-const deleteContainerError = createAction(DELETE_CONTAINER_ERROR);
-
-
 const selectContainer = createAction(SELECT_CONTAINER);
 
 //// items
 const requestItems = createAction(REQUEST_ITEMS);
 const receiveItems = createAction(RECEIVE_ITEMS);
-
-export const addItemRequest = createAction(ADD_ITEM);
-const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
-const addItemError = createAction(ADD_ITEM_ERROR);
-
-
-const deleteItemRequest = createAction(DELETE_ITEM);
-const deleteItemSuccess = createAction(DELETE_ITEM_SUCCESS);
-const deleteItemError = createAction(DELETE_ITEM_ERROR);
-
-const editItemRequest = createAction(EDIT_ITEM);
-const editItemSuccess = createAction(EDIT_ITEM_SUCCESS);
-const editItemError = createAction(EDIT_ITEM_ERROR);
-
 export const setItemsFilter = createAction(SET_ITEMS_FILTER);
 
 //// containers
@@ -253,25 +224,20 @@ const keepOpenHandler = autofocusField => {
 
 
 export const updateEntity = ({ formName, handler, hideAction, requestAction, successAction, url,
-  hideFormHandler = (dispatch, formName, hideAction, values) => dispatch(hideAction()) }) => {
+    hideFormHandler = (dispatch, formName, hideAction, values) => dispatch(hideAction()),
+    valuesTransformer = (values, getState) => values
+   }) => {
   return (values, resolve, reject) => {
     url = format(url, values);
     return (dispatch, getState) => {
       dispatch(requestAction());
       return handler(
         url,
-        values,
+        valuesTransformer(values, getState),
         response => {
           dispatch(reset(formName));
           dispatch(successAction(response.data ? response : { data: values }));
-          hideFormHandler(dispatch, formName, hideAction, values);
-          // if (autofocusField && values.keepOpen) {
-          //   dispatch(change(formName, 'keepOpen', true));
-          //   const autofocus = document.getElementById(autofocusField);
-          //   autofocus.focus();
-          // } else {
-          //   dispatch(hideAction());
-          // }        
+          hideFormHandler(dispatch, formName, hideAction, values);     
           resolve();
         },
         error => {
@@ -282,19 +248,21 @@ export const updateEntity = ({ formName, handler, hideAction, requestAction, suc
   };  
 };
 
-export const updateContainer = ({ handler, hideFormHandler, requestAction, successAction, url }) => updateEntity({
+//// Container form actions
+export const updateContainer = ({ handler, hideFormHandler, requestAction, successAction, url, valuesTransformer }) => updateEntity({
   formName: CONTAINER_FORM_NAME, 
   handler,
   hideAction: hideContainerForm,  
   hideFormHandler,
   requestAction,
   successAction,
-  url
+  url,
+  valuesTransformer
 });
 
 export const addContainer = updateContainer({
   handler: post,
-  hideFormHandler: keepOpenHandler('name', CONTAINER_FORM_NAME),
+  hideFormHandler: keepOpenHandler('name'),
   requestAction: createAction(ADD_CONTAINER), 
   successAction: createAction(ADD_CONTAINER_SUCCESS), 
   url: '/api/containers/'
@@ -314,25 +282,51 @@ export const removeContainer = updateContainer({
   url: '/api/containers/{id}'
 });
 
+//// Item form actions
+export const updateItem = ({ handler, hideFormHandler, requestAction, successAction, url, valuesTransformer }) => {
+  return updateEntity({
+    formName: ITEM_FORM_NAME, 
+    handler,
+    hideAction: hideItemForm,
+    hideFormHandler,
+    requestAction,
+    successAction,
+    url,
+    valuesTransformer
+  });
+};
 
-// export const removeContainer = (container, resolve, reject) => {
-//   return (dispatch, getState) => {
-//     dispatch(deleteContainerRequest());
-//     return deleteRequest(
-//       `/api/containers/${container.id}`,
-//       response => {
-//         reset(CONTAINER_FORM_NAME);
-//         dispatch(deleteContainerSuccess(container));
-//         dispatch(hideContainerForm());
-//         resolve();
-//       },
-//       error => {
-//         reject(error);
-//       }
-//     );
-//   };
-// };
+const itemValuesTransformer = (values, getState) => ({
+  ...values,
+  container_id: getState().containers.selectedId,
+  date: getIsoFormat(values.date)
+});
 
+export const addItem = updateItem({
+  handler: post,
+  hideFormHandler: keepOpenHandler('category'),
+  requestAction: createAction(ADD_ITEM), 
+  successAction: createAction(ADD_ITEM_SUCCESS),
+  url: '/api/items/',
+  valuesTransformer: itemValuesTransformer
+});
+
+export const editItem = updateItem({
+  handler: put,
+  requestAction: createAction(EDIT_ITEM), 
+  successAction: createAction(EDIT_ITEM_SUCCESS),
+  url: '/api/items/{id}',
+  valuesTransformer: itemValuesTransformer
+});
+
+export const removeItem = updateItem({
+  handler: deleteRequest,
+  requestAction: createAction(DELETE_ITEM), 
+  successAction: createAction(DELETE_ITEM_SUCCESS),
+  url: '/api/items/{id}'
+});
+
+//// select container action
 export const select = id => {
   return (dispatch, getState) => {
     dispatch(selectContainer(id));
@@ -340,6 +334,7 @@ export const select = id => {
   };
 };
 
+//// fetch items
 export const fetchItems = containerId => (
   (dispatch, getState) => {
     const { containers} = getState();
@@ -356,72 +351,3 @@ export const fetchItems = containerId => (
     }
   }
 );
-
-export const addItem = (item, resolve, reject) => {
-  return (dispatch, getState) => {
-    const state = getState();
-    item.container_id = state.containers.selectedId;
-    item.date = getIsoFormat(item.date);
-    dispatch(addItemRequest());
-    return post(
-      `/api/items/`,
-      item,
-      response => {
-        dispatch(addItemSuccess(response));
-        dispatch(reset(ITEM_FORM_NAME));
-        if (item.keepOpen) {
-          //// TODO: not working
-          dispatch(change(ITEM_FORM_NAME, 'keepOpen', true));
-          const category = document.getElementById('category');
-          category.focus();
-        } else {
-          dispatch(hideItemForm());
-        }
-        resolve();
-      },
-      error => {
-        reject(error);
-
-      }
-    );
-  };
-};
-
-export const editItem = (item, resolve, reject) => {
-  return (dispatch, getState) => {
-    const state = getState();
-    item.container_id = state.containers.selectedId;
-    dispatch(editItemRequest());
-    return put(
-      `/api/items/${item.id}`,
-      item,
-      response => {
-        reset(ITEM_FORM_NAME);
-        dispatch(editItemSuccess(response));
-        dispatch(hideItemForm());
-        resolve();
-      },
-      error => {
-        reject(error);
-      }
-    );
-  };
-};
-
-export const removeItem = (item, resolve, reject) => {
-  return (dispatch, getState) => {
-    dispatch(deleteItemRequest());
-    return deleteRequest(
-      `/api/items/${item.id}`,
-      response => {
-        reset(ITEM_FORM_NAME);
-        dispatch(deleteItemSuccess({ data: item }));
-        dispatch(hideItemForm());
-        resolve();
-      },
-      error => {
-        reject(error);
-      }
-    );
-  };
-};
