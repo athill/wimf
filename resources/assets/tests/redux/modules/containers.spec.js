@@ -1,5 +1,5 @@
 // import expect from 'expect';
-import reducer, { initialState, RECEIVE_CONTAINERS } from '../../../src/redux/modules/containers';
+import reducer, { initialState, REQUEST_CONTAINERS } from '../../../src/redux/modules/containers';
 
 
 describe('containers', () => {
@@ -12,7 +12,7 @@ describe('containers', () => {
       ).toEqual(initialState);
     });
 
-    it('should handle RECEIVE_CONTAINERS', () => {
+    it('should handle REQUEST_CONTAINERS.SUCCESS', () => {
   	const items = [{
       				name: 'Freezer',
               id: 0,
@@ -24,7 +24,7 @@ describe('containers', () => {
       }
       expect(
         reducer(initialState, {
-          type: RECEIVE_CONTAINERS,
+          type: REQUEST_CONTAINERS.SUCCESS,
           payload: containers
         })
       ).toEqual(containers);
