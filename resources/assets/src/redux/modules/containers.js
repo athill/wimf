@@ -1,9 +1,6 @@
 import { createAction } from 'redux-actions';
-import { change, reset, SubmissionError } from 'redux-form';
-import format from 'string-template';
 
 import { hideItemForm, setItemFormError } from './itemForm';
-import { hideContainerForm, setContainerFormError } from './containerForm';
 
 //// utils
 import { getIsoFormat } from '../../util/DateUtils';
@@ -20,16 +17,20 @@ import {
   updateContainerInContainers,
   updateItemInCategories 
 } from '../../util/ContainerOperations';
-import { appNamespace, getConstants, keepOpenHandler, updateEntity } from './utils';
+import { appNamespace, formModalHandler, getConstants, keepOpenHandler, ModalTypes, updateEntity } from './utils';
 
 
 //// action constants
-
 export const REQUEST_CONTAINERS  = getConstants('REQUEST_CONTAINERS');
 export const ADD_CONTAINER = getConstants('ADD_CONTAINER');
 export const DELETE_CONTAINER = getConstants('DELETE_CONTAINER');
 export const EDIT_CONTAINER = getConstants('EDIT_CONTAINER');
 export const SELECT_CONTAINER = appNamespace.defineAction('SELECT_CONTAINER');
+
+export const TOGGLE_ADD_CONTAINER_FORM = appNamespace.defineAction('TOGGLE_ADD_CONTAINER_FORM');
+export const SHOW_DELETE_CONTAINER_FORM = appNamespace.defineAction('SHOW_DELETE_CONTAINER_FORM');
+export const SHOW_EDIT_CONTAINER_FORM = appNamespace.defineAction('SHOW_EDIT_CONTAINER_FORM');
+export const HIDE_CONTAINER_FORM = appNamespace.defineAction('HIDE_CONTAINER_FORM');
 //// items
 export const REQUEST_ITEMS  = getConstants('REQUEST_ITEMS');
 export const ADD_ITEM = getConstants('ADD_ITEM');
@@ -45,7 +46,11 @@ export const initialState = {
   containers: [],
   selectedId: null,
   loading: false,
-  filter: ''
+  filter: '',
+  showContainerForm: ModalTypes.NONE,
+  selectedContainer: undefined,
+  showItemForm: ModalTypes.NONE,
+  selectedItem: undefined
 };
 
 
@@ -70,6 +75,19 @@ const updateItemReducer = (state, action) => {
     containers
   }
 };
+
+const containerFormReducer = formModalHandler({
+  formKey: 'showContainerForm',
+  hide: HIDE_CONTAINER_FORM,
+  selectedKey: 'selectedContainer',
+  showAdd: TOGGLE_ADD_CONTAINER_FORM,
+  showDelete: SHOW_DELETE_CONTAINER_FORM,
+  showEdit: SHOW_EDIT_CONTAINER_FORM
+});
+
+// const itemFormReducer = formModalHandler({
+//   showAdd: 
+// });
 
 const updateContainerReducer = (state, action) => {
     switch (action.type) {
@@ -100,10 +118,15 @@ const updateContainerReducer = (state, action) => {
 };
 
 export default function reducer(state = initialState, action) {
+  let containers = {};
   switch (action.type) {
-    case REQUEST_CONTAINERS.SUCCESS:
-      return action.payload;
-
+    case REQUEST_CONTAINERS.SUCCESS: 
+      action.payload.forEach(container => containers[container.id] = container );
+      return {
+          ...state,
+          containers,
+          selectedId: action.payload[0].id+''
+      };    
     case ADD_CONTAINER.SUCCESS:
     case EDIT_CONTAINER.SUCCESS:
     case DELETE_CONTAINER.SUCCESS:
@@ -116,7 +139,7 @@ export default function reducer(state = initialState, action) {
         loading: true
       };
     case REQUEST_ITEMS.SUCCESS:
-      let containers = Object.assign({}, state.containers);
+      containers = Object.assign({}, state.containers);
       const container = action.payload;
       if (!('categories' in container)) {
         throw new Error('categories should exist in container (see fetchItems): ' + container.id);
@@ -141,13 +164,17 @@ export default function reducer(state = initialState, action) {
     case ADD_ITEM.SUCCESS:
     case DELETE_ITEM.SUCCESS:
     case EDIT_ITEM.SUCCESS:
-      const items = updateItemReducer(state, action); 
-      return  items;
+      return updateItemReducer(state, action); 
     case SET_ITEMS_FILTER:
       return {
         ...state,
         filter: action.payload
-      };                 
+      };  
+    case TOGGLE_ADD_CONTAINER_FORM:
+    case SHOW_EDIT_CONTAINER_FORM:
+    case SHOW_DELETE_CONTAINER_FORM:
+    case HIDE_CONTAINER_FORM:
+      return containerFormReducer(state, action);               
     default:
       return state
   }
@@ -155,17 +182,14 @@ export default function reducer(state = initialState, action) {
 
 
 //// action creators
-const processContainers = json => {
-  const containers = {};
-  json.forEach(container => containers[container.id] = container );
-  return {
-      containers,
-      selectedId: json[0].id+''
-  };
-};
 const requestContainers = createAction(REQUEST_CONTAINERS);
-const receiveContainers = createAction(REQUEST_CONTAINERS.SUCCESS, data => processContainers(data));
+const receiveContainers = createAction(REQUEST_CONTAINERS.SUCCESS);
 const selectContainer = createAction(SELECT_CONTAINER);
+
+export const toggleAddContainerForm = createAction(TOGGLE_ADD_CONTAINER_FORM);
+export const hideContainerForm = createAction(HIDE_CONTAINER_FORM);
+export const showDeleteContainerForm = createAction(SHOW_DELETE_CONTAINER_FORM);
+export const showEditContainerForm = createAction(SHOW_EDIT_CONTAINER_FORM);
 
 //// items
 const requestItems = createAction(REQUEST_ITEMS);

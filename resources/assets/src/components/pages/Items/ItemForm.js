@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { addItem, editItem, ITEM_FORM_NAME, removeItem } from '../../../redux/modules/containers';
 import { hideItemForm } from '../../../redux/modules/itemForm';
-import { ModalTypes } from '../../../util/formModal';
+import { ModalTypes } from '../../../redux/modules/utils';
 import FormModal from '../../common/FormModal';
 import Datepicker from '../../common/Datepicker';
 import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';

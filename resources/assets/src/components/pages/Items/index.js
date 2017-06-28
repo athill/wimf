@@ -1,19 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 //// actions
-import { fetchContainers, select as selectContainer } from '../../../redux/modules/containers';
-import { setItemsFilter } from '../../../redux/modules/containers';
+import { 
+  fetchContainers, 
+  select as selectContainer, 
+  setItemsFilter, 
+  showDeleteContainerForm, 
+  showEditContainerForm, 
+  toggleAddContainerForm 
+} from '../../../redux/modules/containers';
 import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../../redux/modules/itemForm';
-import { showDeleteContainerForm, showEditContainerForm, toggleAddContainerForm } from '../../../redux/modules/containerForm';
 
 //// components
 import AddItemButton from '../../common/AddButton';
 import Container from './Container';
+import ContainerForm from './ContainerForm';
 import ContainerSelector from './ContainerSelector';
 import Filter from '../../common/Filter';
 import ItemForm from './ItemForm';
-import ContainerForm from './ContainerForm';
-
 
 //// utils
 import { filterCategories } from '../../../util/ContainerOperations';

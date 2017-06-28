@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 
-import { defaultFormModalHandler, ModalTypes } from '../../util/formModal';
+import { defaultFormModalHandler, ModalTypes } from './utils';
 
 //// actions
 export const TOGGLE_ADD_ITEM_FORM = 'TOGGLE_ADD_ITEM_FORM';
@@ -8,7 +8,6 @@ export const SHOW_ADD_ITEM_FORM = 'SHOW_ADD_ITEM_FORM';
 export const SHOW_DELETE_ITEM_FORM = 'SHOW_DELETE_ITEM_FORM';
 export const SHOW_EDIT_ITEM_FORM = 'SHOW_EDIT_ITEM_FORM';
 export const HIDE_ITEM_FORM = 'HIDE_ITEM_FORM';
-export const CLEAR_ADD_FORM = 'CLEAR_ADD_FORM';
 
 //// reducer
 export const initialState = {

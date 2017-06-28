@@ -1,4 +1,7 @@
 import { defineAction } from 'redux-define';
+import { change, reset } from 'redux-form';
+import format from 'string-template';
+
 
 export const appNamespace = defineAction('wimf'); 
 
@@ -7,6 +10,13 @@ export const stateConstants = {
 	LOADING: 'LOADING',
 	ERROR: 'ERROR',
 	SUCCESS: 'SUCCESS',	
+};
+
+export const ModalTypes = {
+  NONE: 'NONE',
+  CREATE: 'CREATE',
+  EDIT: 'EDIT',
+  DELETE: 'DELETE'
 };
 
 export const { LOADING, ERROR, SUCCESS } = stateConstants;
@@ -79,3 +89,67 @@ export const keepOpenHandler = autofocusField => {
     } 
   }
 };
+
+
+export const formModalHandler = ({ formKey, hide, selectedKey, showAdd, showDelete, showEdit }) => (state, action) => {
+	switch (action.type) {
+		case showAdd:
+		    return {
+		  	  ...state,
+		  	  [formKey]: state[formKey] === ModalTypes.NONE ? ModalTypes.CREATE : ModalTypes.NONE,
+		  	  [selectedKey]: undefined,
+		    };
+		case showDelete:
+		    return {
+		  	  ...state,
+		  	  [formKey]: ModalTypes.DELETE,
+		  	  [selectedKey]: action.payload,
+		    };
+		case showEdit:
+		    return {
+		  	  ...state,
+		  	  [formKey]: ModalTypes.EDIT,
+		  	  [selectedKey]: action.payload,
+		    };
+		case hide:
+		    return {
+		  	  ...state,
+		  	  [formKey]: ModalTypes.NONE,
+		  	  [selectedKey]: undefined,
+		    };
+		default:
+			return state;
+	}
+}
+
+
+export function defaultFormModalHandler(type, state, action) {
+  type = type.toUpperCase();
+  if (action.type === 'TOGGLE_ADD_'+type+'_FORM') {
+    return {
+  	  ...state,
+  	  show: state.show === ModalTypes.NONE ? ModalTypes.CREATE : ModalTypes.NONE,
+      selected: undefined
+    };
+  } else if (action.type === 'SHOW_DELETE_'+type+'_FORM') {
+    return {
+      ...state,
+      show: ModalTypes.DELETE,
+      selected: action.payload
+    }; 
+  } else if (action.type === 'SHOW_EDIT_'+type+'_FORM') {
+    return {
+      ...state,
+      show: ModalTypes.EDIT,
+      selected: action.payload
+    };
+  } else if (action.type === 'HIDE_'+type+'_FORM') {
+    return {
+      ...state,
+      show: ModalTypes.NONE,
+      selected: undefined
+    };
+  } else {
+    return state;
+  }
+}
