@@ -1,9 +1,9 @@
 import { createAction } from 'redux-actions';
 
 import { get } from '../../util/RemoteOperations';
+import { getConstants } from './utils';
 
 //// actions
-import { getConstants } from './utils';
 export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 
 

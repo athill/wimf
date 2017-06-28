@@ -4,13 +4,11 @@ import sinon from 'sinon';
 import faker from 'faker';
 
 import { initialState as containersInitialState } from '../../../../src/redux/modules/containers';
-import { initialState as containerFormInitialState } from '../../../../src/redux/modules/containerForm';
 import DecoratedContainerForm, { ContainerForm, mapStateToProps, mapDispatchToProps, validate } from '../../../../src/components/pages/Items/ContainerForm';
-import { ModalTypes } from '../../../../src/util/formModal';
+import { ModalTypes } from '../../../../src/redux/modules/utils';
 
 const defaultState = {
 	containers: containersInitialState,
-	containerForm: containerFormInitialState,
 	form: {}
 };
 
@@ -61,9 +59,9 @@ describe('ContainerForm', () => {
 			const action = 'Add';
 			const state = {
 				...defaultState,
-				containerForm: {
-					...containerFormInitialState,
-					show: ModalTypes.CREATE
+				containers: {
+					...containersInitialState,
+					showContainerForm: ModalTypes.CREATE
 				}
 			}
 			const props = mapStateToProps(state);
@@ -81,11 +79,10 @@ describe('ContainerForm', () => {
 			const containerForm = defaultState.containerForm;
 			const props = mapStateToProps({
 				...defaultState,
-				containerForm: {
-					...containerForm,
-					show: ModalTypes.EDIT
+				containers: {
+					...containersInitialState,
+					showContainerForm: ModalTypes.EDIT
 				}
-				
 			});
 			expect(props.showModal).toBe(true);
 			expect(props.type).toBe(ModalTypes.EDIT);
@@ -100,11 +97,10 @@ describe('ContainerForm', () => {
 			const containerForm = defaultState.containerForm;
 			const props = mapStateToProps({
 				...defaultState,
-				containerForm: {
-					...containerFormInitialState,
-					show: ModalTypes.DELETE
+				containers: {
+					...containersInitialState,
+					showContainerForm: ModalTypes.DELETE
 				}
-				
 			});
 			expect(props.showModal).toBe(true);
 			expect(props.type).toBe(ModalTypes.DELETE);
@@ -119,11 +115,10 @@ describe('ContainerForm', () => {
 			const containerForm = defaultState.containerForm;
 			const props = mapStateToProps({
 				...defaultState,
-				containerFormInitialState: {
-					...containerForm,
-					show: ModalTypes.NONE
-				}
-				
+				containers: {
+					...containersInitialState,
+					showContainerForm: ModalTypes.NONE
+				}			
 			});
 			expect(props.showModal).toBe(false);
 			expect(props.type).toBe(ModalTypes.NONE);

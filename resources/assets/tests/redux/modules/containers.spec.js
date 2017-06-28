@@ -13,19 +13,23 @@ describe('containers', () => {
     });
 
     it('should handle REQUEST_CONTAINERS.SUCCESS', () => {
+    const id = 0;
   	const items = [{
       				name: 'Freezer',
-              id: 0,
+              id,
               description: ''
       }];
       const containers = {
-        items,
-        selected: items[0]
+        ...initialState,
+        containers: {
+          [id]: items[0]
+        },
+        selectedId: items[0].id+''
       }
       expect(
         reducer(initialState, {
           type: REQUEST_CONTAINERS.SUCCESS,
-          payload: containers
+          payload: items
         })
       ).toEqual(containers);
     });
