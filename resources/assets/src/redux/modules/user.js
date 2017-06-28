@@ -1,10 +1,10 @@
 import { createAction } from 'redux-actions';
 
 import { get } from '../../util/RemoteOperations';
+import { getConstants } from './utils';
 
 //// actions
-export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
-export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
+export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 
 
 //// reducer
@@ -16,25 +16,19 @@ export const initialState = {
 
 export default function reducer(state = initialState, action={}) {
   switch (action.type) {
-    case RECEIVE_USER_INFO:
-    
+    case REQUEST_USER_INFO.SUCCESS:
       return action.payload;
     default:
       return state
   }
-}
-
-//// action creators
-const requestUserInfo = createAction(REQUEST_USER_INFO);
-
-const receiveUserInfo = createAction(RECEIVE_USER_INFO);
+};
 
 export function fetchUserInfo(container) {
   return dispatch => {
-    dispatch(requestUserInfo());
+    dispatch(createAction(REQUEST_USER_INFO));
     get(
       `/api/currentUser`,
-      response => dispatch(receiveUserInfo(response.data))
+      response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
     );  
   }
-}
+};

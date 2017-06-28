@@ -4,7 +4,7 @@ import { Nav, NavItem } from 'react-bootstrap';
 import {Icon} from '../../common/common';
 import { getSortedContainerArray, sortByNameKey } from '../../../util/ContainerOperations';
 import IconMenu, { MenuItem } from '../../common/IconMenu';
-import { showDeleteContainerForm, showEditContainerForm } from '../../../redux/modules/containerForm';
+import { showDeleteContainerForm, showEditContainerForm } from '../../../redux/modules/containers';
 
 const triggerLabel = <Icon icon="cog" style={{ fontSize: '1em' }} />;
 const ConfigMenu = ({ container, editContainer, deleteContainer }) => (

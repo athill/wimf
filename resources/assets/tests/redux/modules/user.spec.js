@@ -1,5 +1,5 @@
 import expect from 'expect';
-import reducer, { initialState, RECEIVE_USER_INFO } from '../../../src/redux/modules/user';
+import reducer, { initialState, REQUEST_USER_INFO } from '../../../src/redux/modules/user';
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
@@ -8,7 +8,7 @@ describe('user reducer', () => {
     ).toEqual(initialState);
   });
 
-  it('should handle RECEIVE_USER_INFO', () => {
+  it('should handle REQUEST_USER_INFO.SUCCESS', () => {
     const user = {
     	id: 0,
     	email: 'foo@bar.com',
@@ -16,7 +16,7 @@ describe('user reducer', () => {
     };
     expect(
       reducer(initialState, {
-        type: RECEIVE_USER_INFO,
+        type: REQUEST_USER_INFO.SUCCESS,
         payload: user
       })
     ).toEqual(user);

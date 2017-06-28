@@ -71,7 +71,8 @@ export const put = (url, data, resolves, reject)  => {
   return chain(promise, resolves, reject);
 };
 
-export const deleteRequest = (url, resolves, reject) => {
+export const deleteRequest = (url, data, resolves, reject) => {
+  //// data is not used, but makes the api consistent
   const promise = makePromise('delete', url);
   return chain(promise, resolves, reject);  
 };

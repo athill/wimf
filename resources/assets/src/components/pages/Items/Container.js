@@ -6,6 +6,7 @@ import { Row, Col } from 'react-bootstrap';
 import ContainerWelcome from './ContainerWelcome';
 import Item from './Item';
 import { Spinner } from '../../common/common';
+import { loadingStates } from '../../../redux/modules/utils';
 
 
 
@@ -13,14 +14,14 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 	if (!categories) {
 		return null;
 	} 
-	if (loading) {
+	if (loading === loadingStates.LOADING) {
 		return (
 			<h2 className='text-primary'>
 				<Spinner /> Retrieving your items ...
 			</h2>
 		);
 	}
-	if (categories.length === 0) {
+	if (loading === loadingStates.COMPLETE &&categories.length === 0) {
 		return <ContainerWelcome name={name} />;
 	}
 	return (
