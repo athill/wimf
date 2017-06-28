@@ -15,7 +15,7 @@ import {
   updateContainerInContainers,
   updateItemInCategories 
 } from '../../util/ContainerOperations';
-import { appNamespace, formModalHandler, getConstants, keepOpenHandler, ModalTypes, updateEntity } from './utils';
+import { appNamespace, formModalReducer, getConstants, keepOpenHandler, ModalTypes, updateEntity } from './utils';
 
 
 //// action constants
@@ -57,29 +57,59 @@ export const initialState = {
 };
 
 
-const updateItemReducer = (state, action) => {
+const itemsReducer = (state, action) => {
   let categories = state.containers[state.selectedId].categories;
+  const updateContainers = categories => updateCategoriesInContainers(state.containers, state.selectedId, categories);
   switch (action.type) {
     case ADD_ITEM.SUCCESS:
       categories = addItemToCategories(categories, action.payload.data);
-      break;
+      return {
+        ...state,
+        containers: updateContainers(categories)
+      };
     case EDIT_ITEM.SUCCESS:
       categories = updateItemInCategories(categories, action.payload.data);
-      break;
+      return {
+        ...state,
+        containers: updateContainers(categories)
+      };
     case DELETE_ITEM.SUCCESS:
       categories = removeItemFromCategories(categories, action.payload.data);
-      break;
+      return {
+        ...state,
+        containers: updateContainers(categories)
+      };
+    case REQUEST_ITEMS:
+      return {
+        ...state,
+        loading: true
+      };
+    case REQUEST_ITEMS.SUCCESS:
+      let containers = Object.assign({}, state.containers);
+      const container = action.payload;
+      if (!('categories' in container)) {
+        throw new Error('categories should exist in container (see fetchItems): ' + container.id);
+      }
+      return {
+        ...state,
+        loading: false,
+        containers: {
+          ...containers,
+          [container.id]: container
+        }
+      };  
+    case SET_ITEMS_FILTER:
+      return {
+        ...state,
+        filter: action.payload
+      };
     default:
-      console.error('Invalid action', action.type);           
-  }
-  const containers = updateCategoriesInContainers(state.containers, state.selectedId, categories);
-  return {
-    ...state,
-    containers
+      console.error('Invalid action', action.type);   
+      return state;        
   }
 };
 
-const containerFormReducer = formModalHandler({
+const containerFormReducer = formModalReducer({
   formKey: 'showContainerForm',
   hide: HIDE_CONTAINER_FORM,
   selectedKey: 'selectedContainer',
@@ -88,7 +118,7 @@ const containerFormReducer = formModalHandler({
   showEdit: SHOW_EDIT_CONTAINER_FORM
 });
 
-const itemFormReducer = formModalHandler({
+const itemFormReducer = formModalReducer({
   formKey: 'showItemForm',
   hide: HIDE_ITEM_FORM,
   selectedKey: 'selectedItem',
@@ -97,7 +127,7 @@ const itemFormReducer = formModalHandler({
   showEdit: SHOW_EDIT_ITEM_FORM
 });
 
-const updateContainerReducer = (state, action) => {
+const  containersReducer = (state, action) => {
     switch (action.type) {
       case ADD_CONTAINER.SUCCESS:
         return {
@@ -105,11 +135,6 @@ const updateContainerReducer = (state, action) => {
           containers: addContainerToContainers(state.containers, action.payload.data),
           selectedId: action.payload.data.id
         };
-      case EDIT_CONTAINER.SUCCESS:
-        return {
-          ...state,
-          containers: updateContainerInContainers(state.containers, action.payload.data)
-        };        
       case DELETE_CONTAINER.SUCCESS:
         //// determine new selected container id
         const containerArray = getSortedContainerArray(state.containers);
@@ -121,75 +146,62 @@ const updateContainerReducer = (state, action) => {
           ...state,
           selectedId,
           containers: removeContainerFromContainers(state.containers, action.payload.data)
-        };      
+        };         
+      case EDIT_CONTAINER.SUCCESS:
+        return {
+          ...state,
+          containers: updateContainerInContainers(state.containers, action.payload.data)
+        };        
+      case REQUEST_CONTAINERS.SUCCESS: 
+        const containers = {};
+        action.payload.forEach(container => containers[container.id] = container );
+        return  {
+            ...state,
+            containers,
+            selectedId: action.payload[0].id+''
+        }; 
+      case SELECT_CONTAINER:
+        return {
+          ...state,
+          selectedId:  action.payload || state.selectedId
+        };         
+      default:
+        console.error('Invalid action', action.type); 
+        return state;
     }
 };
 
 export default function reducer(state = initialState, action) {
-  let containers = {};
-  switch (action.type) {
-    case REQUEST_CONTAINERS.SUCCESS: 
-      action.payload.forEach(container => containers[container.id] = container );
-      return {
-          ...state,
-          containers,
-          selectedId: action.payload[0].id+''
-      };    
+  switch (action.type) { 
+    //// container actions  
     case ADD_CONTAINER.SUCCESS:
     case EDIT_CONTAINER.SUCCESS:
     case DELETE_CONTAINER.SUCCESS:
-      const newState = updateContainerReducer(state, action);
-      return newState;
-
-    case REQUEST_ITEMS:
-      return {
-        ...state,
-        loading: true
-      };
-    case REQUEST_ITEMS.SUCCESS:
-      containers = Object.assign({}, state.containers);
-      const container = action.payload;
-      if (!('categories' in container)) {
-        throw new Error('categories should exist in container (see fetchItems): ' + container.id);
-      }
-      const categories = container.categories;
-      return {
-        ...state,
-        loading: false,
-        containers: {
-          ...containers,
-          [container.id]: {
-            ...container,
-            categories
-          }
-        }
-      };      
-    case SELECT_CONTAINER:
-      return {
-        ...state,
-        selectedId:  action.payload || state.selectedId
-      }; 
+    case REQUEST_CONTAINERS.SUCCESS:
+    case SELECT_CONTAINER: 
+      return containersReducer(state, action);
+    //// item actions
     case ADD_ITEM.SUCCESS:
     case DELETE_ITEM.SUCCESS:
     case EDIT_ITEM.SUCCESS:
-      return updateItemReducer(state, action); 
+    case REQUEST_ITEMS:
+    case REQUEST_ITEMS.SUCCESS:    
     case SET_ITEMS_FILTER:
-      return {
-        ...state,
-        filter: action.payload
-      };  
+      return itemsReducer(state, action); 
+    //// container form actions  
     case TOGGLE_ADD_CONTAINER_FORM:
     case SHOW_EDIT_CONTAINER_FORM:
     case SHOW_DELETE_CONTAINER_FORM:
     case HIDE_CONTAINER_FORM:
       return containerFormReducer(state, action); 
+    //// item form actions
     case TOGGLE_ADD_ITEM_FORM:
     case SHOW_EDIT_ITEM_FORM:
     case SHOW_DELETE_ITEM_FORM:
     case HIDE_ITEM_FORM:
       return itemFormReducer(state, action); 
     default:
-      return state
+      return state;
   }
 }
 
