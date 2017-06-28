@@ -6,10 +6,12 @@ import {
   select as selectContainer, 
   setItemsFilter, 
   showDeleteContainerForm, 
+  showDeleteItemForm, 
   showEditContainerForm, 
-  toggleAddContainerForm 
+  showEditItemForm,
+  toggleAddContainerForm,
+  toggleAddItemForm 
 } from '../../../redux/modules/containers';
-import { showDeleteItemForm, showEditItemForm, toggleAddItemForm } from '../../../redux/modules/itemForm';
 
 //// components
 import AddItemButton from '../../common/AddButton';

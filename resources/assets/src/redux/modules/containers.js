@@ -1,7 +1,5 @@
 import { createAction } from 'redux-actions';
 
-import { hideItemForm, setItemFormError } from './itemForm';
-
 //// utils
 import { getIsoFormat } from '../../util/DateUtils';
 
@@ -37,6 +35,11 @@ export const ADD_ITEM = getConstants('ADD_ITEM');
 export const DELETE_ITEM = getConstants('DELETE_ITEM');
 export const EDIT_ITEM = getConstants('EDIT_ITEM');
 export const SET_ITEMS_FILTER = appNamespace.defineAction('SET_ITEMS_FILTER');
+
+export const TOGGLE_ADD_ITEM_FORM = appNamespace.defineAction('TOGGLE_ADD_ITEM_FORM');
+export const SHOW_DELETE_ITEM_FORM = appNamespace.defineAction('SHOW_DELETE_ITEM_FORM');
+export const SHOW_EDIT_ITEM_FORM = appNamespace.defineAction('SHOW_EDIT_ITEM_FORM');
+export const HIDE_ITEM_FORM = appNamespace.defineAction('HIDE_ITEM_FORM');
 
 export const ITEM_FORM_NAME = 'item';
 export const CONTAINER_FORM_NAME = 'container';
@@ -85,9 +88,14 @@ const containerFormReducer = formModalHandler({
   showEdit: SHOW_EDIT_CONTAINER_FORM
 });
 
-// const itemFormReducer = formModalHandler({
-//   showAdd: 
-// });
+const itemFormReducer = formModalHandler({
+  formKey: 'showItemForm',
+  hide: HIDE_ITEM_FORM,
+  selectedKey: 'selectedItem',
+  showAdd: TOGGLE_ADD_ITEM_FORM,
+  showDelete: SHOW_DELETE_ITEM_FORM,
+  showEdit: SHOW_EDIT_ITEM_FORM
+});
 
 const updateContainerReducer = (state, action) => {
     switch (action.type) {
@@ -174,7 +182,12 @@ export default function reducer(state = initialState, action) {
     case SHOW_EDIT_CONTAINER_FORM:
     case SHOW_DELETE_CONTAINER_FORM:
     case HIDE_CONTAINER_FORM:
-      return containerFormReducer(state, action);               
+      return containerFormReducer(state, action); 
+    case TOGGLE_ADD_ITEM_FORM:
+    case SHOW_EDIT_ITEM_FORM:
+    case SHOW_DELETE_ITEM_FORM:
+    case HIDE_ITEM_FORM:
+      return itemFormReducer(state, action); 
     default:
       return state
   }
@@ -182,8 +195,6 @@ export default function reducer(state = initialState, action) {
 
 
 //// action creators
-const requestContainers = createAction(REQUEST_CONTAINERS);
-const receiveContainers = createAction(REQUEST_CONTAINERS.SUCCESS);
 const selectContainer = createAction(SELECT_CONTAINER);
 
 export const toggleAddContainerForm = createAction(TOGGLE_ADD_CONTAINER_FORM);
@@ -196,14 +207,19 @@ const requestItems = createAction(REQUEST_ITEMS);
 const receiveItems = createAction(REQUEST_ITEMS.SUCCESS);
 export const setItemsFilter = createAction(SET_ITEMS_FILTER);
 
+export const hideItemForm = createAction(HIDE_ITEM_FORM);
+export const showDeleteItemForm = createAction(SHOW_DELETE_ITEM_FORM);
+export const showEditItemForm = createAction(SHOW_EDIT_ITEM_FORM);
+export const toggleAddItemForm = createAction(TOGGLE_ADD_ITEM_FORM);
+
 //// containers
 export const fetchContainers = () => {
   return dispatch => {
-    dispatch(requestContainers());
+    dispatch(createAction(REQUEST_CONTAINERS));
     return get(
       '/api/containers',
       response => {
-        dispatch(receiveContainers(response.data));
+        dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(response.data));
         dispatch(fetchItems(response.data[0].id));
       }
     );
