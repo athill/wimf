@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { reduxForm, change, Field, SubmissionError } from 'redux-form';
 import moment from 'moment';
 
-import { addItem, editItem, ITEM_FORM_NAME, removeItem } from '../../../redux/modules/containers';
-import { hideItemForm } from '../../../redux/modules/itemForm';
-import { ModalTypes } from '../../../util/formModal';
+import { addItem, editItem, hideItemForm, ITEM_FORM_NAME, removeItem } from '../../../redux/modules/containers';
+import { ModalTypes } from '../../../redux/modules/utils';
 import FormModal from '../../common/FormModal';
 import Datepicker from '../../common/Datepicker';
 import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
@@ -58,9 +57,9 @@ export const ItemForm = ({ error, handleSubmit, initialValues, onHide, readOnly,
 	</FormModal>)
 };
 
-const mapStateToProps = ({ itemForm: { show, selected }, form }) => {
+const mapStateToProps = ({ containers: { showItemForm, selectedItem }, form }) => {
 	let submitAction, title, submitButtonBsStyle;
-	switch (show) {
+	switch (showItemForm) {
 		case ModalTypes.DELETE:
 			submitAction = removeItem;
 			title = 'Delete';
@@ -85,21 +84,21 @@ const mapStateToProps = ({ itemForm: { show, selected }, form }) => {
 	const submitButtonText = title;
 	title += ' Item';
 	let initialValues = {};
-	if (show === ModalTypes.CREATE) {
+	if (showItemForm === ModalTypes.CREATE) {
 		initialValues = { date: getValueFormat(moment().startOf('day')) };
-	} else if (selected) {
-		initialValues = { ...selected, date: getDisplayFormat(selected.date) };
+	} else if (selectedItem) {
+		initialValues = { ...selectedItem, date: getDisplayFormat(selectedItem.date) };
 	}
 	const error = form.item && form.item.error;
 	return {
 		error,
-		showModal: show !== ModalTypes.NONE,
-		type: show,
+		showModal: showItemForm !== ModalTypes.NONE,
+		type: showItemForm,
 		title,
 		submitAction,
 		submitButtonBsStyle,
 		submitButtonText,
-		readOnly: show === ModalTypes.DELETE,
+		readOnly: showItemForm === ModalTypes.DELETE,
 		initialValues
 	};
 };

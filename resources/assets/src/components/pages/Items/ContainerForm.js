@@ -2,9 +2,8 @@ import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { addContainer, CONTAINER_FORM_NAME, removeContainer, editContainer } from '../../../redux/modules/containers';
-import { hideContainerForm } from '../../../redux/modules/containerForm';
-import { ModalTypes } from '../../../util/formModal';
+import { addContainer, CONTAINER_FORM_NAME, hideContainerForm, removeContainer, editContainer } from '../../../redux/modules/containers';
+import { ModalTypes } from '../../../redux/modules/utils';
 import FormModal from '../../common/FormModal';
 import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
 import ValidatedInput from '../../common/ValidatedInput';
@@ -62,10 +61,10 @@ export const ContainerForm = ({
 
 	</FormModal>)
 };
-export const mapStateToProps = ({ containerForm: { show }, containers: { containers, selectedId }, form}) => {
+export const mapStateToProps = ({ containers: { containers, selectedId, showContainerForm }, form}) => {
 	const selectedContainer = containers[selectedId];
 	let submitAction, title, submitButtonBsStyle;
-	switch (show) {
+	switch (showContainerForm) {
 		case ModalTypes.DELETE:
 			submitAction = removeContainer;
 			title = 'Delete';
@@ -85,21 +84,21 @@ export const mapStateToProps = ({ containerForm: { show }, containers: { contain
 			//// do nothing
 			break;
 		default:
-			console.error('Invalid Modal Type', show);
+			console.error('Invalid Modal Type', showContainerForm);
 	}
 	const submitButtonText = title;
 	const error = form.container && form.container.error;
 	title += ' Container';
 	const rtn = {
 		error,
-		showModal: show !== ModalTypes.NONE,
-		type: show,
+		showModal: showContainerForm !== ModalTypes.NONE,
+		type: showContainerForm,
 		title,
 		submitAction,
 		submitButtonBsStyle,
 		submitButtonText,
-		readOnly: show === ModalTypes.DELETE,
-		initialValues: show === ModalTypes.CREATE ? {} : selectedContainer
+		readOnly: showContainerForm === ModalTypes.DELETE,
+		initialValues: showContainerForm === ModalTypes.CREATE ? {} : selectedContainer
 	};
 	return rtn;
 };
