@@ -15,7 +15,15 @@ import {
   updateContainerInContainers,
   updateItemInCategories 
 } from '../../util/ContainerOperations';
-import { appNamespace, formModalReducer, getConstants, keepOpenHandler, ModalTypes, updateEntity } from './utils';
+import { 
+  appNamespace, 
+  formModalReducer, 
+  getConstants, 
+  keepOpenHandler, 
+  loadingStates,
+  ModalTypes, 
+  updateEntity 
+} from './utils';
 
 
 //// action constants
@@ -48,7 +56,7 @@ export const CONTAINER_FORM_NAME = 'container';
 export const initialState = {
   containers: [],
   selectedId: null,
-  loading: false,
+  loading: loadingStates.CLEAN,
   filter: '',
   showContainerForm: ModalTypes.NONE,
   selectedContainer: undefined,
@@ -82,7 +90,7 @@ const itemsReducer = (state, action) => {
     case REQUEST_ITEMS:
       return {
         ...state,
-        loading: true
+        loading: loadingStates.LOADING
       };
     case REQUEST_ITEMS.SUCCESS:
       let containers = Object.assign({}, state.containers);
@@ -92,7 +100,7 @@ const itemsReducer = (state, action) => {
       }
       return {
         ...state,
-        loading: false,
+        loading: loadingStates.COMPLETE,
         containers: {
           ...containers,
           [container.id]: container
@@ -272,7 +280,31 @@ export const removeContainer = updateContainer({
   url: '/api/containers/{id}'
 });
 
-//// Item form actions
+//// select container action
+export const select = id => {
+  return (dispatch, getState) => {
+    dispatch(selectContainer(id));
+    dispatch(fetchItems(id));
+  };
+};
+
+//// Item actions
+export const fetchItems = containerId => (
+  (dispatch, getState) => {
+    const { containers} = getState();
+    if ('categories' in containers.containers[containerId]) {
+      dispatch(receiveItems(containers.containers[containerId]));
+    } else {
+      dispatch(requestItems());
+      get(
+        `/api/containers/${containerId}`,
+        response => {
+          dispatch(receiveItems(response.data));
+        }
+      );
+    }
+  }
+);
 export const updateItem = ({ handler, hideFormHandler, requestAction, successAction, url, valuesTransformer }) => {
   return updateEntity({
     formName: ITEM_FORM_NAME, 
@@ -316,28 +348,4 @@ export const removeItem = updateItem({
   url: '/api/items/{id}'
 });
 
-//// select container action
-export const select = id => {
-  return (dispatch, getState) => {
-    dispatch(selectContainer(id));
-    dispatch(fetchItems(id));
-  };
-};
 
-//// fetch items
-export const fetchItems = containerId => (
-  (dispatch, getState) => {
-    const { containers} = getState();
-    if ('categories' in containers.containers[containerId]) {
-      dispatch(receiveItems(containers.containers[containerId]));
-    } else {
-      dispatch(requestItems());
-      get(
-        `/api/containers/${containerId}`,
-        response => {
-          dispatch(receiveItems(response.data));
-        }
-      );
-    }
-  }
-);

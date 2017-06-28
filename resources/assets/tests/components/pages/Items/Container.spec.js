@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import { getFakeCategories, getFakeContainer } from '../../../testUtil/fakes';
 
 import Container from '../../../../src/components/pages/Items/Container';
+import { loadingStates } from '../../../../src/redux/modules/utils';
 
 describe('Container', () => {
 
@@ -27,7 +28,7 @@ describe('Container', () => {
   });
 
   it('shows a spinner when loading', () => {
-  	const output = shallow(<Container categories={[]} loading={true} />);
+  	const output = shallow(<Container categories={[]} loading={loadingStates.LOADING} />);
   	const h2 = output.find('h2');
   	expect(h2.length).toBe(1);
   	expect(h2.find('Spinner').length).toBe(1);
@@ -35,7 +36,7 @@ describe('Container', () => {
 
   it('shows a welcome if categories is empty', () => {
   	const name = 'foo';
-  	const output = shallow(<Container categories={[]} name={name} />);
+  	const output = shallow(<Container categories={[]} name={name}  loading={loadingStates.COMPLETE}/>);
   	expect(output.is('ContainerWelcome'));
   	expect(output.props().name).toBe(name);
   });

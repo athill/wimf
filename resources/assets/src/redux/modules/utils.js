@@ -12,6 +12,9 @@ export const stateConstants = {
 	SUCCESS: 'SUCCESS',	
 };
 
+export const { LOADING, ERROR, SUCCESS } = stateConstants;
+
+//// Modal types
 export const ModalTypes = {
   NONE: 'NONE',
   CREATE: 'CREATE',
@@ -19,8 +22,22 @@ export const ModalTypes = {
   DELETE: 'DELETE'
 };
 
-export const { LOADING, ERROR, SUCCESS } = stateConstants;
+export const validModalTypes = Object.keys(ModalTypes).map(key => ModalTypes[key]);
 
+export const loadingStates = {
+	CLEAN: 'CLEAN',
+	LOADING: 'LOADING',
+	COMPLETE: 'COMPLETE'
+};
+
+export const validLoadingStates = Object.keys(loadingStates).map(key => loadingStates[key]);
+
+/**
+ * helper for defining constants
+ * @param  {string} constant Root constant name
+ * @param  {Array=[SUCCESS]}  states   Array of constant suffixes to create
+ * @return {object}          redux-define constant object
+ */
 export const getConstants = (constant, states = [ SUCCESS ]) => appNamespace.defineAction(constant, states);
 
 //// hooks into update entity
