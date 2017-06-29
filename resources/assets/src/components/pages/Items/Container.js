@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { chunk } from 'lodash';
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
@@ -27,11 +27,11 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 	return (
 		<div id='categories'>
 		{
-			categories.map((category) => (
+			categories.filter(category => category.items.length > 0).map(category => (
 				<div key={category.name}>
 					<h4>{category.name}</h4>
 					{
-						_.chunk(category.items, 4).map((items, i) => (
+						chunk(category.items, 4).map((items, i) => (
 							<Row key={i}>
 								{
 									items.map(item => (

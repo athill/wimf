@@ -1,3 +1,4 @@
+import expect from 'expect';
 import React from 'react';
 import { shallow } from 'enzyme';
 
@@ -9,17 +10,22 @@ import { loadingStates } from '../../../../src/redux/modules/utils';
 describe('Container', () => {
 
   it('works', () => {
-  	const container = getFakeContainer(getFakeCategories(2, 2));
+    const numContainers = 2;
+    const numItems = 2;
+  	const container = getFakeContainer(getFakeCategories(numContainers, numItems));
   	const output = shallow(<Container {...container} />);
   	const h4s = output.find('h4');
-  	expect(h4s.get(0).props.children).toBe(container.categories[0].name);
-  	expect(h4s.get(1).props.children).toBe(container.categories[1].name);
+    h4s.forEach((h4, index) => {
+      expect(h4.props().children).toBe(container.categories[index].name);
+    });
   	const items = output.find('Item');
-  	for (let i = 0; i < items.length; i++) {
-  		const props = items.get(i).props;
-  		const item = container.categories[i > 1 ? 1 : 0].items[i % 2];
-  		expect(props.name).toBe(item.name);
-  	}
+    items.forEach((item, index) => {
+      const actual = item.props().name;
+      const containerIndex = Math.floor(index/numItems);
+      const itemIndex = index % numItems;
+      const expected = container.categories[containerIndex].items[itemIndex].name;
+      expect(actual).toBe(expected);
+    });
   });
 
   it('returns null if no categories', () => {
@@ -41,4 +47,20 @@ describe('Container', () => {
   	expect(output.props().name).toBe(name);
   });
 
+  it('hides empty categories', () => {
+    const noItemsIndex = 1;
+    let categories = getFakeCategories(3, 1);
+    categories[noItemsIndex].items = [];
+    const allCategoryNames = categories.map(category => category.name);
+    const output = shallow(<Container categories={categories} />);
+    const displayedCategoryNames = output.find('h4').map(category => category.text());
+    allCategoryNames.forEach((categoryName, index) => {
+      if (index === noItemsIndex) {
+        expect(displayedCategoryNames).toNotInclude(categoryName);
+      } else {
+        expect(displayedCategoryNames).toInclude(categoryName);  
+      }
+      
+    });
+  });
 });
