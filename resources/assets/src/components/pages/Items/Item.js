@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Col, Panel, Row } from 'react-bootstrap';
 
@@ -34,8 +35,8 @@ const Item = ({editClickHandler = e => e, deleteClickHandler = e => e, ...item})
 };
 Item.displayName = 'Item';
 Item.propTypes = {
-    editClickHandler: React.PropTypes.func,
-    deleteClickHandler: React.PropTypes.func,
+    editClickHandler: PropTypes.func,
+    deleteClickHandler: PropTypes.func,
 };
 
 export default Item;

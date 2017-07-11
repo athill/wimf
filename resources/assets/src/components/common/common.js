@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export const Icon = ({ icon, size = 'lg', spinning = false, className='', ...otherProps }) => {
@@ -7,12 +8,12 @@ export const Icon = ({ icon, size = 'lg', spinning = false, className='', ...oth
 	return <i {...otherProps} className={className}></i>
 };
 
-const faSizes = React.PropTypes.oneOf(['', 'sm', 'lg', '2x', '3x', '4x', '5x']);
+const faSizes = PropTypes.oneOf(['', 'sm', 'lg', '2x', '3x', '4x', '5x']);
 
 Icon.propTypes = {
-  icon: React.PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
   size: faSizes,
-  spinning: React.PropTypes.bool
+  spinning: PropTypes.bool
 };
 Icon.displayName = 'Icon';
 

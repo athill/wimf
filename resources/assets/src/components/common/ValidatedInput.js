@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { ControlLabel, FormControl, FormGroup, HelpBlock, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -17,9 +18,9 @@ export const InputLabel = ({ error, className, title, warning }) => {
 };
 InputLabel.displayName = 'InputLabel';
 InputLabel.propTypes = {
-  error: React.PropTypes.string,
-  title: React.PropTypes.string.isRequired,
-  warning: React.PropTypes.string
+  error: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  warning: PropTypes.string
 };
 
 
@@ -81,12 +82,12 @@ const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mut
 ValidatedInput.displayName = 'ValidatedInput';
 
 ValidatedInput.propTypes = {
-  meta: React.PropTypes.object,
-  maxLength: React.PropTypes.number,
-  showTextLengthFeedback: React.PropTypes.bool,
-  label: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string,
-  value: React.PropTypes.string
+  meta: PropTypes.object,
+  maxLength: PropTypes.number,
+  showTextLengthFeedback: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  value: PropTypes.string
 };
 
 export default ValidatedInput;
