@@ -2,7 +2,6 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 
 //// store creation function 
 import configureStore from './redux/create';
@@ -18,11 +17,9 @@ const store = configureStore();
 //// application structure
 export const Application = () => (
 	<Provider store={store}>
-		<Router history={hashHistory}>
-			<Route path="/" component={App}>
-				<IndexRoute component={Items} />
-			</Route>
-		</Router> 
+		<App>
+			<Items />
+		</App>
 	</Provider>
 );
 
