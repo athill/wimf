@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Input } from 'react-bootstrap';
 
@@ -14,10 +15,10 @@ const InlineField = ({ error, id, label, type='text', ...other }) => {
 };
 InlineField.displayName = 'InlineField';
 InlineField.propTypes = {
-	error: React.PropTypes.string,
-	id: React.PropTypes.string,
-	label: React.PropTypes.string,
-	type: React.PropTypes.string
+	error: PropTypes.string,
+	id: PropTypes.string,
+	label: PropTypes.string,
+	type: PropTypes.string
 };
 
 export default InlineField;

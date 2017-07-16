@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Alert, Button, Modal } from 'react-bootstrap';
 
@@ -51,13 +52,13 @@ const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit
 FormModal.displayName = 'FormModal';
 
 FormModal.propTypes = {
-  errors: React.PropTypes.array,
-  onHide: React.PropTypes.func,
-  onSubmit: React.PropTypes.func,
-  submitButtonText: React.PropTypes.string,
-  submitting: React.PropTypes.bool,
-  title: React.PropTypes.string.isRequired,
-  valid: React.PropTypes.bool.isRequired
+  errors: PropTypes.array,
+  onHide: PropTypes.func,
+  onSubmit: PropTypes.func,
+  submitButtonText: PropTypes.string,
+  submitting: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  valid: PropTypes.bool.isRequired
 };
 
 export default FormModal;

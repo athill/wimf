@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
@@ -14,7 +15,7 @@ const Filter = ({ handleChange }) => (
 );
 Filter.displayName = 'Filter';
 Filter.propTypes = {
-	handleChange: React.PropTypes.func
+	handleChange: PropTypes.func
 };
 
 export default Filter;
