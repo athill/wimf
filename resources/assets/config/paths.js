@@ -48,6 +48,7 @@ module.exports = {
   appPublic: resolveApp(publicRoot),
   appHtml: resolveApp(publicRoot + 'index.html'),
   appIndexJs: resolveApp(sourceRoot + 'src/app.js'),
+  appIndexLess: resolveApp(sourceRoot + 'less/app.less'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp(sourceRoot + 'src'),
   testsSetup: resolveApp('src/setupTests.js'),

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
+use File;
+
 class AppServiceProvider extends ServiceProvider {
 
 	/**
