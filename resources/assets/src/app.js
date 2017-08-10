@@ -12,6 +12,8 @@ import App from './components/App';
 ////// pages
 import Items from './components/pages/Items';
 
+import './less/app.less';
+
 //// store
 const store = configureStore();
 

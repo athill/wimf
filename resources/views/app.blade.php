@@ -9,8 +9,8 @@
 	<meta name="author" content="Andy Hill"/>
 	<meta name="copyright" content="{{ date('Y') }}, wimf.space"/>	
 	<title>What's in my Freezer?</title>
-	<link href="{{ asset('/build/static/css/app.2124de31.css') }}" rel="stylesheet">
-
+	<link href="{{ asset('/build/static/css/app.16e13f4b.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 	
 
@@ -41,6 +41,6 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="{{ asset('/build/static/js/app.2124de31.js') }}"></script>
+	<script src="{{ asset('/build/static/js/app.16e13f4b.js') }}"></script>
 </body>
 </html>

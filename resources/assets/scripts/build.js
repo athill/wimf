@@ -187,7 +187,6 @@ function build(previousSizeMap) {
     const viewsDir = path.join(__dirname, '..', '..', 'views');
     const contents = fs.readFileSync(path.join(viewsDir, 'app.blade.tmpl.php'), { encoding: 'utf-8' });
     const revisedContents = contents.replace(/\[hash\]/g, hash);
-    console.log('contents', revisedContents);
     fs.writeFileSync(path.join(viewsDir, 'app.blade.php'), revisedContents, { encoding: 'utf-8', mode: '0o644' })
     console.log();
 
