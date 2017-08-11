@@ -25,7 +25,7 @@ let storeBackup = getStorePristine();
 // localStorage.removeItem('wimf');
 
 //// apparently not used. what was it for?
-// const setStore = (newStore) => store = {...newStore};
+const setStore = (newStore) => store = {...newStore};
 
 export const resetStore = () => {
 	// const storePristine = getStorePristine();
@@ -209,7 +209,7 @@ export const persistItems = (resolve, reject, method, args, data) => {
 	}
 };
 
-export const localPersistedStore = (resolve, reject, method, url, data) => {
+const localPersistedStore = (resolve, reject, method, url, data) => {
 	const parts = url.slice(1).split('/').slice(1),
 		type = parts[0],
 		args = parts.slice(1);

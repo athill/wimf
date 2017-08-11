@@ -3,13 +3,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-//// store creation function 
+
+// //// store creation function 
 import configureStore from './redux/create';
 
 //// components
 import App from './components/App';
 ////// pages
 import Items from './components/pages/Items';
+
+import './less/app.less';
 
 //// store
 const store = configureStore();

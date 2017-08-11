@@ -10,3 +10,4 @@ public/build
 public/jscoverage
 public/phpcoverage
 /storage/debugbar/
+resources/views/app.blade.php

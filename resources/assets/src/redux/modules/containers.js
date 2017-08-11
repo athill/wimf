@@ -347,5 +347,3 @@ export const removeItem = updateItem({
   successAction: createAction(DELETE_ITEM.SUCCESS),
   url: '/api/items/{id}'
 });
-
-

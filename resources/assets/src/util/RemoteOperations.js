@@ -76,5 +76,3 @@ export const deleteRequest = (url, data, resolves, reject) => {
   const promise = makePromise('delete', url);
   return chain(promise, resolves, reject);  
 };
-
-
