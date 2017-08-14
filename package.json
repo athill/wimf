@@ -92,7 +92,7 @@
     "start": "node resources/assets/scripts/start.js",
     "build": "node resources/assets/scripts/build.js",
     "test": "node resources/assets/scripts/test.js --env=jsdom",
-    "watch": "NODE_ENV=production webpack --config resources/assets/config/webpack.config.prod.js --progress --colors --watch"
+    "watch": "webpack --config resources/assets/config/webpack.config.prod.js --progress --colors --watch"
   },
   "jest": {
     "collectCoverage": true,
