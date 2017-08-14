@@ -44,7 +44,7 @@ export class AppNavbar extends React.Component {
             </Nav>
             <Nav pullRight>
               { !isDemo && <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem> }
-              <NavDropdown eventKey={3} title={user.name} id="basic-nav-dropdown">
+              <NavDropdown eventKey={3} title={user.name || ''} id="basic-nav-dropdown">
                 {(() => (
                   isDemo ?
                     [<MenuItem key='login' eventKey={3.1} href='/auth/login'>Login</MenuItem>,
