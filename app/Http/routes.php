@@ -43,6 +43,8 @@ Route::controllers([
 
 Route::group(['middleware' => ['auth']], function() {	
 	Route::get('export', 'ExportImportController@export');	
+	Route::get('import', 'ExportImportController@importForm');
+	Route::post('import', 'ExportImportController@import');
 	// Route::resource('items', 'ItemController', 
 	// 	array('only' => array('index', 'store', 'destroy', 'update', 'show')));			
 	
