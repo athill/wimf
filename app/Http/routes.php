@@ -41,6 +41,14 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+Route::group(['middleware' => ['auth']], function() {	
+	Route::get('export', 'ExportImportController@export');	
+	// Route::resource('items', 'ItemController', 
+	// 	array('only' => array('index', 'store', 'destroy', 'update', 'show')));			
+	
+});
+
+
 // =============================================
 // API ROUTES ==================================
 // =============================================
