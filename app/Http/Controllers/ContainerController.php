@@ -40,6 +40,7 @@ class ContainerController extends Controller {
 		$container = Container::findOrFail($id);
 		$data = [
 			'name' => $container->name,
+			'description' => $container->description,
 			'id' => $id
 		];
 		

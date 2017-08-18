@@ -12,6 +12,17 @@ trait UpdateFromRequest {
      */
     public function updateFromRequest(Request $request, array $aliases=[]) {
         $requestFields = $request->all();
+        $this->updateFromArray($requestFields, $aliases);
+    }   
+
+    /**
+     * Updates the model's properties based a key-value array
+     *
+     * @param array $values request object with which to update model's attributes
+     * @param array $aliases Map of request->field to model->attribute for when they are not the same
+     * @return void
+     */
+    public function updateFromArray(array $requestFields, array $aliases=[]) {
         foreach ($requestFields as $key => $value) {
             if (in_array($key, $this->fillable)) { 
                 $this->{$key} = $value; 
@@ -20,5 +31,5 @@ trait UpdateFromRequest {
                 $this->{$attr} = $requestFields[$key];
             }
         }
-    }   
+    }     
 }

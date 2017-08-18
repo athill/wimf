@@ -43,14 +43,16 @@ export class AppNavbar extends React.Component {
               
             </Nav>
             <Nav pullRight>
-              { !isDemo && <NavItem eventKey={2} href="/demo" target='_blank'>Demo</NavItem> }
-              <NavDropdown eventKey={3} title={user.name || ''} id="basic-nav-dropdown">
+              { !isDemo && <NavItem eventKey={2} href="/demo" target="_blank">Demo</NavItem> }
+              <NavDropdown eventKey={3} title={user.name || ""} id="basic-nav-dropdown">
                 {(() => (
                   isDemo ?
-                    [<MenuItem key='login' eventKey={3.1} href='/auth/login'>Login</MenuItem>,
-                    <MenuItem key='register' eventKey={3.1} href='/auth/register'>Register</MenuItem>] :
+                    [<MenuItem key="login" eventKey={3.1} href="/auth/login">Login</MenuItem>,
+                    <MenuItem key="register" eventKey={3.2} href="/auth/register">Register</MenuItem>] :
 
-                    [<MenuItem key='logout' eventKey={3.1} href='/auth/logout'>Logout</MenuItem>]
+                    [<MenuItem key="logout" eventKey={3.1} href="/auth/logout">Logout</MenuItem>,
+                    <MenuItem key="export" eventKey={3.2} href="/export">Export</MenuItem>,
+                    <MenuItem key="import" eventKey={3.3} href="/import">Import</MenuItem>]
                 ))()}
               </NavDropdown>
             </Nav>

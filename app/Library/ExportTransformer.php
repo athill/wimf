@@ -12,7 +12,7 @@ class ExportTransformer extends Fractal\TransformerAbstract {
 	public function transform(Container $container) {
 		return [
 			'name' => $container['name'],
-			'descr' => $container['descr'],
+			'description' => $container['description'],
 			'categories' => collect($container['categories'])->map(function ($category) {
     			return [
     				'name' => $category['name'],
