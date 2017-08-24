@@ -11,7 +11,7 @@ use League\Fractal;
 use App\Http\Controllers\Controller;
 use App\Library\ExportTransformer;
 
-// use App\Category;
+use App\Category;
 use App\Container;
 // use App\Item;
 // use App\Library\Utils;
@@ -22,6 +22,7 @@ class ExportImportController extends Controller {
 	const JSON_FILE_EXPECTED_ERROR = 'Invalid import file. JSON file expected';
 	const JSON_NO_DATA_KEY_ERROR = 'Invalid import file. JSON file must have a "data" key';
 	const CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE = 'Container %d requires a [name] key.';
+	const CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE = 'Category %d in container %d requires a [name] key.';
 
 
 	use FractalHelper;
@@ -58,6 +59,7 @@ class ExportImportController extends Controller {
 	}
 
 	public function importContainers($data) {
+
 		if (!is_array($data)) {
 			return $this->importErrorView(self::JSON_FILE_EXPECTED_ERROR);
 		}
@@ -83,6 +85,31 @@ class ExportImportController extends Controller {
 				$c->save();
 				$container_id = $c->id;
 			}
+			
+			//// loop through categories
+			if (isset($container['categories'])) {
+				foreach ($container['categories'] as $cati => $category) {
+					//// validate category
+					if (!isset($category['name'])) {
+						return $this->importErrorView(sprintf(self::CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE, $ci, $cati));
+					}
+					$first = Category::user()->where('name', $category['name'])->where('container_id', $container_id)->first();
+					$category_id = null;
+					if ($first) {
+						$category_id = $first->id;
+					} else {
+						$c = new Category();
+						$c->updateFromArray($category);
+						$c->user_id = $user_id;
+						$c->container_id = $container_id;
+						$c->save();
+						$category_id = $c->id;
+					}
+					//// loop through category items
+					///
+				}				
+			}
+
 			
 		
 		// 	//// loop through categories, get ccategory name

@@ -23,7 +23,7 @@ class ContainerTest extends TestCase {
         $this->faker = Faker\Factory::create();
         $this->defaultContainerName = $this->faker->word;
         $this->defaultDescription = $this->faker->sentence();
-        $this->be($this->defaultUser);
+        // $this->be($this->defaultUser);
         $this->defaultParams = [
             'name'=>$this->defaultContainerName,
             'description' => $this->defaultDescription,
