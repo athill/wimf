@@ -7,13 +7,14 @@ use Storage;
 use EventHomes\Api\FractalHelper;
 use Illuminate\Http\Request;
 use League\Fractal;
+use Carbon\Carbon;
 
 use App\Http\Controllers\Controller;
 use App\Library\ExportTransformer;
 
 use App\Category;
 use App\Container;
-// use App\Item;
+use App\Item;
 // use App\Library\Utils;
 
 class ExportImportController extends Controller {
@@ -23,6 +24,7 @@ class ExportImportController extends Controller {
 	const JSON_NO_DATA_KEY_ERROR = 'Invalid import file. JSON file must have a "data" key';
 	const CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE = 'Container %d requires a [name] key.';
 	const CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE = 'Category %d in container %d requires a [name] key.';
+	const ITEM_REQUIRES_NAME_ERROR_TEMPLATE = 'Item %d in category %d in container %d requires a [name] key.';
 
 
 	use FractalHelper;
@@ -59,7 +61,7 @@ class ExportImportController extends Controller {
 	}
 
 	public function importContainers($data) {
-
+		$user_id = Auth::user()->id;
 		if (!is_array($data)) {
 			return $this->importErrorView(self::JSON_FILE_EXPECTED_ERROR);
 		}
@@ -74,46 +76,49 @@ class ExportImportController extends Controller {
 				return $this->importErrorView(sprintf(self::CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE, $ci));
 			}
 			//// find or insert container, get id
-			$first = Container::user()->where('name', $container['name'])->first();
-			$container_id = null;
-			if ($first) {
-				$container_id = $first->id;
-			} else {
-				$c = new Container();
-				$c->updateFromArray($container);
-				$c->user_id = $user_id;
-				$c->save();
-				$container_id = $c->id;
-			}
-			
+			$c = Container::firstOrCreate([
+				'name' => $container['name'],
+				'description' => isset($category['description']) ? $category['description'] : '',
+				'user_id' => $user_id
+			]);
 			//// loop through categories
 			if (isset($container['categories'])) {
 				foreach ($container['categories'] as $cati => $category) {
 					//// validate category
 					if (!isset($category['name'])) {
-						return $this->importErrorView(sprintf(self::CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE, $ci, $cati));
+						return $this->importErrorView(sprintf(self::CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE, $cati, $ci));
 					}
-					$first = Category::user()->where('name', $category['name'])->where('container_id', $container_id)->first();
-					$category_id = null;
-					if ($first) {
-						$category_id = $first->id;
-					} else {
-						$c = new Category();
-						$c->updateFromArray($category);
-						$c->user_id = $user_id;
-						$c->container_id = $container_id;
-						$c->save();
-						$category_id = $c->id;
-					}
+					$cat = Category::firstOrCreate([
+						'name' => $category['name'],
+						'container_id' => $c->id,
+						'user_id' => $user_id
+					]);
 					//// loop through category items
-					///
+					if (isset($category['items'])) {
+						foreach ($category['items'] as $itemi => $item) {
+							// validate item
+							if (!isset($item['name'])) {
+								return $this->importErrorView(sprintf(self::ITEM_REQUIRES_NAME_ERROR_TEMPLATE, $itemi, $cati, $ci));
+							}
+							// get item
+							$i = Item::firstOrCreate([
+								'name' => $item['name'],
+								'category_id' => $cat->id,
+								'user_id' => $user_id
+							]);
+							// update quantity
+							if (isset($i['quantity'])) {
+								$i->quantity = $item['quantity'];
+							}
+							//// update date
+							if (isset($item['date'])) {
+								$i->date = ($item['date'] === '') ? '' :  Carbon::parse($item['date']);
+							}
+							$i->save();
+						}
+					}
 				}				
 			}
-
-			
-		
-		// 	//// loop through categories, get ccategory name
-		// 	//// loop through items
 		}		
 	} 
 

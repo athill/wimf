@@ -21,7 +21,6 @@ class Category extends ChangelogModelBase {
 	public function items() {
 		return $this->hasMany('App\Item');
 	}
-
 	//
 	public static function getId($category) {
 		$existing = Category::user()

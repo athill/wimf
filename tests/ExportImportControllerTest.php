@@ -3,6 +3,8 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use Carbon\Carbon;
+
 use App\Http\Controllers\ExportImportController;
 use App\Container;
 use App\Category;
@@ -21,18 +23,62 @@ class ExportImportControllerTest extends TestCase {
 
 	use DatabaseTransactions;
 
-	private $controller ;
+	private $controller;
+	private $faker;
+	private $defaultContainerName;
+	private $defaultCategoryName;
+	private $defaultItemName;
 
+	private $defaultContainers;
 
 
     public function setUp() {
     	parent::setUp();
         $this->be($this->defaultUser);
+        $this->controller = new ExportImportController(); 
+        //// random data
         $this->faker = Faker\Factory::create();
         $this->defaultContainerName = $this->faker->word;
+        $this->defaultCategoryName = $this->faker->word;
+    	$this->defaultItemName = $this->faker->word;
         $this->defaultDescription = $this->faker->sentence();
-        $this->controller = new ExportImportController();          
+        
+        //// base data
+    	$this->defaultContainers = [ 
+    		[ 'name' => $this->defaultContainerName, 
+    		  'categories' => [ 
+    		  	[ 'name' => $this->defaultCategoryName,
+    		  	  'items' => [ [ 'name' => $this->defaultItemName ] ]
+    		  	] 
+    		  ]
+    		] 
+    	];                 
     }
+
+    public function testBasicImport() {
+    	//// update database
+    	$result = $this->controller->importContainers($this->getData($this->defaultContainers));
+    	//// assert container
+    	$criteria = [
+	        'name' => $this->defaultContainerName, 
+	        'user_id' => $this->defaultUser->id
+	    ];
+	    $container = $this->assertInDatabaseAndReturn(Container::class, 'containers', $criteria);
+	    //// assert category
+    	$category_criteria = [
+	        'container_id' => $container->id, 
+	        'user_id' => $this->defaultUser->id,
+	        'name' => $this->defaultCategoryName
+	    ];
+	    $category = $this->assertInDatabaseAndReturn(Category::class, 'categories', $category_criteria);
+	    //// assert item
+    	$item_criteria = [
+	        'category_id' => $category->id, 
+	        'user_id' => $this->defaultUser->id,
+	        'name' => $this->defaultItemName
+	    ];
+	    $this->seeInDatabase('items', $item_criteria);
+    }     
 
     public function testImportContainersFailsOnNonArray() {
     	$result = $this->controller->importContainers(null);
@@ -46,87 +92,25 @@ class ExportImportControllerTest extends TestCase {
 
     public function testImportContainersFailsOnContainerWithoutNameKey() {
     	$this->mockAuth();
-    	$containers = [[]];
-    	$result = $this->controller->importContainers($this->getData($containers));
-    	$this->assertEquals(sprintf(ExportImportController::CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE, 0), $result->error);
+    	$container_index = 0;
+    	unset($this->defaultContainers[$container_index]['name']);
+    	$result = $this->controller->importContainers($this->getData($this->defaultContainers));
+    	$this->assertEquals(sprintf(ExportImportController::CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE, $container_index), $result->error);
     } 
 
-    public function testImportContainersSucceedsWithContainerWithNameKey() {
-    	$containers = [ [ 'name' => $this->defaultContainerName, 'categories' => [] ] ];
-    	$result = $this->controller->importContainers($this->getData($containers));  	
-	    $this->seeInDatabase('containers', [
-	        'name' => $this->defaultContainerName, 
-	        'user_id' => $this->defaultUser->id
-	    ]);
-    }     
-
     public function testImportContainersFailsOnCategoryWithoutNameKey() {
-    	$containers = [ 
-    		[ 'name' => $this->defaultContainerName, 
-    		  'categories' => [ [] ] 
-    		 ] 
-    	];
+    	unset($this->defaultContainers[0]['categories'][0]['name']);
     	$errorMessage = sprintf(ExportImportController::CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE, 0, 0);
-    	$result = $this->controller->importContainers($this->getData($containers));
+    	$result = $this->controller->importContainers($this->getData($this->defaultContainers));
     	$this->assertEquals($errorMessage, $result->error);
     }
 
-    public function testImportContainersSucceedsOnCategoryWithNameKey() {
-    	$category_name = $this->faker->word;
-    	$containers = [ 
-    		[ 'name' => $this->defaultContainerName, 
-    		  'categories' => [ 
-    		  	[ 'name' => $category_name ] 
-    		  ]
-    		] 
-    	];
-    	$result = $this->controller->importContainers($this->getData($containers));
-    	
-    	//// assert container
-    	$criteria = [
-	        'name' => $this->defaultContainerName, 
-	        'user_id' => $this->defaultUser->id
-	    ];
-	    $container = $this->assertInDatabaseAndReturn(Container::class, 'containers', $criteria);
-	    //// assert category
-    	$category_criteria = [
-	        'container_id' => $container->id, 
-	        'user_id' => $this->defaultUser->id,
-	        'name' => $category_name
-	    ];	    
-	    $this->seeInDatabase('categories', $category_criteria);
-    }    
-
-
-    public function assertInDatabaseAndReturn($modelClass, $table, $criteria) {
-    	//// see in the database
-    	$this->seeInDatabase($table, $criteria);
-
-    	//// build args array
-    	$args = collect(array_keys($criteria))->map(function($key, $i) use ($criteria) {
-    		// echo "$key\n";
-    		return [$key, '=', $criteria[$key]];
-    	})->toArray();
-    	
-    	//// build eloquent query; in 5.4, you can pass an array and avoid all this
-    	$result = call_user_func_array([$modelClass, 'where'], $args[0]);
-    	if (count($args) > 1) {
-    		for ($i = 1; $i < count($args); $i++) {
-    			call_user_func_array([$result, 'where'], $args[$i]);
-    		}	
-    	}
-    	return $result->firstOrFail();
-    }
-
-    // public function testImportContainersMergesContainersWithExistingNameKey() {
-    // 	$containers = [ [ 'name' => $this->defaultContainerName, 'categories' => [{ 'name'=>'foo' }] ] ];
-    // 	$result = $this->controller->importContainers($this->getData($containers));
-	   //  $this->seeInDatabase('containers', [
-	   //      'name' => $this->defaultContainerName, 
-	   //      'user_id' => $this->defaultUser->id
-	   //  ]);    	
-    // }
-
+    public function testImportContainersFailsOnItemWithoutNameKey() {
+    	unset($this->defaultContainers[0]['categories'][0]['items'][0]['name']);
+    	$errorMessage = sprintf(ExportImportController::ITEM_REQUIRES_NAME_ERROR_TEMPLATE, 0, 0, 0);
+    	$result = $this->controller->importContainers($this->getData($this->defaultContainers));
+    	$this->assertEquals($errorMessage, $result->error);
+    }   
 
 
     private function mockAuth() {
