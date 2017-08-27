@@ -25,6 +25,7 @@ class ExportImportController extends Controller {
 	const CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE = 'Container %d requires a [name] key.';
 	const CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE = 'Category %d in container %d requires a [name] key.';
 	const ITEM_REQUIRES_NAME_ERROR_TEMPLATE = 'Item %d in category %d in container %d requires a [name] key.';
+	const SUCCESS_MESSAGE = 'File successfully imported';
 
 
 	use FractalHelper;
@@ -114,12 +115,15 @@ class ExportImportController extends Controller {
 							if (isset($item['date'])) {
 								$i->date = ($item['date'] === '') ? '' :  Carbon::parse($item['date']);
 							}
+							//// save
 							$i->save();
 						}
 					}
 				}				
 			}
-		}		
+		}
+		//// return success
+		return view('home', ['messages' => [self::SUCCESS_MESSAGE]]);
 	} 
 
 	private function importErrorView($error) {
