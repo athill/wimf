@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 import { fetchUserInfo } from '../redux/modules/user';
+import { exportDemoData } from '../redux/modules/containers';
 
 
 const mapStateToProps = ({ user }) => {
@@ -14,6 +15,10 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    demoExportSelect: () => {
+      console.log('demoExportSelect');
+      dispatch(exportDemoData());
+    },
     dispatch
   };
 };
@@ -28,7 +33,7 @@ export class AppNavbar extends React.Component {
       dispatch(fetchUserInfo());
     }    
     render() {
-      const { user, isDemo } = this.props;
+      const { user, isDemo, demoExportSelect } = this.props;
 
       return (
         <Navbar inverse>
@@ -48,7 +53,8 @@ export class AppNavbar extends React.Component {
                 {(() => (
                   isDemo ?
                     [<MenuItem key="login" eventKey={3.1} href="/auth/login">Login</MenuItem>,
-                    <MenuItem key="register" eventKey={3.2} href="/auth/register">Register</MenuItem>] :
+                    <MenuItem key="register" eventKey={3.2} href="/auth/register">Register</MenuItem>,
+                    <MenuItem key="export" eventKey={3.2} href="#" onSelect={() => demoExportSelect()}>Export</MenuItem>] :
 
                     [<MenuItem key="logout" eventKey={3.1} href="/auth/logout">Logout</MenuItem>,
                     <MenuItem key="export" eventKey={3.2} href="/export">Export</MenuItem>,

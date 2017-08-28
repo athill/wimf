@@ -4,6 +4,7 @@ use Auth;
 use Log;
 use Response;
 use Storage;
+use Uuid;
 use EventHomes\Api\FractalHelper;
 use Illuminate\Http\Request;
 use League\Fractal;
@@ -125,6 +126,33 @@ class ExportImportController extends Controller {
 		//// return success
 		return view('home', ['messages' => [self::SUCCESS_MESSAGE]]);
 	} 
+
+	public function exportDemo(Request $request) {
+		$containers = $request->get('data');
+		foreach ($containers as $i => $container) {
+			
+			unset($containers[$i]['id']);
+			if (isset($container['categories'])) {
+				foreach ($container['categories'] as $j => $category) {
+					unset($containers[$i]['categories'][$j]['id']);
+					unset($containers[$i]['categories'][$j]['container_id']);
+					if (isset($category['items'])) {
+						foreach ($category['items'] as $k => $item) {
+							unset($containers[$i]['categories'][$j]['items'][$k]['id']);
+							unset($containers[$i]['categories'][$j]['items'][$k]['category_id']);
+						}
+					}
+				}
+			}
+		}
+		$filename = 'export-demo-'.Uuid::generate().'.json';
+		Storage::disk('local')->put($filename, json_encode($containers, false));
+		return ['filename' => $filename];
+	}
+
+	public function exportDemoDownload(Request $request) {
+		return response()->download(storage_path('app/'.$request->filename), 'export.json', []);		
+	}
 
 	private function importErrorView($error) {
 		return view('import', ['error' => $error ]);

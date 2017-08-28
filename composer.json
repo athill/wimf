@@ -9,7 +9,8 @@
 		"doctrine/dbal": "^2.5",
 		"barryvdh/laravel-debugbar": "^2.3",
 		"league/fractal": "^0.16.0",
-		"eventhomes/laravel-fractalhelper": "^0.1.4"
+		"eventhomes/laravel-fractalhelper": "^0.1.4",
+		"webpatser/laravel-uuid": "2.*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

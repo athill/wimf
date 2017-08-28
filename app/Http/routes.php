@@ -41,6 +41,10 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+
+Route::post('export/demo', 'ExportImportController@exportDemo');
+Route::get('export/demo', 'ExportImportController@exportDemoDownload');
+
 Route::group(['middleware' => ['auth']], function() {	
 	Route::get('export', 'ExportImportController@export');	
 	Route::get('import', 'ExportImportController@importForm');
@@ -49,6 +53,8 @@ Route::group(['middleware' => ['auth']], function() {
 	// 	array('only' => array('index', 'store', 'destroy', 'update', 'show')));			
 	
 });
+
+
 
 
 // =============================================

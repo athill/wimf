@@ -1,9 +1,11 @@
+import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 //// utils
 import { getIsoFormat } from '../../util/DateUtils';
 
 import { get, deleteRequest, post, put } from '../../util/RemoteOperations';
+
 import { 
   addContainerToContainers, 
   addItemToCategories, 
@@ -48,6 +50,9 @@ export const TOGGLE_ADD_ITEM_FORM = appNamespace.defineAction('TOGGLE_ADD_ITEM_F
 export const SHOW_DELETE_ITEM_FORM = appNamespace.defineAction('SHOW_DELETE_ITEM_FORM');
 export const SHOW_EDIT_ITEM_FORM = appNamespace.defineAction('SHOW_EDIT_ITEM_FORM');
 export const HIDE_ITEM_FORM = appNamespace.defineAction('HIDE_ITEM_FORM');
+
+export const POST_DEMO_DATA = appNamespace.defineAction('POST_DEMO_DATA');
+export const RECEIVE_DEMO_DATA = appNamespace.defineAction('RECEIVE_DEMO_DATA');
 
 export const ITEM_FORM_NAME = 'item';
 export const CONTAINER_FORM_NAME = 'container';
@@ -231,6 +236,25 @@ export const hideItemForm = createAction(HIDE_ITEM_FORM);
 export const showDeleteItemForm = createAction(SHOW_DELETE_ITEM_FORM);
 export const showEditItemForm = createAction(SHOW_EDIT_ITEM_FORM);
 export const toggleAddItemForm = createAction(TOGGLE_ADD_ITEM_FORM);
+
+export const exportDemoData = () => {
+  const data = localStorage.getItem('wimf') ? JSON.parse(localStorage.getItem('wimf')).containers : [];
+  return dispatch => {
+    console.log('exporting demo data');
+    dispatch(createAction(POST_DEMO_DATA));
+    axios({
+          method: 'POST',
+          url: '/export/demo',
+          data: { data }
+      })
+      .then(response => { 
+        dispatch(createAction(RECEIVE_DEMO_DATA));
+        console.log(response);
+        window.location = `/export/demo?filename=${response.data.filename}`
+      })
+      .catch(error => console.error(error));
+  }
+}
 
 //// containers
 export const fetchContainers = () => {
