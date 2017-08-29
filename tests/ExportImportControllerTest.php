@@ -23,8 +23,8 @@ class ExportImportControllerTest extends TestCase {
 
 	use DatabaseTransactions;
 
-	private const HOME_VIEW_NAME = 'home';
-	private const IMPORT_VIEW_NAME = 'import';
+	const HOME_VIEW_NAME = 'home';
+	const IMPORT_VIEW_NAME = 'import';
 
 	private $controller;
 	private $faker;
@@ -163,7 +163,7 @@ class ExportImportControllerTest extends TestCase {
     public function testImportExportMergesItemsInCategories() {
     	$view = $this->controller->importContainers($this->getData($this->defaultContainers));
     	$newItemName = $this->faker->word;
-    	$this->defaultContainers[0]['categories'][0]['containers'][0]['name'] = $newItemName;
+    	$this->defaultContainers[0]['categories'][0]['items'][0]['name'] = $newItemName;
     	$view = $this->controller->importContainers($this->getData($this->defaultContainers));
     	$this->assertEquals(self::HOME_VIEW_NAME, $view->getName());
     	$this->assertEquals([ExportImportController::SUCCESS_MESSAGE], $view->messages);
