@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
 use Log;
 use Illuminate\Http\Request;
 use Response;
@@ -26,7 +27,7 @@ class ItemController extends Controller {
 		$item->updateFromRequest($request);
 		
 		//// category object
-		$category = self::getCategoryFromRequest($request);
+		$category = $this->getCategoryFromRequest($request);
 
 		//// save
 		try {
@@ -69,7 +70,8 @@ class ItemController extends Controller {
 		}		
 		$item->updateFromRequest($request);
 		//// category object
-		$category = self::getCategoryFromRequest($request);
+		$category = $this->getCategoryFromRequest($request);
+
 		try {
 			$item = Item::persist($item, $category)->toArray();
 			$item['category'] = $category->name;
@@ -83,9 +85,14 @@ class ItemController extends Controller {
 	}
 
 	private static function getCategoryFromRequest(Request $request) {
-		$category = new Category();
-		$category->name = $request->get('category');
-		$category->container_id = $request->get('container_id');
-		return $category;
+		return Category::firstOrNew([
+			'name' => $request->get('category'),
+			'container_id' => $request->get('container_id'),
+			'user_id' => Auth::user()->id
+		]);
+		// $category = new Category();
+		// $category->name = $request->get('category');
+		// $category->container_id = $request->get('container_id');
+		// return $category;
 	}
 }

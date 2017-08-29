@@ -119,4 +119,24 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         }
     }
 
+    protected function assertInDatabaseAndReturn($modelClass, $table, $criteria) {
+        //// see in the database
+        $this->seeInDatabase($table, $criteria);
+
+        //// build args array
+        $args = collect(array_keys($criteria))->map(function($key, $i) use ($criteria) {
+            // echo "$key\n";
+            return [$key, $criteria[$key]];
+        })->toArray();
+        
+        //// build eloquent query; in Laravel 5.4, you can pass an array and avoid all this
+        $result = call_user_func_array([$modelClass, 'where'], $args[0]);
+        if (count($args) > 1) {
+            for ($i = 1; $i < count($args); $i++) {
+                call_user_func_array([$result, 'where'], $args[$i]);
+            }   
+        }
+        return $result->firstOrFail();
+    }    
+
 }
