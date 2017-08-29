@@ -41,6 +41,22 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+
+Route::post('export/demo', 'ExportImportController@exportDemo');
+Route::get('export/demo', 'ExportImportController@exportDemoDownload');
+
+Route::group(['middleware' => ['auth']], function() {	
+	Route::get('export', 'ExportImportController@export');	
+	Route::get('import', 'ExportImportController@importForm');
+	Route::post('import', 'ExportImportController@import');
+	// Route::resource('items', 'ItemController', 
+	// 	array('only' => array('index', 'store', 'destroy', 'update', 'show')));			
+	
+});
+
+
+
+
 // =============================================
 // API ROUTES ==================================
 // =============================================

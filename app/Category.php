@@ -4,8 +4,11 @@ use Auth;
 use Log;
 
 use App\Library\ChangelogModelBase;
+use App\UpdateFromRequest;
 
 class Category extends ChangelogModelBase {
+
+	use updateFromRequest;
 
 	protected $fillable = ['name', 'user_id', 'container_id'];
 
@@ -18,7 +21,6 @@ class Category extends ChangelogModelBase {
 	public function items() {
 		return $this->hasMany('App\Item');
 	}
-
 	//
 	public static function getId($category) {
 		$existing = Category::user()

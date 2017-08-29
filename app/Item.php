@@ -14,6 +14,8 @@ class Item extends ChangelogModelBase {
 
 	protected $hidden = ['user_id', 'created_at', 'updated_at', 'category'];
 
+	protected $dates = ['date'];
+
 	public function category() {
 		return $this->belongsTo('App\Category');
 	}
