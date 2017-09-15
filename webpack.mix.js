@@ -1,5 +1,8 @@
 let mix = require('laravel-mix');
 
+// const package = require('./package.json');
+// const extract = Object.keys(package.devDependencies);
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,5 +14,10 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.react('resources/assets/js/app.js', 'public/js')
+	// .extract(extract)
+	// .sourceMaps()
+	// .version()
    .sass('resources/assets/sass/app.scss', 'public/css');
+	// .sourceMaps()
+	// .version()
