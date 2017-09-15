@@ -1,27 +1,44 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { render } from 'react-dom';
 
-export default class App extends Component {
-    render() {
-        return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-8 col-md-offset-2">
-                        <div className="panel panel-default">
-                            <div className="panel-heading">App Component</div>
+import { Router, Route, browserHistory } from 'react-router';
 
-                            <div className="panel-body">
-                                I'm an example component!
-                            </div>
-                        </div>
-                    </div>
-                </div>
+import Login from './pages/login';
+
+class App extends Component {
+  render() {
+    return (
+      <div className="container">
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#">AppDividend</a>
             </div>
-        );
-    }
-}
+            <ul className="nav navbar-nav">
+              <li className="active"><a href="#">Home</a></li>
+              <li><a href="#">Page 1</a></li>
+              <li><a href="#">Page 2</a></li>
+              <li><a href="#">Page 3</a></li>
+            </ul>
+          </div>
+      </nav>
+          <div>
+              {this.props.children}
+          </div>
+      </div>
+    )
+  }
+};
+
+const AppRouter = <Router history={browserHistory}>
+  <Route path="/" component={App} >
+    <Route path="/login" component={Login} />
+  </Route>
+</Router>;
 
 const app = document.getElementById('app');
 if (app) {
-    ReactDOM.render(<App />, app);
+    ReactDOM.render(<App />, document.getElementById('app'));
 }
+
+export default App;
