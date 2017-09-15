@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/{foo?}/{bar?}', function () {
     return view('app');
 });

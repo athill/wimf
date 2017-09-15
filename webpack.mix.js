@@ -1,8 +1,11 @@
 let mix = require('laravel-mix');
 
+//// TODO: source maps and extract modules
 // const package = require('./package.json');
 // const extract = Object.keys(package.devDependencies);
+// console.log(extract);
 
+const extract = [ 'axios', 'jquery', 'lodash', 'react', 'react-dom'];
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -15,9 +18,10 @@ let mix = require('laravel-mix');
  */
 
 mix.react('resources/assets/js/app.js', 'public/js')
-	// .extract(extract)
+	.extract(extract)
 	// .sourceMaps()
-	// .version()
-   .sass('resources/assets/sass/app.scss', 'public/css');
+	.version()
+   .sass('resources/assets/sass/app.scss', 'public/css')
 	// .sourceMaps()
-	// .version()
+	.version()
+	;
