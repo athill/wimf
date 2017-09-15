@@ -8,10 +8,7 @@
         <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div id="example"></div>
-{{--         <script src="/js/manifest.js"></script>
-        <script src="/js/vendor.js"></script>
-        <script src="/js/app.js"></script> --}}
+        <div id="app"></div>
         <script src="{{mix('js/manifest.js')}}" ></script>
         <script src="{{mix('js/vendor.js')}}" ></script>
         <script src="{{mix('js/app.js')}}" ></script>
