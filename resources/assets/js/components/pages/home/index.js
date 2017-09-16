@@ -1,6 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
 
-export default Page = () =>(
+const Page = () =>(
 	<h1>home boy</h1>
 );
+
+export default Page;
