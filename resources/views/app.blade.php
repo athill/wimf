@@ -4,7 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel</title>
+        <meta name="keywords" content="freezer,inventory,Freezer,What's In My Freezer"/>
+        <meta name="description" content="What's in my Freezer? -- A simple inventory app"/>
+        <meta name="author" content="Andy Hill"/>
+        <meta name="copyright" content="{{ date('Y') }}, wimf.space"/>          
+        <title>What&apos;s In My Freezer?</title>
         <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
     </head>
     <body>
