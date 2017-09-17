@@ -1,5 +1,6 @@
 import React from 'react';
-import { Col, Grid, Panel, Row } from 'react-bootstrap';
+import { Field, reduxForm } from 'redux-form';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 
 const Register = () => (
 	<Grid fluid>
@@ -7,44 +8,49 @@ const Register = () => (
 			<Col md={8} mdOffset={2}>	
 				<Panel header="Register" bsStyle="default">
 
-					<form class="form-horizontal" role="form" method="POST" action="">
+					<Form horizontal>
+						<FormGroup controlId="name">
+							<Col componentClass={ControlLabel} md={4}>
+								Name:
+							</Col>
+							<Col md={4}>
+								<FormControl type="text" name="name" value="" />
+							</Col>
+						</FormGroup>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Name</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="name" value="" />
-							</div>
-						</div>
+						<FormGroup controlId="email">
+							<Col componentClass={ControlLabel} md={4}>
+								Email Address:
+							</Col>
+							<Col md={4}>
+								<FormControl type="text" name="email" value="" />
+							</Col>
+						</FormGroup>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
-							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="" />
-							</div>
-						</div>
+						<FormGroup controlId="password">
+							<Col componentClass={ControlLabel} md={4}>
+								Password:
+							</Col>
+							<Col md={4}>
+								<FormControl type="password" name="password" value="" />
+							</Col>
+						</FormGroup>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password" />
-							</div>
-						</div>
+						<FormGroup controlId="password_confirmation">
+							<Col componentClass={ControlLabel} md={4}>
+								Confirm Password:
+							</Col>
+							<Col md={4}>
+								<FormControl type="password" name="password_confirmation" value="" />
+							</Col>
+						</FormGroup>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Confirm Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password_confirmation" />
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
-									Register
-								</button>
-							</div>
-						</div>
-					</form>
+						<FormGroup>
+							<Col md={4} mdOffset={4}>
+								<Button type="submit">Register</Button>
+							</Col>
+						</FormGroup>												
+					</Form>
 				</Panel>
 			</Col>
 		</Row>
