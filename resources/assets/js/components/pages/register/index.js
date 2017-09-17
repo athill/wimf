@@ -8,7 +8,7 @@ const InputField = ({ name, label, id=null, type='text' }) => (
 			{label}:
 		</Col>
 		<Col md={4}>
-			<FormControl type={type} name={name} value="" />
+			<FormControl type={type} name={name} />
 		</Col>
 	</FormGroup>
 );
@@ -21,7 +21,7 @@ const Register = () => (
 
 					<Form horizontal>
 						<InputField label="Name" name="name" />
-						<InputField label="Email" name="email" />
+						<InputField label="Email" name="email" type="email" />
 						<InputField label="Password" name="password" type="password" />
 						<InputField label="Confirm Password" name="password_confirmation" type="password" />
 						<FormGroup>
