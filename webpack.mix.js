@@ -15,6 +15,10 @@ const extract = [ 'axios', 'bootstrap-sass', 'lodash', 'react', 'react-dom'];
  |
  */
 
+mix.autoload({
+    jquery: ['$', 'window.jQuery',"jQuery","window.$","jquery","window.jquery"]
+});
+
 mix.react('resources/assets/js/app.js', 'public/js')
 	// .extract(extract)
 	// .sourceMaps()
