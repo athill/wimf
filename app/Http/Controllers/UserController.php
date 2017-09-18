@@ -17,6 +17,13 @@ class UserController extends Controller
     }
    
     public function register(Request $request){
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|unique:users|max:255',
+            'password' => 'required|max:60',
+            'password_confirmation' => 'required|same:password|max:60',
+        ]);
+
         $user = $this->user->create([
           'name' => $request->get('name'),
           'email' => $request->get('email'),

@@ -22,7 +22,6 @@ const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
 
 export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(reducer, initialState);
-  console.log('in the store');
 
   //// not doing hot reloading atm
   // if (module.hot) {
