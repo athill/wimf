@@ -22,14 +22,16 @@ const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
 
 export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(reducer, initialState);
+  console.log('in the store');
 
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./modules/reducer', () => {
-      const nextRootReducer = require('./modules/reducer');
-      store.replaceReducer(nextRootReducer);
-    })
-  }
+  //// not doing hot reloading atm
+  // if (module.hot) {
+  //   // Enable Webpack hot module replacement for reducers
+  //   module.hot.accept('./modules/reducer', () => {
+  //     const nextRootReducer = require('./modules/reducer');
+  //     store.replaceReducer(nextRootReducer);
+  //   })
+  // }
 
   return store;
 };
