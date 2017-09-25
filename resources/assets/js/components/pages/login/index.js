@@ -1,8 +1,14 @@
 import React from 'react';
-import { Col, Grid, Panel, Row } from 'react-bootstrap';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Page = () => (
+import { register } from '../../../modules/user';
+import { InputField } from '../../util/form';
+
+const submit = (values, dispatch) => dispatch(register(values));
+
+const Login = () => (
 	<Grid fluid>
 		<Row>
 			<Col md={6}>
@@ -13,7 +19,7 @@ const Page = () => (
 					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>
 					<p>There is no "sharing" option. What&apos;s in your freezer is between you and the database</p>
 					<p><strong>To get started</strong>, 
-						check out the <a href="/demo" target='_blank'>demo</a> (data stored 
+						check out the <a href="/demo" target='_blank'>demo</a> (data stored   
 						<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
 						or <Link to="/register">register</Link>.
 					</p>					
@@ -21,44 +27,34 @@ const Page = () => (
 			</Col>
 			<Col md={6}>
 				<Panel header="Login" bsStyle="default">
-					<form className="form-horizontal" role="form" method="POST" action="#">
+					<Form horizontal onSubmit={handleSubmit(submit)}>
+						<Field label="Email" name="email" type="email" component={InputField} autofocus />
+						<Field label="Password" name="password" type="password" component={InputField} />
 
-						<div className="form-group">
-							<label className="col-md-4 control-label">E-Mail Address</label>
-							<div className="col-md-6">
-								<input type="email" className="form-control" name="email" value="" />
-							</div>
-						</div>
-
-						<div className="form-group">
-							<label className="col-md-4 control-label">Password</label>
-							<div className="col-md-6">
-								<input type="password" className="form-control" name="password" />
-							</div>
-						</div>
-
-						<div className="form-group">
-							<div className="col-md-6 col-md-offset-4">
+						<FormGroup>
+							<Col md={6} mdOffset={4}>
 								<div className="checkbox">
 									<label>
 										<input type="checkbox" name="remember" /> Remember Me
 									</label>
 								</div>
-							</div>
-						</div>
+							</Col>
+						</FormGroup>
 
-						<div className="form-group">
-							<div className="col-md-6 col-md-offset-4">
-								<button type="submit" className="btn btn-primary">Login</button>
+						<FormGroup>
+							<Col md={6} mdOffset={4}>
+								<Button type="submit" bsStyle="primary">Login</Button>
 
 								<a className="btn btn-link" href="/password/email">Forgot Your Password?</a>
-							</div>
-						</div>
-					</form>
+							</Col>
+						</FormGroup>
+					</Form>
 				</Panel>
 			</Col>
 		</Row>
 	</Grid>
 );
 
-export default Page;
+export default reduxForm({
+  form: 'login', // a unique identifier for this form
+})(Login);

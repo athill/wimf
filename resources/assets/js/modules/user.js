@@ -6,6 +6,7 @@ import { getConstants } from './utils';
 //// actions
 export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 export const REGISTER_USER = getConstants('REGISTER_USER');
+export const LOGIN_USER = getConstants('LOGIN_USER');
 
 
 //// reducer
@@ -22,16 +23,26 @@ export default function reducer(state = initialState, action={}) {
     case REQUEST_USER_INFO.SUCCESS:
       return action.payload;
     default:
-      return state
+      return state;
   }
 };
 
 export const register = values => {
   return dispatch => {
     dispatch(createAction(REGISTER_USER));
-    post('/api/auth/register', 
+    return post('/api/auth/register', 
       values, 
       response => dispatch(createAction(REGISTER_USER.SUCCESS)(response))
+    );
+  }
+};
+
+export const login = values => {
+ return dispatch => {
+    dispatch(createAction(LOGIN_USER));
+    return post('/api/auth/login', 
+      values, 
+      response => dispatch(createAction(LOGIN_USER.SUCCESS)(response))
     );
   }
 };

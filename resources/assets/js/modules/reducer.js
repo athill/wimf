@@ -6,6 +6,6 @@ import user from './user';
 
 export default combineReducers({
   // containers,
-  // user,
+  user,
   form: formReducer
 });
