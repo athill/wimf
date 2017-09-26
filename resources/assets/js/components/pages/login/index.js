@@ -3,12 +3,12 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { register } from '../../../modules/user';
+import { login } from '../../../modules/user';
 import { InputField } from '../../util/form';
 
-const submit = (values, dispatch) => dispatch(register(values));
+const submit = (values, dispatch) => dispatch(login(values));
 
-const Login = () => (
+const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) => (
 	<Grid fluid>
 		<Row>
 			<Col md={6}>

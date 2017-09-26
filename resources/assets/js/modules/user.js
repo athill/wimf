@@ -18,22 +18,17 @@ export const initialState = {
 
 export default function reducer(state = initialState, action={}) {
   switch (action.type) {
+    case LOGIN_USER.SUCCESS:
+      console.log(action);
+      sessionStorage.setItem('token', action.payload.token);
+      return state;
+
     case REGISTER_USER.SUCCESS:
-      return action.payload;    
+      return state;    
     case REQUEST_USER_INFO.SUCCESS:
       return action.payload;
     default:
       return state;
-  }
-};
-
-export const register = values => {
-  return dispatch => {
-    dispatch(createAction(REGISTER_USER));
-    return post('/api/auth/register', 
-      values, 
-      response => dispatch(createAction(REGISTER_USER.SUCCESS)(response))
-    );
   }
 };
 
@@ -42,7 +37,21 @@ export const login = values => {
     dispatch(createAction(LOGIN_USER));
     return post('/api/auth/login', 
       values, 
-      response => dispatch(createAction(LOGIN_USER.SUCCESS)(response))
+      response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
+    );
+  }
+};
+
+export const register = values => {
+  return dispatch => {
+    dispatch(createAction(REGISTER_USER));
+    return post('/api/auth/register', 
+      values, 
+      [
+        response => dispatch(createAction(REGISTER_USER.SUCCESS)(response)),
+        response => login(values)
+
+      ]
     );
   }
 };
