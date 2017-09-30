@@ -34,6 +34,10 @@ class UserController extends Controller
     
     public function login(Request $request){
         $credentials = $request->only('email', 'password');
+        $request->validate([
+            'email' => 'required|max:255',
+            'password' => 'required|max:60',
+        ]);        
         $token = null;
         try {
            if (!$token = JWTAuth::attempt($credentials)) {
