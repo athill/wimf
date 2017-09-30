@@ -26,7 +26,13 @@ export default function reducer(state = initialState, action={}) {
     case REGISTER_USER.SUCCESS:
       return state;    
     case REQUEST_USER_INFO.SUCCESS:
-      return action.payload;
+      const newState = {
+        ...state,
+        id: action.payload.id,
+        name: action.payload.name,
+        email: action.payload.email,
+      };
+      return newState;
     default:
       return state;
   }
@@ -34,12 +40,21 @@ export default function reducer(state = initialState, action={}) {
 
 export const login = values => {
  return dispatch => {
-    dispatch(createAction(LOGIN_USER));
-    return post('/api/auth/login', 
-      values, 
-      response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
-    );
-  }
+    return new Promise((resolve, reject) => {
+      dispatch(createAction(LOGIN_USER));
+      post('/api/auth/login', 
+        values, 
+        response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
+      ).then(response => {
+        dispatch(fetchUserInfo());
+      })
+      .catch(error => {
+        console.log('in login catch', error);
+        reject(error)
+      });
+    })
+
+  };
 };
 
 export const register = values => {
@@ -56,12 +71,12 @@ export const register = values => {
   }
 };
 
-export function fetchUserInfo(container) {
+export function fetchUserInfo() {
   return dispatch => {
     dispatch(createAction(REQUEST_USER_INFO));
     get(
       `/api/user`,
-      response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
+      response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data.result))
     );  
   }
 };

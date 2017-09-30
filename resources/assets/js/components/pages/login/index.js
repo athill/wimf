@@ -6,7 +6,25 @@ import { Link } from 'react-router-dom';
 import { login } from '../../../modules/user';
 import { InputField } from '../../util/form';
 
-const submit = (values, dispatch) => dispatch(login(values));
+const validate = values => {
+	const errors = {};
+	// if (!values.email) {
+	// 	errors.email = "Email is required";
+	// } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+ //    	errors.email = 'Invalid email address'
+ //  	}
+	// if (!values.password) {
+	// 	errors.password = "Password is required";
+	// }
+	return errors;
+};
+
+const submit = (values, dispatch) => {
+	return new Promise((resolve, reject) {
+		dispatch(login(values)
+			.catch(error => reject(new SubmissionError(error)));
+		)
+	};
 
 const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) => (
 	<Grid fluid>
@@ -40,7 +58,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 								</div>
 							</Col>
 						</FormGroup>
-
+						{ error && <Alert bsStyle="danger">{ error }</Alert> }
 						<FormGroup>
 							<Col md={6} mdOffset={4}>
 								<Button type="submit" bsStyle="primary">Login</Button>
@@ -57,4 +75,5 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 
 export default reduxForm({
   form: 'login', // a unique identifier for this form
+  validate
 })(Login);
