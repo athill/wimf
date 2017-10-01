@@ -8,14 +8,14 @@ import { InputField } from '../../util/form';
 
 const validate = values => {
 	const errors = {};
-	// if (!values.email) {
-	// 	errors.email = "Email is required";
-	// } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
- //    	errors.email = 'Invalid email address'
- //  	}
-	// if (!values.password) {
-	// 	errors.password = "Password is required";
-	// }
+	if (!values.email) {
+		errors.email = "Email is required";
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    	errors.email = 'Invalid email address'
+  	}
+	if (!values.password) {
+		errors.password = "Password is required";
+	}
 	return errors;
 };
 
@@ -31,7 +31,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 		<Row>
 			<Col md={6}>
 				<Panel header="New Here?" bsStyle="success">
-					<p><strong>What's in my Freezer?</strong> is a simple inventory application. It was inspired by going 
+					<p><strong>What&amp;s in my Freezer?</strong> is a simple inventory application. It was inspired by going 
 					to the grocery store and buying things that were already in my freezer.</p>
 					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
 					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>

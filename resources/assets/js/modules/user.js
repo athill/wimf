@@ -50,10 +50,7 @@ export const login = values => {
         dispatch(fetchUserInfo());
       })
       .then(response => history.push('/'))
-      .catch(error => {
-        console.log('in login catch', error);
-        reject(error)
-      });
+      .catch(error => reject(error));
     })
 
   };
