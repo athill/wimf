@@ -33,7 +33,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 				<Panel header="New Here?" bsStyle="success">
 					<p><strong>What&amp;s in my Freezer?</strong> is a simple inventory application. It was inspired by going 
 					to the grocery store and buying things that were already in my freezer.</p>
-					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
+					<p>It had to be simple, or I wouldn&amp;t use it. Hence, it is mostly just adding, editing, and removing items.</p>
 					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>
 					<p>There is no "sharing" option. What&apos;s in your freezer is between you and the database</p>
 					<p><strong>To get started</strong>, 
