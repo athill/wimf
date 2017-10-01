@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Col, Grid, Row } from 'react-bootstrap';
 import ReactDOM, { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Router, Route, Link } from 'react-router-dom';
 
 
 import AppNavbar from './AppNavbar';
+import history from '../history';
 import Login from './pages/login';
 import Home from './pages/home';
 import PasswordReset from './pages/password-reset';
@@ -16,11 +17,13 @@ import reducers from '../modules/reducer';
 
 const store = createStore(reducers());
 
+
+
 class App extends Component {
   render() {
     return (
     <Provider store={store}>
-        <BrowserRouter>  
+        <Router history={history}>  
             <div>  
                 <AppNavbar />
                 <Grid>
@@ -36,7 +39,7 @@ class App extends Component {
                     </Row>
                 </Grid>
             </div>
-        </BrowserRouter>
+        </Router>
     </Provider>
     )
   }
@@ -44,9 +47,9 @@ class App extends Component {
 
 
 
-const app = document.getElementById('app');
-if (app) {
-    render(<App />, document.getElementById('app'));
-}
+// const app = document.getElementById('app');
+// if (app) {
+//     render(<App />, document.getElementById('app'));
+// }
 
 export default App;

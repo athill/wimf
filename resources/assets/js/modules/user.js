@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 
+import history from '../history';
 import { get, post } from '../util/RemoteOperations';
 import { getConstants } from './utils';
 
@@ -48,6 +49,7 @@ export const login = values => {
       ).then(response => {
         dispatch(fetchUserInfo());
       })
+      .then(response => history.push('/'))
       .catch(error => {
         console.log('in login catch', error);
         reject(error)

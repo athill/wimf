@@ -20,11 +20,11 @@ const validate = values => {
 };
 
 const submit = (values, dispatch) => {
-	return new Promise((resolve, reject) {
-		dispatch(login(values)
+	return new Promise((resolve, reject) => {
+		dispatch(login(values))
 			.catch(error => reject(new SubmissionError(error)));
-		)
-	};
+	});
+};
 
 const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) => (
 	<Grid fluid>
