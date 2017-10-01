@@ -72,15 +72,12 @@ const chain = (promise, resolvers, rejecter = defaultRejector) => {
       }
       //// chain resolves
       resolvers.forEach(resolver => promise.then(resolver));
-
+      //// resolve final response
       promise.then(response => resolve(response));
       //// chain catch
       promise.catch(response => {
-        console.log('catch response', response);
         const error = getErrorFromAxiosResponse(response);
-        console.log('before', error);      
         const rejection = rejecter(error);
-        console.log('after', rejection);
         reject(rejection);
       });
   });
