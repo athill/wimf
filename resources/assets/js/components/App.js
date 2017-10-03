@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Col, Grid, Row } from 'react-bootstrap';
 import ReactDOM, { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, Link } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 
 
 import AppNavbar from './AppNavbar';
@@ -10,13 +10,13 @@ import history from '../history';
 import Login from './pages/login';
 import Home from './pages/home';
 import PasswordReset from './pages/password-reset';
+import PrivateRoute from './PrivateRoute';
 import Register from './pages/register';
 import Import from './pages/import';
 import createStore from '../store';
 import reducers from '../modules/reducer';
 
 const store = createStore(reducers());
-
 
 
 class App extends Component {
@@ -29,7 +29,7 @@ class App extends Component {
                 <Grid>
                     <Row>
                         <Col md={12}>
-                            <Route path="/" exact component={Home}/>
+                            <PrivateRoute path="/" exact component={Home}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/demo" exact component={Home}/>
                             <Route path="/password-reset" exact component={PasswordReset}/>

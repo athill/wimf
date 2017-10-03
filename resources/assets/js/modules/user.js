@@ -8,24 +8,30 @@ import { getConstants } from './utils';
 export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 export const REGISTER_USER = getConstants('REGISTER_USER');
 export const LOGIN_USER = getConstants('LOGIN_USER');
+export const LOGOUT_USER = getConstants('LOGOUT_USER');
 
 
 //// reducer
 export const initialState = {
   id: null,
   name: null,
-  email: null
+  email: null,
+  authenticated: false
 };
 
 export default function reducer(state = initialState, action={}) {
   switch (action.type) {
     case LOGIN_USER.SUCCESS:
-      console.log(action);
       sessionStorage.setItem('token', action.payload.token);
       return state;
-
+    case LOGOUT_USER.SUCCESS:
+      sessionStorage.removeItem('token');
+      return initialState;
     case REGISTER_USER.SUCCESS:
-      return state;    
+      return {
+        ...state,
+        authenticated: true
+      };    
     case REQUEST_USER_INFO.SUCCESS:
       const newState = {
         ...state,
@@ -56,17 +62,25 @@ export const login = values => {
   };
 };
 
+export const logout = () => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      dispatch(createAction(LOGOUT_USER.SUCCESS));
+      history.push('/login');
+    });
+  }
+};
+
 export const register = values => {
   return dispatch => {
-    dispatch(createAction(REGISTER_USER));
-    return post('/api/auth/register', 
-      values, 
-      [
-        response => dispatch(createAction(REGISTER_USER.SUCCESS)(response)),
-        response => login(values)
-
-      ]
-    );
+    return new Promise((resolve, reject) => {
+      dispatch(createAction(REGISTER_USER));
+      post('/api/auth/register', 
+        values, 
+          response => dispatch(createAction(REGISTER_USER.SUCCESS)(response)))
+      .then(response => dispatch(login(values)))
+      .catch(error => reject(error));
+    });
   }
 };
 

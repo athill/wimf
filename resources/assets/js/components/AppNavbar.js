@@ -1,29 +1,30 @@
 import React from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
-// import { fetchUserInfo } from '../redux/modules/user';
+import { fetchUserInfo, logout } from '../modules/user';
 // import { exportDemoData } from '../redux/modules/containers';
 
 
-// const mapStateToProps = ({ user }) => {
-//   return {
-//     user,
-//     isDemo: user.email === 'demo@demo.com'
-//   };
-// };
+const mapStateToProps = ({ user }) => {
+  return {
+    user,
+    isDemo: user.email === 'demo@demo.com'
+  };
+};
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     demoExportSelect: () => {
-//       console.log('demoExportSelect');
-//       dispatch(exportDemoData());
-//     },
-//     dispatch
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // demoExportSelect: () => {
+    //   console.log('demoExportSelect');
+    //   dispatch(exportDemoData());
+    // },
+    logoutUser: () => dispatch(logout()), 
+    dispatch
+  };
+};
 
 class AppNavbar extends React.Component {
     constructor(props) {
@@ -31,13 +32,11 @@ class AppNavbar extends React.Component {
         this.displayName = 'AppNavbar';
     }
     componentDidMount()  {
-      // const {dispatch} = this.props;
-      // dispatch(fetchUserInfo());
+      const {dispatch} = this.props;
+      dispatch(fetchUserInfo());
     }    
     render() {
-      // const { user, isDemo, demoExportSelect } = this.props;
-      const isDemo = false;
-      const user = {};
+      const { user, isDemo, logoutUser, demoExportSelect } = this.props;
       return (
         <Navbar inverse>
           <Navbar.Header>
@@ -50,7 +49,7 @@ class AppNavbar extends React.Component {
 
             </Nav>
             <Nav pullRight>
-              { !isDemo && <NavItem eventKey={2} href="/demo" target="_blank">Demo</NavItem> }
+              { isDemo && <NavItem eventKey={2} href="/demo" target="_blank">Demo</NavItem> }
               <NavDropdown eventKey={3} title={user.name || ""} id="basic-nav-dropdown">
                 {(() => (
                   isDemo ?
@@ -58,7 +57,7 @@ class AppNavbar extends React.Component {
                     <LinkContainer key="register" to="/register"><MenuItem eventKey={3.2}>Register</MenuItem></LinkContainer>,
                     <MenuItem key="export" eventKey={3.2} href="#" onSelect={() => demoExportSelect()}>Export</MenuItem>] :
 
-                    [<LinkContainer key="logout" to="/logout"><MenuItem  eventKey={3.1}>Logout</MenuItem></LinkContainer>,
+                    [<MenuItem key="logout" eventKey={3.1} href="#" onSelect={() => logoutUser()}>Logout</MenuItem>,
                     <LinkContainer key="export" to="/export"><MenuItem eventKey={3.2}>Export</MenuItem></LinkContainer>,
                     <LinkContainer key="import" to="/import"><MenuItem eventKey={3.3}>Import</MenuItem></LinkContainer>]
                 ))()}
@@ -68,12 +67,6 @@ class AppNavbar extends React.Component {
         </Navbar>
       );
     }
-}
+};
 
-
-
-
-
-// export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar);
-export default AppNavbar;
-
+export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar);
