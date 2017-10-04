@@ -70,6 +70,12 @@ const chain = (promise, resolvers, rejecter = defaultRejector) => {
       if (!Array.isArray(resolvers)) {
         resolvers = [resolvers];
       }
+      promise.then(response => {
+        if (response.headers.Authorization) {
+          sessionStorage.setItem('token', response.headers.authorization);
+        }
+        return response;
+      });
       //// chain resolves
       resolvers.forEach(resolver => promise.then(resolver));
       //// resolve final response
