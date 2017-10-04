@@ -8,7 +8,8 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "test": "jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "tdd": "npm run test -- --watch --notify"
   },
   "devDependencies": {
     "axios": "^0.16.2",
@@ -19,6 +20,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.0.1",
+    "enzyme-adapter-react-15": "^1.0.1",
     "history": "^4.7.2",
     "jest": "^21.2.1",
     "jquery": "^3.1.1",
@@ -31,7 +33,7 @@
     "react-router": "^4.2.0",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
-    "react-test-renderer": "^16.0.0",
+    "react-test-renderer": "^15.4.2",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-define": "^1.1.1",
@@ -42,6 +44,15 @@
     "string-template": "^1.0.0"
   },
   "dependencies": {
-    "bootstrap-sass-loader": "^1.0.10"
+    "bootstrap-sass-loader": "^1.0.10",
+    "enzyme": "^3.1.0"
+  },
+  "jest": {
+    "setupFiles": [
+      "./resources/assets/js/test/jestsetup.js"
+    ],
+    "roots": [
+      "<rootDir>/resources/assets/js/"
+    ]
   }
 }
