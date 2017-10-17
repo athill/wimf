@@ -31,6 +31,7 @@
     "type": "image/png"
   }],
   "related_applications": [{
-    "platform": "web"
+    "platform": "web",
+    "url": "https://wimf.space"
   }]
 }

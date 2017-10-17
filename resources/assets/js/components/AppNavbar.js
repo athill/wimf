@@ -32,8 +32,10 @@ class AppNavbar extends React.Component {
         this.displayName = 'AppNavbar';
     }
     componentDidMount()  {
-      const {dispatch} = this.props;
-      dispatch(fetchUserInfo());
+      const {dispatch, user} = this.props;
+      if (user.authenticated) {
+        dispatch(fetchUserInfo());
+      }
     }    
     render() {
       const { user, isDemo, logoutUser, demoExportSelect } = this.props;
@@ -49,19 +51,22 @@ class AppNavbar extends React.Component {
 
             </Nav>
             <Nav pullRight>
-              { isDemo && <NavItem eventKey={2} href="/demo" target="_blank">Demo</NavItem> }
-              <NavDropdown eventKey={3} title={user.name || ""} id="basic-nav-dropdown">
-                {(() => (
-                  isDemo ?
-                    [<LinkContainer key="login" to="/login"><MenuItem eventKey={3.1}>Login</MenuItem></LinkContainer>,
-                    <LinkContainer key="register" to="/register"><MenuItem eventKey={3.2}>Register</MenuItem></LinkContainer>,
-                    <MenuItem key="export" eventKey={3.2} href="#" onSelect={() => demoExportSelect()}>Export</MenuItem>] :
+              { !isDemo &&  <NavItem eventKey={2} href="/demo" target="_blank">Demo</NavItem> }
+              { !user.authenticated ? 
+                <LinkContainer key="register" to="/register"><NavItem eventKey={3.2}>Register</NavItem></LinkContainer> : 
+                <NavDropdown eventKey={3} title={user.name || ""} id="basic-nav-dropdown">
+                  {
+                    isDemo ?
+                      [<LinkContainer key="login" to="/login"><MenuItem eventKey={3.1}>Login</MenuItem></LinkContainer>,
+                      <LinkContainer key="register" to="/register"><MenuItem eventKey={3.2}>Register</MenuItem></LinkContainer>,
+                      <MenuItem key="export" eventKey={3.2} href="#" onSelect={() => demoExportSelect()}>Export</MenuItem>] :
 
-                    [<MenuItem key="logout" eventKey={3.1} href="#" onSelect={() => logoutUser()}>Logout</MenuItem>,
-                    <LinkContainer key="export" to="/export"><MenuItem eventKey={3.2}>Export</MenuItem></LinkContainer>,
-                    <LinkContainer key="import" to="/import"><MenuItem eventKey={3.3}>Import</MenuItem></LinkContainer>]
-                ))()}
-              </NavDropdown>
+                      [<MenuItem key="logout" eventKey={3.1} href="#" onSelect={() => logoutUser()}>Logout</MenuItem>,
+                      <LinkContainer key="export" to="/export"><MenuItem eventKey={3.2}>Export</MenuItem></LinkContainer>,
+                      <LinkContainer key="import" to="/import"><MenuItem eventKey={3.3}>Import</MenuItem></LinkContainer>]
+                  }
+                </NavDropdown>
+            }
             </Nav>
           </Navbar.Collapse>
         </Navbar>

@@ -22,7 +22,7 @@ class CreateItemsTable extends Migration {
 		 	$table->integer('category_id');
 		 	// $table->foreign('category_id')->references('id')->on('categories');
 	        $table->timestamp('created_at')->useCurrent();
-	        $table->timestamp('updated_at');
+	        $table->timestamp('updated_at')->useCurrent();
 			$table->unique(['user', 'name', 'category_id']);
 		});
 	}

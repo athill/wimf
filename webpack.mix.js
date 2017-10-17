@@ -21,7 +21,7 @@ mix.autoload({
 
 mix.react('resources/assets/js/app.js', 'public/js')
 	// .extract(extract)
-	// .sourceMaps()
+	.sourceMaps()
 	.version()
    .sass('resources/assets/sass/app.scss', 'public/css')
 	// .sourceMaps()

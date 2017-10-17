@@ -17,8 +17,8 @@
     <body>
         <div id="app"></div>
         {{-- TODO: Versions --}}
-        <script src="{{asset('js/manifest.js')}}" ></script>
-        <script src="{{asset('js/vendor.js')}}" ></script>
+        <!-- <script src="{{asset('js/manifest.js')}}" ></script> -->
+        <!-- <script src="{{asset('js/vendor.js')}}" ></script> -->
         <script src="{{mix('js/app.js')}}" ></script>
     </body>
 </html>
