@@ -16,14 +16,17 @@ export const initialState = {
   id: null,
   name: null,
   email: null,
-  authenticated: false
+  authenticated: !!sessionStorage.getItem('token')
 };
 
 export default function reducer(state = initialState, action={}) {
   switch (action.type) {
     case LOGIN_USER.SUCCESS:
       sessionStorage.setItem('token', action.payload.token);
-      return state;
+      return {
+        ...state,
+        authenticated: true
+      };
     case LOGOUT_USER.SUCCESS:
       sessionStorage.removeItem('token');
       return initialState;

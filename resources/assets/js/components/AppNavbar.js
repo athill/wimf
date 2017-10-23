@@ -39,6 +39,7 @@ class AppNavbar extends React.Component {
     }    
     render() {
       const { user, isDemo, logoutUser, demoExportSelect } = this.props;
+      console.log('user', user);
       return (
         <Navbar inverse>
           <Navbar.Header>

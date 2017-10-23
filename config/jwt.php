@@ -33,7 +33,8 @@ return [
     |
     */
 
-    'ttl' => 60,
+    // 'ttl' => 60,
+    'ttl' => 5,
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +111,7 @@ return [
     |
     */
 
-    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
+    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------

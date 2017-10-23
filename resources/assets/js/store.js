@@ -14,9 +14,11 @@ const middleware = [
 ];
 
 
-if (process.env.NODE_ENV === 'development' || location.host === 'wimf.app') {
+if (process.env.NODE_ENV === 'development' || location.host === 'wimf.app' || location.host === 'wimf2.app') {
   middleware.push(logger);
 }
+
+
 
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
 

@@ -2,6 +2,7 @@
 namespace App\Http\Middleware;
 use Closure;
 use JWTAuth;
+use Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 class VerifyJWTToken
@@ -26,9 +27,9 @@ class VerifyJWTToken
                 $refreshed = null;
                 try {
                     $refreshed = JWTAuth::refresh(JWTAuth::getToken());
-                    $response->header('Authorization', $refreshed);
+                    response()>header('Authorization', $refreshed);
                 } catch (JWTException $e) {
-                    // return ApiHelpers::ApiResponse(103, null);
+                    Log::error($e);
                     return response()->json(['token_refresh_fail'], $e->getStatusCode());
                 }
                 $user = JWTAuth::setToken($refreshed)->toUser();
