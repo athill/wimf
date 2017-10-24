@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('auth/{driver}', ['as' => 'socialAuth', 'uses' => 'Auth\SocialController@redirectToProvider']);
+Route::get('auth/{driver}/callback', ['as' => 'socialAuthCallback', 'uses' => 'Auth\SocialController@handleProviderCallback']);
+
 Route::get('/{foo?}/{bar?}', function () {
     return view('app');
 });

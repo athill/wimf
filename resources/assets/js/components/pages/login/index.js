@@ -67,6 +67,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 							</Col>
 						</FormGroup>
 					</Form>
+					<a href="/auth/github">Connect with GitHub</a>
 				</Panel>
 			</Col>
 		</Row>

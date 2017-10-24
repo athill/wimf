@@ -10,6 +10,15 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     *  The attributes that should be casted to native types.
+     * 
+     *  @var array
+     */
+    protected $casts = [
+        'settings' => 'array'
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
