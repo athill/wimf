@@ -30,10 +30,8 @@ class GithubServiceProvider extends AbstractServiceProvider
         }
 
         $newUser = $this->register([
-            'first_name' => $user->user['first_name'],
-            'last_name' => $user->user['last_name'],
-            'email' => $user->email,
-            'gender' => ucfirst($user->user['gender']),
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
             'settings' => [
                 'github_id' => $user->id,                
             ]
