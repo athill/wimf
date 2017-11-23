@@ -5,6 +5,8 @@ namespace App\Social;
 use App\User;
 use Laravel\Socialite\Facades\Socialite;
 
+use Log;
+
 abstract class AbstractServiceProvider
 {
     protected $provider;
@@ -30,6 +32,7 @@ abstract class AbstractServiceProvider
     protected function login($user)
     {
         auth()->login($user);
+        Log::info(Auth::user());
 
         return redirect()->intended('/');
     }
