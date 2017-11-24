@@ -32,7 +32,7 @@ abstract class AbstractServiceProvider
     protected function login($user)
     {
         auth()->login($user);
-        dd($this->provider);
+        dd($this->provider->user());
 
         return redirect()->intended('/');
     }
