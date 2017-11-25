@@ -9,6 +9,8 @@
         <meta name="author" content="Andy Hill"/>
         <meta name="copyright" content="{{ date('Y') }}, wimf.space"/>       
         <link rel="manifest" href="{{ asset('manifest.json') }}">
+        <meta name="theme-color" content="#FFFFFF"/>
+        <link href="/images/touch/informed_48x48.png" rel="shortcut icon" type="image/png"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
    
         <title>What&apos;s In My Freezer?</title>
