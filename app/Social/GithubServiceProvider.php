@@ -14,6 +14,7 @@ class GithubServiceProvider extends AbstractServiceProvider
     public function handle()
     {
         $user = $this->provider->user();
+        dd($this->provider->user());
 
         $existingUser = User::where('settings->github_id', $user->id)->first();
 
