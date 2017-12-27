@@ -45,17 +45,17 @@ class SocialController extends Controller
      */
     public function handleProviderCallback($driver)
     {   
-        try {
+        // try {
             return (new $this->providers[$driver])->handle();
-        } catch (InvalidStateException $e) {
-            Log::error($e);
-            // return $this->redirectToProvider($driver);
-        } catch (ClientException $e) {
-            Log::error($e);
-            // return $this->redirectToProvider($driver);
-        } catch (CredentialsException $e) {
-            Log::error($e);
-            // return $this->redirectToProvider($driver);
-        }
+        // } catch (InvalidStateException $e) {
+        //     Log::error($e);
+        //     // return $this->redirectToProvider($driver);
+        // } catch (ClientException $e) {
+        //     Log::error($e);
+        //     // return $this->redirectToProvider($driver);
+        // } catch (CredentialsException $e) {
+        //     Log::error($e);
+        //     // return $this->redirectToProvider($driver);
+        // }
     }
 }
