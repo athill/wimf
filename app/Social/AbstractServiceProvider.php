@@ -32,7 +32,8 @@ abstract class AbstractServiceProvider
     protected function login($user)
     {
         auth()->login($user);
-        dd($this->provider->user());
+        // 
+        Log::info(json_encode($user));
 
         return redirect()->intended('/');
     }

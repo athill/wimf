@@ -4,6 +4,8 @@ namespace App\Social;
 
 use App\User;
 
+use Log;
+
 class GithubServiceProvider extends AbstractServiceProvider
 {
    /**
@@ -14,7 +16,7 @@ class GithubServiceProvider extends AbstractServiceProvider
     public function handle()
     {
         $user = $this->provider->user();
-        dd($this->provider->user());
+        Log::info(json_encode($this->provider->user()));
 
         $existingUser = User::where('settings->github_id', $user->id)->first();
 
