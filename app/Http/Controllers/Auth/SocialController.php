@@ -48,11 +48,11 @@ class SocialController extends Controller
         try {
             return (new $this->providers[$driver])->handle();
         } catch (InvalidStateException $e) {
-            return $this->redirectToProvider($driver);
+            // return $this->redirectToProvider($driver);
         } catch (ClientException $e) {
-            return $this->redirectToProvider($driver);
+            // return $this->redirectToProvider($driver);
         } catch (CredentialsException $e) {
-            return $this->redirectToProvider($driver);
+            // return $this->redirectToProvider($driver);
         }
     }
 }
