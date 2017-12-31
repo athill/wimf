@@ -43,6 +43,7 @@ export default function reducer(state = initialState, action={}) {
         loading: loadingStates.LOADING
       };
     case REQUEST_USER_INFO.SUCCESS:
+
       const newState = {
         ...state,
         id: action.payload.id,

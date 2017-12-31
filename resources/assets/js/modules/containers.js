@@ -2,9 +2,9 @@ import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 //// utils
-import { getIsoFormat } from '../../util/DateUtils';
+import { getIsoFormat } from '../util/DateUtils';
 
-import { get, deleteRequest, post, put } from '../../util/RemoteOperations';
+import { get, deleteRequest, post, put } from '../util/RemoteOperations';
 
 import { 
   addContainerToContainers, 
@@ -16,7 +16,7 @@ import {
   updateCategoriesInContainers, 
   updateContainerInContainers,
   updateItemInCategories 
-} from '../../util/ContainerOperations';
+} from '../util/ContainerOperations';
 import { 
   appNamespace, 
   formModalReducer, 
@@ -185,6 +185,10 @@ const  containersReducer = (state, action) => {
 };
 
 export default function reducer(state = initialState, action) {
+  //// TODO: figure out what's up with this
+  if (!action) {
+    return state;
+  }
   switch (action.type) { 
     //// container actions  
     case ADD_CONTAINER.SUCCESS:

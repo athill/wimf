@@ -18,6 +18,7 @@ const makePromise = (method, url, data)  => {
     const headers = {
       Authorization: `Bearer ${sessionStorage.getItem('token')}`
     }
+    console.log(headers);
     promise = axios({
       method,
       headers,

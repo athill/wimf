@@ -27,7 +27,7 @@ class VerifyJWTToken
                 $refreshed = null;
                 try {
                     $refreshed = JWTAuth::refresh(JWTAuth::getToken());
-                    response()->header('Authorization', $refreshed);
+                    response()->json([])->header('Authorization', $refreshed);
                 } catch (JWTException $e) {
                     Log::error($e);
                     return response()->json(['token_refresh_fail'], $e->getStatusCode());

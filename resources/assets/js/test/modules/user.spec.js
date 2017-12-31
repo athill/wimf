@@ -1,7 +1,16 @@
-import reducer, { initialState, LOGIN_USER, LOGOUT_USER, REQUEST_USER_INFO } from '../../modules/user';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+import reducer, { initialState, fetchUserInfo, LOGIN_USER, LOGOUT_USER, REQUEST_USER_INFO } from '../../modules/user';
 import { loadingStates } from '../../modules/utils';
 
+const mock = new MockAdapter(axios);
 
+const userPayload = {
+	id: 'foo',
+	name: 'Foo Bar',
+	email: 'foo@bar.baz'
+};
 
 describe('user module', () => {
 	describe('reducer', () => {
@@ -38,21 +47,32 @@ describe('user module', () => {
 		});
 		describe('REQUEST_USER_INFO.SUCCESS', () =>{ 
 			it('should update state', () => {
-				const payload = {
-					id: 'foo',
-					name: 'Foo Bar',
-					email: 'foo@bar.baz'
-				};
-				const newState = reducer(initialState, { type: REQUEST_USER_INFO.SUCCESS, payload });
+
+				const newState = reducer(initialState, { type: REQUEST_USER_INFO.SUCCESS, payload: userPayload });
 				expect(newState).toEqual({
 					...initialState,
-					...payload,
+					...userPayload,
 					loading: loadingStates.COMPLETE,
 					authenticated: true
 				});
 			});
 		});		
 	});
+
+	// describe('actions', () => {
+	// 	afterEach(() => {
+	// 		sessionStorage.clear();
+	// 	});		
+	// 	describe('fetchUserInfo', () => {
+	// 		it('fetches user info', () => {
+	// 			sessionStorage.__STORE__['token'] = 'foo';
+	// 			mock.onGet('/api/user').reply(200, { result: { ...userPayload } });
+ //      			const dispatch = jest.fn();
+ //      			fetchUserInfo()(dispatch);
+ //      			console.log(dispatch.mock.calls)
+	// 		});
+	// 	});
+	// });
 });
 
 
