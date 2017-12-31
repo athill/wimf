@@ -31,13 +31,13 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 		<Row>
 			<Col md={6}>
 				<Panel header="New Here?" bsStyle="success">
-					<p><strong>What&amp;s in my Freezer?</strong> is a simple inventory application. It was inspired by going 
+					<p><strong>What's in my Freezer?</strong> is a simple inventory application. It was inspired by going 
 					to the grocery store and buying things that were already in my freezer.</p>
-					<p>It had to be simple, or I wouldn&amp;t use it. Hence, it is mostly just adding, editing, and removing items.</p>
+					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
 					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>
-					<p>There is no "sharing" option. What&apos;s in your freezer is between you and the database</p>
+					<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
 					<p><strong>To get started</strong>, 
-						check out the <a href="/demo" target='_blank'>demo</a> (data stored   
+						check out the <a href="/demo" target='_blank'>demo</a> (data stored&nbsp; 
 						<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
 						or <Link to="/register">register</Link>.
 					</p>					
@@ -53,7 +53,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 							<Col md={6} mdOffset={4}>
 								<div className="checkbox">
 									<label>
-										<input type="checkbox" name="remember" /> Remember Me
+										<Field type="checkbox" component="input" name="remember" /> Remember Me
 									</label>
 								</div>
 							</Col>
@@ -67,7 +67,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 							</Col>
 						</FormGroup>
 					</Form>
-					<a href="/auth/github">Connect with GitHub</a>
+					{/* <a href="/auth/github">Connect with GitHub</a> */}
 				</Panel>
 			</Col>
 		</Row>

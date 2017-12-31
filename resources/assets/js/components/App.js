@@ -11,12 +11,19 @@ import Login from './pages/login';
 import Home from './pages/home';
 import PasswordReset from './pages/password-reset';
 import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
 import Register from './pages/register';
 import Import from './pages/import';
 import createStore from '../store';
 import reducers from '../modules/reducer';
+import { fetchUserInfo } from '../modules/user';
 
 const store = createStore(reducers(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+if (!sessionStorage.getItem('token') && localStorage.getItem('token')) {
+    sessionStorage.setItem('token', localStorage.getItem('token'));
+    store.dispatch(fetchUserInfo());
+}
 
 class App extends Component {
   render() {
@@ -31,8 +38,8 @@ class App extends Component {
                             <PrivateRoute path="/" exact component={Home}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/demo" exact component={Home}/>
-                            <Route path="/password-reset" exact component={PasswordReset}/>
-                            <Route path="/register" exact component={Register}/>
+                            <PrivateRoute path="/password-reset" exact component={PasswordReset}/>
+                            <PublicRoute path="/register" exact component={Register}/>
                             <Route path="/import" exact component={Import}/>
                         </Col>
                     </Row>

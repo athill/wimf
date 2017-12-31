@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { fetchUserInfo, logout } from '../modules/user';
+import { loadingStates } from '../modules/utils';
 // import { exportDemoData } from '../redux/modules/containers';
 
 
@@ -33,13 +34,12 @@ class AppNavbar extends React.Component {
     }
     componentDidMount()  {
       const {dispatch, user} = this.props;
-      if (user.authenticated) {
+      if (user.authenticated && user.loading !== loadingStates.COMPLETE) {
         dispatch(fetchUserInfo());
       }
     }    
     render() {
       const { user, isDemo, logoutUser, demoExportSelect } = this.props;
-      console.log('user', user);
       return (
         <Navbar inverse>
           <Navbar.Header>

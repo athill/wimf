@@ -1,13 +1,16 @@
 <?php
 namespace App\Http\Controllers;
 
+// use Illuminate\Cookie\CookieJar;
 use Illuminate\Http\Request;
+use JWTAuth;
+use JWTAuthException;
+use Log;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use JWTAuth;
 use App\User;
-use JWTAuthException;
+
 class UserController extends Controller
 {   
 
@@ -46,7 +49,10 @@ class UserController extends Controller
         } catch (JWTAuthException $e) {
             return response()->json(['failed_to_create_token'], 500);
         }
-        return response()->json(compact('token'));
+        return response()->json([
+            'token' => $token,
+            'remember' => $request->get('remember'),
+        ]);
     }
 
     public function getAuthUser(Request $request) {
