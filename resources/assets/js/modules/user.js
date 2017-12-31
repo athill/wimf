@@ -36,13 +36,8 @@ export default function reducer(state = initialState, action={}) {
       return {
         ...initialState,
         authenticated: false
-      };
-    case REGISTER_USER.SUCCESS:
-      return {
-        ...state,
-        authenticated: true
-      };    
-    case REQUEST_USER_INFO:
+      };   
+    case REQUEST_USER_INFO.ACTION:
       return {
         ...state,
         loading: loadingStates.LOADING
@@ -65,7 +60,7 @@ export default function reducer(state = initialState, action={}) {
 export const login = values => {
  return dispatch => {
     return new Promise((resolve, reject) => {
-      dispatch(createAction(LOGIN_USER));
+      dispatch(createAction(LOGIN_USER.ACTION));
       post('/api/auth/login', 
         values, 
         response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
@@ -91,7 +86,7 @@ export const logout = () => {
 export const register = values => {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      dispatch(createAction(REGISTER_USER));
+      dispatch(createAction(REGISTER_USER.ACTION));
       post('/api/auth/register', 
         values, 
           response => dispatch(createAction(REGISTER_USER.SUCCESS)(response)))
@@ -103,7 +98,7 @@ export const register = values => {
 
 export function fetchUserInfo() {
   return dispatch => {
-    dispatch(createAction(REQUEST_USER_INFO));
+    dispatch(createAction(REQUEST_USER_INFO.ACTION));
     get(
       `/api/user`,
       response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data.result))
