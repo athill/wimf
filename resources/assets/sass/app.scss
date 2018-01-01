@@ -1,6 +1,5 @@
 
 // Fonts
-// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 @import "~font-awesome/scss/font-awesome.scss";
 
 // Variables
@@ -17,9 +16,9 @@ body, label, .checkbox label {
 .card-block {
 	.panel-heading {
 		padding: 5px 10px;
-
+		background-color: #CCC;
+		
 		.card-title {
-			// float: left;
 			margin: 0;
 			padding: 0 7px;
 			h4 {
