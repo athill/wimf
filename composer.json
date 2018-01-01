@@ -7,10 +7,12 @@
     "require": {
         "php": ">=7.0.0",
         "doctrine/dbal": "^2.6",
+        "eventhomes/laravel-fractalhelper": "^0.1.4",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
+        "league/fractal": "^0.17.0",
         "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {

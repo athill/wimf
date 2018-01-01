@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import faker from 'faker';
 
-import InlineField from '../../../src/components/common/InlineField';
+import InlineField from '../../../components/common/InlineField';
 
 describe('InlineField', () => {
 	it('works', () => {

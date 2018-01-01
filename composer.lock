@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1f6ca1062c558b8d58bbcf63f09c250",
+    "content-hash": "56f35a0409e9b6ab45c8dbf1d014b432",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -613,6 +613,96 @@
                 "parser"
             ],
             "time": "2017-05-14T14:47:48+00:00"
+        },
+        {
+            "name": "eventhomes/laravel-apicontroller",
+            "version": "0.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eventhomes/laravel-apicontroller.git",
+                "reference": "9f3f1fc8ba0f81cab218cc3f4fa6ee0d90f28e6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eventhomes/laravel-apicontroller/zipball/9f3f1fc8ba0f81cab218cc3f4fa6ee0d90f28e6c",
+                "reference": "9f3f1fc8ba0f81cab218cc3f4fa6ee0d90f28e6c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EventHomes\\Api\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bill Richards",
+                    "email": "roundedvision@gmail.com"
+                }
+            ],
+            "description": "Simplified API controller, inspired by Jeffrey Way. Compatible with Laravel 5+ and Lumen 5+.",
+            "keywords": [
+                "api",
+                "api controller",
+                "fractal",
+                "laravel",
+                "lumen"
+            ],
+            "time": "2015-06-23T03:25:41+00:00"
+        },
+        {
+            "name": "eventhomes/laravel-fractalhelper",
+            "version": "v0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eventhomes/laravel-fractalhelper.git",
+                "reference": "3bf541be80d10ffafa2a6ac31e2ddb54431bbdc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eventhomes/laravel-fractalhelper/zipball/3bf541be80d10ffafa2a6ac31e2ddb54431bbdc8",
+                "reference": "3bf541be80d10ffafa2a6ac31e2ddb54431bbdc8",
+                "shasum": ""
+            },
+            "require": {
+                "eventhomes/laravel-apicontroller": "~0.1.5",
+                "league/fractal": "~0.13",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EventHomes\\Api\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bill Richards",
+                    "email": "roundedvision@gmail.com"
+                }
+            ],
+            "description": "Compatible with Laravel 5+ and Lumen 5+.",
+            "keywords": [
+                "api",
+                "api controller",
+                "fractal",
+                "laravel",
+                "lumen"
+            ],
+            "time": "2016-07-28T22:00:22+00:00"
         },
         {
             "name": "fideloper/proxy",
@@ -1278,6 +1368,70 @@
                 "storage"
             ],
             "time": "2017-08-06T17:41:04+00:00"
+        },
+        {
+            "name": "league/fractal",
+            "version": "0.17.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/fractal.git",
+                "reference": "a0b350824f22fc2fdde2500ce9d6851a3f275b0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/a0b350824f22fc2fdde2500ce9d6851a3f275b0e",
+                "reference": "a0b350824f22fc2fdde2500ce9d6851a3f275b0e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.5",
+                "illuminate/contracts": "~5.0",
+                "mockery/mockery": "~0.9",
+                "pagerfanta/pagerfanta": "~1.0.0",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5",
+                "zendframework/zend-paginator": "~2.3"
+            },
+            "suggest": {
+                "illuminate/pagination": "The Illuminate Pagination component.",
+                "pagerfanta/pagerfanta": "Pagerfanta Paginator",
+                "zendframework/zend-paginator": "Zend Framework Paginator"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.13-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Fractal\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phil Sturgeon",
+                    "email": "me@philsturgeon.uk",
+                    "homepage": "http://philsturgeon.uk/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Handle the output of complex data structures ready for API output.",
+            "homepage": "http://fractal.thephpleague.com/",
+            "keywords": [
+                "api",
+                "json",
+                "league",
+                "rest"
+            ],
+            "time": "2017-06-12T11:04:56+00:00"
         },
         {
             "name": "league/oauth1-client",

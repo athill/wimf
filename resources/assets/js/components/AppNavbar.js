@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-class AppNavbar extends React.Component {
+export class AppNavbar extends React.Component {
     constructor(props) {
         super(props);
         this.displayName = 'AppNavbar';

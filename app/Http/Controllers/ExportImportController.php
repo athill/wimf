@@ -124,7 +124,7 @@ class ExportImportController extends Controller {
 			}
 		}
 		//// return success
-		return view('home', ['messages' => [self::SUCCESS_MESSAGE]]);
+		return view('app', ['messages' => [self::SUCCESS_MESSAGE]]);
 	} 
 
 	public function exportDemo(Request $request) {

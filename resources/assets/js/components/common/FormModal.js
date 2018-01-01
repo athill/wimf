@@ -23,7 +23,7 @@ export const ErrorDisplay = ({ errors }) => {
 };
 ErrorDisplay.displayName = 'ErrorDisplay';
 
-const FormModal = ({ children, errors, show, title, valid, onHide = () => {}, onSubmit = () => {}, 
+const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, show = true,
     submitting = false, submitButtonBsStyle='primary', submitButtonText = 'Submit', ...otherProps }) => {
   if (show) {
     return (
