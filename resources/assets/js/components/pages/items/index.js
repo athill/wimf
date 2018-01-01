@@ -95,9 +95,3 @@ export class Items extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Items);
-
-// const Items = () => (
-//   <h3>Items</h3>
-// );
-
-// export default Items;
