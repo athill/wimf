@@ -23,31 +23,36 @@ export const ErrorDisplay = ({ errors }) => {
 };
 ErrorDisplay.displayName = 'ErrorDisplay';
 
-const FormModal = ({ children, errors, title, valid, onHide = () => {}, onSubmit = () => {}, 
+const FormModal = ({ children, errors, show, title, valid, onHide = () => {}, onSubmit = () => {}, 
     submitting = false, submitButtonBsStyle='primary', submitButtonText = 'Submit', ...otherProps }) => {
-  return (
-  <Modal onHide={() => { if(!submitting) { onHide(); } }} {...otherProps}>
-    <Modal.Header>
-      <Modal.Title>{ title }</Modal.Title>
-    </Modal.Header>
+  if (show) {
+    return (
+      <Modal onHide={() => { if(!submitting) { onHide(); } }} show={true} {...otherProps}>
+        <Modal.Header>
+          <Modal.Title>{ title }</Modal.Title>
+        </Modal.Header>
 
-    <form onSubmit={e => { e.preventDefault(); onSubmit(); }} className='form-horizontal'>
-       <Modal.Body>
-        { children } 
-      </Modal.Body>  
-      <Modal.Footer>
-        <ErrorDisplay errors={errors} />
-        {submitting && <Spinner />} {' '}
-        <Button id="confirmModal" bsStyle={submitButtonBsStyle} type="submit" disabled={!valid || submitting}>
-          { submitButtonText }
-        </Button>
-        <Button id="cancelModal" className='cancel' onClick={onHide} disabled={submitting}>
-          Cancel
-        </Button>
-      </Modal.Footer> 
-    </form>
-  </Modal>
-)};
+        <form onSubmit={e => { e.preventDefault(); onSubmit(); }} className='form-horizontal'>
+           <Modal.Body>
+            { children } 
+          </Modal.Body>  
+          <Modal.Footer>
+            <ErrorDisplay errors={errors} />
+            {submitting && <Spinner />} {' '}
+            <Button id="confirmModal" bsStyle={submitButtonBsStyle} type="submit" disabled={!valid || submitting}>
+              { submitButtonText }
+            </Button>
+            <Button id="cancelModal" className='cancel' onClick={onHide} disabled={submitting}>
+              Cancel
+            </Button>
+          </Modal.Footer> 
+        </form>
+      </Modal>
+    );
+  } else {
+    return null;
+  }
+};
 
 FormModal.displayName = 'FormModal';
 
