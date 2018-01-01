@@ -61,11 +61,11 @@ export const updateEntity = ({ formName, handler, hideAction, requestAction, suc
     valuesTransformer = defaultValuesTransformer
    }) => {
   return (values, resolve, reject) => {
-    url = format(url, values);
+    const finalUrl = format(url, values);
     return (dispatch, getState) => {
       dispatch(requestAction());
       return handler(
-        url,
+        finalUrl,
         valuesTransformer(values, getState),
         response => {
           dispatch(reset(formName));

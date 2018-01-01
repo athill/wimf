@@ -373,5 +373,5 @@ export const removeItem = updateItem({
   handler: deleteRequest,
   requestAction: createAction(DELETE_ITEM), 
   successAction: createAction(DELETE_ITEM.SUCCESS),
-  url: '/api/items/{id}'
+  url: '/api/items/{id}',
 });
