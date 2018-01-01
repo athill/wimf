@@ -90,9 +90,5 @@ class ItemController extends Controller {
 			'container_id' => $request->get('container_id'),
 			'user_id' => JWTAuth::toUser($request->token)->id
 		]);
-		// $category = new Category();
-		// $category->name = $request->get('category');
-		// $category->container_id = $request->get('container_id');
-		// return $category;
 	}
 }
