@@ -16,12 +16,12 @@ describe('user module', () => {
 	describe('reducer', () => {
 		describe('LOGIN_USER.SUCCESS', () => {
 			it('should update state and updates sessionStorage', () => {
-				const newState = reducer(initialState, { type: LOGIN_USER.SUCCESS, payload: { token: 'foo' } });
+				const newState = reducer(initialState, { type: LOGIN_USER.SUCCESS, payload: { access_token: 'foo' } });
 				expect(newState).toEqual({
 					...initialState,
 					authenticated: true
 				});
-				expect(sessionStorage.setItem).toHaveBeenLastCalledWith('token', 'foo');
+				expect(sessionStorage.setItem).toHaveBeenLastCalledWith('access_token', 'foo');
 			});
 			it('updates localStorage if remember token is present', () => {
 				const newState = reducer(initialState, { type: LOGIN_USER.SUCCESS, payload: { token: 'foo', remember: true } });
