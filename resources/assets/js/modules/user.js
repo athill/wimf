@@ -23,9 +23,9 @@ export default function reducer(state = initialState, action={}) {
   switch (action.type) {
     case LOGIN_USER.SUCCESS:
       if (action.payload.remember) {
-        localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('token', action.payload.access_token);
       }
-      sessionStorage.setItem('token', action.payload.token);
+      sessionStorage.setItem('token', action.payload.access_token);
       return {
         ...state,
         authenticated: true
@@ -62,7 +62,7 @@ export const login = values => {
  return dispatch => {
     return new Promise((resolve, reject) => {
       dispatch(createAction(LOGIN_USER.ACTION));
-      post('/api/auth/login', 
+      post('/api/login', 
         values, 
         response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
       ).then(response => {
@@ -88,7 +88,7 @@ export const register = values => {
   return dispatch => {
     return new Promise((resolve, reject) => {
       dispatch(createAction(REGISTER_USER.ACTION));
-      post('/api/auth/register', 
+      post('/api/register', 
         values, 
           response => dispatch(createAction(REGISTER_USER.SUCCESS)(response)))
       .then(response => dispatch(login(values)))
@@ -101,7 +101,7 @@ export function fetchUserInfo() {
   return dispatch => {
     dispatch(createAction(REQUEST_USER_INFO.ACTION));
     get(
-      `/api/user`,
+      `/api/me`,
       response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data.result))
     );  
   }

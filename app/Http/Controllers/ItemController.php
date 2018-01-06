@@ -1,9 +1,9 @@
 <?php namespace App\Http\Controllers;
 
-use JWTAuth;
 use Log;
 use Illuminate\Http\Request;
 use Response;
+use Auth;
 
 use App\Http\Controllers\Controller;
 
@@ -88,7 +88,7 @@ class ItemController extends Controller {
 		return Category::firstOrNew([
 			'name' => $request->get('category'),
 			'container_id' => $request->get('container_id'),
-			'user_id' => JWTAuth::toUser($request->token)->id
+			'user_id' => Auth::user()
 		]);
 	}
 }

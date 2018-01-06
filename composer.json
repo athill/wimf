@@ -13,7 +13,7 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "league/fractal": "^0.17.0",
-        "tymon/jwt-auth": "^0.5.12"
+        "tymon/jwt-auth": "^1.0@dev"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

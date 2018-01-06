@@ -3,6 +3,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Container;
@@ -13,6 +14,7 @@ use App\User;
 class ItemControllerTest extends TestCase {
 
 	use DatabaseTransactions;
+    // use WithoutMiddleware;
 
     private $defaultCategoryName = 'foo';
     private $defaultItemName = 'bar';
