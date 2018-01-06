@@ -169,6 +169,7 @@ return [
          */
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -43,7 +43,7 @@ export default function reducer(state = initialState, action={}) {
         loading: loadingStates.LOADING
       };
     case REQUEST_USER_INFO.SUCCESS:
-
+      console.log(action);
       const newState = {
         ...state,
         id: action.payload.id,
@@ -102,7 +102,7 @@ export function fetchUserInfo() {
     dispatch(createAction(REQUEST_USER_INFO.ACTION));
     get(
       `/api/me`,
-      response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data.result))
+      response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
     );  
   }
 };

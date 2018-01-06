@@ -9,6 +9,7 @@
         "doctrine/dbal": "^2.6",
         "eventhomes/laravel-fractalhelper": "^0.1.4",
         "fideloper/proxy": "~3.3",
+        "irazasyed/jwt-auth-guard": "^1.0",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
