@@ -90,7 +90,7 @@ export const register = values => {
       dispatch(createAction(REGISTER_USER.ACTION));
       post('/api/register', 
         values, 
-          response => dispatch(createAction(REGISTER_USER.SUCCESS)(response)))
+          response => dispatch(createAction(REGISTER_USER.SUCCESS)(response.data)))
       .then(response => dispatch(login(values)))
       .catch(error => reject(error));
     });

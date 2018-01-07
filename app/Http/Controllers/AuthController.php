@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
+Use App\User;
+
 class AuthController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -34,6 +36,21 @@ class AuthController extends Controller
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    public function register(Request $request){
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|unique:users|max:255',
+            'password' => 'required|max:60',
+            'password_confirmation' => 'required|same:password|max:60',
+        ]);
+        $user = User::create([
+          'name' => $request->get('name'),
+          'email' => $request->get('email'),
+          'password' => bcrypt($request->get('password'))
+        ]);
+        return response()->json(['status'=>true,'message'=>'User created successfully','data'=>$user]);
     }
 
     /**

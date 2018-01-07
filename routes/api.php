@@ -13,17 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::post('login', 'AuthController@login');
+Route::post('register', 'AuthController@register');
+
 Route::group([
     'middleware' => 'auth:api',
 ], function ($router) {
 
-    Route::post('login', 'AuthController@login');
+    
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
+	Route::post('containers/select/{id}', 'ContainerController@select');
 	Route::resource('containers', 'ContainerController', 
 		array('only' => array('index', 'store', 'destroy', 'update', 'show')));	
+	
 	Route::resource('items', 'ItemController', 
 		array('only' => array('index', 'store', 'destroy', 'update', 'show')));			    
 
 });
+
+

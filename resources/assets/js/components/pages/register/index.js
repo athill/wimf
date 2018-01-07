@@ -25,7 +25,12 @@ const validate = values => {
 	return errors;
 };
 
-const submit = (values, dispatch) => dispatch(register(values));
+const submit = (values, dispatch) => {
+	return new Promise((resolve, reject) => {
+		dispatch(register(values))
+			.catch(error => reject(new SubmissionError(error)));
+	});
+};
 
 const Register = (props) => {
 	console.log('register', props);
