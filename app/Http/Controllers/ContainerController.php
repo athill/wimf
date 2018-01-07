@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
 use Log;
 use Response;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use App\Category;
 use App\Container;
 use App\Item;
 use App\Library\Utils;
+use App\User;
 
 class ContainerController extends Controller {
 
@@ -20,13 +22,20 @@ class ContainerController extends Controller {
 	 */
 	public function index() {
 		$containers = Container::getUser();
+		$user = Auth::user();
 		if (count($containers) === 0) {
 			$container = new Container();
 			$container->name = 'Freezer';
 			$container->save();
+			$user->container_id = $container->id;
+			$user->save();	
 			$containers = Container::getUser();
 		}
-		return Response::json($containers);
+		$selected = $user->container_id;
+		if (is_null($selected)) {
+			$selected = $containers->get(0)->id;
+		}
+		return ['containers' => $containers, 'selected' => $selected];
 	}
 
 	/**
@@ -35,14 +44,24 @@ class ContainerController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		$container = Container::findOrFail($id);
+	public function show($id) {
+		try {
+			$container = Container::findOrFail($id);	
+		} catch(Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			return ['error' => $e->getMessage()];
+			Log::debug('Bad container id: ' . $id);
+		}
+		
 		$data = [
 			'name' => $container->name,
 			'description' => $container->description,
 			'id' => $id
 		];
+
+		//// update selected category
+		$user = Auth::user();
+		$user->container_id = $id;
+		$user->save();	
 		
 		$cats = [];
 		$categories = Container::find($id)->categories()->orderBy('name')->get();

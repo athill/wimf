@@ -18,7 +18,6 @@ const makePromise = (method, url, data)  => {
     const headers = {
       Authorization: `Bearer ${sessionStorage.getItem('token')}`
     }
-    console.log(headers);
     promise = axios({
       method,
       headers,
@@ -48,7 +47,6 @@ export const getErrorFromAxiosResponse = response => {
 };
 
 export const defaultRejector = error => {
-  console.log('rejecter', error);
   if (!error.message || !error.errors) {
     console.error('Unknown error in defaultRejector', error);
     return 'Unknown Error';

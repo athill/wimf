@@ -33,7 +33,6 @@ const submit = (values, dispatch) => {
 };
 
 const Register = (props) => {
-	console.log('register', props);
 	const { error, handleSubmit, invalid, pristine, reset, submitting } = props;
 	return (
 	<Grid fluid>

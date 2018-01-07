@@ -170,8 +170,7 @@ const  containersReducer = (state, action) => {
         action.payload.forEach(container => containers[container.id] = container );
         return  {
             ...state,
-            containers,
-            selectedId: action.payload[0].id+''
+            containers
         }; 
       case SELECT_CONTAINER:
         return {
@@ -253,7 +252,6 @@ export const exportDemoData = () => {
       })
       .then(response => { 
         dispatch(createAction(RECEIVE_DEMO_DATA));
-        console.log(response);
         window.location = `/export/demo?filename=${response.data.filename}`
       })
       .catch(error => console.error(error));
@@ -267,8 +265,9 @@ export const fetchContainers = () => {
     return get(
       '/api/containers',
       response => {
-        dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(response.data));
-        dispatch(fetchItems(response.data[0].id));
+        dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(response.data.containers));
+        dispatch(selectContainer(response.data.selected));
+        dispatch(fetchItems(response.data.selected));
       }
     );
   };
