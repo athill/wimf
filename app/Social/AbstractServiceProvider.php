@@ -20,7 +20,7 @@ abstract class AbstractServiceProvider
             str_replace(
                 'serviceprovider', '', strtolower((new \ReflectionClass($this))->getShortName())
             )
-        )->stateless();
+        );
     }
 
     /**

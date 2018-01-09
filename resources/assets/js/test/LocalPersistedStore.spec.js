@@ -41,7 +41,7 @@ describe('LocalPersistedStore', () => {
 					description: tmpContainer.description,
 					id: tmpContainer.id
 				};
-				const expectedContainers = [expectedContainer];
+				const expectedContainers = { containers: [expectedContainer], selected: container_id };
 				expect(localStore.persistContainers(resolve, reject, 'get')).toEqual(expectedContainers);
 			});
 

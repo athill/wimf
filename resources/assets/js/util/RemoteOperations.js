@@ -6,7 +6,7 @@ import localPersistedStore from '../LocalPersistedStore';
 const localStoragePromise = (method, url, data) => {
   return new Promise(
     (resolve, reject) => {
-      localPersistedStore(resolve, reject, method, url, data);
+      return localPersistedStore(resolve, reject, method, url, data);
     });
 };
 
@@ -70,7 +70,7 @@ const chain = (promise, resolvers, rejecter = defaultRejector) => {
         resolvers = [resolvers];
       }
       promise.then(response => {
-        if (response.headers.Authorization) {
+        if (response.headers && response.headers.Authorization) {
           sessionStorage.setItem('token', response.headers.authorization);
         }
         return response;

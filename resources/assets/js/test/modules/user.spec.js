@@ -21,10 +21,10 @@ describe('user module', () => {
 					...initialState,
 					authenticated: true
 				});
-				expect(sessionStorage.setItem).toHaveBeenLastCalledWith('access_token', 'foo');
+				expect(sessionStorage.setItem).toHaveBeenLastCalledWith('token', 'foo');
 			});
 			it('updates localStorage if remember token is present', () => {
-				const newState = reducer(initialState, { type: LOGIN_USER.SUCCESS, payload: { token: 'foo', remember: true } });
+				const newState = reducer(initialState, { type: LOGIN_USER.SUCCESS, payload: { access_token: 'foo', remember: true } });
 				expect(localStorage.setItem).toHaveBeenLastCalledWith('token', 'foo');
 			});			
 		});

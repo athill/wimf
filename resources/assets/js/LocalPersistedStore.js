@@ -13,7 +13,8 @@ export const getStorePristine = () => ({
 	user: {
 		id: 88888888,
 		name: 'demo',
-		email: 'demo@demo.com'
+		email: 'demo@demo.com',
+		container_id: 99999999
 	}	
 });
 
@@ -49,7 +50,8 @@ export const getContainerById = (id) => {
 	if (container === undefined) {
 		throw new Error(`container_id ${id} not found`);
 	}
-	return container;	
+	store.user.container_id = id;
+	return container;
 }
 
 export const getCategoryByName = (container, name) => {
@@ -72,11 +74,13 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 		case 'get':
 			//// container list for dropdown
 			if (args.length === 0) {
-				return store.containers.map(container => ({ 
+				return {
+					containers: store.containers.map(container => ({ 
 						id: container.id,  
 						name: container.name,
-						description: container.description
-				}));
+						description: container.description })),
+					selected: store.user.container_id
+				};
 			//// specific container with categories
 			} else {
 				const container_id = args[0];
@@ -92,6 +96,7 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 						item.category = category.name;
 					});
 				});
+				store.user.container_id = container_id;
 				return returnContainer;
 			}
 		case 'post':

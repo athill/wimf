@@ -265,6 +265,7 @@ export const fetchContainers = () => {
     return get(
       '/api/containers',
       response => {
+        console.log('got containers', response);
         dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(response.data.containers));
         dispatch(selectContainer(response.data.selected));
         dispatch(fetchItems(response.data.selected));

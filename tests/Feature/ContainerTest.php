@@ -20,36 +20,37 @@ class ContainerTest extends TestCase {
     private $defaultDescription;
 
 
-    // public function setUp() {
-    //     parent::setUp();
-    //     $this->be($this->defaultUser);
-    //     $this->faker = Factory::create();
-    //     $this->defaultContainerName = $this->faker->word;
-    //     $this->defaultDescription = $this->faker->sentence();
-    //     // $this->be($this->defaultUser);
-    //     $this->defaultParams = [
-    //         'name'=>$this->defaultContainerName,
-    //         'description' => $this->defaultDescription,
-    //     ];               
-    // }
+    public function setUp() {
+        parent::setUp();
+        $this->be($this->defaultUser);
+        $this->faker = Factory::create();
+        $this->defaultContainerName = $this->faker->word;
+        $this->defaultDescription = $this->faker->sentence();
+        // $this->be($this->defaultUser);
+        $this->defaultParams = [
+            'name'=>$this->defaultContainerName,
+            'description' => $this->defaultDescription,
+        ];               
+    }
 
-    // /**
-    //  * Verify getting list of containers for a user
-    //  *
-    //  * @return void
-    //  */
-    // public function testGetContainers() {
-    //     //// verify json
-    //     $this->json('get', self::CONTAINERS_PATH)
-			 // ->seeJson([
-    //             '*' => ['id', 'name', 'description']
-    //          ]);
-    //     //// verify freezer added to db
-    //     $this->seeInDatabase('containers', [
-    //     	'user_id' => $this->defaultUser->id,
-    //     	'name' => 'Freezer'
-    //     ]);
-    // }
+    /**
+     * Verify getting list of containers for a user
+     *
+     * @return void
+     */
+    public function testGetContainers() {
+        //// verify json
+        $response = $this->json('get', self::CONTAINERS_PATH)
+		  ->assertJson([
+                'containers' => ['*' => ['id', 'name', 'description']]
+                'selected'
+             ]);
+        //// verify freezer added to db
+        $response->seeInDatabase('containers', [
+        	'user_id' => $this->defaultUser->id,
+        	'name' => 'Freezer'
+        ]);
+    }
 
     // /**
     //  * Verify getting a container
