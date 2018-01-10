@@ -35,59 +35,61 @@ class ExportImportControllerTest extends TestCase {
 	private $defaultContainerName;
 	private $defaultCategoryName;
 	private $defaultItemName;
+    private $defaultUser;
 
 	private $defaultContainers;
 
 
-    // public function setUp() {
-    // 	parent::setUp();
-    //     $this->be($this->defaultUser);
-    //     $this->controller = new ExportImportController(); 
-    //     //// random data
-    //     $this->faker = Factory::create();
-    //     $this->defaultContainerName = $this->faker->word;
-    //     $this->defaultCategoryName = $this->faker->word;
-    // 	$this->defaultItemName = $this->faker->word;
-    //     $this->defaultDescription = $this->faker->sentence();
+    public function setUp() {
+    	parent::setUp();
+        $this->defaultUser = $this->getDefaultUser();
+        $this->be($this->defaultUser);
+        $this->controller = new ExportImportController(); 
+        //// random data
+        $this->faker = Factory::create();
+        $this->defaultContainerName = $this->faker->word;
+        $this->defaultCategoryName = $this->faker->word;
+    	$this->defaultItemName = $this->faker->word;
+        $this->defaultDescription = $this->faker->sentence();
         
-    //     //// base data
-    // 	$this->defaultContainers = [ 
-    // 		[ 'name' => $this->defaultContainerName, 
-    // 		  'categories' => [ 
-    // 		  	[ 'name' => $this->defaultCategoryName,
-    // 		  	  'items' => [ [ 'name' => $this->defaultItemName ] ]
-    // 		  	] 
-    // 		  ]
-    // 		] 
-    // 	];                 
-    // }
+        //// base data
+    	$this->defaultContainers = [ 
+    		[ 'name' => $this->defaultContainerName, 
+    		  'categories' => [ 
+    		  	[ 'name' => $this->defaultCategoryName,
+    		  	  'items' => [ [ 'name' => $this->defaultItemName ] ]
+    		  	] 
+    		  ]
+    		] 
+    	];                 
+    }
 
-    // public function testBasicImport() {
-    // 	//// update database
-    // 	$view = $this->controller->importContainers($this->getData($this->defaultContainers));
-    // 	// $this->assertEquals(self::HOME_VIEW_NAME, $view->getName());
-    // 	$this->assertEquals([ExportImportController::SUCCESS_MESSAGE], $view->messages);
-    // 	//// assert container
-    // 	$criteria = [
-	   //      'name' => $this->defaultContainerName, 
-	   //      'user_id' => $this->defaultUser->id
-	   //  ];
-	   //  $container = $this->assertInDatabaseAndReturn(Container::class, 'containers', $criteria);
-	   //  //// assert category
-    // 	$category_criteria = [
-	   //      'container_id' => $container->id, 
-	   //      'user_id' => $this->defaultUser->id,
-	   //      'name' => $this->defaultCategoryName
-	   //  ];
-	   //  $category = $this->assertInDatabaseAndReturn(Category::class, 'categories', $category_criteria);
-	   //  //// assert item
-    // 	$item_criteria = [
-	   //      'category_id' => $category->id, 
-	   //      'user_id' => $this->defaultUser->id,
-	   //      'name' => $this->defaultItemName
-	   //  ];
-	   //  $this->seeInDatabase('items', $item_criteria);
-    // }     
+    public function testBasicImport() {
+    	//// update database
+    	$view = $this->controller->importContainers($this->getData($this->defaultContainers));
+    	// $this->assertEquals(self::HOME_VIEW_NAME, $view->getName());
+    	$this->assertEquals([ExportImportController::SUCCESS_MESSAGE], $view->messages);
+    	//// assert container
+    	$criteria = [
+	        'name' => $this->defaultContainerName, 
+	        'user_id' => $this->defaultUser->id
+	    ];
+	    $container = $this->assertInDatabaseAndReturn(Container::class, 'containers', $criteria);
+	    //// assert category
+    	$category_criteria = [
+	        'container_id' => $container->id, 
+	        'user_id' => $this->defaultUser->id,
+	        'name' => $this->defaultCategoryName
+	    ];
+	    $category = $this->assertInDatabaseAndReturn(Category::class, 'categories', $category_criteria);
+	    //// assert item
+    	$item_criteria = [
+	        'category_id' => $category->id, 
+	        'user_id' => $this->defaultUser->id,
+	        'name' => $this->defaultItemName
+	    ];
+	    $this->assertDatabaseHas('items', $item_criteria);
+    }     
 
     // public function testImportContainersFailsOnNonArray() {
     // 	$view = $this->controller->importContainers(null);
@@ -206,11 +208,11 @@ class ExportImportControllerTest extends TestCase {
     // 	Auth::shouldReceive('user')->andReturn(Mockery::mock('FakeUser'))->set('id', 0);    	
     // }
 
-    // private function getData(array $containers) {
-    // 	return [
-    // 		'data' => $containers
-    // 	];
-    // }
+    private function getData(array $containers) {
+    	return [
+    		'data' => $containers
+    	];
+    }
 
 }
 

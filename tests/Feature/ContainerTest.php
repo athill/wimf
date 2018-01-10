@@ -16,12 +16,14 @@ class ContainerTest extends TestCase {
 
     private $faker;
 
+    private $defaultUser;
     private $defaultContainerName;
     private $defaultDescription;
 
 
     public function setUp() {
         parent::setUp();
+        $this->defaultUser = $this->getDefaultUser();
         $this->be($this->defaultUser);
         $this->faker = Factory::create();
         $this->defaultContainerName = $this->faker->word;

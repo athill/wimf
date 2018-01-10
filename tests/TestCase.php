@@ -20,12 +20,6 @@ abstract class TestCase extends BaseTestCase {
     protected $baseUrl = 'http://localhost';
 
     //// my vars
-    /**
-     * Default user
-     *
-     * @var App\User
-     */    
-    protected $defaultUser;
 
     /**
      * Default date string
@@ -38,8 +32,11 @@ abstract class TestCase extends BaseTestCase {
 
   public function setUp() {
         parent::setUp();
-        $this->defaultUser = factory(\App\User::class)->create(); 
         $this->defaultDate = Carbon::now()->toDateTimeString();
+    }
+
+    public function getDefaultUser() {
+        return factory(\App\User::class)->create(); 
     }
 
 
@@ -112,7 +109,7 @@ abstract class TestCase extends BaseTestCase {
 
     protected function assertInDatabaseAndReturn($modelClass, $table, $criteria) {
         //// see in the database
-        $this->seeInDatabase($table, $criteria);
+        $this->assertDatabaseHas($table, $criteria);
 
         //// build args array
         $args = collect(array_keys($criteria))->map(function($key, $i) use ($criteria) {

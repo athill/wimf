@@ -19,6 +19,7 @@ class ItemControllerTest extends TestCase {
     private $defaultCategoryName = 'foo';
     private $defaultItemName = 'bar';
     private $defaultQuantity = '1';
+    private $defaultUser;
 
     private $defaultParams;
     
@@ -27,6 +28,7 @@ class ItemControllerTest extends TestCase {
 
     public function setUp() {
         parent::setUp();
+        $this->defaultUser = $this->getDefaultUser();
         $this->be($this->defaultUser);
         $this->defaultContainer =  $this->getFakeContainer();  
         $this->defaultParams = [
