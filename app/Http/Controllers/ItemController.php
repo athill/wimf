@@ -21,6 +21,11 @@ class ItemController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+	    $validatedData = $request->validate([
+	        'name' => 'required|max:255',
+	        'container_id' => 'required',
+	    ]);
+
 		// Item object
 		$item = new Item();
 		$item->comment = '';
