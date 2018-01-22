@@ -11,11 +11,27 @@
 |
 */
 
+
+Route::get('/demo', 'DemoController@index');
+Route::get('/demo/export', 'ExportImportController@exportDemoDownload');
+Route::post('/demo/export', 'ExportImportController@exportDemo');
+
+Route::group([
+    'middleware' => 'auth:api',
+], function ($router) {
+	Route::get('export', 'ExportImportController@export');
+});
+
 Route::get('auth/{driver}', ['as' => 'socialAuth', 'uses' => 'Auth\SocialController@redirectToProvider']);
 Route::get('auth/{driver}/callback', ['as' => 'socialAuthCallback', 'uses' => 'Auth\SocialController@handleProviderCallback']);
 
-Route::get('/demo', 'DemoController@index');
 
-Route::get('/{foo?}/{bar?}', function () {
-    return view('app');
-});
+
+// Route::get('/{foo?}/{bar?}', function () {
+//     return view('app');
+// });
+
+Route::get('/{foo?}/{bar?}', [
+	'as' => 'app.index',
+	'uses' => 'ApplicationController@index'
+]);

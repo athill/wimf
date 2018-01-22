@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+
 
 Use App\User;
 
@@ -17,7 +19,8 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        // $this->middleware('jwt:refresh', ['refresh']);
+        // $this->middleware('auth:api', ['except' => ['login', 'register', 'refresh']]);
     }
 
     /**
@@ -59,7 +62,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
-    {
+    {   
+        Log::info('in me');
         return response()->json($this->guard()->user());
     }
 
@@ -82,6 +86,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
+        // dd([]);
         return $this->respondWithToken($this->guard()->refresh());
     }
 

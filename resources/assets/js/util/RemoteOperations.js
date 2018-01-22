@@ -10,7 +10,10 @@ const localStoragePromise = (method, url, data) => {
     });
 };
 
-const makePromise = (method, url, data)  => {
+/**
+ * 
+ */
+const makePromise = ({ url, data = {}, headers = {}, method = 'GET' })  => {
   let promise = null;
   if (location.pathname.includes('/demo')) {
     promise = localStoragePromise(method, url, data);
@@ -47,7 +50,7 @@ export const getErrorFromAxiosResponse = response => {
 };
 
 export const defaultRejector = error => {
-  if (!error.message || !error.errors) {
+  if (!error.message && !error.errors) {
     console.error('Unknown error in defaultRejector', error);
     return 'Unknown Error';
   }
@@ -63,16 +66,80 @@ export const defaultRejector = error => {
   return response;
 }
 
-const chain = (promise, resolvers, rejecter = defaultRejector) => {
+class RemoteOperations {
+  constructor(promiser = makePromise, errorTranslater = getErrorFromAxiosResponse, rejecter = defaultRejector) {
+    this.promiser = promiser;
+    this.errorTranslater = errorTranslater;
+    this.rejecter = rejecter;
+  }
+
+  fetch(method, url, { data = {}, resolvers = [], rejecter = this.rejecter, headers = {} }) {
+    // console.log(method, url, data, resolvers, rejecter, headers);
+    return new Promise((resolve, reject) => {
+        const promise = this.promiser({ method, url, data });
+        //// wrap resolve if not an array
+        if (!Array.isArray(resolvers)) {
+          resolvers = [resolvers];
+        }
+        promise.then(response => {
+          // if (response.headers && response.headers.authorization) {
+          //   console.log('setting Authorization', response.headers.authorization)
+          //   sessionStorage.setItem('token', response.headers.authorization);
+          // }
+          return response;
+        });
+        //// chain resolves
+        resolvers.forEach(resolver => promise.then(resolver));
+        //// resolve final response
+        promise.then(response => resolve(response));
+        //// chain catch
+        promise.catch(err => {
+          const data = err.response.data;
+          if (data.message && data.message === 'Unauthenticated.') {
+            return this.promiser(
+              { 
+                method: 'POST', 
+                url: '/api/refresh'
+              }).then( 
+                response => {
+                  sessionStorage.setItem('token', response.data.access_token);
+                  return this.promiser({
+                        method,
+                        headers,
+                        url,
+                        data
+                      })
+                    .then(response => resolve(response));
+                
+              })
+          }
+          const error = getErrorFromAxiosResponse(data);
+          const rejection = rejecter(error);
+          reject(rejection);
+        });
+    });
+  } 
+
+  get(url, resolvers, rejecter) {
+    return this.fetch('GET', url, { resolvers, rejecter });
+  } 
+}
+
+
+
+
+
+function chain(promise, resolvers, rejecter = defaultRejector) {
   return new Promise((resolve, reject) => {
       //// wrap resolve if not an array
       if (!Array.isArray(resolvers)) {
         resolvers = [resolvers];
       }
       promise.then(response => {
-        if (response.headers && response.headers.Authorization) {
-          sessionStorage.setItem('token', response.headers.authorization);
-        }
+        // if (response.headers && response.headers.authorization) {
+        //   console.log('setting Authorization', response.headers.authorization)
+        //   sessionStorage.setItem('token', response.headers.authorization);
+        // }
         return response;
       });
       //// chain resolves
@@ -80,17 +147,31 @@ const chain = (promise, resolvers, rejecter = defaultRejector) => {
       //// resolve final response
       promise.then(response => resolve(response));
       //// chain catch
-      promise.catch(response => {
-        const error = getErrorFromAxiosResponse(response);
+      promise.catch(err => {
+        const data = err.response.data;
+        if (data.message && data.message === 'Unauthenticated.') {
+          console.log('I\'m Unauthenticated');
+          chain(makePromise('POST', '/api/refresh'), 
+            response => {
+              console.log('new token', response.data.access_token);
+              sessionStorage.setItem('token', response.data.access_token);
+              console.log(promise);
+              // resolve(chain(promise, resolvers, rejecter));
+            });
+        }        
+        const error = getErrorFromAxiosResponse(data);
         const rejection = rejecter(error);
         reject(rejection);
       });
   });
 };
 
-export const get = (url, resolves, reject) => {
-    const promise = makePromise('get', url);
-    return chain(promise, resolves, reject);
+const remoteOperation = new RemoteOperations();
+
+export const get = (url, resolvers, rejecter) => {
+    // const promise = makePromise('get', url);
+    // return chain(promise, resolves, reject);
+    remoteOperation.get(url, resolvers, rejecter);
 };
 
 export const post = (url, data, resolves, reject)  => {

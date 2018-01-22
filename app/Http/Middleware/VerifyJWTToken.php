@@ -16,6 +16,7 @@ class VerifyJWTToken
      */
     public function handle($request, Closure $next)
     {
+        Log::info('in VerifyJWTToken');
         try{
             if (! $user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);

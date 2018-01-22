@@ -232,7 +232,7 @@ const localPersistedStore = (resolve, reject, method, url, data) => {
 		case 'items':
 			retval = persistItems(resolve, reject, method, args, data);
 			break;
-		case 'currentUser':
+		case 'me':
 			retval = persistCurrentUser(resolve, reject, method, args, data);
 			break;
 		default:

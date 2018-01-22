@@ -54,6 +54,8 @@ export const HIDE_ITEM_FORM = appNamespace.defineAction('HIDE_ITEM_FORM');
 export const POST_DEMO_DATA = appNamespace.defineAction('POST_DEMO_DATA');
 export const RECEIVE_DEMO_DATA = appNamespace.defineAction('RECEIVE_DEMO_DATA');
 
+export const EXPORT = appNamespace.defineAction('EXPORT');
+
 export const ITEM_FORM_NAME = 'item';
 export const CONTAINER_FORM_NAME = 'container';
 
@@ -247,16 +249,48 @@ export const exportDemoData = () => {
     dispatch(createAction(POST_DEMO_DATA));
     axios({
           method: 'POST',
-          url: '/export/demo',
+          url: '/demo/export',
           data: { data }
       })
       .then(response => { 
         dispatch(createAction(RECEIVE_DEMO_DATA));
-        window.location = `/export/demo?filename=${response.data.filename}`
+        window.location = `/demo/export/?filename=${response.data.filename}`
       })
       .catch(error => console.error(error));
   }
 }
+
+export const exportData = () => {
+  return dispatch => {
+    dispatch(createAction(EXPORT));
+    axios({
+          method: 'POST',
+          url: '/demo/export',
+          data: { data }
+      })
+      .then(response => { 
+        dispatch(createAction(RECEIVE_DEMO_DATA));
+        window.location = `/demo/export/?filename=${response.data.filename}`
+      })
+      .catch(error => console.error(error));
+  }
+}
+
+// https://gist.github.com/AshikNesin/e44b1950f6a24cfcd85330ffc1713513
+export const importData = (file) => {
+  dispatch => {
+    const url = '/api/import';
+    const formData = new FormData();
+    formData.append('file',file)
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data',
+            
+        }
+    }
+    return post(url, formData,config)  
+  }
+};
 
 //// containers
 export const fetchContainers = () => {
@@ -265,10 +299,13 @@ export const fetchContainers = () => {
     return get(
       '/api/containers',
       response => {
-        console.log('got containers', response);
-        dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(response.data.containers));
-        dispatch(selectContainer(response.data.selected));
-        dispatch(fetchItems(response.data.selected));
+        let { containers, selected } = response.data;
+        dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(containers));
+        if (!(selected in containers)) {
+          selected = containers[0].id;
+        }
+        dispatch(selectContainer(selected));
+        dispatch(fetchItems(selected));
       }
     );
   };

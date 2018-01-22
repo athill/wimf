@@ -14,7 +14,8 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "league/fractal": "^0.17.0",
-        "tymon/jwt-auth": "^1.0@dev"
+        "tymon/jwt-auth": "^1.0.0-rc.1",
+        "webpatser/laravel-uuid": "2.*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
