@@ -1,4 +1,4 @@
-import React from 'react';
+import React from'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -30,20 +30,6 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 	<Grid fluid>
 		<Row>
 			<Col md={6}>
-				<Panel header="New Here?" bsStyle="success">
-					<p><strong>What's in my Freezer?</strong> is a simple inventory application. It was inspired by going 
-					to the grocery store and buying things that were already in my freezer.</p>
-					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
-					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>
-					<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
-					<p><strong>To get started</strong>, 
-						check out the <a href="/demo" target='_blank'>demo</a> (data stored&nbsp; 
-						<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
-						or <Link to="/register">register</Link>.
-					</p>					
-				</Panel>
-			</Col>
-			<Col md={6}>
 				<Panel header="Login" bsStyle="default">
 					<Form horizontal onSubmit={handleSubmit(submit)}>
 						<Field label="Email" name="email" type="email" component={InputField} autofocus />
@@ -70,6 +56,18 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 					{/* <a href="/auth/github">Connect with GitHub</a> */}
 				</Panel>
 			</Col>
+			<Col md={6}>
+				<Panel header="New Here?" bsStyle="success">
+					<p><strong>What's in my Freezer?</strong> is a simple inventory application. It was inspired by going to the grocery store and buying things that were already in my freezer.</p>
+					<p>It had to be simple, or I wouldn't use it. Hence, it is mostly just adding, editing, and removing items.</p>
+					<p>I do have some things planned, such as multiple containers, tags, advanced search, etc.</p>
+					<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
+					<p><strong>To get started</strong>, 
+						check out the <a href="/demo" target='_blank'>demo</a> (data stored&nbsp; 
+						<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
+						or <Link to="/register">register</Link>					</p>					
+				</Panel>
+			</Col>			
 		</Row>
 	</Grid>
 );

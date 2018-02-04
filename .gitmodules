@@ -1,0 +1,3 @@
+[submodule "ld_wimf"]
+	path = ld_wimf
+	url = https://github.com/Laradock/laradock.git
