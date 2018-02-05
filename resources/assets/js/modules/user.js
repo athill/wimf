@@ -103,6 +103,7 @@ export function fetchUserInfo() {
     get(
       `/api/me`,
       response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
-    );  
+    )
+    .catch(error => console.log('fetchUserInfo error', error))  
   }
 };

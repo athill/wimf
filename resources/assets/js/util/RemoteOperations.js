@@ -107,49 +107,70 @@ class RemoteOperations {
         if (!Array.isArray(resolvers)) {
           resolvers = [resolvers];
         }
-        promise.then(response => {
-          // if (response.headers && response.headers.authorization) {
-          //   console.log('setting Authorization', response.headers.authorization)
-          //   sessionStorage.setItem('token', response.headers.authorization);
-          // }
-          return response;
-        });
         //// chain resolves
         resolvers.forEach(resolver => promise.then(resolver));
         //// resolve final response
         promise.then(response => resolve(response));
         //// chain catch
-        promise.catch(response => {
+        promise.catch(async response => {
           const error = getErrorFromAxiosResponse(response);
           console.log('in catch', error, this.isRefresh(error));
           if (this.isRefresh(error)) {
-            return this.promiser(
-              { 
+            console.log('in isRefresh');
+            try {
+              const response = await this.promiser({ 
                 method: 'POST', 
                 url: '/api/refresh'
-              }).then( 
-                response => {
-                  sessionStorage.setItem('token', response.data.access_token);
-                  return this.promiser({
-                        method,
-                        headers,
-                        url,
-                        data
-                      })
-                    .then(response => resolve(response));
-                    //// handle { message: 'Token has expired and can no longer be refreshed' }
+              });
+              console.log('in refresh response');
+              sessionStorage.setItem('token', response.data.access_token);
+              try {
+                const newResponse = await this.promiser({
+                    method,
+                    headers,
+                    url,
+                    data
+                });
+                resolve(newResponse);
+              } catch (error) {
+                console.log('refresh catch', error)
+                //// handle { message: 'Token has expired and can no longer be refreshed' }
+              } 
+            } catch (error) {
+                console.log('refresh catch', error);
+            }
+            // return this.promiser(
+            //   { 
+            //     method: 'POST', 
+            //     url: '/api/refresh'
+            //   }).then( 
+            //     response => {
+            //       console.log('in refresh response');
+            //       sessionStorage.setItem('token', response.data.access_token);
+            //       this.promiser({
+            //             method,
+            //             headers,
+            //             url,
+            //             data
+            //           })
+            //         .then(response => resolve(response))
+            //         .catch(error => console.log('refresh catch', error));
+            //         //// handle { message: 'Token has expired and can no longer be refreshed' }
                 
-              })
+            //   })
+              // .catch(error => console.log('outer refresh catch', error));
           }
-          
+          console.log('rejecting');
           const rejection = rejecter(error);
           reject(rejection);
         });
-    });
+    })
+    .catch(error => console.log('outer promise', error));
   } 
 
   get = (url, resolvers, rejecter) => {
-    return this.fetch('GET', url, { resolvers, rejecter });
+    return this.fetch('GET', url, { resolvers, rejecter })
+      .catch(error => console.log('get error', error));
   } 
 
   post = (url, data, resolvers, rejecter) => {

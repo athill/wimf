@@ -41,7 +41,7 @@ const Register = (props) => {
 				<Panel header="Register" bsStyle="default">
 
 					<Form horizontal onSubmit={handleSubmit(submit)}>
-						<Field label="Name" name="name" component={InputField} autofocus maxLength={255} />
+						<Field label="Name" name="name" component={InputField} autoFocus maxLength={255} />
 						<Field label="Email" name="email" type="email" component={InputField} />
 						<Field label="Password" name="password" type="password" component={InputField} />
 						<Field label="Confirm Password" name="password_confirmation" type="password" component={InputField} />

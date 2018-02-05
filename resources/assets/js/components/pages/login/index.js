@@ -1,4 +1,4 @@
-import React from'react';
+import React from'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -32,7 +32,7 @@ const Login = ({ error, handleSubmit, invalid, pristine, reset, submitting }) =>
 			<Col md={6}>
 				<Panel header="Login" bsStyle="default">
 					<Form horizontal onSubmit={handleSubmit(submit)}>
-						<Field label="Email" name="email" type="email" component={InputField} autofocus />
+						<Field label="Email" name="email" type="email" component={InputField} autoFocus />
 						<Field label="Password" name="password" type="password" component={InputField} />
 
 						<FormGroup>
