@@ -60,20 +60,29 @@ export default function reducer(state = initialState, action={}) {
 
 export const login = values => {
  return dispatch => {
-    return new Promise((resolve, reject) => {
-      dispatch(createAction(LOGIN_USER.ACTION));
-      post('/api/login', 
-        values, 
-        response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
-      ).then(response => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        dispatch(createAction(LOGIN_USER.ACTION));
+        const response = await post('/api/login', 
+          values, 
+          response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
+        );
         dispatch(fetchUserInfo());
-      })
-      .then(response => history.push('/'))
-      .catch(error => reject(error));
+        history.push('/');
+      } catch (error) {
+        return error;
+      }
     })
-
-  };
-};
+  }
+};     
+// .then(response => {
+//         dispatch(fetchUserInfo());
+//       })
+//       .then(response => history.push('/'))
+//       .catch(error => reject(error));
+//     });
+//   };
+// };
 
 export const logout = () => {
   return dispatch => {
@@ -104,6 +113,6 @@ export function fetchUserInfo() {
       `/api/me`,
       response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
     )
-    .catch(error => console.log('fetchUserInfo error', error))  
+    // .catch(error => console.log('fetchUserInfo error', error))  
   }
 };
