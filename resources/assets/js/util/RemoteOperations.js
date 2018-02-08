@@ -68,23 +68,6 @@ export const defaultRejector = error => {
 
 const isJwtAuthUnauthenticated = error => error.message === 'Unauthenticated.';
 
-// const defaultRefresher = (err) => {
-//   if (!('response' in err && 'data' in err.response)) {
-//     return;
-//   }
-//   const data = err.response.data;
-//   if (data.message && data.message === 'Unauthenticated.') {
-//     console.log('I\'m Unauthenticated');
-//     chain(makePromise('POST', '/api/refresh'), 
-//       response => {
-//         console.log('new token', response.data.access_token);
-//         sessionStorage.setItem('token', response.data.access_token);
-//         console.log(promise);
-//         // resolve(chain(promise, resolvers, rejecter));
-//       });
-//   }  
-// }
-
 class RemoteOperations {
   constructor(
     promiser, 
@@ -111,20 +94,19 @@ class RemoteOperations {
       response = await this.promiser(request);
     } catch (error) {
       error = this.errorTranslater(error);
-      if (this.isRefresh()) {
+      if (this.isRefresh(error)) {
         try {
             response = await this.promiser({ 
               method: 'POST', 
               url: '/api/refresh'
             });
             sessionStorage.setItem('token', response.data.access_token);
-            const newResponse = await this.promiser(request);
-            return newResponse;
+            response = await this.promiser(request);
+
         } catch (error) {
-          console.log('refresh catch', error);
+          throw new Exception(error);
         }
       } else {
-        console.log('rejecting');
         const rejection = rejecter(error);
         throw new Exception(rejection);
       }
@@ -134,54 +116,15 @@ class RemoteOperations {
       resolvers = [resolvers];
     }
 
+    //// iterate through reolvers
     for (var i = 0; i < resolvers.length; i++) {
       try {
         response = await resolvers[i](response);  
       } catch (error) {
         console.log(`problem with resolver ${i}`, response, error);
+        throw new Excepton(error);
       }
     }
-
-        // //// chain resolves
-        // resolvers.forEach(resolver => promise.then(resolver));
-        // //// resolve final response
-        // // promise.then(response => resolve(response));
-        // //// chain catch
-        // promise.catch(async response => {
-        //   const error = getErrorFromAxiosResponse(response);
-        //   console.log('in catch', error, this.isRefresh(error));
-        //   if (this.isRefresh(error)) {
-        //     console.log('in isRefresh');
-        //     try {
-        //       const response = await this.promiser({ 
-        //         method: 'POST', 
-        //         url: '/api/refresh'
-        //       });
-        //       console.log('in refresh response');
-        //       sessionStorage.setItem('token', response.data.access_token);
-        //       try {
-        //         const newResponse = await this.promiser({
-        //             method,
-        //             headers,
-        //             url,
-        //             data
-        //         });
-        //          return newResponse;
-        //       } catch (error) {
-        //         console.log('refresh catch', error)
-        //         //// handle { message: 'Token has expired and can no longer be refreshed' }
-        //       } 
-        //     } catch (error) {
-        //         console.log('refresh catch', error);
-        //     } 
-        //   } else {
-        //       console.log('rejecting');
-        //       const rejection = rejecter(error);
-        //       throw new Exception(rejection);           
-        //   }
-        // });
-    // })
-    // .catch(error => console.log('outer promise', error));
   } 
 
   get = (url, resolvers, rejecter) => {
@@ -191,71 +134,35 @@ class RemoteOperations {
 
   post = (url, data, resolvers, rejecter) => {
     return this.fetch('POST', url, { data, resolvers, rejecter });
-  }   
+  } 
+
+  put = (url, data, resolvers, rejecter) => {
+    return this.fetch('PUT', url, { data, resolvers, rejecter });
+  } 
+
+  delete = (url, resolvers, rejecter) => {
+    return this.fetch('POST', url, { data, resolvers, rejecter });
+  }      
 }
 
 
-
-
-
-// function chain(promise, resolvers, rejecter = defaultRejector) {
-//   return new Promise((resolve, reject) => {
-//       //// wrap resolve if not an array
-//       if (!Array.isArray(resolvers)) {
-//         resolvers = [resolvers];
-//       }
-//       promise.then(response => {
-//         // if (response.headers && response.headers.authorization) {
-//         //   console.log('setting Authorization', response.headers.authorization)
-//         //   sessionStorage.setItem('token', response.headers.authorization);
-//         // }
-//         return response;
-//       });
-//       //// chain resolves
-//       resolvers.forEach(resolver => promise.then(resolver));
-//       //// resolve final response
-//       promise.then(response => resolve(response));
-//       //// chain catch
-//       promise.catch(err => {
-//         const data = err.response.data;
-//         if (data.message && data.message === 'Unauthenticated.') {
-//           console.log('I\'m Unauthenticated');
-//           chain(makePromise('POST', '/api/refresh'), 
-//             response => {
-//               console.log('new token', response.data.access_token);
-//               sessionStorage.setItem('token', response.data.access_token);
-//               console.log(promise);
-//               // resolve(chain(promise, resolvers, rejecter));
-//             });
-//         }        
-//         const error = getErrorFromAxiosResponse(data);
-//         const rejection = rejecter(error);
-//         reject(rejection);
-//       });
-//   });
-// };
-
+//// remote operations instance
 const remoteOperation = new RemoteOperations();
 
+//// helper methods
 export const get = async (url, resolvers, rejecter) => {
-    // const promise = makePromise('get', url);
-    // return chain(promise, resolves, reject);
     return await remoteOperation.get(url, resolvers, rejecter);
 };
 
 export const post = async (url, data, resolves, reject)  => {
-  // const promise = makePromise('post', url, data);
-  // return chain(promise, resolves, reject);
   return await remoteOperation.post(url, data, resolves, reject);
 };
 
 export const put = (url, data, resolves, reject)  => {
-  const promise = makePromise('put', url, data);
-  return chain(promise, resolves, reject);
+  return await remoteOperation.put(url, data, resolves, reject);
 };
 
+//// data is not used, but makes the api consistent
 export const deleteRequest = (url, data, resolves, reject) => {
-  //// data is not used, but makes the api consistent
-  const promise = makePromise('delete', url);
-  return chain(promise, resolves, reject);  
+  return await remoteOperation.delete(url, resolves, reject);
 };

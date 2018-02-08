@@ -43,7 +43,6 @@ export default function reducer(state = initialState, action={}) {
         loading: loadingStates.LOADING
       };
     case REQUEST_USER_INFO.SUCCESS:
-      console.log(action);
       const newState = {
         ...state,
         id: action.payload.id,
@@ -107,9 +106,9 @@ export const register = values => {
 };
 
 export function fetchUserInfo() {
-  return dispatch => {
+  return async dispatch => {
     dispatch(createAction(REQUEST_USER_INFO.ACTION));
-    get(
+    return await get(
       `/api/me`,
       response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
     )
