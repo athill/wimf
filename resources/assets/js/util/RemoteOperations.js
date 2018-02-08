@@ -88,7 +88,7 @@ class RemoteOperations {
       headers,
       method,
       url
-    }
+    };
     let response;
     try {
       response = await this.promiser(request);
@@ -102,7 +102,6 @@ class RemoteOperations {
             });
             sessionStorage.setItem('token', response.data.access_token);
             response = await this.promiser(request);
-
         } catch (error) {
           throw new Exception(error);
         }
@@ -111,13 +110,13 @@ class RemoteOperations {
         throw new Exception(rejection);
       }
     }
-    //// wrap resolve if not an array
+    //// wrap resolvers if not an array
     if (!Array.isArray(resolvers)) {
       resolvers = [resolvers];
     }
 
-    //// iterate through reolvers
-    for (var i = 0; i < resolvers.length; i++) {
+    //// iterate through resolvers
+    for (let i = 0; i < resolvers.length; i++) {
       try {
         response = await resolvers[i](response);  
       } catch (error) {
@@ -128,20 +127,20 @@ class RemoteOperations {
   } 
 
   get = (url, resolvers, rejecter) => {
-    return this.fetch('GET', url, { resolvers, rejecter })
+    return this.fetch({ method: 'GET', url, resolvers, rejecter })
       // .catch(error => console.log('get error', error));
   } 
 
   post = (url, data, resolvers, rejecter) => {
-    return this.fetch('POST', url, { data, resolvers, rejecter });
+    return this.fetch({ method: 'POST', url, data, resolvers, rejecter });
   } 
 
   put = (url, data, resolvers, rejecter) => {
-    return this.fetch('PUT', url, { data, resolvers, rejecter });
+    return this.fetch({ method: 'PUT', url, data, resolvers, rejecter });
   } 
 
   delete = (url, resolvers, rejecter) => {
-    return this.fetch('POST', url, { data, resolvers, rejecter });
+    return this.fetch({ method: 'POST', url, resolvers, rejecter });
   }      
 }
 
@@ -158,11 +157,11 @@ export const post = async (url, data, resolves, reject)  => {
   return await remoteOperation.post(url, data, resolves, reject);
 };
 
-export const put = (url, data, resolves, reject)  => {
+export const put = async (url, data, resolves, reject)  => {
   return await remoteOperation.put(url, data, resolves, reject);
 };
 
 //// data is not used, but makes the api consistent
-export const deleteRequest = (url, data, resolves, reject) => {
+export const deleteRequest = async (url, data, resolves, reject) => {
   return await remoteOperation.delete(url, resolves, reject);
 };
