@@ -82,7 +82,7 @@ class RemoteOperations {
 
   }
 
-  fetch = async (method, url, { data = {}, resolvers = [], rejecter = this.rejecter, headers = {} }) => {
+  fetch = async ({ method, url, data = {}, resolvers = [], rejecter = this.rejecter, headers = {} }) => {
     const request = {
       data,
       headers,
@@ -103,11 +103,11 @@ class RemoteOperations {
             sessionStorage.setItem('token', response.data.access_token);
             response = await this.promiser(request);
         } catch (error) {
-          throw new Exception(error);
+          throw new Error(error);
         }
       } else {
         const rejection = rejecter(error);
-        throw new Exception(rejection);
+        throw new Error(rejection);
       }
     }
     //// wrap resolvers if not an array
@@ -127,8 +127,7 @@ class RemoteOperations {
   } 
 
   get = (url, resolvers, rejecter) => {
-    return this.fetch({ method: 'GET', url, resolvers, rejecter })
-      // .catch(error => console.log('get error', error));
+    return this.fetch({ method: 'GET', url, resolvers, rejecter });
   } 
 
   post = (url, data, resolvers, rejecter) => {
@@ -140,7 +139,7 @@ class RemoteOperations {
   } 
 
   delete = (url, resolvers, rejecter) => {
-    return this.fetch({ method: 'POST', url, resolvers, rejecter });
+    return this.fetch({ method: 'DELETE', url, resolvers, rejecter });
   }      
 }
 
