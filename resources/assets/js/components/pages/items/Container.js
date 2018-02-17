@@ -8,6 +8,14 @@ import Item from './Item';
 import { Spinner } from '../../common/common';
 import { loadingStates } from '../../../modules/utils';
 
+const isEmpty = categories => {
+	for (const key in categories) {
+		if (categories.hasOwnProperty(key) && categories[key].items.length > 0) {
+			return true;
+		}
+	}
+	return false;
+}
 
 
 const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler, loading }) => {
@@ -21,7 +29,7 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 			</h2>
 		);
 	}
-	if (loading === loadingStates.COMPLETE &&categories.length === 0) {
+	if (loading === loadingStates.COMPLETE && !isEmpty(categories)) {
 		return <ContainerWelcome name={name} />;
 	}
 	return (
