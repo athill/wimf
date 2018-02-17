@@ -68,7 +68,6 @@ export const login = values => {
       dispatch(fetchUserInfo());
       history.push('/');
     } catch (error) {
-      console.log('login catch', error);
       throw error;
     }
   }
@@ -76,23 +75,23 @@ export const login = values => {
 
 export const logout = () => {
   return dispatch => {
-    return new Promise((resolve, reject) => {
-      dispatch(createAction(LOGOUT_USER.SUCCESS)());
-      history.push('/login');
-    });
+    dispatch(createAction(LOGOUT_USER.SUCCESS)());
+    history.push('/login');
   }
 };
 
 export const register = values => {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
+  return async dispatch => {
+    try {
       dispatch(createAction(REGISTER_USER.ACTION));
-      post('/api/register', 
+      const response = await post('/api/register', 
         values, 
-          response => dispatch(createAction(REGISTER_USER.SUCCESS)(response.data)))
-      .then(response => dispatch(login(values)))
-      .catch(error => reject(error));
-    });
+          response => dispatch(createAction(REGISTER_USER.SUCCESS)(response.data)));
+
+      dispatch(login(values))
+    } catch (error) {
+      throw error;
+    }
   }
 };
 
@@ -103,6 +102,5 @@ export function fetchUserInfo() {
       `/api/me`,
       response => dispatch(createAction(REQUEST_USER_INFO.SUCCESS)(response.data))
     )
-    // .catch(error => console.log('fetchUserInfo error', error))  
   }
 };
