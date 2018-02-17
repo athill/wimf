@@ -104,11 +104,11 @@ class RemoteOperations {
             sessionStorage.setItem('token', response.data.access_token);
             response = await this.promiser(request);
         } catch (error) {
-          throw error;
+          const rejection = rejecter(error);
+          throw rejection;
         }
       } else {
         const rejection = rejecter(error);
-        console.log('promise catch', error, rejection);
         throw rejection;
       }
     }
@@ -123,7 +123,8 @@ class RemoteOperations {
         response = await resolvers[i](response);  
       } catch (error) {
         console.log(`problem with resolver ${i}`, response, error);
-        throw error;
+        const rejection = rejecter(error);
+        throw rejection;
       }
     }
   } 
