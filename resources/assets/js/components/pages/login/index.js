@@ -23,7 +23,6 @@ const submit = (values, dispatch) => {
 	return new Promise((resolve, reject) => {
 		dispatch(login(values))
 			.catch(error => {
-				console.log('in submit', error);
 				reject(new SubmissionError(error));
 			});
 	});
