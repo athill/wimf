@@ -58,30 +58,21 @@ export default function reducer(state = initialState, action={}) {
 };
 
 export const login = values => {
- return dispatch => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        dispatch(createAction(LOGIN_USER.ACTION));
-        const response = await post('/api/login', 
-          values, 
-          response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
-        );
-        dispatch(fetchUserInfo());
-        history.push('/');
-      } catch (error) {
-        return error;
-      }
-    })
+ return async dispatch => {
+    try {
+      dispatch(createAction(LOGIN_USER.ACTION));
+      const response = await post('/api/login', 
+        values, 
+        response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
+      );
+      dispatch(fetchUserInfo());
+      history.push('/');
+    } catch (error) {
+      console.log('login catch', error);
+      throw error;
+    }
   }
-};     
-// .then(response => {
-//         dispatch(fetchUserInfo());
-//       })
-//       .then(response => history.push('/'))
-//       .catch(error => reject(error));
-//     });
-//   };
-// };
+};
 
 export const logout = () => {
   return dispatch => {

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { SubmissionError } from 'redux-form';
 
 import localPersistedStore from '../LocalPersistedStore';
 
@@ -50,13 +49,15 @@ export const getErrorFromAxiosResponse = response => {
 };
 
 export const defaultRejector = error => {
-  if (!error.message && !error.errors) {
+  if (!error.message && !error.errors && !error.error) {
     console.error('Unknown error in defaultRejector', error);
     return 'Unknown Error';
   }
   const response = {};
   if (error.message) {
     response._error = error.message;
+  } else if (error.error) {
+    response._error = error.error;
   }
   if (error.errors) {
     for (let field in error.errors) {
@@ -103,11 +104,12 @@ class RemoteOperations {
             sessionStorage.setItem('token', response.data.access_token);
             response = await this.promiser(request);
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       } else {
         const rejection = rejecter(error);
-        throw new Error(rejection);
+        console.log('promise catch', error, rejection);
+        throw rejection;
       }
     }
     //// wrap resolvers if not an array
@@ -121,7 +123,7 @@ class RemoteOperations {
         response = await resolvers[i](response);  
       } catch (error) {
         console.log(`problem with resolver ${i}`, response, error);
-        throw new Excepton(error);
+        throw error;
       }
     }
   } 
