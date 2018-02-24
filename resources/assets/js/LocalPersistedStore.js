@@ -224,6 +224,7 @@ const localPersistedStore = (resolve, reject, method, url, data) => {
 	}		
 	//// update store
 	let retval = {};
+	method = method.toLowerCase();
 	
 	switch (type) {
 		case 'containers':
