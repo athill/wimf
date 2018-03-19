@@ -41,12 +41,10 @@ const Login = (props) => {
 							<Field label="Password" name="password" type="password" component={InputField} />
 
 							<FormGroup>
-								<Col md={6} mdOffset={4}>
-									<div className="checkbox">
-										<label>
-											<Field type="checkbox" component="input" name="remember" /> Remember Me
-										</label>
-									</div>
+								<Col md={6} mdOffset={4} className="checkbox">
+									<label>
+										<Field type="checkbox" component="input" name="remember" /> Remember Me
+									</label>
 								</Col>
 							</FormGroup>
 							{ error && <Alert bsStyle="danger">{ error }</Alert> }
@@ -54,7 +52,7 @@ const Login = (props) => {
 								<Col md={6} mdOffset={4}>
 									<Button type="submit" bsStyle="primary">Login</Button>
 
-									<a className="btn btn-link" href="/password/email">Forgot Your Password?</a>
+									<a className="btn btn-link" href="/password-reset">Forgot Your Password?</a>
 								</Col>
 							</FormGroup>
 						</Form>
@@ -69,7 +67,7 @@ const Login = (props) => {
 						<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
 						<p><strong>To get started</strong>, 
 							check out the <a href="/demo" target='_blank'>demo</a> (data stored&nbsp; 
-							<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank">locally</a>) 
+							<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" rel="noopener" target="_blank">locally</a>) 
 							or <Link to="/register">register</Link>					</p>					
 					</Panel>
 				</Col>			

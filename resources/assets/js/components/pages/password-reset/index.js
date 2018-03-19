@@ -11,7 +11,7 @@ const PasswordReset = () => (
 						<div className="form-group">
 							<label className="col-md-4 control-label">E-Mail Address</label>
 							<div className="col-md-6">
-								<input type="email" className="form-control" name="email" value="" />
+								<input type="email" className="form-control" name="email" defaultValue="" />
 							</div>
 						</div>
 

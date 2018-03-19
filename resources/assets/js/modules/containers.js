@@ -1,4 +1,4 @@
-import axios from 'axios';
+ import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 //// utils
@@ -54,7 +54,7 @@ export const HIDE_ITEM_FORM = appNamespace.defineAction('HIDE_ITEM_FORM');
 export const POST_DEMO_DATA = appNamespace.defineAction('POST_DEMO_DATA');
 export const RECEIVE_DEMO_DATA = appNamespace.defineAction('RECEIVE_DEMO_DATA');
 
-export const EXPORT = appNamespace.defineAction('EXPORT');
+export const EXPORT = getConstants('EXPORT');
 
 export const ITEM_FORM_NAME = 'item';
 export const CONTAINER_FORM_NAME = 'container';
@@ -260,21 +260,60 @@ export const exportDemoData = () => {
   }
 }
 
+
+//// https://stackoverflow.com/questions/29452031/how-to-handle-file-downloads-with-jwt-based-authentication ???
 export const exportData = () => {
-  return dispatch => {
-    dispatch(createAction(EXPORT));
-    axios({
-          method: 'POST',
-          url: '/demo/export',
-          data: { data }
-      })
-      .then(response => { 
-        dispatch(createAction(RECEIVE_DEMO_DATA));
-        window.location = `/demo/export/?filename=${response.data.filename}`
-      })
-      .catch(error => console.error(error));
+  return async dispatch => {
+    try {
+      dispatch(createAction(EXPORT));
+      return await get('/api/export', 
+        response => {
+          dispatch(createAction(EXPORT.SUCCESS));
+          const filename = 'export.json';
+          const content = response.data;
+          let blob = new Blob([JSON.stringify(content)], { type: 'application/json;charset=utf-8;' });
+          if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, filename);
+          } else {
+            var link = document.createElement("a");
+            if (link.download !== undefined) { // feature detection
+              // Browsers that support HTML5 download attribute
+              var url = URL.createObjectURL(blob);
+              link.setAttribute("href", url);
+              link.setAttribute("download", filename);
+              link.style.visibility = 'hidden';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }
+          }          
+        }
+        
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }
+
+// export const exportCsv = (content, filename) => {
+//   let blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+//   if (navigator.msSaveBlob) { // IE 10+
+//     navigator.msSaveBlob(blob, filename);
+//   } else {
+//     var link = document.createElement("a");
+//     if (link.download !== undefined) { // feature detection
+//       // Browsers that support HTML5 download attribute
+//       var url = URL.createObjectURL(blob);
+//       link.setAttribute("href", url);
+//       link.setAttribute("download", filename);
+//       link.style.visibility = 'hidden';
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     }
+//   }
+// }; 
 
 // https://gist.github.com/AshikNesin/e44b1950f6a24cfcd85330ffc1713513
 export const importData = (file) => {

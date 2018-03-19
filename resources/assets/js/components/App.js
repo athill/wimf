@@ -38,7 +38,7 @@ class App extends Component {
                             <PrivateRoute path="/" exact component={Items}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/demo" exact component={Items}/>
-                            <PrivateRoute path="/password-reset" exact component={PasswordReset}/>
+                            <Route path="/password-reset" exact component={PasswordReset}/>
                             <PublicRoute path="/register" exact component={Register}/>
                             <Route path="/import" exact component={Import}/>
                         </Col>

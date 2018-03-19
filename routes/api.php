@@ -27,6 +27,7 @@ Route::group([
 
     
     Route::post('logout', 'AuthController@logout');
+    Route::get('export', 'ExportImportController@export');
     
     Route::get('me', 'AuthController@me');
 	Route::post('containers/select/{id}', 'ContainerController@select');

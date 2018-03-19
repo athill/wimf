@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 import { fetchUserInfo, logout } from '../modules/user';
 import { loadingStates } from '../modules/utils';
-import { exportDemoData } from '../modules/containers';
+import { exportData, exportDemoData } from '../modules/containers';
 
 
 const mapStateToProps = ({ user }) => {
@@ -22,6 +22,10 @@ const mapDispatchToProps = (dispatch) => {
       console.log('demoExportSelect');
       dispatch(exportDemoData());
     },
+    exportSelect: () => {
+      console.log('exportSelect');
+      dispatch(exportData());
+    },    
     logoutUser: () => dispatch(logout()), 
     dispatch
   };
@@ -39,7 +43,7 @@ export class AppNavbar extends React.Component {
       }
     }    
     render() {
-      const { user, isDemo, logoutUser, demoExportSelect } = this.props;
+      const { demoExportSelect, exportSelect, isDemo, logoutUser, user } = this.props;
       return (
         <Navbar inverse>
           <Navbar.Header>
@@ -63,7 +67,7 @@ export class AppNavbar extends React.Component {
                       <MenuItem key="export" eventKey={3.2} href="#" onSelect={() => demoExportSelect()}>Export</MenuItem>] :
 
                       [<MenuItem key="logout" eventKey={3.1} href="#" onSelect={() => logoutUser()}>Logout</MenuItem>,
-                      <MenuItem key="export" href="/export" eventKey={3.2}>Export</MenuItem>,
+                      <MenuItem key="export" eventKey={3.2} href="#" onSelect={() => exportSelect()}>Export</MenuItem>,
                       <LinkContainer key="import" to="/import"><MenuItem eventKey={3.3}>Import</MenuItem></LinkContainer>]
                   }
                 </NavDropdown>
