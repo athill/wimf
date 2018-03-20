@@ -4,7 +4,7 @@ import { createAction } from 'redux-actions';
 //// utils
 import { getIsoFormat } from '../util/DateUtils';
 
-import { get, deleteRequest, post, put } from '../util/RemoteOperations';
+import { get, deleteRequest, download, post, put } from '../util/RemoteOperations';
 
 import { 
   addContainerToContainers, 
@@ -268,52 +268,17 @@ export const exportData = () => {
       dispatch(createAction(EXPORT));
       return await get('/api/export', 
         response => {
-          dispatch(createAction(EXPORT.SUCCESS));
           const filename = 'export.json';
           const content = response.data;
-          let blob = new Blob([JSON.stringify(content)], { type: 'application/json;charset=utf-8;' });
-          if (navigator.msSaveBlob) { // IE 10+
-            navigator.msSaveBlob(blob, filename);
-          } else {
-            var link = document.createElement("a");
-            if (link.download !== undefined) { // feature detection
-              // Browsers that support HTML5 download attribute
-              var url = URL.createObjectURL(blob);
-              link.setAttribute("href", url);
-              link.setAttribute("download", filename);
-              link.style.visibility = 'hidden';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }
-          }          
+          download({ content, filename });
+          dispatch(createAction(EXPORT.SUCCESS));
         }
-        
       );
     } catch (error) {
       throw error;
     }
   }
 }
-
-// export const exportCsv = (content, filename) => {
-//   let blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-//   if (navigator.msSaveBlob) { // IE 10+
-//     navigator.msSaveBlob(blob, filename);
-//   } else {
-//     var link = document.createElement("a");
-//     if (link.download !== undefined) { // feature detection
-//       // Browsers that support HTML5 download attribute
-//       var url = URL.createObjectURL(blob);
-//       link.setAttribute("href", url);
-//       link.setAttribute("download", filename);
-//       link.style.visibility = 'hidden';
-//       document.body.appendChild(link);
-//       link.click();
-//       document.body.removeChild(link);
-//     }
-//   }
-// }; 
 
 // https://gist.github.com/AshikNesin/e44b1950f6a24cfcd85330ffc1713513
 export const importData = (file) => {
