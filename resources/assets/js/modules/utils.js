@@ -38,7 +38,7 @@ export const validLoadingStates = Object.keys(loadingStates).map(key => loadingS
  * @param  {Array=[SUCCESS]}  states   Array of constant suffixes to create
  * @return {object}          redux-define constant object
  */
-export const getConstants = (constant, states = [ SUCCESS ]) => appNamespace.defineAction(constant, states);
+export const getConstants = (constant, states = [ SUCCESS, ERROR ]) => appNamespace.defineAction(constant, states);
 
 //// hooks into update entity
 export const defaultHideFormHandler = (dispatch, formName, hideAction, values) => dispatch(hideAction());

@@ -1,4 +1,4 @@
- import axios from 'axios';
+import axios from 'axios';
 import { createAction } from 'redux-actions';
 
 //// utils
@@ -55,6 +55,7 @@ export const POST_DEMO_DATA = appNamespace.defineAction('POST_DEMO_DATA');
 export const RECEIVE_DEMO_DATA = appNamespace.defineAction('RECEIVE_DEMO_DATA');
 
 export const EXPORT = getConstants('EXPORT');
+export const IMPORT = getConstants('IMPORT');
 
 export const ITEM_FORM_NAME = 'item';
 export const CONTAINER_FORM_NAME = 'container';
@@ -68,7 +69,8 @@ export const initialState = {
   showContainerForm: ModalTypes.NONE,
   selectedContainer: undefined,
   showItemForm: ModalTypes.NONE,
-  selectedItem: undefined
+  selectedItem: undefined,
+  importFormError: null,
 };
 
 
@@ -185,7 +187,26 @@ const  containersReducer = (state, action) => {
     }
 };
 
+const impexReducer = (state, action) => {
+    switch (action.type) {
+      case IMPORT.ACTION:
+        return {
+          ...state,
+          importFormError: null
+        };       
+      case IMPORT.ERROR:
+        return {
+          ...state,
+          importFormError: action.payload
+        };       
+      default:
+        console.error('Invalid action', action.type); 
+        return state;
+    }
+}
+
 export default function reducer(state = initialState, action) {
+  console.log('action', action);
   //// TODO: figure out what's up with this
   if (!action) {
     return state;
@@ -218,11 +239,18 @@ export default function reducer(state = initialState, action) {
     case SHOW_DELETE_ITEM_FORM:
     case HIDE_ITEM_FORM:
       return itemFormReducer(state, action); 
+    //// import/export reducer
+    case EXPORT.SUCCESS:
+    case IMPORT.ACTION:
+    case IMPORT.ERROR:
+    case IMPORT.SUCCESS:
+      return impexReducer(state, action);
     default:
       return state;
   }
 }
 
+const act = (type, payload) => ({ type, payload });
 
 //// action creators
 const selectContainer = createAction(SELECT_CONTAINER);
@@ -246,14 +274,14 @@ export const exportDemoData = () => {
   const data = localStorage.getItem('wimf') ? JSON.parse(localStorage.getItem('wimf')).containers : [];
   return dispatch => {
     console.log('exporting demo data');
-    dispatch(createAction(POST_DEMO_DATA));
+    dispatch(act(POST_DEMO_DATA));
     axios({
           method: 'POST',
           url: '/demo/export',
           data: { data }
       })
       .then(response => { 
-        dispatch(createAction(RECEIVE_DEMO_DATA));
+        dispatch(act(RECEIVE_DEMO_DATA));
         window.location = `/demo/export/?filename=${response.data.filename}`
       })
       .catch(error => console.error(error));
@@ -265,13 +293,13 @@ export const exportDemoData = () => {
 export const exportData = () => {
   return async dispatch => {
     try {
-      dispatch(createAction(EXPORT));
+      dispatch(createAction(EXPORT)());
       return await get('/api/export', 
         response => {
           const filename = 'export.json';
           const content = response.data;
           download({ content, filename });
-          dispatch(createAction(EXPORT.SUCCESS));
+          dispatch(act(EXPORT.SUCCESS));
         }
       );
     } catch (error) {
@@ -282,29 +310,38 @@ export const exportData = () => {
 
 // https://gist.github.com/AshikNesin/e44b1950f6a24cfcd85330ffc1713513
 export const importData = (file) => {
-  dispatch => {
-    const url = '/api/import';
-    const formData = new FormData();
-    formData.append('file',file)
-    const config = {
-        headers: {
-            'content-type': 'multipart/form-data',
-            
-        }
+  return async dispatch => {
+    try {
+      dispatch(act(IMPORT.ACTION));
+      if (!file) {
+        throw new Error('Invalid file');
+      }
+      const url = '/api/import';
+      const formData = new FormData();
+      formData.append('file',file)
+      const config = {
+          headers: {
+              'content-type': 'multipart/form-data'
+          }
+      }
+      const result = await post(url, formData, config);
+      console.log(result);
+      // fetchContainers()(dispatch);
+    } catch (exception) {
+      dispatch(act(IMPORT.ERROR, exception.message));
     }
-    return post(url, formData,config)  
   }
 };
 
 //// containers
 export const fetchContainers = () => {
   return dispatch => {
-    dispatch(createAction(REQUEST_CONTAINERS));
+    dispatch(act(REQUEST_CONTAINERS));
     return get(
       '/api/containers',
       response => {
         let { containers, selected } = response.data;
-        dispatch(createAction(REQUEST_CONTAINERS.SUCCESS)(containers));
+        dispatch(act(REQUEST_CONTAINERS.SUCCESS, containers));
         if (!(selected in containers)) {
           selected = containers[0].id;
         }

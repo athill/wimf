@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Grid, Panel, Row } from 'react-bootstrap';
+import { Alert, Col, Grid, Panel, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { importData } from '../../../modules/containers';
@@ -9,8 +9,13 @@ const mapDispatchToProps = (dispatch) => {
     onSubmit: (file) => {
       dispatch(importData(file));
     },
-    dispatch
   };
+};
+
+const mapStateToProps = ({ containers: { importFormError } }) => {
+	return {
+		error: importFormError
+	};
 };
 
 class Import extends React.Component {
@@ -25,12 +30,13 @@ class Import extends React.Component {
 		this.setState({file:e.target.files[0]})
 	}	
 	render() {
-		const { onChange, onSubmit } = this.props;
+		const { error, onChange, onSubmit } = this.props;
 		return (
 			<Grid fluid>
 				<Row>
 					<Col md={8} mdOffset={2}>
 						<Panel header="Import" bsStyle="default">
+							{ error && <Alert bsStyle='danger'>  { error } </Alert> }
 							<form className="form-inline" onSubmit={e => { e.preventDefault(); onSubmit(this.state.file)}}>
 		 
 								<label className="btn btn-default">
@@ -44,8 +50,10 @@ class Import extends React.Component {
 			</Grid>
 		)
 	}
-}
+};
+
+
 
 // action="" method="post"  enctype="multipart/form-data"
 
-export default connect(null, mapDispatchToProps)(Import);
+export default connect(mapStateToProps, mapDispatchToProps)(Import);
