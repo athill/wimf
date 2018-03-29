@@ -14,16 +14,15 @@ class CreateItemsTable extends Migration {
 	{
 		Schema::create('items', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('user');
+			$table->string('user_id');
 		 	$table->string('name');
-		 	$table->string('quantity');
-		 	$table->string('measurement');
-		 	$table->string('comment');
+		 	$table->string('quantity')->nullable();
+		 	$table->string('comment')->nullable();
 		 	$table->integer('category_id');
-		 	// $table->foreign('category_id')->references('id')->on('categories');
+		 	$table->date('date')->nullable();
 	        $table->timestamp('created_at')->useCurrent();
 	        $table->timestamp('updated_at')->useCurrent();
-			$table->unique(['user', 'name', 'category_id']);
+			$table->unique(['user_id', 'name', 'category_id']);
 		});
 	}
 

@@ -14,13 +14,13 @@ class CreateCategoriesTable extends Migration {
 	{
 		Schema::create('categories', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('user');
+			$table->string('user_id');
 		 	$table->string('name');
 		 	$table->integer('container_id');
 		 	// $table->foreign('container_id')->references('id')->on('containers');
 	        $table->timestamp('created_at')->useCurrent();
 	        $table->timestamp('updated_at')->useCurrent();
-			$table->unique(['user', 'name', 'container_id']);
+			$table->unique(['user_id', 'name', 'container_id']);
 		});
 	}
 
@@ -31,7 +31,7 @@ class CreateCategoriesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('containers');
+		Schema::drop('categories');
 	}
 
 }
