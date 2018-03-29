@@ -318,13 +318,16 @@ export const importData = (file) => {
       }
       const url = '/api/import';
       const formData = new FormData();
-      formData.append('file',file)
+      formData.append('file', file);
+      formData.append('foo', 'bar');
+      console.log('formData', formData, file);
       const config = {
           headers: {
               'content-type': 'multipart/form-data'
-          }
+          },
+          data: formData //// required so config isn't wrapped in `data` key in remoteoperations
       }
-      const result = await post(url, formData, config);
+      const result = await post(url, config);
       console.log(result);
       // fetchContainers()(dispatch);
     } catch (exception) {

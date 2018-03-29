@@ -12,20 +12,22 @@ const localStoragePromise = (method, url, data) => {
 /**
  * 
  */
-const makePromise = ({ url, data = {}, headers = {}, method = 'GET' })  => {
+const makePromise = ({ url, config = {}, method = 'GET' })  => {
   let promise = null;
   if (location.pathname.includes('/demo')) {
     promise = localStoragePromise(method, url, data);
   } else {
     const headers = {
       Authorization: `Bearer ${sessionStorage.getItem('token')}`
-    }
-    promise = axios({
+    };
+    config.headers = config.headers ? Object.assign({}, config.headers, headers) : headers;
+    const params = {
+      ...config,
       method,
-      headers,
       url,
-      data
-    });
+    };
+    console.log('axios params', params);
+    promise = axios(params);
   }
   return promise;
 };
@@ -83,10 +85,14 @@ class RemoteOperations {
 
   }
 
-  fetch = async ({ method, url, data = {}, resolvers = [], rejecter = this.rejecter, headers = {} }) => {
+  fetch = async ({ method, url, config={}, resolvers = [], rejecter = this.rejecter }) => {
+    //// this might be a bad idea. requires adding `data: {}` if you want to pass headers without data, etc. seems like an edge case, but still
+    if (!('data' in config)) {
+      config = { data: config };
+    }
+    console.log('fetching', method, url, config);
     const request = {
-      data,
-      headers,
+      config,
       method,
       url
     };
@@ -133,12 +139,15 @@ class RemoteOperations {
     return this.fetch({ method: 'GET', url, resolvers, rejecter });
   } 
 
-  post = (url, data, resolvers, rejecter) => {
-    return this.fetch({ method: 'POST', url, data, resolvers, rejecter });
+  post = (url, config, resolvers, rejecter) => {
+    if (!'data' in config) {
+      config = { data: config };
+    }
+    return this.fetch({ method: 'POST', url, config, resolvers, rejecter });
   } 
 
-  put = (url, data, resolvers, rejecter) => {
-    return this.fetch({ method: 'PUT', url, data, resolvers, rejecter });
+  put = (url, config, resolvers, rejecter) => {
+    return this.fetch({ method: 'PUT', url, config, resolvers, rejecter });
   } 
 
   delete = (url, resolvers, rejecter) => {
