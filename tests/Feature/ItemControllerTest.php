@@ -29,6 +29,7 @@ class ItemControllerTest extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->defaultUser = $this->getDefaultUser();
+        $this->token = \JWTAuth::fromUser($this->defaultUser);
         $this->be($this->defaultUser);
         $this->defaultContainer =  $this->getFakeContainer();  
         $this->defaultParams = [
@@ -129,15 +130,15 @@ class ItemControllerTest extends TestCase {
         $opts = array_merge($this->defaultParams, $params);
         // $headers = ['Authorization' => 'Bearer '.\JWTAuth::fromUser($this->defaultUser)];
         // dd($headers);
-        return $this->json('POST', self::ITEMS_PATH, $opts); 
+        return $this->request('POST', self::ITEMS_PATH, $opts); 
     }
 
     private function putItem($id, $params=[]) {
-        return $this->json('PUT', self::ITEMS_PATH.'/'.$id, $params); 
+        return $this->request('PUT', self::ITEMS_PATH.'/'.$id, $params); 
     }
 
     private function deleteItem($id) {
-        return $this->json('DELETE', self::ITEMS_PATH.'/'.$id); 
+        return $this->request('DELETE', self::ITEMS_PATH.'/'.$id); 
     }    
 
 }

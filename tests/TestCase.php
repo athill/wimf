@@ -19,6 +19,12 @@ abstract class TestCase extends BaseTestCase {
      */
     protected $baseUrl = 'http://localhost';
 
+    /**
+     *JwtAuth token
+     * @var string
+     */
+    protected $token;
+
     //// my vars
 
     /**
@@ -125,6 +131,14 @@ abstract class TestCase extends BaseTestCase {
             }   
         }
         return $result->firstOrFail();
-    }    
+    }  
+
+    /**
+     * Adds token to request
+     */
+    protected function request($method, $path, $values=[], $headers=[]) {
+        $headers = array_merge($headers, ['Authorization' => "Bearer ".$this->token]);
+        return $this->withHeaders($headers)->json($method, $path, $values);
+    }      
 
 }
