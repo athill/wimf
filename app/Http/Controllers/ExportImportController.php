@@ -20,7 +20,7 @@ use App\Item;
 
 class ExportImportController extends Controller {
 
-	const IMPORTER_FIELD = 'importer';
+	const IMPORTER_FIELD = 'file';
 	const JSON_FILE_EXPECTED_ERROR = 'Invalid import file. JSON file expected';
 	const JSON_NO_DATA_KEY_ERROR = 'Invalid import file. JSON file must have a "data" key';
 	const CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE = 'Container %d requires a [name] key.';
@@ -53,10 +53,11 @@ class ExportImportController extends Controller {
 				$data = json_decode($contents, true);
 				return $this->importContainers($data);
 			} else {
-				return $this->importErrorResponse(['error', 'A file is required']);
+				return $this->importErrorResponse('The file is invalid');
 			}
 		} else {
-			return $this->importErrorResponse(['error', 'A file is required']);
+			return response()->json($request);
+			return $this->importErrorResponse('A file is required');
 		}
 		
 	}
@@ -71,6 +72,7 @@ class ExportImportController extends Controller {
 		}
 
 		$user_id = Auth::user()->id;
+		$user = Auth::user();
 		foreach ($data['data'] as $ci => $container) {
 			//// validate container
 			if (!isset($container['name'])) {
@@ -79,9 +81,12 @@ class ExportImportController extends Controller {
 			//// find or insert container, get id
 			$c = Container::firstOrCreate([
 				'name' => $container['name'],
-				'description' => isset($category['description']) ? $category['description'] : '',
 				'user_id' => $user_id
 			]);
+			if (isset($container['description'])) {
+				$c->description = $container['description'];
+				$c->save();
+			}
 			//// loop through categories
 			if (isset($container['categories'])) {
 				foreach ($container['categories'] as $cati => $category) {
