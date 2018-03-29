@@ -45,6 +45,7 @@ class ContainerController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
+		$container = null;
 		try {
 			$container = Container::findOrFail($id);	
 		} catch(Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -64,7 +65,7 @@ class ContainerController extends Controller {
 		$user->save();	
 		
 		$cats = [];
-		$categories = Container::find($id)->categories()->orderBy('name')->get();
+		$categories = $container->categories()->orderBy('name')->get();
 		foreach ($categories as $category) {		
 			$items = $category->items;
 			//// add category name to returned item
