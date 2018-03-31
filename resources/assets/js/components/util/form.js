@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { SubmissionError } from 'redux-form';
 
 export const InputField = ({
 	  input,
@@ -17,3 +18,17 @@ export const InputField = ({
 		</Col>
 	</FormGroup>
 );
+
+export const validEmail = email => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+
+export const required = (fields, values) => fields.filter(field => !values[field]);
+
+export const submit = submitter => (values, dispatch) => {
+	console.log('submitting');
+	return new Promise((resolve, reject) => {
+		dispatch(submitter(values))
+			.catch(error => {
+				reject(new SubmissionError(error));
+			});
+	});
+};

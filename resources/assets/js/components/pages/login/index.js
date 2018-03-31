@@ -4,13 +4,13 @@ import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-boo
 import { Link } from 'react-router-dom';
 
 import { login } from '../../../modules/user';
-import { InputField } from '../../util/form';
+import { InputField, submit, validEmail } from '../../util/form';
 
 const validate = values => {
 	const errors = {};
 	if (!values.email) {
 		errors.email = "Email is required";
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+	} else if (!validEmail(values.email)) {
     	errors.email = 'Invalid email address'
   	}
 	if (!values.password) {
@@ -19,17 +19,8 @@ const validate = values => {
 	return errors;
 };
 
-const submit = (values, dispatch) => {
-	return new Promise((resolve, reject) => {
-		dispatch(login(values))
-			.catch(error => {
-				reject(new SubmissionError(error));
-			});
-	});
-};
-
 export const LoginForm = ({ error, handleSubmit, invalid, pristine, reset, submitting }) => (
-	<Form horizontal onSubmit={handleSubmit(submit)}>
+	<Form horizontal onSubmit={handleSubmit(submit(login))}>
 		<Field label="Email" name="email" type="email" component={InputField} autoFocus />
 		<Field label="Password" name="password" type="password" component={InputField} />
 
