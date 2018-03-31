@@ -66,7 +66,7 @@ export const Intro = () => (
 	</div>
 );
 
-const Login = (props) => {
+const Login = (props) =>  {	
 	const { error, handleSubmit, invalid, pristine, reset, submitting } = props;
 	console.log(props);
 	return (
@@ -79,7 +79,7 @@ const Login = (props) => {
 				</Col>
 				<Col md={6}>
 					<Panel header="New Here?" bsStyle="success">
-						<Intro />					
+						<Intro /	>				
 					</Panel>
 				</Col>			
 			</Row>
