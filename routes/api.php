@@ -19,6 +19,10 @@ Route::group([
 	Route::post('login', 'AuthController@login');
 	Route::post('register', 'AuthController@register');
 	Route::post('refresh', 'AuthController@refresh');
+
+	// Route::get('user/verify/{verification_code}', 'AuthController@verifyUser');
+	Route::get('password/reset/{token}', 'AuthController@showResetForm')->name('password.request');
+	Route::post('password/reset', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 });
 
 Route::group([

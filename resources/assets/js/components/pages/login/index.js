@@ -34,9 +34,9 @@ export const LoginForm = ({ error, handleSubmit, invalid, pristine, reset, submi
 		{ error && <Alert bsStyle="danger">{ error }</Alert> }
 		<FormGroup>
 			<Col md={6} mdOffset={4}>
-				<Button type="submit" bsStyle="primary">Login</Button>
+				<Button type="submit" bsStyle="primary">Login</Button>&nbsp; 
 
-				<a className="btn btn-link" href="/password-reset">Forgot Your Password?</a>
+				<Link to="/password-reset">Forgot Your Password?</Link>
 			</Col>
 		</FormGroup>
 		{/* <a href="/auth/github">Connect with GitHub</a> */}

@@ -24,7 +24,6 @@ export const validEmail = email => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.t
 export const required = (fields, values) => fields.filter(field => !values[field]);
 
 export const submit = submitter => (values, dispatch) => {
-	console.log('submitting');
 	return new Promise((resolve, reject) => {
 		dispatch(submitter(values))
 			.catch(error => {

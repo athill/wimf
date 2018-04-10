@@ -8,6 +8,7 @@ export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 export const REGISTER_USER = getConstants('REGISTER_USER');
 export const LOGIN_USER = getConstants('LOGIN_USER');
 export const LOGOUT_USER = getConstants('LOGOUT_USER');
+export const PASSWORD_RESET = getConstants('PASSWORD_RESET');
 
 
 //// reducer
@@ -89,6 +90,21 @@ export const register = values => {
           response => dispatch(createAction(REGISTER_USER.SUCCESS)(response.data)));
 
       dispatch(login(values))
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+export const passwordReset = values => {
+  return async dispatch => {
+    try {
+      dispatch(createAction(PASSWORD_RESET.ACTION));
+      const response = await post('/api/password/reset', 
+        values, 
+          response => dispatch(createAction(PASSWORD_RESET.SUCCESS)(response.data)));
+
+      // dispatch(login(values))
     } catch (error) {
       throw error;
     }

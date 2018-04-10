@@ -3,6 +3,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 
 import { InputField, required, submit, validEmail } from '../../util/form';
+import { passwordReset } from '../../../modules/user';
 
 const validate = values => {
 	const errors = {};
@@ -16,8 +17,6 @@ const validate = values => {
   	}
 	return errors;
 };
-
-const passwordReset = () => {};
 
 const PasswordReset = ({ error, handleSubmit }) => (
 	<Grid fluid>
