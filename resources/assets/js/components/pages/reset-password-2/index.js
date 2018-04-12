@@ -4,7 +4,7 @@ import { Alert, Button, Col, Form, FormControl, FormGroup, Grid, Panel, Row } fr
 import { connect } from 'react-redux';
 
 import { InputField, required, submit, validEmail } from '../../util/form';
-import { passwordReset } from '../../../modules/user';
+import { passwordReset2 } from '../../../modules/user';
 
 const validate = values => {
 	const errors = {};
@@ -22,14 +22,13 @@ const validate = values => {
 	return errors;
 };
 
-console.log(submit(passwordReset));
 
 const PasswordReset2 = ({ error, handleSubmit, invalid, submitting }) => (
 	<Grid fluid>
 		<Row>
 			<Col md={8} mdOffset={2}>
 				<Panel header="Reset Password" bsStyle="default">
-	                <Form horizontal onSubmit={handleSubmit(submit(passwordReset))}>
+	                <Form horizontal onSubmit={handleSubmit(submit(passwordReset2))}>
 						<Field type="hidden" name="token" component="input" />
 						<Field label="Email" name="email" type="email" component={InputField} />
 						<Field label="Password" name="password" type="password" component={InputField} />

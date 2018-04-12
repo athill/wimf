@@ -12,6 +12,7 @@ export const REGISTER_USER = getConstants('REGISTER_USER');
 export const LOGIN_USER = getConstants('LOGIN_USER');
 export const LOGOUT_USER = getConstants('LOGOUT_USER');
 export const PASSWORD_RESET = getConstants('PASSWORD_RESET', [MESSAGE]);
+export const PASSWORD_RESET2 = getConstants('PASSWORD_RESET2');
 
 
 //// reducer
@@ -66,6 +67,11 @@ export default function reducer(state = initialState, action={}) {
       return {
         ...state,
         passwordResetStatus: action.payload && action.payload.status,
+      }
+    case PASSWORD_RESET2.SUCCESS:
+      console.log('reset password2 success');
+      return {
+        ...state
       }
     default:
       return state;
@@ -123,6 +129,24 @@ export const passwordReset = values => {
         //   setTimeout(() => {
         //     dispatch(createAction(PASSWORD_RESET.MESSAGE)())
         //   }, 5000)
+        }
+      );
+      // dispatch(login(values))
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+
+export const passwordReset2 = values => {
+  return async dispatch => {
+    try {
+      dispatch(createAction(PASSWORD_RESET2.ACTION));
+      const response = await post('/api/password/reset2', 
+        values, 
+        response => {
+          dispatch(createAction(PASSWORD_RESET2.SUCCESS)());
         }
       );
       // dispatch(login(values))
