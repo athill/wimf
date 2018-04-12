@@ -147,6 +147,7 @@ export const passwordReset2 = values => {
         values, 
         response => {
           dispatch(createAction(PASSWORD_RESET2.SUCCESS)());
+          dispatch(login(values));
         }
       );
       // dispatch(login(values))
