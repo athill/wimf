@@ -3,12 +3,15 @@ import history from '../history';
 import { get, post } from '../util/RemoteOperations';
 import { getConstants, loadingStates } from './utils';
 
+////consts
+const MESSAGE = 'MESSAGE';
+
 //// actions
 export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 export const REGISTER_USER = getConstants('REGISTER_USER');
 export const LOGIN_USER = getConstants('LOGIN_USER');
 export const LOGOUT_USER = getConstants('LOGOUT_USER');
-export const PASSWORD_RESET = getConstants('PASSWORD_RESET');
+export const PASSWORD_RESET = getConstants('PASSWORD_RESET', [MESSAGE]);
 
 
 //// reducer
@@ -18,6 +21,7 @@ export const initialState = {
   email: null,
   authenticated: !!sessionStorage.getItem('token'),
   loading: loadingStates.CLEAN,
+  passwordResetStatus: null,
 };
 
 export default function reducer(state = initialState, action={}) {
@@ -53,6 +57,16 @@ export default function reducer(state = initialState, action={}) {
         authenticated: true
       };
       return newState;
+    case PASSWORD_RESET.ACTION:
+      return {
+        ...state,
+        passwordResetStatus: null
+      }
+    case PASSWORD_RESET.MESSAGE:
+      return {
+        ...state,
+        passwordResetStatus: action.payload && action.payload.status,
+      }
     default:
       return state;
   }
@@ -102,8 +116,15 @@ export const passwordReset = values => {
       dispatch(createAction(PASSWORD_RESET.ACTION));
       const response = await post('/api/password/reset', 
         values, 
-          response => dispatch(createAction(PASSWORD_RESET.SUCCESS)(response.data)));
-
+        response => {
+          dispatch(createAction(PASSWORD_RESET.SUCCESS)());
+          dispatch(createAction(PASSWORD_RESET.MESSAGE)(response.data));
+        ///// decent technique, but maybe not for this page
+        //   setTimeout(() => {
+        //     dispatch(createAction(PASSWORD_RESET.MESSAGE)())
+        //   }, 5000)
+        }
+      );
       // dispatch(login(values))
     } catch (error) {
       throw error;

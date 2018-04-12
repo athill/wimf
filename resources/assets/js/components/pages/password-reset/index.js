@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import { InputField, required, submit, validEmail } from '../../util/form';
 import { passwordReset } from '../../../modules/user';
@@ -18,8 +19,9 @@ const validate = values => {
 	return errors;
 };
 
-const PasswordReset = ({ error, handleSubmit }) => (
+const PasswordReset = ({ error, handleSubmit, status }) => (
 	<Grid fluid>
+		{ status && <Alert bsStyle="success">{ status }</Alert> }
 		<Row>
 			<Col md={8} mdOffset={2}>
 				<Panel header="Reset Password" bsStyle="default">
@@ -40,7 +42,13 @@ const PasswordReset = ({ error, handleSubmit }) => (
 	</Grid>
 );
 
-export default reduxForm({
+const mapStateToProps = ({ user: { passwordResetStatus: status } }) => {
+	return {
+		status
+	};
+};
+
+export default connect(mapStateToProps)(reduxForm({
   form: 'password-reset', // a unique identifier for this form
   validate
-})(PasswordReset);
+})(PasswordReset));
