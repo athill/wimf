@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Grid, Row } from 'react-bootstrap';
+import { Alert, Col, Grid, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Router, Route } from 'react-router-dom';
 
@@ -14,13 +14,14 @@ import PublicRoute from './PublicRoute';
 import Register from './pages/register';
 import Import from './pages/import';
 
-const Page = () => (
+const Page = ({ message }) => (
     <Router history={history}>  
         <div>  
             <AppNavbar />
             <Grid>
                 <Row>
                     <Col md={12}>
+                    	{ message && <Alert bsStyle={message.type}>{ message.text }</Alert> }
                         <PrivateRoute path="/" exact component={Items}/>
                         <Route path="/login" component={Login}/>
                         <Route path="/demo" exact component={Items}/>
@@ -35,9 +36,9 @@ const Page = () => (
     </Router>
 );
 
-const mapStateToProps = ({}) => {
+const mapStateToProps = ({ messages: { message } }) => {
 	return {
-
+		message
 	};
 };
 

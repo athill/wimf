@@ -1,17 +1,16 @@
 import { createAction } from 'redux-actions';
 import history from '../history';
+
+import { postMessageSuccess } from './messages';
 import { get, post } from '../util/RemoteOperations';
 import { getConstants, loadingStates } from './utils';
-
-////consts
-const MESSAGE = 'MESSAGE';
 
 //// actions
 export const REQUEST_USER_INFO = getConstants('REQUEST_USER_INFO');
 export const REGISTER_USER = getConstants('REGISTER_USER');
 export const LOGIN_USER = getConstants('LOGIN_USER');
 export const LOGOUT_USER = getConstants('LOGOUT_USER');
-export const PASSWORD_RESET = getConstants('PASSWORD_RESET', [MESSAGE]);
+export const PASSWORD_RESET = getConstants('PASSWORD_RESET');
 export const PASSWORD_RESET2 = getConstants('PASSWORD_RESET2');
 
 
@@ -58,16 +57,6 @@ export default function reducer(state = initialState, action={}) {
         authenticated: true
       };
       return newState;
-    case PASSWORD_RESET.ACTION:
-      return {
-        ...state,
-        passwordResetStatus: null
-      }
-    case PASSWORD_RESET.MESSAGE:
-      return {
-        ...state,
-        passwordResetStatus: action.payload && action.payload.status,
-      }
     case PASSWORD_RESET2.SUCCESS:
       console.log('reset password2 success');
       return {
@@ -124,14 +113,9 @@ export const passwordReset = values => {
         values, 
         response => {
           dispatch(createAction(PASSWORD_RESET.SUCCESS)());
-          dispatch(createAction(PASSWORD_RESET.MESSAGE)(response.data));
-        ///// decent technique, but maybe not for this page
-        //   setTimeout(() => {
-        //     dispatch(createAction(PASSWORD_RESET.MESSAGE)())
-        //   }, 5000)
+          dispatch(postMessageSuccess(response.data.status));
         }
       );
-      // dispatch(login(values))
     } catch (error) {
       throw error;
     }
@@ -148,9 +132,9 @@ export const passwordReset2 = values => {
         response => {
           dispatch(createAction(PASSWORD_RESET2.SUCCESS)());
           dispatch(login(values));
+          dispatch(postMessageSuccess(response.data.status));
         }
       );
-      // dispatch(login(values))
     } catch (error) {
       throw error;
     }
