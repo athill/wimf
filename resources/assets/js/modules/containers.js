@@ -273,7 +273,6 @@ export const toggleAddItemForm = createAction(TOGGLE_ADD_ITEM_FORM);
 export const exportDemoData = () => {
   const data = localStorage.getItem('wimf') ? JSON.parse(localStorage.getItem('wimf')).containers : [];
   return dispatch => {
-    console.log('exporting demo data');
     dispatch(act(POST_DEMO_DATA));
     axios({
           method: 'POST',
