@@ -65,21 +65,25 @@ class ContainerController extends Controller {
 		$user->save();	
 		
 		$cats = [];
-		$categories = $container->categories()->orderBy('name')->get();
-		foreach ($categories as $category) {		
-			$items = $category->items;
-			//// add category name to returned item
-			foreach ($items as $i => $item) {
-				$itemArray = $item->toArray();
-				$itemArray['category'] = $item->category->name;
-				$items[$i] = $itemArray;
+		$items = $container->categories()->orderBy('categories.name')->join('items', 'categories.id', '=', 'items.category_id' )->orderBy('items.name')->select('items.*', 'categories.name AS category')->get();
+		$categories = [];
+		$category = null;
+		$category_items = [];
+		foreach ($items as $item) {
+			if ($item->category !== $category) {
+				if (count($category_items)) {
+					$categories[] = [
+						'name' => $category,
+						'items' => $category_items
+					];
+				}
+				$category = $item->category;
+				$category_items = [];				
+				
 			}
-			$cats[] = [
-				'name' => $category->name,
-				'items' => $items
-			];
+			$category_items[] = $item;
 		}
-        $data['categories'] = $cats;
+        $data['categories'] = $categories;
 		return $data;
 	}
 
