@@ -33,7 +33,6 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
         if ($token = $this->guard()->attempt($credentials)) {
             return $this->respondWithToken($token);
         }
@@ -86,7 +85,6 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        // dd([]);
         return $this->respondWithToken($this->guard()->refresh());
     }
 
