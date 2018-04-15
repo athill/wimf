@@ -113,12 +113,13 @@ class ExportImportController extends Controller {
 								'user_id' => $user_id
 							]);
 							// update quantity
-							if (isset($i['quantity'])) {
+							if (isset($item['quantity'])) {
 								$i->quantity = $item['quantity'];
 							}
 							//// update date
 							if (isset($item['date'])) {
-								$i->date = ($item['date'] === '') ? '' :  Carbon::parse($item['date']);
+								$date = is_array($item['date']) ? $item['date']['date'] : $item['date']; 
+								$i->date = ($date === '') ? '' :  Carbon::parse($date);
 							}
 							//// save
 							$i->save();
