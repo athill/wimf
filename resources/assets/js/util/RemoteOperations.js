@@ -1,6 +1,8 @@
 import axios from 'axios';
 
+import history from '../history';
 import localPersistedStore from '../LocalPersistedStore';
+
 
 const localStoragePromise = (method, url, data) => {
   return new Promise(
@@ -56,7 +58,9 @@ export const defaultRejector = error => {
     return 'Unknown Error';
   }
   const response = {};
-  if (error.message) {
+  if (error.response && error.response.data && error.response.data.message) {
+    response._error = error.response.data.message;
+  } else if (error.message) {
     response._error = error.message;
   } else if (error.error) {
     response._error = error.error;
@@ -90,7 +94,6 @@ class RemoteOperations {
     if (!('data' in config)) {
       config = { data: config };
     }
-    console.log('fetching', method, url, config);
     const request = {
       config,
       method,
@@ -107,6 +110,18 @@ class RemoteOperations {
               method: 'POST', 
               url: '/api/refresh'
             });
+        } catch (error) {
+          if (error.response.data.message === 'Token has expired') {
+            sessionStorage.removeItem('token');
+            localStorage.removeItem('token');
+            history.push('/login');
+
+          } else {
+            const rejection = rejecter(error);
+            throw rejection;                      
+          }
+        }
+        try {
             sessionStorage.setItem('token', response.data.access_token);
             response = await this.promiser(request);
         } catch (error) {
