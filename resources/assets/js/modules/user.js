@@ -25,6 +25,10 @@ export const initialState = {
 };
 
 export default function reducer(state = initialState, action={}) {
+  state = {
+    ...state,
+    authenticated: !!sessionStorage.getItem('token')
+  }
   switch (action.type) {
     case LOGIN_USER.SUCCESS:
       if (action.payload.remember) {
@@ -73,7 +77,7 @@ export const login = values => {
       dispatch(createAction(LOGIN_USER.ACTION));
       const response = await post('/api/login', 
         values, 
-        response => dispatch(createAction(LOGIN_USER.SUCCESS)(response.data))
+        response => dispatch(createAction(LOGIN_USER.SUCCESS)(Object.assign({}, response.data, { remember: values.remember })))
       );
       dispatch(fetchUserInfo());
       history.push('/');
