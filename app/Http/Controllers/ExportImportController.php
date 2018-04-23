@@ -20,7 +20,7 @@ use App\Item;
 
 class ExportImportController extends Controller {
 
-	const IMPORTER_FIELD = 'importer';
+	const IMPORTER_FIELD = 'file';
 	const JSON_FILE_EXPECTED_ERROR = 'Invalid import file. JSON file expected';
 	const JSON_NO_DATA_KEY_ERROR = 'Invalid import file. JSON file must have a "data" key';
 	const CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE = 'Container %d requires a [name] key.';
@@ -33,15 +33,14 @@ class ExportImportController extends Controller {
 
 	public function export() {
 		$containers = Container::user()->orderBy('name', 'ASC')->with(['categories', 'categories.items'])->get();
-		$response = $this->respondWithCollection($containers, new ExportTransformer);
-		$filename = preg_replace('/[@.]/', '', Auth::user()->email).'.json';
-		Storage::disk('local')->put($filename, json_encode($response->getData(), false));
-		$headers = [];
-		return response()->download(storage_path('app/'.$filename), $filename, $headers);
-	}
+		return $this->respondWithCollection($containers, new ExportTransformer);
+		// $filename = preg_replace('/[@.]/', '', Auth::user()->email).'.json';
 
-	public function importForm() {
-		return view('import');
+		// Storage::disk('local')->put($filename, json_encode($response->getData(), false));
+		// $headers = [];
+		// $download = storage_path('app/'.$filename);
+		// // return response()->json(['filename' => $download]);
+		// return response()->download($download, $filename, $headers);
 	}
 
 	public function import(Request $request) {
@@ -54,10 +53,11 @@ class ExportImportController extends Controller {
 				$data = json_decode($contents, true);
 				return $this->importContainers($data);
 			} else {
-				return view('import', ['error', 'A file is required']);
+				return $this->importErrorResponse('The file is invalid');
 			}
 		} else {
-			return view('import', ['error', 'A file is required']);
+			return response()->json($request);
+			return $this->importErrorResponse('A file is required');
 		}
 		
 	}
@@ -65,30 +65,34 @@ class ExportImportController extends Controller {
 	public function importContainers($data) {
 		$user_id = Auth::user()->id;
 		if (!is_array($data)) {
-			return $this->importErrorView(self::JSON_FILE_EXPECTED_ERROR);
+			return $this->importErrorResponse(self::JSON_FILE_EXPECTED_ERROR);
 		}
 		if (!isset($data['data'])) {
-			return $this->importErrorView(self::JSON_NO_DATA_KEY_ERROR);
+			return $this->importErrorResponse(self::JSON_NO_DATA_KEY_ERROR);
 		}
 
 		$user_id = Auth::user()->id;
+		$user = Auth::user();
 		foreach ($data['data'] as $ci => $container) {
 			//// validate container
 			if (!isset($container['name'])) {
-				return $this->importErrorView(sprintf(self::CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE, $ci));
+				return $this->importErrorResponse(sprintf(self::CONTAINER_REQUIRES_NAME_ERROR_TEMPLATE, $ci));
 			}
 			//// find or insert container, get id
 			$c = Container::firstOrCreate([
 				'name' => $container['name'],
-				'description' => isset($category['description']) ? $category['description'] : '',
 				'user_id' => $user_id
 			]);
+			if (isset($container['description'])) {
+				$c->description = $container['description'];
+				$c->save();
+			}
 			//// loop through categories
 			if (isset($container['categories'])) {
 				foreach ($container['categories'] as $cati => $category) {
 					//// validate category
 					if (!isset($category['name'])) {
-						return $this->importErrorView(sprintf(self::CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE, $cati, $ci));
+						return $this->importErrorResponse(sprintf(self::CATEGORY_REQUIRES_NAME_ERROR_TEMPLATE, $cati, $ci));
 					}
 					$cat = Category::firstOrCreate([
 						'name' => $category['name'],
@@ -100,7 +104,7 @@ class ExportImportController extends Controller {
 						foreach ($category['items'] as $itemi => $item) {
 							// validate item
 							if (!isset($item['name'])) {
-								return $this->importErrorView(sprintf(self::ITEM_REQUIRES_NAME_ERROR_TEMPLATE, $itemi, $cati, $ci));
+								return $this->importErrorResponse(sprintf(self::ITEM_REQUIRES_NAME_ERROR_TEMPLATE, $itemi, $cati, $ci));
 							}
 							// get item
 							$i = Item::firstOrCreate([
@@ -109,12 +113,13 @@ class ExportImportController extends Controller {
 								'user_id' => $user_id
 							]);
 							// update quantity
-							if (isset($i['quantity'])) {
+							if (isset($item['quantity'])) {
 								$i->quantity = $item['quantity'];
 							}
 							//// update date
 							if (isset($item['date'])) {
-								$i->date = ($item['date'] === '') ? '' :  Carbon::parse($item['date']);
+								$date = is_array($item['date']) ? $item['date']['date'] : $item['date']; 
+								$i->date = ($date === '') ? '' :  Carbon::parse($date);
 							}
 							//// save
 							$i->save();
@@ -124,7 +129,7 @@ class ExportImportController extends Controller {
 			}
 		}
 		//// return success
-		return view('home', ['messages' => [self::SUCCESS_MESSAGE]]);
+		return view('app', ['messages' => [self::SUCCESS_MESSAGE]]);
 	} 
 
 	public function exportDemo(Request $request) {
@@ -154,8 +159,8 @@ class ExportImportController extends Controller {
 		return response()->download(storage_path('app/'.$request->filename), 'export.json', []);		
 	}
 
-	private function importErrorView($error) {
-		return view('import', ['error' => $error ]);
+	private function importErrorResponse($error) {
+		return response()->json(['error' => $error ], 400);
 	}
 
 }

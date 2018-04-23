@@ -20,7 +20,7 @@ class ExportTransformer extends Fractal\TransformerAbstract {
 		    			return [
 		    				'name' => $item['name'], 
 		    				'quantity' => $item['quantity'], 
-		    				'date' => $item['date']
+		    				'date' => $item['date'] ? $item['date']->date : ''
 		    			];
 		    		})
     			];

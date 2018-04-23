@@ -1,9 +1,9 @@
 <?php namespace App\Http\Controllers;
 
-use Auth;
 use Log;
 use Illuminate\Http\Request;
 use Response;
+use Auth;
 
 use App\Http\Controllers\Controller;
 
@@ -21,6 +21,11 @@ class ItemController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+	    $validatedData = $request->validate([
+	        'name' => 'required|max:255',
+	        'container_id' => 'required',
+	    ]);
+
 		// Item object
 		$item = new Item();
 		$item->comment = '';
@@ -46,7 +51,7 @@ class ItemController extends Controller {
 		}
 	}
 
-			/**
+	/**
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id
@@ -88,11 +93,7 @@ class ItemController extends Controller {
 		return Category::firstOrNew([
 			'name' => $request->get('category'),
 			'container_id' => $request->get('container_id'),
-			'user_id' => Auth::user()->id
+			'user_id' => Auth::user()
 		]);
-		// $category = new Category();
-		// $category->name = $request->get('category');
-		// $category->container_id = $request->get('container_id');
-		// return $category;
 	}
 }

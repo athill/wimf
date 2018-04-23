@@ -1,7 +1,13 @@
 <?php
+
+namespace Tests;
+
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Carbon\Carbon;
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase {
+abstract class TestCase extends BaseTestCase {
+
+	 use CreatesApplication;
 
     const ITEMS_PATH = '/api/items';
     const CONTAINERS_PATH = '/api/containers';
@@ -13,13 +19,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      */
     protected $baseUrl = 'http://localhost';
 
-    //// my vars
     /**
-     * Default user
-     *
-     * @var App\User
-     */    
-    protected $defaultUser;
+     *JwtAuth token
+     * @var string
+     */
+    protected $token;
+
+    //// my vars
 
     /**
      * Default date string
@@ -28,26 +34,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      */        
     protected $defaultDate;
 
-    //// how about this voodoo?
+   
 
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication() {
-        $app = require __DIR__.'/../bootstrap/app.php';
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
-        return $app;
+  public function setUp() {
+        parent::setUp();
+        $this->defaultDate = Carbon::now()->toDateTimeString();
     }
 
-
-    ///// my stuff
-
-    public function setUp() {
-        parent::setUp();
-        $this->defaultUser = factory(App\User::class)->create(); 
-        $this->defaultDate = Carbon::now()->toDateTimeString();
+    public function getDefaultUser() {
+        return factory(\App\User::class)->create(); 
     }
 
 
@@ -58,7 +53,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      * @return App\Container
      */
     protected function getFakeContainer(array $overrides=[]) {
-        return factory(App\Container::class)->create($overrides);
+        return factory(\App\Container::class)->create($overrides);
     }
 
     /**
@@ -78,7 +73,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         if (!isset($overrides['container_id'])) {
             $overrides['container_id'] = $this->getFakeContainer()->id;
         }
-        return factory(App\Category::class)->create($overrides); 
+        return factory(\App\Category::class)->create($overrides); 
     }
 
     /**
@@ -97,16 +92,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
         if (!isset($overrides['category_id'])) {
             $overrides['category_id'] = $this->getFakeCategory()->id;
         }
-        return factory(App\Item::class)->create($overrides); 
+        return factory(\App\Item::class)->create($overrides); 
     }
 
     ///// helpers
-    protected function getResponseContentAsJson() {
-        $response = $this->response;
+    protected function getResponseContentAsJson($response) {
         if (is_null($response)) {
             throw new Exception('$this->response is null in TestCase.getResponseContentAsJson(). This method must be called after making a http request.');
         }
-        return json_decode($this->response->getContent(), true);
+        return json_decode($response->getContent(), true);
     }    
 
     //// statics
@@ -121,7 +115,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
     protected function assertInDatabaseAndReturn($modelClass, $table, $criteria) {
         //// see in the database
-        $this->seeInDatabase($table, $criteria);
+        $this->assertDatabaseHas($table, $criteria);
 
         //// build args array
         $args = collect(array_keys($criteria))->map(function($key, $i) use ($criteria) {
@@ -137,6 +131,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
             }   
         }
         return $result->firstOrFail();
-    }    
+    }  
+
+    /**
+     * Adds token to request
+     */
+    protected function request($method, $path, $values=[], $headers=[]) {
+        $headers = array_merge($headers, ['Authorization' => "Bearer ".$this->token]);
+        return $this->withHeaders($headers)->json($method, $path, $values);
+    }      
 
 }
