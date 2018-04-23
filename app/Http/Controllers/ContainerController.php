@@ -83,6 +83,12 @@ class ContainerController extends Controller {
 			}
 			$category_items[] = $item;
 		}
+		if (count($category_items)) {
+			$categories[] = [
+				'name' => $category,
+				'items' => $category_items
+			];
+		}		
         $data['categories'] = $categories;
 		return $data;
 	}
