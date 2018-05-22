@@ -9,8 +9,6 @@ import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
 import ValidatedInput from '../../common/ValidatedInput';
 
 
-const  { DOM: { input } } = React;
-
 export const validate = values => {
 	const errors = {};
   	//// required fields	
