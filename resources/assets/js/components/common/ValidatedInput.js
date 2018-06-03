@@ -23,10 +23,7 @@ InputLabel.propTypes = {
   warning: PropTypes.string
 };
 
-
-const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mutatedValue, readOnly,  
-    componentClass='input', value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
-
+export const getMessageAndStyle = meta => {
   let errorMessage, style, warningMessage;
   if (meta.touched) {
     if (meta.valid) {
@@ -38,13 +35,31 @@ const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mut
       errorMessage = meta.error;
       style = 'error';
     }
+  }  
+  return {
+    errorMessage,
+    style,
+    warningMessage
   }
-  const labelClassName = "col-xs-"+labelCols;
-  const wrapperClassName = "col-xs-"+(12-labelCols);
-  //const lengthBadge = (<LengthBadge length={value.length} maxLength={maxLength} />);
-  const labelComponent = (<InputLabel title={label} warning={warningMessage} error={errorMessage} className={labelClassName} />);
-  const errorComponent = meta.touched && meta.error ? <div className='text-danger'>{meta.error}</div> : <NoOp />;
-  //const helpNode = <output id={id + "Output"} className="mutated-input">{mutatedValue}</output>;
+};
+
+export const Label= ({ className, errorMessage, label, warningMessage }) => (
+  <InputLabel title={label} warning={warningMessage} error={errorMessage} className={className} />
+);
+
+const ErrorMessage = ({ meta }) => {
+  return meta.touched && meta.error ? <div className='text-danger'>{meta.error}</div> : null;
+} 
+
+export const getClassNames = labelCols => ({
+  labelClassName: "col-xs-"+labelCols,
+  wrapperClassName: "col-xs-"+(12-labelCols)  
+});
+
+const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mutatedValue, readOnly,  
+    componentClass='input', value='', showTextLengthFeedback = false, labelCols = 4, ...otherProps }) => {
+  const { errorMessage, style, warningMessage } = getMessageAndStyle(meta);
+  const { labelClassName, wrapperClassName } = getClassNames(labelCols);
   if (readOnly) {
     return (
       <FormGroup>
@@ -60,7 +75,7 @@ const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mut
   } else {
     return (
       <FormGroup>
-        {labelComponent}
+        <Label errorMessage={errorMessage} label={label} className={labelClassName} warningMessage={warningMessage} />
         <div className={wrapperClassName}>
           <FormControl {...otherProps}
             id={id}
@@ -69,10 +84,13 @@ const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mut
             placeholder={label}
             bsStyle={style}
             componentClass={componentClass}
-            {...input}>
+            {...input} 
+            {...otherProps}
+          >
               { children }
           </FormControl>
           { help && <HelpBlock>{help}</HelpBlock> }
+          <ErrorMessage meta={meta} />
         </div>
       </FormGroup>       
     );
