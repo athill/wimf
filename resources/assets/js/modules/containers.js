@@ -206,7 +206,6 @@ const impexReducer = (state, action) => {
 }
 
 export default function reducer(state = initialState, action) {
-  //// TODO: figure out what's up with this
   if (!action) {
     return state;
   }

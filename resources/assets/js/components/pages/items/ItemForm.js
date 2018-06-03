@@ -2,15 +2,18 @@ import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { reduxForm, change, Field, SubmissionError } from 'redux-form';
+import map from 'lodash/map';
 import moment from 'moment';
 
-import { addItem, editItem, hideItemForm, ITEM_FORM_NAME, removeItem } from '../../../modules/containers';
-import { ModalTypes } from '../../../modules/utils';
+
 import FormModal from '../../common/FormModal';
 import Datepicker from '../../common/Datepicker';
 import ReduxFormCheckbox from '../../common/ReduxFormCheckbox';
 import ValidatedInput from '../../common/ValidatedInput';
+//// modules
+import { addItem, editItem, hideItemForm, ITEM_FORM_NAME, removeItem } from '../../../modules/containers';
 //// utils
+import { ModalTypes } from '../../../modules/utils';
 import { getValueFormat, isValidDate, momentFormats, getDisplayFormat } from '../../../util/DateUtils';
 
 const validate = values => {
@@ -36,10 +39,10 @@ const submit = submitAction => (values, dispatch) => {
 
 };
 
-export const ItemForm = ({ error, handleSubmit, initialValues, onHide, readOnly, reset, showModal, submitAction, 
+export const ItemForm = ({ categories, error, handleSubmit, initialValues, onHide, readOnly, reset, showModal, submitAction, 
 		submitButtonBsStyle, submitButtonText, submitting, title, type }) => {
-	//// TODO: keepOpen is not being passed with values
-	return (<FormModal 
+	return (
+		<FormModal 
 				errors={error}
 				onHide={() => { reset(); onHide();}}
 				onSubmit={handleSubmit(submit(submitAction))} 
@@ -49,16 +52,26 @@ export const ItemForm = ({ error, handleSubmit, initialValues, onHide, readOnly,
 				submitButtonBsStyle={submitButtonBsStyle} 
 				submitButtonText={submitButtonText}
 				submitting={submitting}>
-		<Field type='text' autoFocus id='category' readOnly={readOnly} label='Category' name="category" component={ValidatedInput} />
-		<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
-		<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
-		<Field id='date' label='Date' readOnly={readOnly} name="date" component={Datepicker} /> 
-		{ ModalTypes.CREATE === type && <Field name='keepOpen' component={ReduxFormCheckbox}>Keep Open</Field> }
-	</FormModal>)
+
+
+			<Field type='text' list="categories-list" autoFocus id='category' readOnly={readOnly} label='Category' name="category" component={ValidatedInput} />
+			<datalist id="categories-list">
+				{
+				  categories.map(category => <option key={category} value={category} />)
+				}
+			</datalist>
+			<Field type='text' id='name' label='Name' readOnly={readOnly} name="name" component={ValidatedInput} />
+			<Field type='text' id='quantity' label='Quantity' readOnly={readOnly} name="quantity" component={ValidatedInput} />
+			<Field id='date' label='Date' readOnly={readOnly} name="date" component={Datepicker} /> 
+			{ ModalTypes.CREATE === type && <Field name='keepOpen' component={ReduxFormCheckbox}>Keep Open</Field> }
+		</FormModal>
+	)
 };
 
-const mapStateToProps = ({ containers: { showItemForm, selectedItem }, form }) => {
+const mapStateToProps = ({ containers: { containers, selectedId, selectedItem, showItemForm }, form }) => {
 	let submitAction, title, submitButtonBsStyle;
+	const categories = selectedId ? map(containers[selectedId].categories, 'name') : [];
+	console.log(categories);
 	switch (showItemForm) {
 		case ModalTypes.DELETE:
 			submitAction = removeItem;
@@ -91,6 +104,7 @@ const mapStateToProps = ({ containers: { showItemForm, selectedItem }, form }) =
 	}
 	const error = form.item && form.item.error;
 	return {
+		categories,
 		error,
 		showModal: showItemForm !== ModalTypes.NONE,
 		type: showItemForm,
