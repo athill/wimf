@@ -28,7 +28,6 @@ const makePromise = ({ url, config = {}, method = 'GET' })  => {
       method,
       url,
     };
-    console.log('axios params', params);
     promise = axios(params);
   }
   return promise;
