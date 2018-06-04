@@ -42,6 +42,8 @@ export const HIDE_CONTAINER_FORM = appNamespace.defineAction('HIDE_CONTAINER_FOR
 //// items
 export const REQUEST_ITEMS  = getConstants('REQUEST_ITEMS');
 export const ADD_ITEM = getConstants('ADD_ITEM');
+export const SOFT_DELETE_ITEM = 'SOFT_DELETE_ITEM';
+export const SOFT_DELETE_ITEM_CANCEL = 'SOFT_DELETE_ITEM_CANCEL';
 export const DELETE_ITEM = getConstants('DELETE_ITEM');
 export const EDIT_ITEM = getConstants('EDIT_ITEM');
 export const SET_ITEMS_FILTER = appNamespace.defineAction('SET_ITEMS_FILTER');
@@ -119,6 +121,18 @@ const itemsReducer = (state, action) => {
       return {
         ...state,
         filter: action.payload
+      };
+    case SOFT_DELETE_ITEM:
+    case SOFT_DELETE_ITEM_CANCEL:
+      let softDeleteItem = action.payload.data;
+      item = {
+        ...item,
+        deleting: action.type === SOFT_DELETE_ITEM
+      };
+      categories = updateItemInCategories(categories, action.payload.data);
+      return {
+        ...state,
+        containers: updateContainers(categories)
       };
     default:
       console.error('Invalid action', action.type);   
