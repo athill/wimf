@@ -164,6 +164,9 @@ class ContainerTest extends TestCase {
     public function testNameExistsIsFalseIfNameDoesNotExists() {
         $container = $this->getFakeContainer();
         $name = $this->faker->word;
+        if ($name === $container->name) {
+            $name .= '111';
+        }
         $this->assertNotEquals($name, $container->name);
         //// TODO: verify and delete if name exists
         $this->assertFalse(Container::nameExists($name));

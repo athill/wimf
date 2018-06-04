@@ -2,12 +2,14 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Carbon\Carbon;
 
 abstract class TestCase extends BaseTestCase {
 
 	 use CreatesApplication;
+     use DatabaseMigrations;
 
     const ITEMS_PATH = '/api/items';
     const CONTAINERS_PATH = '/api/containers';
