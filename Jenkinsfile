@@ -1,5 +1,28 @@
 #!groovy
 
+pipeline {
+    agent none
+    stages {
+        stage('Back-end') {
+            agent {
+                docker { image 'composer:1.6.5' }
+            }
+            steps {
+                sh 'composer --version'
+            }
+        }
+        stage('Front-end') {
+            agent {
+                docker { image 'node:8-alpine' }
+            }
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
+
+
 // node('tst.wimf.space') { 
 //     stage('Checkout') {
 //         checkout scm
