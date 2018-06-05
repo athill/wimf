@@ -8,7 +8,7 @@ pipeline {
                 docker { image 'composer:1.6.5' }
             }
             steps {
-                sh 'composer --version'
+                sh 'composer install'
             }
         }
         stage('Front-end') {
@@ -16,7 +16,7 @@ pipeline {
                 docker { image 'node:8-alpine' }
             }
             steps {
-                sh 'node --version'
+                sh 'npm i'
             }
         }
     }
