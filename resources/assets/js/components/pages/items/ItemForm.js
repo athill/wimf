@@ -71,7 +71,6 @@ export const ItemForm = ({ categories, error, handleSubmit, initialValues, onHid
 const mapStateToProps = ({ containers: { containers, selectedId, selectedItem, showItemForm }, form }) => {
 	let submitAction, title, submitButtonBsStyle;
 	const categories = selectedId ? map(containers[selectedId].categories, 'name') : [];
-	console.log(categories);
 	switch (showItemForm) {
 		case ModalTypes.DELETE:
 			submitAction = removeItem;

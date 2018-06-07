@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAction } from 'redux-actions';
+import find from 'lodash/find';
 
 //// utils
 import { getIsoFormat } from '../util/DateUtils';
@@ -42,6 +43,8 @@ export const HIDE_CONTAINER_FORM = appNamespace.defineAction('HIDE_CONTAINER_FOR
 //// items
 export const REQUEST_ITEMS  = getConstants('REQUEST_ITEMS');
 export const ADD_ITEM = getConstants('ADD_ITEM');
+export const SOFT_DELETE_ITEM = 'SOFT_DELETE_ITEM';
+export const SOFT_DELETE_ITEM_CANCEL = 'SOFT_DELETE_ITEM_CANCEL';
 export const DELETE_ITEM = getConstants('DELETE_ITEM');
 export const EDIT_ITEM = getConstants('EDIT_ITEM');
 export const SET_ITEMS_FILTER = appNamespace.defineAction('SET_ITEMS_FILTER');
@@ -119,6 +122,18 @@ const itemsReducer = (state, action) => {
       return {
         ...state,
         filter: action.payload
+      };
+    case SOFT_DELETE_ITEM:
+    case SOFT_DELETE_ITEM_CANCEL:
+      let softDeleteItem = action.payload;
+      softDeleteItem = {
+        ...softDeleteItem,
+        deleting: action.type === SOFT_DELETE_ITEM
+      };
+      categories = updateItemInCategories(categories, softDeleteItem);
+      return {
+        ...state,
+        containers: updateContainers(categories)
       };
     default:
       console.error('Invalid action', action.type);   
@@ -224,6 +239,8 @@ export default function reducer(state = initialState, action) {
     case REQUEST_ITEMS:
     case REQUEST_ITEMS.SUCCESS:    
     case SET_ITEMS_FILTER:
+    case SOFT_DELETE_ITEM:
+    case SOFT_DELETE_ITEM_CANCEL:
       return itemsReducer(state, action); 
     //// container form actions  
     case TOGGLE_ADD_CONTAINER_FORM:
@@ -453,3 +470,33 @@ export const removeItem = updateItem({
   successAction: createAction(DELETE_ITEM.SUCCESS),
   url: '/api/items/{id}',
 });
+
+export const getStateItem = (state, item) => {
+  const containers = state.containers;
+  const container = containers.containers[containers.selectedId];
+  const category = find(container.categories, { name: item.category });
+  return find(category.items, { name: item.name});  
+}
+
+export const softRemoveItem = item => {
+  return (dispatch, getState) => {
+    dispatch(createAction(SOFT_DELETE_ITEM)(item));
+    setTimeout(() => {
+      const stateItem = getStateItem(getState(), item);
+      if (stateItem.deleting) {
+          return new Promise((resolve, reject) => {
+            dispatch(removeItem(item, resolve, reject));
+        })
+        .catch(error => {
+          throw new SubmissionError(error);
+        }); 
+      }
+    }, 5000);
+  };  
+};
+
+export const softRemoveItemCancel = item => {
+  return (dispatch, getState) => {
+    dispatch(createAction(SOFT_DELETE_ITEM_CANCEL)(item));
+  };
+};

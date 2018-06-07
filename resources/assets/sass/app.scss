@@ -53,6 +53,11 @@ body, label, .checkbox label {
 	}
 }
 
+.card-block-deleting {
+	background-color: lighten(#F00, 40%);
+	cursor: pointer;
+}
+
 .item-filter {
 	padding: 1em 0;
 
