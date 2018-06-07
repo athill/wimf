@@ -18,7 +18,7 @@ const isEmpty = categories => {
 }
 
 
-const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHandler, loading }) => {
+const Container = ({ categories, name, itemDeleteCancelHandler, itemDeleteClickHandler, itemEditClickHandler, loading }) => {
 	if (!categories) {
 		return null;
 	} 
@@ -46,7 +46,8 @@ const Container = ({ categories, name, itemDeleteClickHandler, itemEditClickHand
 										<Col xs={12} sm={9} md={6} lg={3} key={item.name}>
 											<Item {...item} 
 												deleteClickHandler={itemDeleteClickHandler} 
-												editClickHandler={itemEditClickHandler} />
+												editClickHandler={itemEditClickHandler} 
+												deleteCancelHandler={itemDeleteCancelHandler} />
 										</Col>
 									))
 								}
