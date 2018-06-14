@@ -5,6 +5,8 @@ import {
   fetchContainers, 
   select as selectContainer, 
   setItemsFilter, 
+  softRemoveItem,
+  softRemoveItemCancel,
   showDeleteContainerForm, 
   showDeleteItemForm, 
   showEditContainerForm, 
@@ -63,8 +65,9 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch(showEditItemForm(item));
     },        
     itemDeleteClickHandler: (item) => {
-      dispatch(showDeleteItemForm(item));
-    },    
+      dispatch(softRemoveItem(item));
+    },
+    itemDeleteCancelHandler: item => dispatch(softRemoveItemCancel(item)),    
     dispatch
 });
 
@@ -76,7 +79,7 @@ export class Items extends React.Component {
 
   render() {
     const {containers, containerName, categories, editContainer, deleteContainer, itemAddClickHandler, itemEditClickHandler, 
-        itemDeleteClickHandler, handleFilterChange, containerLoading, handleContainerChange, selectedId } = this.props;
+        itemDeleteCancelHandler, itemDeleteClickHandler, handleFilterChange, containerLoading, handleContainerChange, selectedId } = this.props;
     return (
       <div>
           <ContainerSelector containers={containers} handleSelect={handleContainerChange} 
@@ -85,7 +88,8 @@ export class Items extends React.Component {
           <Container name={containerName} categories={categories} 
             loading={containerLoading}
             itemEditClickHandler={itemEditClickHandler}
-            itemDeleteClickHandler={itemDeleteClickHandler} />
+            itemDeleteClickHandler={itemDeleteClickHandler} 
+            itemDeleteCancelHandler={itemDeleteCancelHandler} />
           <AddItemButton clickHandler={itemAddClickHandler} title='Add Item' />
           <ItemForm />
           <ContainerForm />
