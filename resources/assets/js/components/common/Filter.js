@@ -8,17 +8,29 @@ class Filter extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.textInput = React.createRef();
+		this.textInput = null;
 
 		this._handleChange = this._handleChange.bind(this);
 		this._clear = this._clear.bind(this);
 		this.state = {
 			value: ''
 		}
+
+
+	    this.setTextInputRef = element => {
+	      this.textInput = element;
+	    };
+
+		this.focusTextInput = () => {
+	      // Focus the text input using the raw DOM API
+	      if (this.textInput) this.textInput.focus();
+	    };
 	}
 
 	componentDidMount() {
-		this.textInput.current.focus();
+		// console.log(this.textInput);
+		// this.textInput.current.focus();
+		this.focusTextInput();
 	} 
 
 	_handleChange(e) {
@@ -35,7 +47,7 @@ class Filter extends React.Component {
 		})
 		this.props.handleChange('');
 		// console.log(this.textInput.current)
-		this.textInput.current.focus();	
+		this.focusTextInput();
 	}
 
 	render() {
@@ -44,7 +56,7 @@ class Filter extends React.Component {
 				<FormGroup className="item-filter" controlId="items-filter">
 					<InputGroup>
 						<InputGroup.Addon>Filter:</InputGroup.Addon>
-						<FormControl value={this.state.value} autoFocus inputRef={ this.textInput }
+						<FormControl value={this.state.value} autoFocus inputRef={this.setTextInputRef}
 							onChange={this._handleChange}  />
 						<InputGroup.Button>
 							<Button onClick={this._clear}>

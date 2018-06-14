@@ -8,12 +8,11 @@ describe('Filter', () => {
 	const title = 'foo';
 	it('works', () => {
 		const output = shallow(<Filter title={title} />);
-		const form = output.find('form');
+		const form = output.find('Form');
 		expect(form.length).toBe(1);
 		const formGroup = output.find('FormGroup');
 		expect(formGroup.length).toBe(1);		
-		expect(formGroup.find('ControlLabel').length).toBe(1);
-		expect(formGroup.find('FormControl').length).toBe(1);
+		expect(formGroup.find('InputGroup').length).toBe(1);
 	});
 
 	it('clicks', () => {

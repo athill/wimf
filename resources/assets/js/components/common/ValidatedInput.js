@@ -43,10 +43,6 @@ export const getMessageAndStyle = meta => {
   }
 };
 
-export const Label= ({ className, errorMessage, label, warningMessage }) => (
-  <InputLabel title={label} warning={warningMessage} error={errorMessage} className={className} />
-);
-
 const ErrorMessage = ({ meta }) => {
   return meta.touched && meta.error ? <div className='text-danger'>{meta.error}</div> : null;
 } 
@@ -75,7 +71,7 @@ const ValidatedInput = ({ children, help, id, input, label, maxLength, meta, mut
   } else {
     return (
       <FormGroup>
-        <Label errorMessage={errorMessage} label={label} className={labelClassName} warningMessage={warningMessage} />
+        <InputLabel error={errorMessage} title={label} className={labelClassName} warning={warningMessage} />
         <div className={wrapperClassName}>
           <FormControl {...otherProps}
             id={id}
