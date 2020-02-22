@@ -23,5 +23,6 @@ mix.react('resources/assets/js/app.js', 'public/js')
 	.version()
     .sass('resources/assets/sass/app.scss', 'public/css')
 	.sourceMaps(true, 'source-map')
+	.webpackConfig({devtool: 'source-map'})
 	.version()
 	;
