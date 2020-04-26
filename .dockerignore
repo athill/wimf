@@ -1,0 +1,14 @@
+docker
+node_modules
+.babelrc
+.dockerignore
+.git*
+Dockerfile
+Jenkinsfile
+LICENSE
+package*
+php*
+readme.md
+server.php
+tests
+webpack.mix.js

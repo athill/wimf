@@ -5,6 +5,7 @@ import localPersistedStore from '../LocalPersistedStore';
 
 
 const localStoragePromise = (method, url, data) => {
+  console.log('localStoragePromise');
   return new Promise(
     (resolve, reject) => {
       return localPersistedStore(resolve, reject, method, url, data);

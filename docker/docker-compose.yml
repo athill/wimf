@@ -1,0 +1,22 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  phpfpm:
+    image: athill/wimf
+    networks:
+      - app-tier
+  nginx:
+    image: 'bitnami/nginx:1.12.0-r2'
+    depends_on:
+      - phpfpm
+    networks:
+      - app-tier
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./vhosts:/bitnami/nginx/conf/vhosts

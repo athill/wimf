@@ -221,7 +221,9 @@ const localPersistedStore = (resolve, reject, method, url, data) => {
 	//// deserialize store
 	if (localStorage.getItem('wimf')) {
 		store = JSON.parse(localStorage.getItem('wimf')); 
-	}		
+	} else {
+		localStorage.setItem('wimf', JSON.stringify(store));
+	}
 	//// update store
 	let retval = {};
 	method = method.toLowerCase();
