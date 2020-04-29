@@ -14,13 +14,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
    
         <title>What&apos;s In My Freezer?</title>
-        <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('/static/css/app.css')}}" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div id="app"></div>
         {{-- TODO: Versions --}}
         <!-- <script src="{{asset('js/manifest.js')}}" ></script> -->
         <!-- <script src="{{asset('js/vendor.js')}}" ></script> -->
-        <script src="{{mix('js/app.js')}}" ></script>
+        <script src="{{asset('/static/js/app.js')}}" ></script>
     </body>
 </html>
