@@ -1,11 +1,7 @@
 build
 /node_modules
-/public/css
-/public/fonts
-/public/hot
-/public/js
-/public/mix-manifest.json
-/public/storage
+/public/static
+/public/precache-manifest.*
 /storage/*.key
 /vendor
 /.idea

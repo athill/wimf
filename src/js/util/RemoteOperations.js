@@ -103,8 +103,8 @@ class RemoteOperations {
     try {
       response = await this.promiser(request);
     } catch (error) {
-      error = this.errorTranslater(error);
-      if (this.isRefresh(error)) {
+      const translatedError = this.errorTranslater(error);
+      if (this.isRefresh(translatedError)) {
         try {
             response = await this.promiser({ 
               method: 'POST', 
@@ -155,7 +155,7 @@ class RemoteOperations {
   } 
 
   post = (url, config, resolvers, rejecter) => {
-    if (!'data' in config) {
+    if (!('data' in config)) {
       config = { data: config };
     }
     return this.fetch({ method: 'POST', url, config, resolvers, rejecter });
