@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Col, Grid, Row } from 'react-bootstrap';
-import ReactDOM, { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import createStore from '../store';

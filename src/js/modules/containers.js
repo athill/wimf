@@ -14,7 +14,6 @@ import {
   getSortedContainerArray, 
   removeContainerFromContainers, 
   removeItemFromCategories, 
-  sortCategories,
   updateCategoriesInContainers, 
   updateContainerInContainers,
   updateItemInCategories 
@@ -173,7 +172,7 @@ const  containersReducer = (state, action) => {
         const containerArray = getSortedContainerArray(state.containers);
         //// find index of passed in container to remove
         const removeIndex = containerArray.findIndex(x => x.id === action.payload.data.id);
-        const selectIndex = removeIndex == 0 ? 1 : removeIndex - 1;
+        const selectIndex = removeIndex === 0 ? 1 : removeIndex - 1;
         let selectedId = containerArray[selectIndex].id;
         return {
           ...state,

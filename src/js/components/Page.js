@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Alert, Col, Grid, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Router, Route } from 'react-router-dom';

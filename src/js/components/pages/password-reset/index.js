@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
+import { Field, reduxForm} from 'redux-form';
+import { Alert, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { InputField, required, submit, validEmail } from '../../util/form';

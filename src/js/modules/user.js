@@ -75,7 +75,7 @@ export const login = values => {
  return async dispatch => {
     try {
       dispatch(createAction(LOGIN_USER.ACTION));
-      const response = await post('/api/login', 
+      await post('/api/login', 
         values, 
         response => dispatch(createAction(LOGIN_USER.SUCCESS)(Object.assign({}, response.data, { remember: values.remember })))
       );
@@ -98,7 +98,7 @@ export const register = values => {
   return async dispatch => {
     try {
       dispatch(createAction(REGISTER_USER.ACTION));
-      const response = await post('/api/register', 
+      await post('/api/register', 
         values, 
           response => dispatch(createAction(REGISTER_USER.SUCCESS)(response.data)));
 
@@ -113,7 +113,7 @@ export const passwordReset = values => {
   return async dispatch => {
     try {
       dispatch(createAction(PASSWORD_RESET.ACTION));
-      const response = await post('/api/password/reset', 
+      await post('/api/password/reset', 
         values, 
         response => {
           dispatch(createAction(PASSWORD_RESET.SUCCESS)());
@@ -131,7 +131,7 @@ export const passwordReset2 = values => {
   return async dispatch => {
     try {
       dispatch(createAction(PASSWORD_RESET2.ACTION));
-      const response = await post('/api/password/reset2', 
+      await post('/api/password/reset2', 
         values, 
         response => {
           dispatch(createAction(PASSWORD_RESET2.SUCCESS)());

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, ControlLabel, Form, FormControl, FormGroup, InputGroup } from 'react-bootstrap';
+import { Button, Form, FormControl, FormGroup, InputGroup } from 'react-bootstrap';
 
 import { Icon } from './common';
 

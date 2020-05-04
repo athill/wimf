@@ -6,7 +6,7 @@
         "framework",
         "laravel"
     ],
-    "license": "MIT",
+    "license": "MIT",  
     "require": {
         "php": "^7.2.5",
         "barryvdh/laravel-debugbar": "^3.3",
@@ -20,7 +20,7 @@
         "laravel/socialite": "^4.3",
         "laravel/tinker": "^2.0",
         "league/fractal": "^0.19.2",
-        "tymon/jwt-auth": "^1.0@dev",
+        "tymon/jwt-auth": "^1.0",
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Alert, Button, Col, Form, FormControl, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
+import { Field, reduxForm} from 'redux-form';
+import { Alert, Button, Col, Form, Grid, Panel, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { InputField, required, submit, validEmail } from '../../util/form';
@@ -44,7 +44,7 @@ const PasswordReset2 = ({ error, handleSubmit, invalid, submitting }) => (
 	</Grid>
 );
 
-const mapStateToProps = ({  }) => {
+const mapStateToProps = () => {
 	const [ url, token ] = window.location.href.split('?');
 	return {
 		initialValues: {

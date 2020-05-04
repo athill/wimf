@@ -30,7 +30,7 @@ class Import extends React.Component {
 		this.setState({file:e.target.files[0]})
 	}	
 	render() {
-		const { error, onChange, onSubmit } = this.props;
+		const { error, onSubmit } = this.props;
 		return (
 			<Grid fluid>
 				<Row>

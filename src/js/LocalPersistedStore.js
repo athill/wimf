@@ -25,9 +25,6 @@ let storeBackup = getStorePristine();
 //// uncommenting the following line will give you a pristine store on every load for debugging
 // localStorage.removeItem('wimf');
 
-//// apparently not used. what was it for?
-const setStore = (newStore) => store = {...newStore};
-
 export const resetStore = () => {
 	// const storePristine = getStorePristine();
 	store = getStorePristine();

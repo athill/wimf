@@ -1,5 +1,5 @@
 import React from'react'
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { Alert, Button, Col, Form, FormGroup, Grid, Panel, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -51,15 +51,13 @@ export const Intro = () => (
 		<p>There is no "sharing" option. What's in your freezer is between you and the database</p>
 		<p><strong>To get started</strong>, 
 			check out the <a href="/demo" target='_blank'>demo</a> (data stored&nbsp; 
-			<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" rel="noopener" target="_blank">locally</a>) 
+			<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" rel="noopener noreferrer" target="_blank">locally</a>) 
 			or <Link to="/register">register</Link>					
 		</p>
 	</div>
 );
 
 const Login = (props) =>  {	
-	const { error, handleSubmit, invalid, pristine, reset, submitting } = props;
-	console.log(props);
 	return (
 		<Grid fluid>
 			<Row>

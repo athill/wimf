@@ -1,7 +1,6 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { reduxForm, change, Field, SubmissionError } from 'redux-form';
+import { reduxForm, Field, SubmissionError } from 'redux-form';
 import map from 'lodash/map';
 import moment from 'moment';
 

@@ -8,7 +8,6 @@ import {
   softRemoveItem,
   softRemoveItemCancel,
   showDeleteContainerForm, 
-  showDeleteItemForm, 
   showEditContainerForm, 
   showEditItemForm,
   toggleAddContainerForm,

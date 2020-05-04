@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ControlLabel, FormControl, FormGroup, HelpBlock, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { Icon, NoOp } from './common';
+import { Icon } from './common';
 
 export const InputLabel = ({ error, className, title, warning }) => {
   const message = error || warning;

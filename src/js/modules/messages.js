@@ -1,5 +1,4 @@
-import { appNamespace, createAction, defineAction } from 'redux-actions';
-import history from '../history';
+import { createAction } from 'redux-actions';
 
 ////consts
 //////states
