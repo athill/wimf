@@ -109,7 +109,7 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 				return;
 			}				
 			store.containers.push(container);
-			console.log(store);
+			// console.log(store);
 			return container;
 		case 'put':
 			//// check for other container with new name
@@ -132,7 +132,7 @@ export const persistContainers = (resolve, reject, method, args=[], data={}) => 
 		case 'delete':
 			const id = args[0];
 			store.containers = store.containers.filter(c => parseInt(c.id) !== parseInt(id));
-			console.log(store);
+			// console.log(store);
 			return;
 		default:
 			console.error('bad method');

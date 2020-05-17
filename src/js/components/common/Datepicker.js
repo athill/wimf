@@ -22,11 +22,11 @@ export default class Datepicker extends React.Component {
 		}
 	}	
 
-	componentWillReceiveProps(nextProps) {
-		const initialMoment = momentize(this.props.initialValue).startOf('day'),
-			nextInitialMoment = momentize(nextProps.initialValue).startOf('day');
-		if (nextProps.initialValue && 
-				(!this.props.initialValue || !initialMoment.isSame(nextInitialMoment))) {
+	componentDidUpdate(prevProps) {
+		const initialMoment = momentize(prevProps.initialValue).startOf('day'),
+			nextInitialMoment = momentize(this.props.initialValue).startOf('day');
+		if (this.props.initialValue && 
+				(!prevProps.initialValue || !initialMoment.isSame(nextInitialMoment))) {
 			this.setState({
 				startDate: nextInitialMoment
 			});
@@ -34,7 +34,6 @@ export default class Datepicker extends React.Component {
 	}
 
 	_handleChange(date) {
-
 		const { onChange } = this.props;
 		onChange(getIsoFormat(date));
 		this.setState({

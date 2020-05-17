@@ -40,7 +40,7 @@ class ExportImportControllerTest extends TestCase {
 	private $defaultContainers;
 
 
-    public function setUp() {
+    public function setUp(): void {
     	parent::setUp();
         $this->defaultUser = $this->getDefaultUser();
         $this->be($this->defaultUser);
