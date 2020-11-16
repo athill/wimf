@@ -4,9 +4,10 @@ import faker from 'faker';
 import { reduxForm } from 'redux-form';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import sinon from 'sinon';
 
 import DatePicker from '../../../components/common/Datepicker';
+import ValidatedInput from '../../../components/common/ValidatedInput';
+
 
 import { getFakeReduxFormProps } from '../../testUtil/utils';
 
@@ -23,13 +24,14 @@ describe('Datepicker', () => {
 	const label = faker.lorem.words();
 	const name = faker.lorem.words();
 	const { input, meta } = getFakeReduxFormProps();
-	const defaultProps = { input, label, meta, name };
+    const defaultProps = { input, label, meta, name, onChange: jest.fn() };
+
 	const getForm = (props=defaultProps) => (
 		reduxForm({ form: 'foo' })(() => (
 			<form>
 				<DatePicker {...props} />
 			</form>
-		)	
+		)
 	));
 
 	const getOutput = Form => (
@@ -44,7 +46,12 @@ describe('Datepicker', () => {
 
 	it('renders readonly', () => {
 		const Form = getForm({ ...defaultProps, readOnly: true });
-		const output = getOutput(Form);
+        const output = getOutput(Form);
+        expect(output.type()).toBe(Provider);
+        const datePicker = output.find(DatePicker);
+        const validatedInput = datePicker.find(ValidatedInput);
+        expect(datePicker.props().readOnly).toBe(true);
+        expect(validatedInput.props().readOnly).toBe(true);
 	});
 
 
