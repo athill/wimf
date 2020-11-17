@@ -22,7 +22,7 @@ class ContainerTest extends TestCase {
     private $defaultDescription;
 
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->defaultUser = $this->getDefaultUser();
         $this->be($this->defaultUser);
@@ -164,6 +164,10 @@ class ContainerTest extends TestCase {
     public function testNameExistsIsFalseIfNameDoesNotExists() {
         $container = $this->getFakeContainer();
         $name = $this->faker->word;
+        // in case it happens to have the same name
+        if ($name === $container->name) {
+            $name = $this->faker->word;
+        }
         $this->assertNotEquals($name, $container->name);
         //// TODO: verify and delete if name exists
         $this->assertFalse(Container::nameExists($name));
