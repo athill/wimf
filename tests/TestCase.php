@@ -35,11 +35,10 @@ abstract class TestCase extends BaseTestCase {
     protected $defaultDate;
 
    
-
-  public function setUp() {
+    function setUp(): void {
         parent::setUp();
         $this->defaultDate = Carbon::now()->toDateTimeString();
-    }
+    }    
 
     public function getDefaultUser() {
         return factory(\App\User::class)->create(); 

@@ -26,7 +26,7 @@ class ItemControllerTest extends TestCase {
     private $defaultContainer;
 
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->defaultUser = $this->getDefaultUser();
         $this->token = \JWTAuth::fromUser($this->defaultUser);

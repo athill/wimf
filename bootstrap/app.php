@@ -12,7 +12,7 @@
 */
 
 $app = new Illuminate\Foundation\Application(
-    realpath(__DIR__.'/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 /*
@@ -41,7 +41,7 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->register(Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class);
+// $app->register(Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
