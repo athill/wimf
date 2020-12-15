@@ -167,9 +167,10 @@ return [
         /*
          * Package Service Providers...
          */
+        // Tymon\JWTAuth\Providers\JWTAuthServiceProvider:class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class,
+        // Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class,
 
         /*
          * Application Service Providers...
