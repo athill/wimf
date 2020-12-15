@@ -14,7 +14,7 @@ const middleware = [
 ];
 
 
-if (process.env.NODE_ENV === 'development' || window.location.host === 'wimf.app' || window.location.host === 'wimf2.app') {
+if (process.env.NODE_ENV === 'development' || localStorage.getItem('debug') === 'true') {
   middleware.push(logger);
 }
 
