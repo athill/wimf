@@ -8,24 +8,24 @@ import { getIsoFormat } from '../util/DateUtils';
 
 import { get, deleteRequest, download, post, put } from '../util/RemoteOperations';
 
-import { 
-  addContainerToContainers, 
-  addItemToCategories, 
-  getSortedContainerArray, 
-  removeContainerFromContainers, 
-  removeItemFromCategories, 
-  updateCategoriesInContainers, 
+import {
+  addContainerToContainers,
+  addItemToCategories,
+  getSortedContainerArray,
+  removeContainerFromContainers,
+  removeItemFromCategories,
+  updateCategoriesInContainers,
   updateContainerInContainers,
-  updateItemInCategories 
+  updateItemInCategories
 } from '../util/ContainerOperations';
-import { 
-  appNamespace, 
-  formModalReducer, 
-  getConstants, 
-  keepOpenHandler, 
+import {
+  appNamespace,
+  formModalReducer,
+  getConstants,
+  keepOpenHandler,
   loadingStates,
-  ModalTypes, 
-  updateEntity 
+  ModalTypes,
+  updateEntity
 } from './utils';
 
 
@@ -117,7 +117,7 @@ const itemsReducer = (state, action) => {
           ...containers,
           [container.id]: container
         }
-      };  
+      };
     case SET_ITEMS_FILTER:
       return {
         ...state,
@@ -136,8 +136,8 @@ const itemsReducer = (state, action) => {
         containers: updateContainers(categories)
       };
     default:
-      console.error('Invalid action', action.type);   
-      return state;        
+      console.error('Invalid action', action.type);
+      return state;
   }
 };
 
@@ -178,26 +178,26 @@ const  containersReducer = (state, action) => {
           ...state,
           selectedId,
           containers: removeContainerFromContainers(state.containers, action.payload.data)
-        };         
+        };
       case EDIT_CONTAINER.SUCCESS:
         return {
           ...state,
           containers: updateContainerInContainers(state.containers, action.payload.data)
-        };        
-      case REQUEST_CONTAINERS.SUCCESS: 
+        };
+      case REQUEST_CONTAINERS.SUCCESS:
         const containers = {};
         action.payload.forEach(container => containers[container.id] = container );
         return  {
             ...state,
             containers
-        }; 
+        };
       case SELECT_CONTAINER:
         return {
           ...state,
           selectedId:  action.payload || state.selectedId
-        };         
+        };
       default:
-        console.error('Invalid action', action.type); 
+        console.error('Invalid action', action.type);
         return state;
     }
 };
@@ -208,14 +208,14 @@ const impexReducer = (state, action) => {
         return {
           ...state,
           importFormError: null
-        };       
+        };
       case IMPORT.ERROR:
         return {
           ...state,
           importFormError: action.payload
-        };       
+        };
       default:
-        console.error('Invalid action', action.type); 
+        console.error('Invalid action', action.type);
         return state;
     }
 }
@@ -224,36 +224,36 @@ export default function reducer(state = initialState, action) {
   if (!action) {
     return state;
   }
-  switch (action.type) { 
-    //// container actions  
+  switch (action.type) {
+    //// container actions
     case ADD_CONTAINER.SUCCESS:
     case EDIT_CONTAINER.SUCCESS:
     case DELETE_CONTAINER.SUCCESS:
     case REQUEST_CONTAINERS.SUCCESS:
-    case SELECT_CONTAINER: 
+    case SELECT_CONTAINER:
       return containersReducer(state, action);
     //// item actions
     case ADD_ITEM.SUCCESS:
     case DELETE_ITEM.SUCCESS:
     case EDIT_ITEM.SUCCESS:
     case REQUEST_ITEMS:
-    case REQUEST_ITEMS.SUCCESS:    
+    case REQUEST_ITEMS.SUCCESS:
     case SET_ITEMS_FILTER:
     case SOFT_DELETE_ITEM:
     case SOFT_DELETE_ITEM_CANCEL:
-      return itemsReducer(state, action); 
-    //// container form actions  
+      return itemsReducer(state, action);
+    //// container form actions
     case TOGGLE_ADD_CONTAINER_FORM:
     case SHOW_EDIT_CONTAINER_FORM:
     case SHOW_DELETE_CONTAINER_FORM:
     case HIDE_CONTAINER_FORM:
-      return containerFormReducer(state, action); 
+      return containerFormReducer(state, action);
     //// item form actions
     case TOGGLE_ADD_ITEM_FORM:
     case SHOW_EDIT_ITEM_FORM:
     case SHOW_DELETE_ITEM_FORM:
     case HIDE_ITEM_FORM:
-      return itemFormReducer(state, action); 
+      return itemFormReducer(state, action);
     //// import/export reducer
     case EXPORT.SUCCESS:
     case IMPORT.ACTION:
@@ -294,7 +294,7 @@ export const exportDemoData = () => {
           url: '/demo/export',
           data: { data }
       })
-      .then(response => { 
+      .then(response => {
         dispatch(act(RECEIVE_DEMO_DATA));
         window.location = `/demo/export/?filename=${response.data.filename}`
       })
@@ -308,7 +308,7 @@ export const exportData = () => {
   return async dispatch => {
     try {
       dispatch(createAction(EXPORT)());
-      return await get('/api/export', 
+      return await get('/api/export',
         response => {
           const filename = 'export.json';
           const content = response.data;
@@ -371,9 +371,9 @@ export const fetchContainers = () => {
 
 //// Container form actions
 export const updateContainer = ({ handler, hideFormHandler, requestAction, successAction, url, valuesTransformer }) => updateEntity({
-  formName: CONTAINER_FORM_NAME, 
+  formName: CONTAINER_FORM_NAME,
   handler,
-  hideAction: hideContainerForm,  
+  hideAction: hideContainerForm,
   hideFormHandler,
   requestAction,
   successAction,
@@ -384,22 +384,22 @@ export const updateContainer = ({ handler, hideFormHandler, requestAction, succe
 export const addContainer = updateContainer({
   handler: post,
   hideFormHandler: keepOpenHandler('name'),
-  requestAction: createAction(ADD_CONTAINER), 
-  successAction: createAction(ADD_CONTAINER.SUCCESS), 
+  requestAction: createAction(ADD_CONTAINER),
+  successAction: createAction(ADD_CONTAINER.SUCCESS),
   url: '/api/containers/'
 });
 
 export const editContainer = updateContainer({
   handler: put,
-  requestAction: createAction(EDIT_CONTAINER), 
-  successAction: createAction(EDIT_CONTAINER.SUCCESS), 
+  requestAction: createAction(EDIT_CONTAINER),
+  successAction: createAction(EDIT_CONTAINER.SUCCESS),
   url: '/api/containers/{id}'
 });
 
 export const removeContainer = updateContainer({
   handler: deleteRequest,
-  requestAction: createAction(DELETE_CONTAINER), 
-  successAction: createAction(DELETE_CONTAINER.SUCCESS), 
+  requestAction: createAction(DELETE_CONTAINER),
+  successAction: createAction(DELETE_CONTAINER.SUCCESS),
   url: '/api/containers/{id}'
 });
 
@@ -430,7 +430,7 @@ export const fetchItems = containerId => (
 );
 export const updateItem = ({ handler, hideFormHandler, requestAction, successAction, url, valuesTransformer }) => {
   return updateEntity({
-    formName: ITEM_FORM_NAME, 
+    formName: ITEM_FORM_NAME,
     handler,
     hideAction: hideItemForm,
     hideFormHandler,
@@ -450,7 +450,7 @@ const itemValuesTransformer = (values, getState) => ({
 export const addItem = updateItem({
   handler: post,
   hideFormHandler: keepOpenHandler('category'),
-  requestAction: createAction(ADD_ITEM), 
+  requestAction: createAction(ADD_ITEM),
   successAction: createAction(ADD_ITEM.SUCCESS),
   url: '/api/items/',
   valuesTransformer: itemValuesTransformer
@@ -458,7 +458,7 @@ export const addItem = updateItem({
 
 export const editItem = updateItem({
   handler: put,
-  requestAction: createAction(EDIT_ITEM), 
+  requestAction: createAction(EDIT_ITEM),
   successAction: createAction(EDIT_ITEM.SUCCESS),
   url: '/api/items/{id}',
   valuesTransformer: itemValuesTransformer
@@ -466,7 +466,7 @@ export const editItem = updateItem({
 
 export const removeItem = updateItem({
   handler: deleteRequest,
-  requestAction: createAction(DELETE_ITEM), 
+  requestAction: createAction(DELETE_ITEM),
   successAction: createAction(DELETE_ITEM.SUCCESS),
   url: '/api/items/{id}',
 });
@@ -475,7 +475,7 @@ export const getStateItem = (state, item) => {
   const containers = state.containers;
   const container = containers.containers[containers.selectedId];
   const category = find(container.categories, { name: item.category });
-  return find(category.items, { name: item.name});  
+  return find(category.items, { name: item.name});
 }
 
 export const softRemoveItem = item => {
@@ -489,10 +489,10 @@ export const softRemoveItem = item => {
         })
         .catch(error => {
           throw new SubmissionError(error);
-        }); 
+        });
       }
     }, 5000);
-  };  
+  };
 };
 
 export const softRemoveItemCancel = item => {

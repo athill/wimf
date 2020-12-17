@@ -5,7 +5,6 @@ import localPersistedStore from '../LocalPersistedStore';
 
 
 const localStoragePromise = (method, url, data) => {
-  console.log('localStoragePromise');
   return new Promise(
     (resolve, reject) => {
       return localPersistedStore(resolve, reject, method, url, data);
@@ -13,7 +12,7 @@ const localStoragePromise = (method, url, data) => {
 };
 
 /**
- * 
+ *
  */
 const makePromise = ({ url, config = {}, method = 'GET' })  => {
   let promise = null;
@@ -78,8 +77,8 @@ const isJwtAuthUnauthenticated = error => error.message === 'Unauthenticated.';
 
 class RemoteOperations {
   constructor(
-    promiser, 
-    errorTranslater, 
+    promiser,
+    errorTranslater,
     rejecter,
     isRefresh
   ) {
@@ -107,8 +106,8 @@ class RemoteOperations {
       const translatedError = this.errorTranslater(error);
       if (this.isRefresh(translatedError)) {
         try {
-            response = await this.promiser({ 
-              method: 'POST', 
+            response = await this.promiser({
+              method: 'POST',
               url: '/api/refresh'
             });
         } catch (error) {
@@ -119,7 +118,7 @@ class RemoteOperations {
 
           } else {
             const rejection = rejecter(error);
-            throw rejection;                      
+            throw rejection;
           }
         }
         try {
@@ -142,33 +141,33 @@ class RemoteOperations {
     //// iterate through resolvers
     for (let i = 0; i < resolvers.length; i++) {
       try {
-        response = await resolvers[i](response);  
+        response = await resolvers[i](response);
       } catch (error) {
         console.log(`problem with resolver ${i}`, response, error);
         const rejection = rejecter(error);
         throw rejection;
       }
     }
-  } 
+  }
 
   get = (url, resolvers, rejecter) => {
     return this.fetch({ method: 'GET', url, resolvers, rejecter });
-  } 
+  }
 
   post = (url, config, resolvers, rejecter) => {
     if (!('data' in config)) {
       config = { data: config };
     }
     return this.fetch({ method: 'POST', url, config, resolvers, rejecter });
-  } 
+  }
 
   put = (url, config, resolvers, rejecter) => {
     return this.fetch({ method: 'PUT', url, config, resolvers, rejecter });
-  } 
+  }
 
   delete = (url, resolvers, rejecter) => {
     return this.fetch({ method: 'DELETE', url, resolvers, rejecter });
-  }      
+  }
 }
 
 
@@ -188,8 +187,8 @@ export const download = ({ content, filename, charset='utf-8', mimeType='applica
       link.click();
       document.body.removeChild(link);
     }
-  }          
-};  
+  }
+};
 
 //// remote operations instance
 const remoteOperation = new RemoteOperations();
