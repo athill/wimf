@@ -62,7 +62,6 @@ class AuthController extends Controller
      */
     public function me()
     {   
-        Log::info('in me');
         return response()->json($this->guard()->user());
     }
 
