@@ -6,11 +6,9 @@
 /vendor
 /.idea
 /.vagrant
-Homestead.json
-Homestead.yaml
 .phpunit.result.cache
 npm-debug.log
 yarn-error.log
 .env
 .DS_Store
-laradockwimf
+db
